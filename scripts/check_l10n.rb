@@ -45,7 +45,7 @@ ARGV.each do |source_glob|
 
       todo = true if line.rstrip.end_with?('// todo translate')
 
-      str_match = line.match(/^"(.*)"/)
+      str_match = line.match(/^L?"(.*)"/)
       if current_l10n && str_match
         str << str_match[1]
 

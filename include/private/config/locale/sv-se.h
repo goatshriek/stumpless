@@ -30,7 +30,7 @@
 
 // todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
+"CommitTransaction failed"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "anslutning med en sys/socket.h-Socket misslyckades"
@@ -38,8 +38,9 @@
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "anslutning med en winsock2-Socket misslyckades"
 
+// todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "typen är endast giltig för nätverksmål"
@@ -93,11 +94,11 @@
 
 // todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"L10N MISSING GETMODULEFILENAMEW FAILED ERROR MESSAGE"
+"GetModuleFileNameW failed"
 
 // todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"L10N MISSING GETMODULEHANDLEEXW FAILED ERROR MESSAGE"
+"GetModuleHandleExW failed"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "det felaktiga indexedet, eller det -1 är för stort för att " \
@@ -119,7 +120,7 @@
 
 // todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"L10N MISSING INVALID MULTI_SZ ERROR MESSAGE"
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ogiltiga allvarligheten"
@@ -220,7 +221,7 @@ ARG_NAME " var NULL"
 
 // todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
-L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
+L"Stumpless registration of Windows Event Log Source"
 
 // todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
@@ -258,14 +259,17 @@ L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "could not open the Windows Event Log"
 
+// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"L10N MISSING WIDE TO MB CONVERSION ERROR CODE TYPE"
+"the result of GetLastError after the failed call"
 
+// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"L10N MISSING WIDE TO MB CONVERSION ERROR MESSAGE"
+"could not convert the provided wide char string to a multibyte string"
 
+// todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
+"the Windows error code returned by the failed call"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket felkod"

@@ -28,11 +28,19 @@
 # define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "προσπάθεια κλεισίματος ανυποστήρικτου τύπο στόχου"
 
+// todo translate
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction failed"
+
 # define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχής σύνδεση με τον υποδοχέα sys/socket.h"
 
 # define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχής σύνδεση με τον υποδοχέα winsock2"
+
+// todo translate
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction failed"
 
 # define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "ο προορισμός είναι έγκυρος μόνο για δίκτυα"
@@ -76,6 +84,14 @@
 # define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "αποτέλεσμα του GetLastError εφόσον της αποτυχημένης κλήσης της συνάρτησης"
 
+// todo translate
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW failed"
+
+// todo translate
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW failed"
+
 # define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "μη έγκυρη δείκτης, ή το αποτέλεσμα της αφαίρεση του δείκτη κατά 1 είναι" \
 " υπερβολικά μεγάλο για να αναπαρασταθεί ως int"
@@ -92,6 +108,10 @@
 
 # define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "μη έγκυρος " INDEXED_THING " δείκτης"
+
+// todo translate
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
 
 # define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "μη έγκυρη σοβαρότητα"
@@ -115,6 +135,14 @@
 
 # define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "το μέγιστο μέγεθος μηνυμάτων είναι έγκυρο μόνο για στόχους UDP"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided multibyte string to a wide char string"
 
 # define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "αποτυχία συνάρτησης τροποποίησης μνήμης"
@@ -141,6 +169,26 @@ ARG_NAME " κατέχει την τιμή NULL"
 # define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "αδυναμία εύρεσης παράμετρος με τα καθορισμένα χαρακτηριστικά"
 
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be created"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be deleted"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
+"a registry value could not be set"
+
 # define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχία συνάρτησης sendto σε υποδοχέα unix"
 
@@ -158,6 +206,10 @@ ARG_NAME " κατέχει την τιμή NULL"
 
 # define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "αποτυχία ανοίγματος υποδοχέα"
+
+// todo translate
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+L"Stumpless registration of Windows Event Log Source"
 
 # define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "αδυναμία εγγραφής στη ροή δεδομένων (stream)"
@@ -188,6 +240,18 @@ ARG_NAME " κατέχει την τιμή NULL"
 
 # define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "αδυναμία ανοίγματος του Windows Event Log"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided wide char string to a multibyte string"
+
+// todo translate
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"the Windows error code returned by the failed call"
 
 # define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Κωδικός σφάλματος σε υποδοχέα των Windows"

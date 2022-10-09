@@ -30,7 +30,7 @@
 
 // todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
+"CommitTransaction failed"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "Verbindung mit einem sys/socket.h-Socket fehlgeschlagen"
@@ -40,7 +40,7 @@
 
 // todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "Ziel ist nur für Netzwerkziele gültig"
@@ -94,11 +94,11 @@
 
 // todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"L10N MISSING GETMODULEFILENAMEW FAILED ERROR MESSAGE"
+"GetModuleFileNameW failed"
 
 // todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"L10N MISSING GETMODULEHANDLEEXW FAILED ERROR MESSAGE"
+"GetModuleHandleExW failed"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "Der ungültige Index, oder -1 davon ist zu groß, um ihn als int" \
@@ -118,8 +118,9 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "Ungültiger " INDEXED_THING " index"
 
+// todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"L10N MISSING INVALID MULTI_SZ ERROR MESSAGE"
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "Ungültiger Schweregrad"
@@ -149,11 +150,11 @@
 
 // todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
-"L10N MISSING MB TO WIDE CONVERSION ERROR CODE TYPE"
+"the result of GetLastError after the failed call"
 
 // todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"L10N MISSING MB TO WIDE CONVERSION ERROR MESSAGE"
+"could not convert the provided multibyte string to a wide char string"
 
 // todo translate
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
@@ -183,23 +184,23 @@ ARG_NAME " war NULL"
 
 // todo translate
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
-"L10N MISSING REGISTRY SUBKEY CREATION FAILED ERROR MESSAGE"
+"a registry subkey could not be created"
 
 // todo translate
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
-"L10N MISSING REGISTRY SUBKEY DELETION FAILED ERROR MESSAGE"
+"a registry subkey could not be deleted"
 
 // todo translate
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"L10N MISSING REGISTRY SUBKEY OPEN FAILED ERROR MESSAGE"
+"a registry subkey could not be opened"
 
 // todo translate
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"L10N MISSING REGISTRY VALUE GET FAILED ERROR MESSAGE"
+"a registry value could not be read"
 
 // todo translate
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"L10N MISSING REGISTRY VALUE SET FAILED ERROR MESSAGE"
+"a registry value could not be set"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "sendto mti einem Unix-Socket fehlgeschlagen"
@@ -221,7 +222,7 @@ ARG_NAME " war NULL"
 
 // todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
-L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
+L"Stumpless registration of Windows Event Log Source"
 
 // todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
@@ -261,15 +262,15 @@ L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
 
 // todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"L10N MISSING WIDE TO MB CONVERSION ERROR CODE TYPE"
+"the result of GetLastError after the failed call"
 
 // todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"L10N MISSING WIDE TO MB CONVERSION ERROR MESSAGE"
+"could not convert the provided wide char string to a multibyte string"
 
 // todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
+"the Windows error code returned by the failed call"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket Fehler Code"

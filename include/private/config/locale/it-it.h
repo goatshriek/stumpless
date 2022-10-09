@@ -105,7 +105,8 @@
 "indice " INDEXED_THING " non valido"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due caratteri nullo"
+"un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due" \
+" caratteri nullo"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "gravità non valida"
@@ -130,11 +131,11 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
 
-#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"non è stato possibile convertire una stringa multibyte a una stringa \"wide\""
-
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
 "il risultato di GetLastError dopo la chiamata fallita"
+
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"non è stato possibile convertire una stringa multibyte a una stringa \"wide\""
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "una chiamata di allocazione della memoria fallita"
