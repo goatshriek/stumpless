@@ -24,7 +24,7 @@
 #  include <stumpless/config.h>
 #  include <stumpless/target.h>
 #  include <stumpless/target/network.h>
-#  include "private/config/wrapper.h"
+#  include "private/config/network_support_wrapper.h"
 #  include "private/config/wrapper/thread_safety.h"
 
 struct network_target {

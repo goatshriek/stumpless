@@ -35,6 +35,7 @@
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include "private/config.h"
+#include "private/config/network_support_wrapper.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/journald.h"

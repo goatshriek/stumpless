@@ -28,6 +28,7 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba zamknięcia pliku docelowego nieobsługiwanego typu"
 
+// todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
 "L10N MISSING COMMIT TRANSACTION FAILED ERROR MESSAGE"
 
@@ -37,6 +38,7 @@
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "Awaria połączenia winsock socketem"
 
+// todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
 "L10N MISSING CREATE TRANSACTION FAILED ERROR MESSAGE"
 
@@ -58,14 +60,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "komunikat o błędzie - nie udało się zapisać"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"nieważny " ARG " formát"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "kod powrotu funkcji obsługi protokołu"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "obsługa protokołu dla celu funkcji nie powiodła się"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego przy użyciu mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "funkcja getaddrinfor nie powiodła się podczas podawania nazwy hosta"
@@ -82,20 +84,24 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "wynik GetLastError po nieudanym wywołaniu"
 
+// todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
 "L10N MISSING GETMODULEFILENAMEW FAILED ERROR MESSAGE"
 
+// todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
 "L10N MISSING GETMODULEHANDLEEXW FAILED ERROR MESSAGE"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany jako typ danych int"
+"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany" \
+" jako typ danych int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "niezgodne urządzenie"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie z protokołem RFC 5424"
+"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie" \
+" z protokołem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "nieprawidłowy cel ID"
@@ -110,13 +116,22 @@
 "nieprawidłowa usługa"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424: wartości pomiędzy 0 a 7 łącznie z"
+"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424:" \
+" wartości pomiędzy 0 a 7 łącznie z"
+
+// todo translate
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"target type is incompatible with this operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "kod powrotu sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "sd_journal_sendv przegrany"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego" \
+" przy użyciu mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maksymalny rozmiar wiadomości obowiązuje tylko dla UDP"
@@ -130,11 +145,11 @@
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "wywołanie alokacji pamięci nie powiodło się"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "rozmiar wiadomości, która próbowała je wysłać "
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "wybrany protokół sieciowy nie jest obsługiwany"
@@ -151,20 +166,28 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "określony parametr nie został znaleziony"
 
+// todo translate
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
 "L10N MISSING REGISTRY SUBKEY CREATION FAILED ERROR MESSAGE"
 
+// todo translate
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
 "L10N MISSING REGISTRY SUBKEY DELETION FAILED ERROR MESSAGE"
 
+// todo translate
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
 "L10N MISSING REGISTRY SUBKEY OPEN FAILED ERROR MESSAGE"
 
+// todo translate
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
 "L10N MISSING REGISTRY VALUE GET FAILED ERROR MESSAGE"
 
+// todo translate
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
 "L10N MISSING REGISTRY VALUE SET FAILED ERROR MESSAGE"
+
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"wysyłanie uniksa socketu (unix socket) przegrany"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba wysłania nieobsługiwanego typu danych wejściowych do celu"
@@ -175,20 +198,24 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "wysyłanie gniazda systemowego (sys/socket.h) przegrany"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"wysyłanie uniksa socketu (unix socket) przegrany"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "wysyłanie winsock2 socketu przegrany"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otwór w gnieździe przegrany"
 
+// todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
 L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "nie mogę pisać do streamu"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"długość łańcucha problemu to"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"długość ciągu przekroczyła maksymalny limit"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "cel danego typu jest nadal otwarty"
@@ -211,15 +238,18 @@ L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "Kod błędu Windows Socket"
 
+// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
 "L10N MISSING WIDE TO MB CONVERSION ERROR CODE TYPE"
 
+// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "L10N MISSING WIDE TO MB CONVERSION ERROR MESSAGE"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "błąd zwracane wartości (error code) Windows socketu"
 
+// todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
 "L10N MISSING WINDOWS RETURN ERROR CODE TYPE"
 
@@ -228,17 +258,5 @@ L"L10N MISSING SOURCE REGISTRATION TRANSACTION DESCRIPTION"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "wynik WSAGetLastError po niepowodzeniu połączenia"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"długość ciągu przekroczyła maksymalny limit"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"długość łańcucha problemu to"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"nieważny " ARG " formát"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif //STUMPLESS_PL_PL_H

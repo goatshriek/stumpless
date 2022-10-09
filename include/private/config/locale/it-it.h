@@ -58,14 +58,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "non è stato possibile scrivere al file scelto"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"formato di " ARG " non valido"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "il codice di ritorno della chiamata funzione fallita"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "la funzione per un target di funzione fallita"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"non è stato possibile creare un file con il nome scelto per la socket locale usando mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo fallita con l'hostname dato"
@@ -95,7 +95,8 @@
 "il servizio non valido"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"i codici di servizio devono essere definiti in osservanza del RFC 5424, dopo la moltiplicazione per 8"
+"i codici di servizio devono essere definiti in osservanza del RFC 5424," \
+" dopo la moltiplicazione per 8"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "target id non valido"
@@ -110,13 +111,21 @@
 "gravità non valida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0 e 7, compreso"
+"i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0" \
+" e 7, compreso"
+
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"il tipo di target è incompatibile con questa operazione"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "il codice di ritorno della chiamata sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "sd_journal_sendv fallita"
+
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"non è stato possibile creare un file con il nome scelto per la socket" \
+" locale usando mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "la dimensione massima del messaggio è solo valido per target di rete UDP"
@@ -130,11 +139,11 @@
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "una chiamata di allocazione della memoria fallita"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"il messaggio è troppo grande per essere inviato in unico datagram"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "la dimensione del messaggio che si è tentato di inviare"
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"il messaggio è troppo grande per essere inviato in unico datagram"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "il protocollo di rete non è supportato"
@@ -166,6 +175,9 @@ ARG_NAME " era NULL"
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
 "non è stato possibile assegnare un valore nel registro"
 
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"sendto fallita con un socket unix"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentativo di invio di una voce a un tipo di target non supportato"
 
@@ -174,9 +186,6 @@ ARG_NAME " era NULL"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send fallita con un socket sys/socket.h"
-
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto fallita con un socket unix"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "send fallita con un socket winsock2"
@@ -189,6 +198,12 @@ L"la registrazione per Stumpless di Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "non è stato possibile scrivere al stream"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"la lunghezza della stringa non valida"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"la lunghezza della stringa eccede il limite massimo"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "questo tipo di target è sempre aperto"
@@ -228,17 +243,5 @@ L"la registrazione per Stumpless di Windows Event Log Source"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "il risultato di WSAGetLastError dopo la chiamata fallita"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"la lunghezza della stringa eccede il limite massimo"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"la lunghezza della stringa non valida"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"formato di " ARG " non valido"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H */
