@@ -105,7 +105,8 @@
 "invalid " INDEXED_THING " index"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"a MULTI_SZ registry value was neither empty nor terminated with two NULL characters"
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
+" characters"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "the invalid severity"
