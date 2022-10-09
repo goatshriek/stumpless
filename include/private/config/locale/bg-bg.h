@@ -213,7 +213,7 @@ ARG_NAME " беше NULL"
 "неуспешно отваряне на сокет"
 
 // todo translate
-#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Stumpless registration of Windows Event Log Source"
 
 // todo translate

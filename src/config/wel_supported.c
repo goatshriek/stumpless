@@ -416,7 +416,8 @@ create_event_source_subkey( LPCWSTR subkey_name,
                             DWORD parameter_file_size,
                             DWORD types_supported ) {
   BYTE *sources_value;
-  HANDLE trans;
+  HANDLE transaction;
+  LPWSTR transaction_desc = L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W;
   DWORD result  = ERROR_SUCCESS;
   LSTATUS reg_result;
   HKEY subkey_handle;
@@ -431,14 +432,14 @@ create_event_source_subkey( LPCWSTR subkey_name,
   memcpy( sources_value, source_name, source_name_size );
   *( ( LPWSTR ) ( sources_value + source_name_size ) ) = L'\0';
 
-  trans = CreateTransaction( NULL,
-                             0,
-                             0,
-                             0,
-                             0,
-                             0,
-                             L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
-  if( trans == INVALID_HANDLE_VALUE ) {
+  transaction = CreateTransaction( NULL,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   transaction_desc );
+  if( transaction == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
                            result,
@@ -455,7 +456,7 @@ create_event_source_subkey( LPCWSTR subkey_name,
                                         NULL,
                                         &subkey_handle,
                                         NULL,
-                                        trans,
+                                        transaction,
                                         NULL );
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
@@ -488,7 +489,7 @@ create_event_source_subkey( LPCWSTR subkey_name,
                                         NULL,
                                         &source_key_handle,
                                         NULL,
-                                        trans,
+                                        transaction,
                                         NULL );
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
@@ -511,7 +512,7 @@ create_event_source_subkey( LPCWSTR subkey_name,
     goto cleanup_source;
   }
 
-  bool_result = CommitTransaction( trans );
+  bool_result = CommitTransaction( transaction );
   if( bool_result == 0 ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -524,7 +525,7 @@ cleanup_source:
 cleanup_key:
   RegCloseKey( subkey_handle );
 cleanup_transaction:
-  CloseHandle( trans );
+  CloseHandle( transaction );
 cleanup_sources:
   free_mem( sources_value );
   return result;
@@ -968,7 +969,8 @@ add_event_source( LPCWSTR subkey_name,
   BYTE *new_sources_value;
   DWORD new_sources_size;
   HKEY source_subkey_handle;
-  HANDLE trans;
+  HANDLE transaction;
+  LPWSTR transaction_desc = L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W;
   BOOL bool_result;
 
   // build the complete source subkey
@@ -1047,14 +1049,14 @@ add_event_source( LPCWSTR subkey_name,
     }
   }
 
-  trans = CreateTransaction( NULL,
-                             0,
-                             0,
-                             0,
-                             0,
-                             0,
-                             L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION );
-  if( trans == INVALID_HANDLE_VALUE ) {
+  transaction = CreateTransaction( NULL,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   transaction_desc );
+  if( transaction == INVALID_HANDLE_VALUE ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE,
                            result,
@@ -1071,7 +1073,7 @@ add_event_source( LPCWSTR subkey_name,
                                         NULL,
                                         &source_subkey_handle,
                                         NULL,
-                                        trans,
+                                        transaction,
                                         NULL );
   if( reg_result != ERROR_SUCCESS ) {
     result = reg_result;
@@ -1094,7 +1096,7 @@ add_event_source( LPCWSTR subkey_name,
     goto cleanup_source_subkey;
   }
 
-  bool_result = CommitTransaction( trans );
+  bool_result = CommitTransaction( transaction );
   if( bool_result == 0 ) {
     result = GetLastError(  );
     raise_windows_failure( L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE,
@@ -1105,7 +1107,7 @@ add_event_source( LPCWSTR subkey_name,
 cleanup_source_subkey:
   RegCloseKey( source_subkey_handle );
 cleanup_trans:
-  CloseHandle( trans );
+  CloseHandle( transaction );
 cleanup_sources:
   free_mem( sources_value );
 cleanup_subkey:

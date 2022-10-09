@@ -220,7 +220,7 @@ ARG_NAME " a été NULL"
 "échec d'ouverture d'un socket"
 
 // todo translate
-#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Stumpless registration of Windows Event Log Source"
 
 // todo translate

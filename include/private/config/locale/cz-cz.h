@@ -205,7 +205,7 @@ ARG_NAME " měl hodnotu NULL"
 "otevření socketu selhalo"
 
 // todo translate
-#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \

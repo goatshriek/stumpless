@@ -194,7 +194,7 @@ ARG_NAME " era NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket"
 
-#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"la registrazione per Stumpless di Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \

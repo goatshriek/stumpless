@@ -220,7 +220,7 @@ ARG_NAME " var NULL"
 "misslyckades med att öppna en Socket"
 
 // todo translate
-#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION \
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Stumpless registration of Windows Event Log Source"
 
 // todo translate
