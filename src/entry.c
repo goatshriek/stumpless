@@ -307,10 +307,7 @@ size_t
 stumpless_get_element_count( const struct stumpless_entry *entry ) {
   size_t count;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
 
   lock_entry( entry );
   count = entry->element_count;
@@ -536,10 +533,7 @@ int
 stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   int prival;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return -1;
-  }
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
   lock_entry( entry );
   prival = entry->prival;

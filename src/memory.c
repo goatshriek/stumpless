@@ -117,8 +117,8 @@ get_paged_size( size_t size ) {
 }
 
 void *
-realloc_mem( void *mem, size_t size ) {
-  void *new_mem = stumpless_realloc( mem, size );
+realloc_mem( const void *mem, size_t size ) {
+  void *new_mem = stumpless_realloc( ( void * ) mem, size );
 
   if( !new_mem ) {
     raise_memory_allocation_failure(  );

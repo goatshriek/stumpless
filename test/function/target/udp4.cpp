@@ -42,12 +42,12 @@ namespace {
   class Udp4TargetTest : public::testing::Test {
 
     protected:
-      struct stumpless_target *target;
-      struct stumpless_entry *basic_entry;
+      struct stumpless_target *target = NULL;
+      struct stumpless_entry *basic_entry = NULL;
       bool udp_fixtures_enabled = true;
       char buffer[2048];
       const char *port = "514";
-      socket_handle_t handle;
+      socket_handle_t handle = BAD_HANDLE;
 
     virtual void
     SetUp( void ) {
@@ -183,13 +183,8 @@ namespace {
 
   TEST( NetworkTargetSetDestination, OpenUdp4Target ) {
     struct stumpless_target *target;
-    struct stumpless_target *target_result;
-    struct stumpless_entry *entry;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
-    const char *destination_result;
-    char buffer[2048];
-    int add_result;
     socket_handle_t handle;
 
     if( !name_resolves( new_destination, AF_INET ) ) {
@@ -233,7 +228,6 @@ namespace {
 
   TEST( NetworkTargetSetTransportPort, OpenUdp4Target ) {
     struct stumpless_target *target;
-    struct stumpless_entry *entry;
     const char *new_port = "515";
     socket_handle_t handle;
 

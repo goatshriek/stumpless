@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2022 Joel E. Anderson
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020-2022 Joel E. Anderson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
@@ -28,11 +28,17 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "attempted to close an unsupported target type"
 
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction failed"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "connect failed with a sys/socket.h socket"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "connect failed with a winsock2 socket"
+
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "destination is only valid for network targets"
@@ -76,6 +82,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "the result of GetLastError after the failed call"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW failed"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW failed"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "the invalid index, or -1 of it is too large to represent as an int"
 
@@ -91,6 +103,10 @@
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "invalid " INDEXED_THING " index"
+
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
+" characters"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "the invalid severity"
@@ -113,6 +129,12 @@
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "max message size is only valid for UDP network targets"
+
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided multibyte string to a wide char string"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "a memory allocation call failed"
@@ -138,6 +160,21 @@ ARG_NAME " was NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "a param with the specified characteristics could not be found"
 
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be created"
+
+#  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be deleted"
+
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
+#  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
+"a registry value could not be set"
+
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "sendto failed with a unix socket"
 
@@ -155,6 +192,9 @@ ARG_NAME " was NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "failed to open a socket"
+
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
+L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "could not write to the stream"
@@ -185,6 +225,15 @@ ARG_NAME " was NULL"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "could not open the Windows Event Log"
+
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided wide char string to a multibyte string"
+
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"the Windows error code returned by the failed call"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket error code"

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,12 @@
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
+#include "private/config/have_windows.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
+#include "private/entry.h"
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/wel.h"
@@ -150,35 +153,86 @@ fail:
 }
 
 int
-send_entry_to_wel_target( const struct wel_target *target,
-                          const struct stumpless_entry *entry ) {
-  BOOL success;
+sendto_wel_target( const struct wel_target *target,
+                   const struct stumpless_entry *entry,
+                   const char *msg,
+                   size_t msg_size ) {
+  BOOL success = FALSE;
   WORD i;
   struct wel_data *data;
+  LPCWSTR insertion_str;
+  int prival;
+  WORD category;
+  WORD type;
+  DWORD event_id;
+  WORD insertion_string_count;
+  LPCWSTR msg_insertion_strings[1];
+  LPCWSTR *insertion_strings;
 
   data = entry->wel_data;
   lock_wel_data( data );
 
   for( i = 0; i < data->insertion_count; i++ ) {
     if( data->insertion_params[i] ) {
-      data->insertion_strings[i] = data->insertion_params[i]->value;
-    } else {
-      data->insertion_strings[i] = NULL;
+      insertion_str = copy_param_value_to_lpwstr( data->insertion_params[i] );
+      if( !insertion_str ) {
+        goto cleanup_and_return;
+      }
+
+      // We drop the const qualifier here so that the param's value can be set
+      // as the insertion string. This doesn't modify the effective value of the
+      // entry, but does require dropping the const to make internal changes.
+      if( !locked_swap_wel_insertion_string( ( struct stumpless_entry * ) entry,
+                                             i,
+                                             insertion_str ) ) {
+        goto cleanup_and_return;
+      }
     }
   }
 
-  success = ReportEvent( target->handle,
-                         data->type,
-                         data->category,
-                         data->event_id,
-                         NULL,
-                         data->insertion_count,
-                         0,
-                         data->insertion_strings,
-                         NULL );
+  prival = stumpless_get_entry_prival( entry );
 
+  if( data->type_set ) {
+    type = data->type;
+  } else {
+    type = get_type( prival );
+  }
+
+  if( data->category_set ) {
+    category = data->category;
+  } else {
+    category = get_category( prival );
+  }
+
+  if( data->event_id_set ) {
+    event_id = data->event_id;
+    insertion_string_count = data->insertion_count;
+    insertion_strings = data->insertion_strings;
+  } else {
+    event_id = get_event_id( prival );
+    insertion_string_count = 1;
+    lock_entry( entry );
+    msg_insertion_strings[0] = windows_copy_cstring_to_lpcwstr( entry->message,
+                                                                NULL );
+    unlock_entry( entry );
+    insertion_strings = msg_insertion_strings;
+  }
+
+  success = ReportEventW( target->handle,
+                          type,
+                          category,
+                          event_id,
+                          NULL,
+                          insertion_string_count,
+                          cap_size_t_to_int( msg_size ),
+                          insertion_strings,
+                          ( LPVOID ) msg );
+
+cleanup_and_return:
   unlock_wel_data( data );
-
+  if( insertion_strings == msg_insertion_strings ) {
+    free_mem( msg_insertion_strings[0] );
+  }
   if( success ) {
     return 1;
   } else {

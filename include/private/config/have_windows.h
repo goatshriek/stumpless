@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2018-2020 Joel E. Anderson
+* Copyright 2018-2022 Joel E. Anderson
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,6 +32,33 @@ bool
 windows_compare_exchange_ptr( PVOID volatile *p,
                               const void *expected,
                               PVOID replacement );
+
+/**
+ * Creates a copy of a NULL terminated multibyte string in wide string format.
+ *
+ * **Thread Safety: MT-Safe race:str**
+ * This function is thread safe, of course assuming that the string is not
+ * changed during operation.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
+ * @param str A multibyte string to copy, in UTF-8 format.
+ *
+ * @param copy_length The length of the copy including the NULL terminator, in
+ * characters (_not_ bytes). If this is NULL or the function fails, then it is
+ * ignored.
+ *
+ * @return A copy of the given string in wide string format, or NULL if an
+ * error is encountered.
+ */
+LPWSTR
+windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length );
 
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );

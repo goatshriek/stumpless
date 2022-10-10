@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2022 Joel E. Anderson
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020-2022 Joel E. Anderson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_CZ_CZ_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_CZ_CZ_H
@@ -28,11 +28,19 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o uzavření cílového souboru nepodporovaného typu"
 
+// todo translate
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction failed"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "selhání spojení se sys/socket.h socketem"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "selhání spojení s winsock socketem"
+
+// todo translate
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "daný cílový soubor je platný pouze pro síťové cíle"
@@ -76,6 +84,12 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "výsledek GetLastError po neúspěšném volání"
 
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW zlyhal"
+
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW zlyhal"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "neplatný index - index je příliš velký na to aby byl reprezentován jako" \
 " datový typ int"
@@ -92,6 +106,10 @@
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "neplatný index " INDEXED_THING
+
+// todo translate
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "neplatná služba"
@@ -115,6 +133,14 @@
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maximální velikost zprávy je platná pouze pro UDP"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided multibyte string to a wide char string"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "volání alokace paměti se nezdařilo"
@@ -140,6 +166,26 @@ ARG_NAME " měl hodnotu NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "specifikován parametr nebyl nalezen"
 
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be created"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be deleted"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
+"a registry value could not be set"
+
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "odesílání unixových socketu (unix socket) selhalo"
 
@@ -157,6 +203,10 @@ ARG_NAME " měl hodnotu NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otevření socketu selhalo"
+
+// todo translate
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
+L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "nelze zapisovat do streamu"
@@ -187,6 +237,18 @@ ARG_NAME " měl hodnotu NULL"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "Chybový kód Windows Socket"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided wide char string to a multibyte string"
+
+// todo translate
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"the Windows error code returned by the failed call"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "chybová návratová hodoty (error code) Windows socketu"

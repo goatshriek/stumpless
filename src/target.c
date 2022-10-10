@@ -119,13 +119,6 @@ stumpless_add_entry( struct stumpless_target *target,
     goto finish;
   }
 
-  // windows targets are not formatted in code
-  // instead their formatting comes from message text files
-  if( target->type == STUMPLESS_WINDOWS_EVENT_LOG_TARGET ) {
-    result = config_send_entry_to_wel_target( target->id, entry );
-    goto finish;
-  }
-
   // entry was not formatted before
   if( !buffer ){
     builder = format_entry( entry, target );
@@ -159,6 +152,13 @@ stumpless_add_entry( struct stumpless_target *target,
 
     case STUMPLESS_STREAM_TARGET:
       result = sendto_stream_target( target->id, buffer, builder_length );
+      break;
+
+    case STUMPLESS_WINDOWS_EVENT_LOG_TARGET:
+      result = config_sendto_wel_target( target->id,
+                                         entry,
+                                         buffer,
+                                         builder_length );
       break;
 
     default:
@@ -426,7 +426,7 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target ) {
   stumpless_filter_func_t filter;
 
-  VALIDATE_ARG_NOT_NULL( target ); 
+  VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
   filter = target->filter;
@@ -967,6 +967,22 @@ open_unsupported_target( struct stumpless_target *target ) {
 
   raise_target_unsupported( L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE );
   return NULL;
+}
+
+int
+send_entry_and_msg_to_unsupported_target( const struct stumpless_target *target,
+                                          const struct stumpless_entry *entry,
+                                          const char *msg,
+                                          size_t msg_size ) {
+  ( void ) target;
+  ( void ) entry;
+  ( void ) msg;
+  ( void ) msg_size;
+
+  raise_target_unsupported(
+    L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE
+  );
+  return -1;
 }
 
 int

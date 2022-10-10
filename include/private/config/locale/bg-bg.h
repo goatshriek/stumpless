@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2022 Joel E. Anderson
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020-2022 Joel E. Anderson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_BG_BG_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_BG_BG_H
@@ -28,11 +28,19 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "направен е опит да се затвори неподдържан целеви тип"
 
+// todo translate
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction failed"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно свързване със sys/socket.h сокет"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно свързване с winsock2 сокет"
+
+// todo translate
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "дестинацията е валидна само за мрежови цели"
@@ -78,6 +86,14 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "резултатът от GetLastError след неуспешното извикване"
 
+// todo translate
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW failed"
+
+// todo translate
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW failed"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "невалиден индекс или -1, ако е твърде голям за да бъде представен, като int"
 
@@ -94,6 +110,10 @@
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "невалиден " INDEXED_THING " индекс"
+
+// todo translate
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "невалидната тежест"
@@ -121,6 +141,14 @@
 "максимален размер на съобщението е валиден само за UDP мрежови цели"
 
 // todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided multibyte string to a wide char string"
+
+// todo translate
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "a memory allocation call failed"
 
@@ -146,6 +174,26 @@ ARG_NAME " беше NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "не може да бъде намерен параметър с посочените характеристики"
 
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be created"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be deleted"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
+"a registry value could not be set"
+
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "sendto не успя с unix сокет"
 
@@ -163,6 +211,10 @@ ARG_NAME " беше NULL"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "неуспешно отваряне на сокет"
+
+// todo translate
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
+L"Stumpless registration of Windows Event Log Source"
 
 // todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
@@ -197,6 +249,18 @@ ARG_NAME " беше NULL"
 // todo translate
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "could not open the Windows Event Log"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided wide char string to a multibyte string"
+
+// todo translate
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"the Windows error code returned by the failed call"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket код на грешка"
