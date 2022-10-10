@@ -34,13 +34,11 @@ main( int argc, char **argv ) {
 
 
   // creating a basic entry
-  basic_entry = stumpless_new_entry(
-    STUMPLESS_FACILITY_USER,
-    STUMPLESS_SEVERITY_INFO,
-    "tree-identifier-app",
-    "tree-identified-by-child",
-    "a child found a tree!"
-  );
+  basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "tree-identifier-app",
+                                     "tree-identified-by-child",
+                                     "a child found a tree!" );
   if( !basic_entry ) {
     stumpless_perror( "could not create the basic entry" );
     return EXIT_FAILURE;
@@ -146,13 +144,11 @@ main( int argc, char **argv ) {
 
 
   // creating another entry
-  entry_with_params = stumpless_new_entry(
-    STUMPLESS_FACILITY_USER,
-    STUMPLESS_SEVERITY_INFO,
-    "tree-identifier-app",
-    "tree-identified-by-child",
-    "a child found a tree!"
-  );
+  entry_with_params = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                           STUMPLESS_SEVERITY_INFO,
+                                           "tree-identifier-app",
+                                           "tree-identified-by-child",
+                                           "a child found a tree!" );
   if( !entry_with_params ) {
     stumpless_perror( "could not create the second entry" );
     return EXIT_FAILURE;
