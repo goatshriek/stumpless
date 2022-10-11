@@ -399,10 +399,8 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  element->name = copy_cstring_with_length( name, &( element->name_length ) );
-  if( !element->name ) {
-    goto fail_name;
-  }
+  snprintf( element->name, sizeof(element->name), "%s", name );
+  element->name_length = strlen( element->name );
 
   element->params = NULL;
   element->param_count = 0;
@@ -418,11 +416,6 @@ stumpless_new_element( const char *name ) {
   return element;
 
 fail_mutex:
-  free_mem( element->name );
-
-fail_name:
-  free_mem( element );
-
 fail:
   return NULL;
 }
@@ -430,10 +423,6 @@ fail:
 struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name ) {
-  char *new_name;
-  size_t new_size;
-  const char *old_name;
-
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -442,19 +431,11 @@ stumpless_set_element_name( struct stumpless_element *element,
     goto fail;
   }
 
-  new_name = copy_cstring_with_length( name, &new_size );
-  if( !new_name ) {
-    goto fail;
-  }
-
-
   lock_element( element );
-  old_name = element->name;
-  element->name = new_name;
-  element->name_length = new_size;
+  snprintf( element->name, sizeof(element->name), "%s", name );
+  element->name_length = strlen( element->name );
   unlock_element( element );
 
-  free_mem( old_name );
   clear_error(  );
   return element;
 
@@ -643,7 +624,6 @@ void
 unchecked_destroy_element( const struct stumpless_element *element ) {
   config_destroy_cached_mutex( element->mutex );
   free_mem( element->params );
-  free_mem( element->name );
   free_mem( element );
 }
 
