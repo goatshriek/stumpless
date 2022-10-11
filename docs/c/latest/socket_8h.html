@@ -67,23 +67,27 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">socket.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="target_8h_source.html">stumpless/target.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="target_8h_source.html">stumpless/target.h</a>&gt;</code><br />
 </div>
 <p><a href="socket_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a71cbe2c33f5b48d1a0917c1cc5b0f2e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="socket_8h.html#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">stumpless_close_socket_target</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a71cbe2c33f5b48d1a0917c1cc5b0f2e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a socket target.  <a href="socket_8h.html#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">More...</a><br /></td></tr>
-<tr class="separator:a71cbe2c33f5b48d1a0917c1cc5b0f2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2136cf2067a4396b6021ad65303b8bd"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="socket_8h.html#ae2136cf2067a4396b6021ad65303b8bd">stumpless_open_socket_target</a> (const char *name, const char *local_socket)</td></tr>
-<tr class="memdesc:ae2136cf2067a4396b6021ad65303b8bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a socket target.  <a href="socket_8h.html#ae2136cf2067a4396b6021ad65303b8bd">More...</a><br /></td></tr>
-<tr class="separator:ae2136cf2067a4396b6021ad65303b8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57cb8d0f00fb662fd17fce73ed01cf01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="socket_8h.html#a57cb8d0f00fb662fd17fce73ed01cf01">__attribute__</a> ((visibility(&quot;default&quot;))) void stumpless_close_socket_target(const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a57cb8d0f00fb662fd17fce73ed01cf01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a socket target.  <a href="socket_8h.html#a57cb8d0f00fb662fd17fce73ed01cf01">More...</a><br /></td></tr>
+<tr class="separator:a57cb8d0f00fb662fd17fce73ed01cf01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a3c55f3ba68b85431b4d60ddb6dd0ca74"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="socket_8h.html#a3c55f3ba68b85431b4d60ddb6dd0ca74">local_socket</a></td></tr>
+<tr class="separator:a3c55f3ba68b85431b4d60ddb6dd0ca74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Socket targets allow logs to be sent to a Unix domain socket.</p>
@@ -92,70 +96,44 @@ Functions</h2></td></tr>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to socket targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry with other potential accesses.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to socket targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entries may not be completed. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a71cbe2c33f5b48d1a0917c1cc5b0f2e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">&#9670;&nbsp;</a></span>stumpless_close_socket_target()</h2>
+<a id="a57cb8d0f00fb662fd17fce73ed01cf01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57cb8d0f00fb662fd17fce73ed01cf01">&#9670;&nbsp;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void stumpless_close_socket_target </td>
+          <td class="memname">__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
+          <td class="paramtype">(visibility(&quot;default&quot;))&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Closes a socket target. </p>
+<p>Gets the string representation of the given severity.</p>
+<p>Gets the string representation of the given facility.</p>
+<p>Retrieves the error encountered by the last library call.</p>
+<p>Opens a socket target.</p>
 <p>This function closes the socket target, as well as the connection to the target socket.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target</td><td>The socket target to close. </td></tr>
+    <tr><td class="paramname">target</td><td>The socket target to close.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ae2136cf2067a4396b6021ad65303b8bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2136cf2067a4396b6021ad65303b8bd">&#9670;&nbsp;</a></span>stumpless_open_socket_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_open_socket_target </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>local_socket</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Opens a socket target. </p>
 <p><b>Thread Safety: MT-Safe race:name race:local_socket</b> This function is thread safe, of course assuming that the target name and socket name are not modified by any other threads during execution.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the socket target, and the socket to send logs to.</td></tr>
-    <tr><td class="paramname">local_socket</td><td>The name of the Unix domain socket to connect from. This can be set to NULL if you'd like to use a name generated by the library. Generated names begin with 'stumpless' and are followed by six random characters.</td></tr>
+    <tr><td class="paramname">local_socket</td><td>The name of the Unix domain socket to connect from. This can be set to NULL if you'd like to use the default name of stumpless-socket. If abstract socket names are supported, then this name will be abstract and therefore not appear in the filesystem.</td></tr>
   </table>
   </dd>
 </dl>
@@ -163,10 +141,25 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a3c55f3ba68b85431b4d60ddb6dd0ca74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c55f3ba68b85431b4d60ddb6dd0ca74">&#9670;&nbsp;</a></span>local_socket</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* local_socket</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

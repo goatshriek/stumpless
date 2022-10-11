@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['id_26',['id',['../structstumpless__entry.html#aff1fb04885bf865e812b7ee6dbd00f9d',1,'stumpless_entry::id()'],['../structstumpless__error.html#a75acf6fed6cc2232b1f8069789fa90f9',1,'stumpless_error::id()'],['../structstumpless__target.html#a348c6e56b39089df38b6cb868be15af7',1,'stumpless_target::id()']]],
-  ['id_2eh_27',['id.h',['../id_8h.html',1,'']]],
-  ['info_2eh_28',['info.h',['../info_8h.html',1,'']]]
+  ['generator_2eh_44',['generator.h',['../generator_8h.html',1,'']]],
+  ['get_5fjournald_5fname_45',['get_journald_name',['../structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552',1,'stumpless_element::get_journald_name()'],['../structstumpless__param.html#aca01fd74412be41f74678587e6ea4de4',1,'stumpless_param::get_journald_name()']]]
 ];

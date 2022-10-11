@@ -73,7 +73,7 @@ $(function() {
 <a href="buffer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2020 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2022 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -92,39 +92,45 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#  define __STUMPLESS_TARGET_BUFFER_H</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#  include &lt;stddef.h&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">   77</a></span>&#160;<a class="code" href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">stumpless_close_buffer_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="buffer_8h.html#a2150a881fb27863625226e0e124dc996">  115</a></span>&#160;<a class="code" href="buffer_8h.html#a2150a881fb27863625226e0e124dc996">stumpless_open_buffer_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                              <span class="keywordtype">char</span> *buffer,</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                              <span class="keywordtype">size_t</span> size );</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keywordtype">size_t</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="buffer_8h.html#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">  158</a></span>&#160;<a class="code" href="buffer_8h.html#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">stumpless_read_buffer</a>( <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target,</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                       <span class="keywordtype">char</span> *buffer,</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                       <span class="keywordtype">size_t</span> max_length );</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_BUFFER_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="config_8h.html">stumpless/config.h</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="buffer_8h.html#aa274af6d5e2da3019214dec784eb15a2">   77</a></span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;stumpless_close_buffer_target( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;stumpless_open_buffer_target( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a>,</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="buffer_8h.html#abd91b1aab0a10c5027ca2eb5577f759f">  119</a></span>&#160;                              <span class="keywordtype">char</span> *<a class="code" href="buffer_8h.html#abd91b1aab0a10c5027ca2eb5577f759f">buffer</a>,</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="buffer_8h.html#a6837099587860e983606ba8fc960066e">  120</a></span>&#160;                              <span class="keywordtype">size_t</span> <a class="code" href="buffer_8h.html#a6837099587860e983606ba8fc960066e">size</a> );</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keywordtype">size_t</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;stumpless_read_buffer( <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target,</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                       <span class="keywordtype">char</span> *<a class="code" href="buffer_8h.html#abd91b1aab0a10c5027ca2eb5577f759f">buffer</a>,</div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="buffer_8h.html#abe78fe20b339660f30357948052f2410">  164</a></span>&#160;                       <span class="keywordtype">size_t</span> <a class="code" href="buffer_8h.html#abe78fe20b339660f30357948052f2410">max_length</a> );</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_BUFFER_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:77</div></div>
-<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:60</div></div>
-<div class="ttc" id="abuffer_8h_html_a95b19f4eaa0fb9836f1d0f1ec7be5bf1"><div class="ttname"><a href="buffer_8h.html#a95b19f4eaa0fb9836f1d0f1ec7be5bf1">stumpless_read_buffer</a></div><div class="ttdeci">size_t stumpless_read_buffer(struct stumpless_target *target, char *buffer, size_t max_length)</div><div class="ttdoc">Reads the next message from the provided buffer target and writes it into the given buffer.</div></div>
-<div class="ttc" id="abuffer_8h_html_abbd81bd277432c5046046f2fd00445ef"><div class="ttname"><a href="buffer_8h.html#abbd81bd277432c5046046f2fd00445ef">stumpless_close_buffer_target</a></div><div class="ttdeci">void stumpless_close_buffer_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a buffer target.</div></div>
+<div class="ttc" id="abuffer_8h_html_abd91b1aab0a10c5027ca2eb5577f759f"><div class="ttname"><a href="buffer_8h.html#abd91b1aab0a10c5027ca2eb5577f759f">buffer</a></div><div class="ttdeci">char * buffer</div><div class="ttdef"><b>Definition:</b> buffer.h:119</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:95</div></div>
+<div class="ttc" id="abuffer_8h_html_a6837099587860e983606ba8fc960066e"><div class="ttname"><a href="buffer_8h.html#a6837099587860e983606ba8fc960066e">size</a></div><div class="ttdeci">char size_t size</div><div class="ttdef"><b>Definition:</b> buffer.h:120</div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
-<div class="ttc" id="abuffer_8h_html_a2150a881fb27863625226e0e124dc996"><div class="ttname"><a href="buffer_8h.html#a2150a881fb27863625226e0e124dc996">stumpless_open_buffer_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_buffer_target(const char *name, char *buffer, size_t size)</div><div class="ttdoc">Creates a buffer target for the given buffer.</div></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>Definition:</b> config.h:31</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
+<div class="ttc" id="aelement_8h_html_afcd1706c9144e6d6eee6127661ae3be2"><div class="ttname"><a href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition:</b> element.h:345</div></div>
+<div class="ttc" id="abuffer_8h_html_abe78fe20b339660f30357948052f2410"><div class="ttname"><a href="buffer_8h.html#abe78fe20b339660f30357948052f2410">max_length</a></div><div class="ttdeci">char size_t max_length</div><div class="ttdef"><b>Definition:</b> buffer.h:164</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:43 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

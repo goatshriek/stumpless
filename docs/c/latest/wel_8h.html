@@ -67,51 +67,57 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">wel.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="target_8h_source.html">stumpless/target.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="target_8h_source.html">stumpless/target.h</a>&gt;</code><br />
 </div>
 <p><a href="wel_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af1034af01e6b4201bb3aee6e90863dee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wel_8h.html#af1034af01e6b4201bb3aee6e90863dee">stumpless_close_wel_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:af1034af01e6b4201bb3aee6e90863dee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a Windows Event Log target.  <a href="wel_8h.html#af1034af01e6b4201bb3aee6e90863dee">More...</a><br /></td></tr>
-<tr class="separator:af1034af01e6b4201bb3aee6e90863dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f5ec0bf5449aae776c92a2d84e3b739"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wel_8h.html#a7f5ec0bf5449aae776c92a2d84e3b739">stumpless_open_local_wel_target</a> (const char *name)</td></tr>
-<tr class="memdesc:a7f5ec0bf5449aae776c92a2d84e3b739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a Windows Event Log target on the local machine.  <a href="wel_8h.html#a7f5ec0bf5449aae776c92a2d84e3b739">More...</a><br /></td></tr>
-<tr class="separator:a7f5ec0bf5449aae776c92a2d84e3b739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1caf728b728f9fc5aca5a2e848bf0f4b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wel_8h.html#a1caf728b728f9fc5aca5a2e848bf0f4b">stumpless_open_remote_wel_target</a> (const char *server, const char *name)</td></tr>
-<tr class="memdesc:a1caf728b728f9fc5aca5a2e848bf0f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a Windows Event Log target on a remote machine.  <a href="wel_8h.html#a1caf728b728f9fc5aca5a2e848bf0f4b">More...</a><br /></td></tr>
-<tr class="separator:a1caf728b728f9fc5aca5a2e848bf0f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0c95de5eba42c0d5b32e3e4e3d9ecb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wel_8h.html#af0c95de5eba42c0d5b32e3e4e3d9ecb8">__attribute__</a> ((visibility(&quot;default&quot;))) void stumpless_close_wel_target(struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:af0c95de5eba42c0d5b32e3e4e3d9ecb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a Windows Event Log target.  <a href="wel_8h.html#af0c95de5eba42c0d5b32e3e4e3d9ecb8">More...</a><br /></td></tr>
+<tr class="separator:af0c95de5eba42c0d5b32e3e4e3d9ecb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a8f8f80d37794cde9472343e4487ba3eb"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wel_8h.html#a8f8f80d37794cde9472343e4487ba3eb">name</a></td></tr>
+<tr class="separator:a8f8f80d37794cde9472343e4487ba3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Functions for working with Windows Event Log targets.</p>
+<div class="textblock"><p>Functions for working with Windows Event Log (WEL) targets.</p>
+<p>WEL targets submit events using ReportEvent to a Windows system. By default, the category, message id, and type will use values based on the severity and facility of the logged event for messages included in Stumpless itself. If you need to use your own message files, use the functions in <a class="el" href="wel__supported_8h.html">stumpless/config/wel_supported.h</a> to specifically set these values. The formatted syslog message is included as the event binary data.</p>
+<p>Note that if the event source is not installed the Event Viewer will not be able to display the messages or category text for received events. If you'd like to use the default messages included in Stumpless, use the stumpless_add_default_wel_event_source function to install it on the calling system.</p>
 <p>This header will not be available in builds where Windows Event Log targets are not supported.</p>
 <p><b>Thread Safety: MT-Safe</b> Logging to WEL targets is thread safe by virtue of using the <code>ReportEvent</code> function which is thread-safe itself.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to WEL targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry's WEL data with other potential accesses.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to WEL targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entry's WEL data may not be completed. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="af1034af01e6b4201bb3aee6e90863dee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1034af01e6b4201bb3aee6e90863dee">&#9670;&nbsp;</a></span>stumpless_close_wel_target()</h2>
+<a id="af0c95de5eba42c0d5b32e3e4e3d9ecb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c95de5eba42c0d5b32e3e4e3d9ecb8">&#9670;&nbsp;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void stumpless_close_wel_target </td>
+          <td class="memname">__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
+          <td class="paramtype">(visibility(&quot;default&quot;))&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Closes a Windows Event Log target. </p>
+<p>Closes a file target.</p>
+<p>Opens a Windows Event Log target on a remote machine.</p>
+<p>Opens a Windows Event Log target on the local machine.</p>
 <p>In addition to closing the target, this function also destroys all memory allocated for the target, including the target struct itself.</p>
 <p>If there is a problem while closing the target, then an error code will be set appropriately, the target will NOT be closed, and no memory will be released. To avoid a memory leak, check for errors using <code>stumpless_has_error</code> and resolve any errors that arise before calling this function again.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
@@ -119,30 +125,10 @@ Functions</h2></td></tr>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target</td><td>The Windows Event Log target to close. </td></tr>
+    <tr><td class="paramname">target</td><td>The Windows Event Log target to close.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a7f5ec0bf5449aae776c92a2d84e3b739"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f5ec0bf5449aae776c92a2d84e3b739">&#9670;&nbsp;</a></span>stumpless_open_local_wel_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_open_local_wel_target </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Opens a Windows Event Log target on the local machine. </p>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
@@ -152,43 +138,13 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a1caf728b728f9fc5aca5a2e848bf0f4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1caf728b728f9fc5aca5a2e848bf0f4b">&#9670;&nbsp;</a></span>stumpless_open_remote_wel_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_open_remote_wel_target </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>server</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Opens a Windows Event Log target on a remote machine. </p>
+<dl class="section return"><dt>Returns</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:server race:name</b> This function is thread safe, of course assuming that server and name are not modified by any other threads during execution.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">server</td><td>The remote server to log to. This should use the Universal Naming Convention (UNC) of the remote end. If this parameter is set to NULL, then the local machine is used. This is equivalent to a call to <a class="el" href="wel_8h.html#a7f5ec0bf5449aae776c92a2d84e3b739" title="Opens a Windows Event Log target on the local machine.">stumpless_open_local_wel_target()</a>.</td></tr>
+    <tr><td class="paramname">server</td><td>The remote server to log to. This should use the Universal Naming Convention (UNC) of the remote end. If this parameter is set to NULL, then the local machine is used. This is equivalent to a call to stumpless_open_local_wel_target().</td></tr>
     <tr><td class="paramname">name</td><td>The name of the target to open. This should match the name of the Windows Event Source that the logs will be added to.</td></tr>
     <tr><td class="paramname">options</td><td>The options to use for the logging target. This is a bit-wise or of one or more <code>STUMPLESS_OPTION</code> values.</td></tr>
   </table>
@@ -198,10 +154,25 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a8f8f80d37794cde9472343e4487ba3eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f8f80d37794cde9472343e4487ba3eb">&#9670;&nbsp;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

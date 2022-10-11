@@ -73,7 +73,7 @@ $(function() {
 <a href="function_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2021 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2021-2022 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -91,40 +91,44 @@ $(function() {
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#ifndef __STUMPLESS_TARGET_FUNCTION_H</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#  define __STUMPLESS_TARGET_FUNCTION_H</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="entry_8h.html">stumpless/entry.h</a>&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">   55</a></span>&#160;<span class="keyword">typedef</span> int ( *<a class="code" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a> )( <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                                       <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structstumpless__entry.html">stumpless_entry</a> * );</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="config_8h.html">stumpless/config.h</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="entry_8h.html">stumpless/entry.h</a>&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">   56</a></span>&#160;<span class="keyword">typedef</span> int ( *<a class="code" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a> )( <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                       <span class="keyword">const</span> <span class="keyword">struct </span><a class="code" href="structstumpless__entry.html">stumpless_entry</a> * );</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="function_8h.html#a1c86b9fef46a37827a9bbc328ebc9390">   77</a></span>&#160;<a class="code" href="function_8h.html#a1c86b9fef46a37827a9bbc328ebc9390">stumpless_close_function_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="function_8h.html#a75d99d8a138c7c7e04a5786dca30b659">  115</a></span>&#160;<a class="code" href="function_8h.html#a75d99d8a138c7c7e04a5786dca30b659">stumpless_open_function_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                                <a class="code" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a> log_function );</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_FUNCTION_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="function_8h.html#a51220005a07b79e3ba9100ab7711e50d">   79</a></span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;stumpless_close_function_target( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;stumpless_open_function_target( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a>,</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="function_8h.html#a452252fc3a524c5ebbfdc41b2b7e52a0">  123</a></span>&#160;                                <a class="code" href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a> <a class="code" href="function_8h.html#a452252fc3a524c5ebbfdc41b2b7e52a0">log_function</a> );</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_FUNCTION_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="afunction_8h_html_a1c86b9fef46a37827a9bbc328ebc9390"><div class="ttname"><a href="function_8h.html#a1c86b9fef46a37827a9bbc328ebc9390">stumpless_close_function_target</a></div><div class="ttdeci">void stumpless_close_function_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a function target.</div></div>
-<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:77</div></div>
-<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:60</div></div>
+<div class="ttc" id="afunction_8h_html_a452252fc3a524c5ebbfdc41b2b7e52a0"><div class="ttname"><a href="function_8h.html#a452252fc3a524c5ebbfdc41b2b7e52a0">log_function</a></div><div class="ttdeci">stumpless_log_func_t log_function</div><div class="ttdef"><b>Definition:</b> function.h:123</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:95</div></div>
 <div class="ttc" id="aentry_8h_html"><div class="ttname"><a href="entry_8h.html">entry.h</a></div></div>
-<div class="ttc" id="afunction_8h_html_ae2f03068758f37b4c053e506375d47d7"><div class="ttname"><a href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a></div><div class="ttdeci">int(* stumpless_log_func_t)(const struct stumpless_target *, const struct stumpless_entry *)</div><div class="ttdoc">A handler for entries sent to a function target.</div><div class="ttdef"><b>Definition:</b> function.h:55</div></div>
-<div class="ttc" id="afunction_8h_html_a75d99d8a138c7c7e04a5786dca30b659"><div class="ttname"><a href="function_8h.html#a75d99d8a138c7c7e04a5786dca30b659">stumpless_open_function_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_function_target(const char *name, stumpless_log_func_t log_function)</div><div class="ttdoc">Opens a function target.</div></div>
+<div class="ttc" id="afunction_8h_html_ae2f03068758f37b4c053e506375d47d7"><div class="ttname"><a href="function_8h.html#ae2f03068758f37b4c053e506375d47d7">stumpless_log_func_t</a></div><div class="ttdeci">int(* stumpless_log_func_t)(const struct stumpless_target *, const struct stumpless_entry *)</div><div class="ttdoc">A handler for entries sent to a function target.</div><div class="ttdef"><b>Definition:</b> function.h:56</div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
-<div class="ttc" id="astructstumpless__entry_html"><div class="ttname"><a href="structstumpless__entry.html">stumpless_entry</a></div><div class="ttdoc">A log entry.</div><div class="ttdef"><b>Definition:</b> entry.h:47</div></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>Definition:</b> config.h:31</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
+<div class="ttc" id="astructstumpless__entry_html"><div class="ttname"><a href="structstumpless__entry.html">stumpless_entry</a></div><div class="ttdoc">A log entry.</div><div class="ttdef"><b>Definition:</b> entry.h:60</div></div>
+<div class="ttc" id="aelement_8h_html_afcd1706c9144e6d6eee6127661ae3be2"><div class="ttname"><a href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition:</b> element.h:345</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:43 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

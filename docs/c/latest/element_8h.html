@@ -64,7 +64,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">element.h File Reference</div>  </div>
 </div><!--header-->
@@ -72,6 +74,7 @@ $(function() {
 <div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="entry_8h_source.html">stumpless/entry.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="param_8h_source.html">stumpless/param.h</a>&gt;</code><br />
 </div>
 <p><a href="element_8h_source.html">Go to the source code of this file.</a></p>
@@ -82,108 +85,107 @@ Data Structures</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An element of structured data.  <a href="structstumpless__element.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a64be50a804bce45f249d083c5d4dff5e"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a64be50a804bce45f249d083c5d4dff5e">stumpless_element_namer_func_t</a>) (const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *<a class="el" href="target_8h.html#a22871e414a8307a6a7fb3c16bd8be352">entry</a>, <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> <a class="el" href="journald_8h.html#a5955d0480797829083f892fa0088d378">element_index</a>, char *<a class="el" href="network_8h.html#a85ec2713f151aae36f5bb52e65bac06d">destination</a>, <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> <a class="el" href="journald_8h.html#a6837099587860e983606ba8fc960066e">size</a>)</td></tr>
+<tr class="memdesc:a64be50a804bce45f249d083c5d4dff5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name to use for the journald field corresponding to this element.  <a href="element_8h.html#a64be50a804bce45f249d083c5d4dff5e">More...</a><br /></td></tr>
+<tr class="separator:a64be50a804bce45f249d083c5d4dff5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2a2d9474a3f9f44beb0360ba7c6061ec"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a2a2d9474a3f9f44beb0360ba7c6061ec">stumpless_add_new_param</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *param_name, const char *param_value)</td></tr>
-<tr class="memdesc:a2a2d9474a3f9f44beb0360ba7c6061ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new param and adds it to the given element.  <a href="element_8h.html#a2a2d9474a3f9f44beb0360ba7c6061ec">More...</a><br /></td></tr>
-<tr class="separator:a2a2d9474a3f9f44beb0360ba7c6061ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d1270530cfd4516e1a4ce8a4f36d9ce"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a3d1270530cfd4516e1a4ce8a4f36d9ce">stumpless_add_param</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param)</td></tr>
-<tr class="memdesc:a3d1270530cfd4516e1a4ce8a4f36d9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a param to an element.  <a href="element_8h.html#a3d1270530cfd4516e1a4ce8a4f36d9ce">More...</a><br /></td></tr>
-<tr class="separator:a3d1270530cfd4516e1a4ce8a4f36d9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a399c8ce623ed296bebec5907a57092e7"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a399c8ce623ed296bebec5907a57092e7">stumpless_copy_element</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:a399c8ce623ed296bebec5907a57092e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a copy of an element.  <a href="element_8h.html#a399c8ce623ed296bebec5907a57092e7">More...</a><br /></td></tr>
-<tr class="separator:a399c8ce623ed296bebec5907a57092e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afde32c8772ca89cce0d3ee638d8ed67b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">stumpless_destroy_element</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:afde32c8772ca89cce0d3ee638d8ed67b"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alias for stumpless_destroy_element_and_contents.  <a href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">More...</a><br /></td></tr>
-<tr class="separator:afde32c8772ca89cce0d3ee638d8ed67b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3293ce2407142a896c6ece0089cac33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">stumpless_destroy_element_and_contents</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *e)</td></tr>
-<tr class="memdesc:ab3293ce2407142a896c6ece0089cac33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element as well as all params that it contains, freeing any allocated memory.  <a href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">More...</a><br /></td></tr>
-<tr class="separator:ab3293ce2407142a896c6ece0089cac33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">stumpless_destroy_element_only</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys an element, freeing any allocated memory.  <a href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">More...</a><br /></td></tr>
-<tr class="separator:a26f6e8a9f3dc18d7dbffee19627fa331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96a1a0eaf93f5026f91824ff1292e71f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">stumpless_element_has_param</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:a96a1a0eaf93f5026f91824ff1292e71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the given element has a param with the given name, false otherwise.  <a href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">More...</a><br /></td></tr>
-<tr class="separator:a96a1a0eaf93f5026f91824ff1292e71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e67491f43202b62ea759e4b6f618409"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a5e67491f43202b62ea759e4b6f618409">stumpless_get_element_name</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:a5e67491f43202b62ea759e4b6f618409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the given element.  <a href="element_8h.html#a5e67491f43202b62ea759e4b6f618409">More...</a><br /></td></tr>
-<tr class="separator:a5e67491f43202b62ea759e4b6f618409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8528efea9d31509dbcbe4ff8b5adcbdd"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a8528efea9d31509dbcbe4ff8b5adcbdd">stumpless_get_param_by_index</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index)</td></tr>
-<tr class="memdesc:a8528efea9d31509dbcbe4ff8b5adcbdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the param in the given element at the specified index.  <a href="element_8h.html#a8528efea9d31509dbcbe4ff8b5adcbdd">More...</a><br /></td></tr>
-<tr class="separator:a8528efea9d31509dbcbe4ff8b5adcbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84775b3f220eedae2946f0895b19ab35"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a84775b3f220eedae2946f0895b19ab35">stumpless_get_param_by_name</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:a84775b3f220eedae2946f0895b19ab35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first occurrence of a param with the given name in element, if it is found.  <a href="element_8h.html#a84775b3f220eedae2946f0895b19ab35">More...</a><br /></td></tr>
-<tr class="separator:a84775b3f220eedae2946f0895b19ab35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a792f240cdec230073975f0e890a7cd80"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a792f240cdec230073975f0e890a7cd80">stumpless_get_param_count</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element)</td></tr>
-<tr class="memdesc:a792f240cdec230073975f0e890a7cd80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of params in the given element.  <a href="element_8h.html#a792f240cdec230073975f0e890a7cd80">More...</a><br /></td></tr>
-<tr class="separator:a792f240cdec230073975f0e890a7cd80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fcc1fbe4d13fdcab7d7a16997f99b10"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">stumpless_get_param_index</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:a8fcc1fbe4d13fdcab7d7a16997f99b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the index of the first occurrence of a param with the given name in the given element.  <a href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">More...</a><br /></td></tr>
-<tr class="separator:a8fcc1fbe4d13fdcab7d7a16997f99b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa955455cf880790264eeed278021471e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#aa955455cf880790264eeed278021471e">stumpless_get_param_name_by_index</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index)</td></tr>
-<tr class="memdesc:aa955455cf880790264eeed278021471e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of the param with the given index in this element.  <a href="element_8h.html#aa955455cf880790264eeed278021471e">More...</a><br /></td></tr>
-<tr class="separator:aa955455cf880790264eeed278021471e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae61ef0406ba4d283baa8b2d7dc324779"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">stumpless_get_param_name_count</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:ae61ef0406ba4d283baa8b2d7dc324779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the number of params with the given name found in the given element.  <a href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">More...</a><br /></td></tr>
-<tr class="separator:ae61ef0406ba4d283baa8b2d7dc324779"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20b367a62509d2533c5e9eff2b6c5c02"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a20b367a62509d2533c5e9eff2b6c5c02">stumpless_get_param_value_by_index</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index)</td></tr>
-<tr class="memdesc:a20b367a62509d2533c5e9eff2b6c5c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the param at the given index in the given element.  <a href="element_8h.html#a20b367a62509d2533c5e9eff2b6c5c02">More...</a><br /></td></tr>
-<tr class="separator:a20b367a62509d2533c5e9eff2b6c5c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec5674aa3a78fba4a3e2252e8501bb98"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#aec5674aa3a78fba4a3e2252e8501bb98">stumpless_get_param_value_by_name</a> (const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:aec5674aa3a78fba4a3e2252e8501bb98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the first param with the given name in the given element.  <a href="element_8h.html#aec5674aa3a78fba4a3e2252e8501bb98">More...</a><br /></td></tr>
-<tr class="separator:aec5674aa3a78fba4a3e2252e8501bb98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a794237f9dca8028953ed40579bbc7d57"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a794237f9dca8028953ed40579bbc7d57">stumpless_new_element</a> (const char *name)</td></tr>
-<tr class="memdesc:a794237f9dca8028953ed40579bbc7d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new element with the given name.  <a href="element_8h.html#a794237f9dca8028953ed40579bbc7d57">More...</a><br /></td></tr>
-<tr class="separator:a794237f9dca8028953ed40579bbc7d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cc5b88ffc06f719122133eefc648a82"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a3cc5b88ffc06f719122133eefc648a82">stumpless_set_element_name</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name)</td></tr>
-<tr class="memdesc:a3cc5b88ffc06f719122133eefc648a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the given element.  <a href="element_8h.html#a3cc5b88ffc06f719122133eefc648a82">More...</a><br /></td></tr>
-<tr class="separator:a3cc5b88ffc06f719122133eefc648a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ef415a2201601bfad342784bf8511e0"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a5ef415a2201601bfad342784bf8511e0">stumpless_set_param</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index, struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *param)</td></tr>
-<tr class="memdesc:a5ef415a2201601bfad342784bf8511e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Puts the param at the given index in the given element.  <a href="element_8h.html#a5ef415a2201601bfad342784bf8511e0">More...</a><br /></td></tr>
-<tr class="separator:a5ef415a2201601bfad342784bf8511e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f06efd932779308b864066262dbf037"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a7f06efd932779308b864066262dbf037">stumpless_set_param_value_by_index</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, size_t index, const char *value)</td></tr>
-<tr class="memdesc:a7f06efd932779308b864066262dbf037"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the param at the given index in the given element.  <a href="element_8h.html#a7f06efd932779308b864066262dbf037">More...</a><br /></td></tr>
-<tr class="separator:a7f06efd932779308b864066262dbf037"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af51ad1da49c1284cf83a7d00ad8eea15"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#af51ad1da49c1284cf83a7d00ad8eea15">stumpless_set_param_value_by_name</a> (struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *element, const char *name, const char *value)</td></tr>
-<tr class="memdesc:af51ad1da49c1284cf83a7d00ad8eea15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the first param with the given name in the given element.  <a href="element_8h.html#af51ad1da49c1284cf83a7d00ad8eea15">More...</a><br /></td></tr>
-<tr class="separator:af51ad1da49c1284cf83a7d00ad8eea15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2a507a6ce9282b6f9467c3def6f73d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#adf2a507a6ce9282b6f9467c3def6f73d">__attribute__</a> ((visibility(&quot;default&quot;))) struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *stumpless_add_new_param(struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *<a class="el" href="entry_8h.html#ae302f38ae66dc6f5114c6ff6c6dffc16">element</a></td></tr>
+<tr class="memdesc:adf2a507a6ce9282b6f9467c3def6f73d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new param and adds it to the given element.  <a href="element_8h.html#adf2a507a6ce9282b6f9467c3def6f73d">More...</a><br /></td></tr>
+<tr class="separator:adf2a507a6ce9282b6f9467c3def6f73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af32395ab34317d3a3beacc48945ad1fe"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#af32395ab34317d3a3beacc48945ad1fe">param_name</a></td></tr>
+<tr class="separator:af32395ab34317d3a3beacc48945ad1fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0361fa0cd8b559f8c9c7ef071bffc47"><td class="memItemLeft" align="right" valign="top">const char const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#af0361fa0cd8b559f8c9c7ef071bffc47">param_value</a></td></tr>
+<tr class="separator:af0361fa0cd8b559f8c9c7ef071bffc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefd1f48439416273495ec23a1b96eac"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#aaefd1f48439416273495ec23a1b96eac">param</a></td></tr>
+<tr class="separator:aaefd1f48439416273495ec23a1b96eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcd1706c9144e6d6eee6127661ae3be2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a></td></tr>
+<tr class="separator:afcd1706c9144e6d6eee6127661ae3be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f42f10d93f6edb91d7d3f6edad25921"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a3f42f10d93f6edb91d7d3f6edad25921">index</a></td></tr>
+<tr class="separator:a3f42f10d93f6edb91d7d3f6edad25921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d544bd66c050551f3d87fa55eb3f5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="element_8h.html#a92d544bd66c050551f3d87fa55eb3f5d">value</a></td></tr>
+<tr class="separator:a92d544bd66c050551f3d87fa55eb3f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Types and functions for creating and modifying elements. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a2a2d9474a3f9f44beb0360ba7c6061ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a2d9474a3f9f44beb0360ba7c6061ec">&#9670;&nbsp;</a></span>stumpless_add_new_param()</h2>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a64be50a804bce45f249d083c5d4dff5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64be50a804bce45f249d083c5d4dff5e">&#9670;&nbsp;</a></span>stumpless_element_namer_func_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_add_new_param </td>
+          <td class="memname">typedef <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>( * stumpless_element_namer_func_t) (const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *<a class="el" href="target_8h.html#a22871e414a8307a6a7fb3c16bd8be352">entry</a>, <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> <a class="el" href="journald_8h.html#a5955d0480797829083f892fa0088d378">element_index</a>, char *<a class="el" href="network_8h.html#a85ec2713f151aae36f5bb52e65bac06d">destination</a>, <a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> <a class="el" href="journald_8h.html#a6837099587860e983606ba8fc960066e">size</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the name to use for the journald field corresponding to this element. </p>
+<p>If the destination buffer is too small to hold the complete name, then nothing should be done. Callers must be able to detect this by comparing the return value to the value provided in the size argument. If the return value is larger, then the name was not written into destination.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function need not be thread safe. It will be called when locks are already held on the entry and element in question, and therefore should not use any functions that will attempt to lock any of these as this will result in deadlock.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function must be safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function must be safe to call from threads that may be asynchronously cancelled.</p>
+<dl class="section since"><dt>Since</dt><dd>v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry that the param is part of.</td></tr>
+    <tr><td class="paramname">element_index</td><td>The index of the element in the entry.</td></tr>
+    <tr><td class="paramname">destination</td><td>The buffer to write the name to.</td></tr>
+    <tr><td class="paramname">size</td><td>The maximum number of bytes to write to the destination buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of bytes needed to write the complete name, not including a NULL terminating character. If this is greater than size, then it signifies that nothing was done. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="adf2a507a6ce9282b6f9467c3def6f73d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf2a507a6ce9282b6f9467c3def6f73d">&#9670;&nbsp;</a></span>__attribute__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">(visibility(&quot;default&quot;))&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>param_name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>param_value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Creates a new param and adds it to the given element. </p>
+<p>Closes a file target.</p>
+<p>Returns name and params from element as a formatted string.</p>
+<p>Sets the value of the first param with the given name in the given element.</p>
+<p>Sets the value of the param at the given index in the given element.</p>
+<p>Puts the param at the given index in the given element.</p>
+<p>Sets the name of the given element.</p>
+<p>Creates a new element with the given name.</p>
+<p>Returns the value of the first param with the given name in the given element.</p>
+<p>Returns the value of the param at the given index in the given element.</p>
+<p>Gives the number of params with the given name found in the given element.</p>
+<p>Gets the name of the param with the given index in this element.</p>
+<p>Gives the index of the first occurrence of a param with the given name in the given element.</p>
+<p>Returns the number of params in the given element.</p>
+<p>Returns the first occurrence of a param with the given name in element, if it is found.</p>
+<p>Returns the param in the given element at the specified index.</p>
+<p>Returns the name of the given element.</p>
+<p>True if the given element has a param with the given name, false otherwise.</p>
+<p>Destroys an element, freeing any allocated memory.</p>
+<p>Destroys an element as well as all params that it contains, freeing any allocated memory.</p>
+<p>An alias for stumpless_destroy_element_and_contents.</p>
+<p>Creates a copy of an element.</p>
+<p>Adds a param to an element.</p>
 <p>This is equivalent to calling stumpless_new_param and passing the result directly stumpless_add_param.</p>
 <p><b>Thread Safety: MT-Safe race:param_name race:param_value</b> This function is thread safe, of course assuming that the param name and value or not changed by other threads during execution. A mutex is used to coordinate updates to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the new param.</p>
@@ -197,37 +199,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a3d1270530cfd4516e1a4ce8a4f36d9ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d1270530cfd4516e1a4ce8a4f36d9ce">&#9670;&nbsp;</a></span>stumpless_add_param()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_add_param </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td>
-          <td class="paramname"><em>param</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a param to an element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified element if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate updates to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to adjust the array of params in the element.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
@@ -238,27 +210,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a399c8ce623ed296bebec5907a57092e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a399c8ce623ed296bebec5907a57092e7">&#9670;&nbsp;</a></span>stumpless_copy_element()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_copy_element </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a copy of an element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified element if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>Copies of elements are 'deep' in that the copy also copies each of the params that the original element has, if any. This means that even if the params of the original element are destroyed, the equivalent ones in this element will still be valid.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy.</p>
@@ -270,126 +222,36 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A new element that is a deep copy of the original. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="afde32c8772ca89cce0d3ee638d8ed67b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afde32c8772ca89cce0d3ee638d8ed67b">&#9670;&nbsp;</a></span>stumpless_destroy_element()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_destroy_element </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An alias for stumpless_destroy_element_and_contents. </p>
+<dl class="section return"><dt>Returns</dt><dd>A new element that is a deep copy of the original. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>This function has been deprecated in favor of the more descriptive and deliberate stumpless_destroy_element_and_contents and stumpless_destroy_element_only functions in order to avoid unintentional memory leaks and use-after-free mistakes.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+    <tr><td class="paramname">element</td><td>The element to destroy.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ab3293ce2407142a896c6ece0089cac33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3293ce2407142a896c6ece0089cac33">&#9670;&nbsp;</a></span>stumpless_destroy_element_and_contents()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_destroy_element_and_contents </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destroys an element as well as all params that it contains, freeing any allocated memory. </p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">e</td><td>The element to destroy. </td></tr>
+    <tr><td class="paramname">e</td><td>The element to destroy.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a26f6e8a9f3dc18d7dbffee19627fa331"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26f6e8a9f3dc18d7dbffee19627fa331">&#9670;&nbsp;</a></span>stumpless_destroy_element_only()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_destroy_element_only </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destroys an element, freeing any allocated memory. </p>
 <p>Associated params are left untouched, and must be destroyed separately.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">element</td><td>The element to destroy. </td></tr>
+    <tr><td class="paramname">element</td><td>The element to destroy.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a96a1a0eaf93f5026f91824ff1292e71f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96a1a0eaf93f5026f91824ff1292e71f">&#9670;&nbsp;</a></span>stumpless_element_has_param()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool stumpless_element_has_param </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>True if the given element has a param with the given name, false otherwise. </p>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -401,27 +263,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if no error is encountered and the param is found. If the param is not found or an error is encountered, then false is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a5e67491f43202b62ea759e4b6f618409"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e67491f43202b62ea759e4b6f618409">&#9670;&nbsp;</a></span>stumpless_get_element_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_element_name </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the name of the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if no error is encountered and the param is found. If the param is not found or an error is encountered, then false is returned and an error code is set appropriately.</dd></dl>
 <p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
@@ -434,37 +276,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The name of the element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a8528efea9d31509dbcbe4ff8b5adcbdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8528efea9d31509dbcbe4ff8b5adcbdd">&#9670;&nbsp;</a></span>stumpless_get_param_by_index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__param.html">stumpless_param</a>* stumpless_get_param_by_index </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the param in the given element at the specified index. </p>
+<dl class="section return"><dt>Returns</dt><dd>The name of the element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -476,37 +288,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The param if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a84775b3f220eedae2946f0895b19ab35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84775b3f220eedae2946f0895b19ab35">&#9670;&nbsp;</a></span>stumpless_get_param_by_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__param.html">stumpless_param</a>* stumpless_get_param_by_name </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the first occurrence of a param with the given name in element, if it is found. </p>
+<dl class="section return"><dt>Returns</dt><dd>The param if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances with the same name. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
@@ -519,27 +301,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The param if it is found in the element, or NULL otherwise. If an error was encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a792f240cdec230073975f0e890a7cd80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a792f240cdec230073975f0e890a7cd80">&#9670;&nbsp;</a></span>stumpless_get_param_count()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t stumpless_get_param_count </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the number of params in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The param if it is found in the element, or NULL otherwise. If an error was encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -550,37 +312,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of params element has. If there is an error, zero is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a8fcc1fbe4d13fdcab7d7a16997f99b10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fcc1fbe4d13fdcab7d7a16997f99b10">&#9670;&nbsp;</a></span>stumpless_get_param_index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t stumpless_get_param_index </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gives the index of the first occurrence of a param with the given name in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of params element has. If there is an error, zero is returned and an error code is set appropriately.</dd></dl>
 <p>Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances that this function does not recognize. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
@@ -593,37 +325,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The first instance of a param with name in element, if one exists. If there is no such param or an error is encountered, NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aa955455cf880790264eeed278021471e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa955455cf880790264eeed278021471e">&#9670;&nbsp;</a></span>stumpless_get_param_name_by_index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_param_name_by_index </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the name of the param with the given index in this element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The first instance of a param with name in element, if one exists. If there is no such param or an error is encountered, NULL is returned and an error code is set appropriately.</dd></dl>
 <p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
@@ -637,37 +339,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The name of the param at the given index, if no error is encountered. If an error is encountered, NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="ae61ef0406ba4d283baa8b2d7dc324779"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae61ef0406ba4d283baa8b2d7dc324779">&#9670;&nbsp;</a></span>stumpless_get_param_name_count()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t stumpless_get_param_name_count </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gives the number of params with the given name found in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The name of the param at the given index, if no error is encountered. If an error is encountered, NULL is returned and an error code is set appropriately.</dd></dl>
 <p>If you need to get an actual reference to any of these params beyond the first one, then you will need to loop through all params in the element using stumpless_get_param_by_index, checking each name.</p>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by another thread during execution. A mutex is used to coordinate access to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access.</p>
@@ -680,37 +352,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of params found with the given name in the given element. If an error is encountered, zero is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a20b367a62509d2533c5e9eff2b6c5c02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20b367a62509d2533c5e9eff2b6c5c02">&#9670;&nbsp;</a></span>stumpless_get_param_value_by_index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_param_value_by_index </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the value of the param at the given index in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of params found with the given name in the given element. If an error is encountered, zero is returned and an error code is set appropriately.</dd></dl>
 <p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
@@ -724,37 +366,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value of the param at the given index, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aec5674aa3a78fba4a3e2252e8501bb98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec5674aa3a78fba4a3e2252e8501bb98">&#9670;&nbsp;</a></span>stumpless_get_param_value_by_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_param_value_by_name </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the value of the first param with the given name in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The value of the param at the given index, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p>In versions prior to v2.0.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller. This behavior changed in v2.0.0 in order to avoid thread safety issues.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
@@ -769,67 +381,17 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value of the first param with the given name, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a794237f9dca8028953ed40579bbc7d57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a794237f9dca8028953ed40579bbc7d57">&#9670;&nbsp;</a></span>stumpless_new_element()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_new_element </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a new element with the given name. </p>
+<dl class="section return"><dt>Returns</dt><dd>The value of the first param with the given name, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not changed by other threads during execution.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory management functions to create the new element.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the new element.</td></tr>
+    <tr><td class="paramname">name</td><td>The new name of the element. Valid name should have printable ASCII charecters expect '=', ']' , '"' and should be 32 charecters long</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The created element, if no error is encountered. If an error is encountered, then NULL is returned and an error code set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a3cc5b88ffc06f719122133eefc648a82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cc5b88ffc06f719122133eefc648a82">&#9670;&nbsp;</a></span>stumpless_set_element_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_set_element_name </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the name of the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The created element, if no error is encountered. If an error is encountered, then NULL is returned and an error code set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
@@ -837,47 +399,11 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">element</td><td>The element to set the name of.</td></tr>
-    <tr><td class="paramname">name</td><td>The new name of the element.</td></tr>
+    <tr><td class="paramname">name</td><td>The new name of the element. Valid name should have printable ASCII charecters expect '=', ']' , '"' and should be 32 charecters long</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a5ef415a2201601bfad342784bf8511e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ef415a2201601bfad342784bf8511e0">&#9670;&nbsp;</a></span>stumpless_set_param()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_set_param </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> *&#160;</td>
-          <td class="paramname"><em>param</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Puts the param at the given index in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>The parameter previously at this position will be removed from the element, but it is NOT destroyed by this call. Callers must clean up this param separately.</p>
 <p>A param cannot be set at an index position that does not already hold a param. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error is raised.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
@@ -892,43 +418,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a7f06efd932779308b864066262dbf037"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f06efd932779308b864066262dbf037">&#9670;&nbsp;</a></span>stumpless_set_param_value_by_index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_set_param_value_by_index </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the value of the param at the given index in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:value</b> This function is thread safe, of course assuming that the value is not changed during execution by another thread. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
@@ -941,43 +431,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="af51ad1da49c1284cf83a7d00ad8eea15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af51ad1da49c1284cf83a7d00ad8eea15">&#9670;&nbsp;</a></span>stumpless_set_param_value_by_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__element.html">stumpless_element</a>* stumpless_set_param_value_by_name </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__element.html">stumpless_element</a> *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the value of the first param with the given name in the given element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>If a param of the given name is not found in the element, one is created with the supplied name and value and added to the end of the element.</p>
 <p>If you need to set the value of a param with this name other than the first one, then you will need to loop through the params using stumpless_get_param_by_index to find the params you want and then set the value using stumpless_set_param_value.</p>
 <p><b>Thread Safety: MT-Safe race:name race:value</b> This function is thread safe, of course assuming that the name and value are not changed during execution by another thread.. A mutex is used to coordinate changes to the element with other accesses and modifications.</p>
@@ -992,14 +446,111 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified element, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
+<p>The character buffer should be freed when no longer is needed by the caller.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the element with other accesses and modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element</td><td>The element to get the name and params from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The formatted string of &lt;name&gt; or &lt;name&gt;:[param1,...] if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a3f42f10d93f6edb91d7d3f6edad25921"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f42f10d93f6edb91d7d3f6edad25921">&#9670;&nbsp;</a></span>index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afcd1706c9144e6d6eee6127661ae3be2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcd1706c9144e6d6eee6127661ae3be2">&#9670;&nbsp;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaefd1f48439416273495ec23a1b96eac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefd1f48439416273495ec23a1b96eac">&#9670;&nbsp;</a></span>param</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> struct <a class="el" href="structstumpless__param.html">stumpless_param</a>* param</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af32395ab34317d3a3beacc48945ad1fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af32395ab34317d3a3beacc48945ad1fe">&#9670;&nbsp;</a></span>param_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char const char * param_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af0361fa0cd8b559f8c9c7ef071bffc47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0361fa0cd8b559f8c9c7ef071bffc47">&#9670;&nbsp;</a></span>param_value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char const char* param_value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92d544bd66c050551f3d87fa55eb3f5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d544bd66c050551f3d87fa55eb3f5d">&#9670;&nbsp;</a></span>value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:44 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

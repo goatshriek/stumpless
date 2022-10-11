@@ -1,5 +1,6 @@
 ---
 title: The Future
+last_updated: October 10, 2022
 ---
 
 # The Future of Stumpless
@@ -7,25 +8,6 @@ title: The Future
 See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
-
-## 2.1.0 (next minor release)
- * [ADD] **journald logging target**
-   Logging to systemd's journal system is should be relatively straightforward
-   to implement, and is an important feature to support.
- * [ADD] **Filters**
-   While message severity codes can be used to filter which log messages make
-   it through a target at runtime, this is limited and inflexible. Instead, a
-   generic filter structure that can filter on a wide variety of properties of
-   each log entry and even use custom functions to filter messages.
- * [ADD] **Function callback logging target**
-   Logging to a generic function signature will allow easier extension by
-   library users, and can also serve as a good opportunity to streamline the
-   internal implementation for the actual logging functionality.
- * [ADD] **Tracing call including source code information**
-   A tracing call that includes the line and file of the source code that it
-   appears in could be useful for some applications. This will be added as a
-   macro function so that the relevant information can be added. It will use
-   the same severity as debug messages.
 
 
 ## 2.2.0

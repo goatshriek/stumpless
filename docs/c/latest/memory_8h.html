@@ -63,51 +63,38 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">memory.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
 </div>
 <p><a href="memory_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a290757bff049c42f1f7d3cb387f04072"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072">stumpless_free_all</a> (void)</td></tr>
-<tr class="memdesc:a290757bff049c42f1f7d3cb387f04072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the default target if it has been opened, frees all memory allocated internally, and performs any other necessary cleanup.  <a href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072">More...</a><br /></td></tr>
-<tr class="separator:a290757bff049c42f1f7d3cb387f04072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a013451e970972480cbedb2454d8b9e34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a013451e970972480cbedb2454d8b9e34">stumpless_free_thread</a> (void)</td></tr>
-<tr class="memdesc:a013451e970972480cbedb2454d8b9e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all memory allocated internally to the calling thread, and performs any other thread-specific cleanup.  <a href="memory_8h.html#a013451e970972480cbedb2454d8b9e34">More...</a><br /></td></tr>
-<tr class="separator:a013451e970972480cbedb2454d8b9e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a0cdc7c7ccef43ea2833b9f08ea562e52"><td class="memItemLeft" align="right" valign="top">void *(*)(size_t)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a0cdc7c7ccef43ea2833b9f08ea562e52">stumpless_set_malloc</a> (void *(*malloc_func)(size_t))</td></tr>
-<tr class="memdesc:a0cdc7c7ccef43ea2833b9f08ea562e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the function used by the library to allocate memory.  <a href="memory_8h.html#a0cdc7c7ccef43ea2833b9f08ea562e52">More...</a><br /></td></tr>
-<tr class="separator:a0cdc7c7ccef43ea2833b9f08ea562e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb0296021f5709e5eaab55dfe2ada02d"><td class="memItemLeft" align="right" valign="top">void(*)(void *)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#adb0296021f5709e5eaab55dfe2ada02d">stumpless_set_free</a> (void(*free_func)(void *))</td></tr>
-<tr class="memdesc:adb0296021f5709e5eaab55dfe2ada02d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the function used by the library to free memory.  <a href="memory_8h.html#adb0296021f5709e5eaab55dfe2ada02d">More...</a><br /></td></tr>
-<tr class="separator:adb0296021f5709e5eaab55dfe2ada02d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d4dd5f6cb209def4dd6b7eec7ffb35c"><td class="memItemLeft" align="right" valign="top">void *(*)(void *, size_t)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a3d4dd5f6cb209def4dd6b7eec7ffb35c">stumpless_set_realloc</a> (void *(*realloc_func)(void *, size_t))</td></tr>
-<tr class="memdesc:a3d4dd5f6cb209def4dd6b7eec7ffb35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the function used by the library to reallocate memory.  <a href="memory_8h.html#a3d4dd5f6cb209def4dd6b7eec7ffb35c">More...</a><br /></td></tr>
-<tr class="separator:a3d4dd5f6cb209def4dd6b7eec7ffb35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e7fdfe286d596012b6b458dd0ee0ae0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a1e7fdfe286d596012b6b458dd0ee0ae0">__attribute__</a> ((visibility(&quot;default&quot;))) void stumpless_free_all(void)</td></tr>
+<tr class="memdesc:a1e7fdfe286d596012b6b458dd0ee0ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the default target if it has been opened, frees all memory allocated internally, and performs any other necessary cleanup.  <a href="memory_8h.html#a1e7fdfe286d596012b6b458dd0ee0ae0">More...</a><br /></td></tr>
+<tr class="separator:a1e7fdfe286d596012b6b458dd0ee0ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1de1ad716e56455dd12745e3f014b642"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> (void *, size_t)</td></tr>
+<tr class="separator:a1de1ad716e56455dd12745e3f014b642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Functions for controlling memory allocation during execution.</p>
 <p>Some of these functions allow memory allcoation to use custom functions. This might be useful if you have your own memory allocation routines or want to lay down your own controls over memory used by the library. For example, this capability is used extensively to test for error handling in memory allocation failure scenarios, as well as to ensure that the same amount of memory is freed as is allocated. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a290757bff049c42f1f7d3cb387f04072"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a290757bff049c42f1f7d3cb387f04072">&#9670;&nbsp;</a></span>stumpless_free_all()</h2>
+<a id="a1e7fdfe286d596012b6b458dd0ee0ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e7fdfe286d596012b6b458dd0ee0ae0">&#9670;&nbsp;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void stumpless_free_all </td>
+          <td class="memname">__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
+          <td class="paramtype">(visibility(&quot;default&quot;))&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -115,78 +102,20 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Closes the default target if it has been opened, frees all memory allocated internally, and performs any other necessary cleanup. </p>
+<p>Closes a file target.</p>
+<p>Sets the function used by the library to reallocate memory.</p>
+<p>Sets the function used by the library to free memory.</p>
+<p>Sets the function used by the library to allocate memory.</p>
+<p>Frees all memory allocated internally to the calling thread, and performs any other thread-specific cleanup.</p>
 <p>This function serves as a final exit function, which should be called when an application using the library is preparing to exit or when the library is no longer needed. Before this function is called, all targets explicitly opened must be closed (with the exception of the default target, which is opened implicitly) and no pointers to any structs should be retained. Failing to do this will result in undefined behavior.</p>
 <p>Calling other functions after a call to this function is acceptable, however execution times may be longer than usual as memory used to cache objects may need to be allocated. If other functions are called, this function should be called again before exit to ensure a memory leak does not exist.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads might be using.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory.</p>
-<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself. </p>
-
-</div>
-</div>
-<a id="a013451e970972480cbedb2454d8b9e34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013451e970972480cbedb2454d8b9e34">&#9670;&nbsp;</a></span>stumpless_free_thread()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_free_thread </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Frees all memory allocated internally to the calling thread, and performs any other thread-specific cleanup. </p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself.</p>
 <p>This function should be called in any thread that has used stumpless functions before it exits so that caches and other structures can be cleaned up. It is not a substitute for stumpless_free_all, but is called by it and can be left out if stumpless_free_all will be called later in the same thread.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe as it only operates on thread-local resources.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory.</p>
-<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="adb0296021f5709e5eaab55dfe2ada02d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb0296021f5709e5eaab55dfe2ada02d">&#9670;&nbsp;</a></span>stumpless_set_free</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void( *)( void * ) stumpless_set_free(void(*free_func)(void *))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the function used by the library to free memory. </p>
-<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources.</p>
-<p><b>Async Signal Safety: AS-Unsafe</b> This function is not safe to call from signal handlers for the same reason as it is not thread safe.</p>
-<p><b>Async Cancel Safety: AC-Unsafe</b> This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">free_func</td><td>A pointer to the memory deallocation function that is desired. This function must have the same signature as the standard library <code>free</code> function (which is the default if this is not called).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new deallocation function. </dd></dl>
-
-</div>
-</div>
-<a id="a0cdc7c7ccef43ea2833b9f08ea562e52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cdc7c7ccef43ea2833b9f08ea562e52">&#9670;&nbsp;</a></span>stumpless_set_malloc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void*( *)( size_t ) stumpless_set_malloc(void *(*malloc_func)(size_t))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the function used by the library to allocate memory. </p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources.</p>
 <p><b>Async Signal Safety: AS-Unsafe</b> This function is not safe to call from signal handlers for the same reason as it is not thread safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe</b> This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic.</p>
@@ -196,23 +125,17 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The new allocation function. </dd></dl>
-
-</div>
-</div>
-<a id="a3d4dd5f6cb209def4dd6b7eec7ffb35c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d4dd5f6cb209def4dd6b7eec7ffb35c">&#9670;&nbsp;</a></span>stumpless_set_realloc</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void*( *)( void *, size_t ) stumpless_set_realloc(void *(*realloc_func)(void *, size_t))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the function used by the library to reallocate memory. </p>
+<dl class="section return"><dt>Returns</dt><dd>The new allocation function.</dd></dl>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources.</p>
+<p><b>Async Signal Safety: AS-Unsafe</b> This function is not safe to call from signal handlers for the same reason as it is not thread safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe</b> This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">free_func</td><td>A pointer to the memory deallocation function that is desired. This function must have the same signature as the standard library <code>free</code> function (which is the default if this is not called).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new deallocation function.</dd></dl>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources.</p>
 <p><b>Async Signal Safety: AS-Unsafe</b> This function is not safe to call from signal handlers for the same reason as it is not thread safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe</b> This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic.</p>
@@ -226,10 +149,38 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a1de1ad716e56455dd12745e3f014b642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1de1ad716e56455dd12745e3f014b642">&#9670;&nbsp;</a></span>size_t()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:44 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

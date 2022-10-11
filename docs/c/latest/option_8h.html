@@ -88,8 +88,11 @@ Macros</h2></td></tr>
 <tr class="memdesc:aa5e1ed49d636041b6fdf2eac33d04f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not currently supported.  <a href="option_8h.html#aa5e1ed49d636041b6fdf2eac33d04f51">More...</a><br /></td></tr>
 <tr class="separator:aa5e1ed49d636041b6fdf2eac33d04f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c3143e2110614932dbff133f898303"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="option_8h.html#ab5c3143e2110614932dbff133f898303">STUMPLESS_OPTION_NOWAIT</a>&#160;&#160;&#160;LOG_NOWAIT</td></tr>
-<tr class="memdesc:ab5c3143e2110614932dbff133f898303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not currently supported.  <a href="option_8h.html#ab5c3143e2110614932dbff133f898303">More...</a><br /></td></tr>
+<tr class="memdesc:ab5c3143e2110614932dbff133f898303"><td class="mdescLeft">&#160;</td><td class="mdescRight">No need to wait for the child processes that may have been created while logging the messages.  <a href="option_8h.html#ab5c3143e2110614932dbff133f898303">More...</a><br /></td></tr>
 <tr class="separator:ab5c3143e2110614932dbff133f898303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021b245182a1bcc46b0a1fe90f6d0877"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="option_8h.html#a021b245182a1bcc46b0a1fe90f6d0877">STUMPLESS_OPTION_PERROR</a>&#160;&#160;&#160;LOG_PERROR</td></tr>
+<tr class="memdesc:a021b245182a1bcc46b0a1fe90f6d0877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log the message to the stderr as well as to the target.  <a href="option_8h.html#a021b245182a1bcc46b0a1fe90f6d0877">More...</a><br /></td></tr>
+<tr class="separator:a021b245182a1bcc46b0a1fe90f6d0877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac7a81cb7d3afe8e655d191014ca7195"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">STUMPLESS_OPTION_NONE</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:aac7a81cb7d3afe8e655d191014ca7195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty option mask for explicit 'no option' use.  <a href="option_8h.html#aac7a81cb7d3afe8e655d191014ca7195">More...</a><br /></td></tr>
 <tr class="separator:aac7a81cb7d3afe8e655d191014ca7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,7 +160,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Not currently supported. </p>
+<p>No need to wait for the child processes that may have been created while logging the messages. </p>
+<p>(Stumpless does not spawn child processes because it slows down the process of logging, so essentially this option is always set) </p>
 
 </div>
 </div>
@@ -174,6 +178,22 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Not currently supported. </p>
+
+</div>
+</div>
+<a id="a021b245182a1bcc46b0a1fe90f6d0877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a021b245182a1bcc46b0a1fe90f6d0877">&#9670;&nbsp;</a></span>STUMPLESS_OPTION_PERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_OPTION_PERROR&#160;&#160;&#160;LOG_PERROR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Log the message to the stderr as well as to the target. </p>
 
 </div>
 </div>
@@ -196,7 +216,7 @@ Macros</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:44 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

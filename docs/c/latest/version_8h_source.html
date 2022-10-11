@@ -69,7 +69,7 @@ $(function() {
 <a href="version_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2020 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2022 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * </span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -87,43 +87,48 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef __STUMPLESS_VERSION_H</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#  define __STUMPLESS_VERSION_H</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structstumpless__version.html">   33</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__version.html">stumpless_version</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">   34</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">major</a>; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">   35</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">minor</a>; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">   36</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">patch</a>; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__version.html">stumpless_version</a> *</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="version_8h.html#a2dfd4da5c3680153f7e19f782129a21d">   57</a></span>&#160;<a class="code" href="version_8h.html#a2dfd4da5c3680153f7e19f782129a21d">stumpless_get_version</a>( <span class="keywordtype">void</span> );</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="version_8h.html#ae8c32210c8ef9a111515c090abbd4b73">   85</a></span>&#160;<a class="code" href="version_8h.html#ae8c32210c8ef9a111515c090abbd4b73">stumpless_version_cmp</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> * version_x, </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                       <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> * version_y );</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">char</span> *</div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="version_8h.html#a58bdf2b546e20783c5e0054ac6772dda">  117</a></span>&#160;<a class="code" href="version_8h.html#a58bdf2b546e20783c5e0054ac6772dda">stumpless_version_to_string</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> *version );</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_VERSION_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="config_8h.html">stumpless/config.h</a>&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structstumpless__version.html">   35</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__version.html">stumpless_version</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">   36</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">major</a>; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">   37</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">minor</a>; </div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">   38</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">patch</a>; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;};</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="version_8h.html#a45767f2df1569dd5d13fb2c91c87b806">   58</a></span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__version.html">stumpless_version</a> *</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;stumpless_get_version( <span class="keywordtype">void</span> );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;stumpless_version_cmp( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> * version_x, </div>
+<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="version_8h.html#aa10d2d2e68163997132d30af2b661730">   90</a></span>&#160;                       <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> * <a class="code" href="version_8h.html#aa10d2d2e68163997132d30af2b661730">version_y</a> );</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keywordtype">char</span> *</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;stumpless_version_to_string( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__version.html">stumpless_version</a> *version );</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_VERSION_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aversion_8h_html_a58bdf2b546e20783c5e0054ac6772dda"><div class="ttname"><a href="version_8h.html#a58bdf2b546e20783c5e0054ac6772dda">stumpless_version_to_string</a></div><div class="ttdeci">char * stumpless_version_to_string(const struct stumpless_version *version)</div><div class="ttdoc">Creates a string representation of the given version.</div></div>
-<div class="ttc" id="aversion_8h_html_a2dfd4da5c3680153f7e19f782129a21d"><div class="ttname"><a href="version_8h.html#a2dfd4da5c3680153f7e19f782129a21d">stumpless_get_version</a></div><div class="ttdeci">struct stumpless_version * stumpless_get_version(void)</div><div class="ttdoc">Gets the version of code the library was built with.</div></div>
-<div class="ttc" id="astructstumpless__version_html_a89dbed6cd5d8bd530b53517e45829cc7"><div class="ttname"><a href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">stumpless_version::major</a></div><div class="ttdeci">int major</div><div class="ttdoc">The major version.</div><div class="ttdef"><b>Definition:</b> version.h:34</div></div>
-<div class="ttc" id="astructstumpless__version_html_a165a76808a13aa4a1d492754d463783e"><div class="ttname"><a href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">stumpless_version::patch</a></div><div class="ttdeci">int patch</div><div class="ttdoc">The patch version.</div><div class="ttdef"><b>Definition:</b> version.h:36</div></div>
-<div class="ttc" id="astructstumpless__version_html"><div class="ttname"><a href="structstumpless__version.html">stumpless_version</a></div><div class="ttdoc">A description of a library version.</div><div class="ttdef"><b>Definition:</b> version.h:33</div></div>
-<div class="ttc" id="aversion_8h_html_ae8c32210c8ef9a111515c090abbd4b73"><div class="ttname"><a href="version_8h.html#ae8c32210c8ef9a111515c090abbd4b73">stumpless_version_cmp</a></div><div class="ttdeci">int stumpless_version_cmp(const struct stumpless_version *version_x, const struct stumpless_version *version_y)</div><div class="ttdoc">Compares the version of two given stumpless_version struct.</div></div>
-<div class="ttc" id="astructstumpless__version_html_a901563eab70766824d6f7056faeb7233"><div class="ttname"><a href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">stumpless_version::minor</a></div><div class="ttdeci">int minor</div><div class="ttdoc">The minor version.</div><div class="ttdef"><b>Definition:</b> version.h:35</div></div>
+<div class="ttc" id="astructstumpless__version_html_a89dbed6cd5d8bd530b53517e45829cc7"><div class="ttname"><a href="structstumpless__version.html#a89dbed6cd5d8bd530b53517e45829cc7">stumpless_version::major</a></div><div class="ttdeci">int major</div><div class="ttdoc">The major version.</div><div class="ttdef"><b>Definition:</b> version.h:36</div></div>
+<div class="ttc" id="astructstumpless__version_html_a165a76808a13aa4a1d492754d463783e"><div class="ttname"><a href="structstumpless__version.html#a165a76808a13aa4a1d492754d463783e">stumpless_version::patch</a></div><div class="ttdeci">int patch</div><div class="ttdoc">The patch version.</div><div class="ttdef"><b>Definition:</b> version.h:38</div></div>
+<div class="ttc" id="astructstumpless__version_html"><div class="ttname"><a href="structstumpless__version.html">stumpless_version</a></div><div class="ttdoc">A description of a library version.</div><div class="ttdef"><b>Definition:</b> version.h:35</div></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>Definition:</b> config.h:31</div></div>
+<div class="ttc" id="aversion_8h_html_aa10d2d2e68163997132d30af2b661730"><div class="ttname"><a href="version_8h.html#aa10d2d2e68163997132d30af2b661730">version_y</a></div><div class="ttdeci">const struct stumpless_version * version_y</div><div class="ttdef"><b>Definition:</b> version.h:90</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
+<div class="ttc" id="astructstumpless__version_html_a901563eab70766824d6f7056faeb7233"><div class="ttname"><a href="structstumpless__version.html#a901563eab70766824d6f7056faeb7233">stumpless_version::minor</a></div><div class="ttdeci">int minor</div><div class="ttdoc">The minor version.</div><div class="ttdef"><b>Definition:</b> version.h:37</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:43 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

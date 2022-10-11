@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value_606',['value',['../structstumpless__param.html#a515d92ed0193197635cea91735e0d7b0',1,'stumpless_param']]],
-  ['value_5flength_607',['value_length',['../structstumpless__param.html#acb5e0d5998b20c5d1180ad9d27400beb',1,'stumpless_param']]]
+  ['option_455',['option',['../target_8h.html#a96613d07df4205a377ad9cb38b3a9d27',1,'target.h']]],
+  ['options_456',['options',['../structstumpless__target.html#ab4036dc1c418541ec8c84233d0565e35',1,'stumpless_target']]]
 ];

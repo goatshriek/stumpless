@@ -73,7 +73,7 @@ $(function() {
 <a href="notice_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2020 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2020-2022 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -95,58 +95,92 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#  ifndef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="config_8h.html">stumpless/config.h</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="severity_8h.html">stumpless/severity.h</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#    define stump_n( ... ) ( 0 )</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#  else</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#    define stump_n( ... )                                                     \</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="notice_8h.html#ae3c42eb67e772fb4cb5b1a7176c60011">   93</a></span>&#160;<span class="preprocessor">stumpless_add_log( stumpless_get_current_target(  ),                           \</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">                   STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY,     \</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">                   __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="preprocessor">#    define stump_n_entry( target, entry ) ( 0 )</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">#  else</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#    define stump_n_entry( target, entry )                                     \</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="notice_8h.html#accc5a3a7732bb72c66a6a92710414831">  146</a></span>&#160;<span class="preprocessor">stumpless_add_entry( ( target ), ( entry ) )</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#    define stump_n_log( target, priority, ... ) ( 0 )</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">#  else</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="preprocessor">#    define stump_n_log( target, priority, ... )                               \</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="notice_8h.html#a7dbe43924d6b5e64188f1e4d0373526b">  204</a></span>&#160;<span class="preprocessor">stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="preprocessor">#    define stump_n_message( target, ... ) ( 0 )</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="preprocessor">#  else</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="preprocessor">#    define stump_n_message( target, ... )                                     \</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="notice_8h.html#a63ba06571c395de8121800b18db30b9e">  264</a></span>&#160;<span class="preprocessor">stumpless_add_log( ( target ),                                                 \</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="preprocessor">                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE,     \</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="preprocessor">                   __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="preprocessor">#    define stumplog_n( priority, ... ) ( ( void ) 0 )</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="preprocessor">#  else</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="preprocessor">#    define stumplog_n( priority, ... )                                        \</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="notice_8h.html#a764d0655d353d7eeb730352a0b2d2e41">  316</a></span>&#160;<span class="preprocessor">stumplog( ( priority ), __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_LEVEL_NOTICE_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="log_8h.html">stumpless/log.h</a>&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="severity_8h.html">stumpless/severity.h</a>&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#    include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#    define stump_n( ... ) ( 0 )</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#    define stump_n( ... )                                                     \</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="notice_8h.html#ae3c42eb67e772fb4cb5b1a7176c60011">  101</a></span>&#160;<span class="preprocessor">stumpless_add_log( stumpless_get_current_target(  ),                           \</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">                   STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY,     \</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">                   __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#    define stump_n_str( message ) ( 0 )</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#    define stump_n_str( message )                                             \</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="notice_8h.html#ab19ac20dab5d3cc1917f4d69cf9e5394">  159</a></span>&#160;<span class="preprocessor">stumpless_add_log_str( stumpless_get_current_target(  ),                       \</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">                       STUMPLESS_SEVERITY_NOTICE | STUMPLESS_DEFAULT_FACILITY, \</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">                       ( message ) )</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor">#    define stump_n_entry( target, entry ) ( 0 )</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="preprocessor">#    define stump_n_entry( target, entry )                                     \</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="notice_8h.html#accc5a3a7732bb72c66a6a92710414831">  212</a></span>&#160;<span class="preprocessor">stumpless_add_entry( ( target ), ( entry ) )</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#    define stump_n_log( target, priority, ... ) ( 0 )</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="preprocessor">#    define stump_n_log( target, priority, ... )                               \</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="notice_8h.html#a7dbe43924d6b5e64188f1e4d0373526b">  277</a></span>&#160;<span class="preprocessor">stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="preprocessor">#    define stump_n_log_str( target, priority, message ) ( 0 )</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor">#    define stump_n_log_str( target, priority, message )                       \</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="notice_8h.html#a11dc63259ac9e1689ca85a3dad9c46d7">  333</a></span>&#160;<span class="preprocessor">stumpless_add_log_str( ( target ), ( priority ), ( message ) )</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="preprocessor">#    define stump_n_message( target, ... ) ( 0 )</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="preprocessor">#    define stump_n_message( target, ... )                                     \</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno"><a class="line" href="notice_8h.html#a63ba06571c395de8121800b18db30b9e">  400</a></span>&#160;<span class="preprocessor">stumpless_add_log( ( target ),                                                 \</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">                   STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE,     \</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="preprocessor">                   __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="preprocessor">#    define stump_n_message_str( target, message ) ( 0 )</span></div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;<span class="preprocessor">#    define stump_n_message_str( target, message )                             \</span></div>
+<div class="line"><a name="l00460"></a><span class="lineno"><a class="line" href="notice_8h.html#ab4e44c301369531d6fd7035ef7a46157">  460</a></span>&#160;<span class="preprocessor">stumpless_add_log_str( ( target ),                                             \</span></div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="preprocessor">                       STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_NOTICE, \</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="preprocessor">                       ( message ) )</span></div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160; </div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="preprocessor">#    define stumplog_n( priority, ... ) ( ( void ) 0 )</span></div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;<span class="preprocessor">#    define stumplog_n( priority, ... )                                        \</span></div>
+<div class="line"><a name="l00519"></a><span class="lineno"><a class="line" href="notice_8h.html#a764d0655d353d7eeb730352a0b2d2e41">  519</a></span>&#160;<span class="preprocessor">stumplog( ( priority ), __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;<span class="preprocessor">#  ifdef STUMPLESS_DISABLE_NOTICE_LEVEL</span></div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="preprocessor">#    define stumplog_n_str( priority, message ) ( ( void ) 0 )</span></div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="preprocessor">#    define stumplog_n_str( priority, message )                                \</span></div>
+<div class="line"><a name="l00567"></a><span class="lineno"><a class="line" href="notice_8h.html#a23be71242984d772053ed7c9668adb82">  567</a></span>&#160;<span class="preprocessor">stumplog_str( ( priority ), ( message ) )</span></div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160; </div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_LEVEL_NOTICE_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aseverity_8h_html"><div class="ttname"><a href="severity_8h.html">severity.h</a></div></div>
 <div class="ttc" id="amask_8h_html"><div class="ttname"><a href="mask_8h.html">mask.h</a></div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
+<div class="ttc" id="alog_8h_html"><div class="ttname"><a href="log_8h.html">log.h</a></div></div>
 <div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:43 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

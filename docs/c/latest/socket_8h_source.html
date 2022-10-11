@@ -73,7 +73,7 @@ $(function() {
 <a href="socket_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2020 Joel E. Anderson</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Copyright 2018-2022 Joel E. Anderson</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -91,31 +91,35 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifndef __STUMPLESS_TARGET_SOCKET_H</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#  define __STUMPLESS_TARGET_SOCKET_H</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="socket_8h.html#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">   71</a></span>&#160;<a class="code" href="socket_8h.html#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">stumpless_close_socket_target</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="socket_8h.html#ae2136cf2067a4396b6021ad65303b8bd">   99</a></span>&#160;<a class="code" href="socket_8h.html#ae2136cf2067a4396b6021ad65303b8bd">stumpless_open_socket_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *local_socket );</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#  endif</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_SOCKET_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="config_8h.html">stumpless/config.h</a>&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#  include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="socket_8h.html#a57cb8d0f00fb662fd17fce73ed01cf01">   71</a></span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;stumpless_close_socket_target( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<a class="code" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">struct </span><a class="code" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="socket_8h.html#a3c55f3ba68b85431b4d60ddb6dd0ca74">  102</a></span>&#160;stumpless_open_socket_target( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a>, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="socket_8h.html#a3c55f3ba68b85431b4d60ddb6dd0ca74">local_socket</a> );</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_SOCKET_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>Definition:</b> target.h:77</div></div>
-<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:60</div></div>
-<div class="ttc" id="asocket_8h_html_a71cbe2c33f5b48d1a0917c1cc5b0f2e0"><div class="ttname"><a href="socket_8h.html#a71cbe2c33f5b48d1a0917c1cc5b0f2e0">stumpless_close_socket_target</a></div><div class="ttdeci">void stumpless_close_socket_target(const struct stumpless_target *target)</div><div class="ttdoc">Closes a socket target.</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>Definition:</b> target.h:95</div></div>
 <div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div></div>
-<div class="ttc" id="asocket_8h_html_ae2136cf2067a4396b6021ad65303b8bd"><div class="ttname"><a href="socket_8h.html#ae2136cf2067a4396b6021ad65303b8bd">stumpless_open_socket_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_socket_target(const char *name, const char *local_socket)</div><div class="ttdoc">Opens a socket target.</div></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>Definition:</b> config.h:31</div></div>
+<div class="ttc" id="aconfig_8h_html"><div class="ttname"><a href="config_8h.html">config.h</a></div></div>
+<div class="ttc" id="aelement_8h_html_afcd1706c9144e6d6eee6127661ae3be2"><div class="ttname"><a href="element_8h.html#afcd1706c9144e6d6eee6127661ae3be2">name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition:</b> element.h:345</div></div>
+<div class="ttc" id="asocket_8h_html_a3c55f3ba68b85431b4d60ddb6dd0ca74"><div class="ttname"><a href="socket_8h.html#a3c55f3ba68b85431b4d60ddb6dd0ca74">local_socket</a></div><div class="ttdeci">const char * local_socket</div><div class="ttdef"><b>Definition:</b> socket.h:102</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:43 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

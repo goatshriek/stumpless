@@ -79,20 +79,59 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a097b16dfb972e51ca6687948a8cfa4d0"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#a097b16dfb972e51ca6687948a8cfa4d0">name</a></td></tr>
 <tr class="memdesc:a097b16dfb972e51ca6687948a8cfa4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the element.  <a href="structstumpless__element.html#a097b16dfb972e51ca6687948a8cfa4d0">More...</a><br /></td></tr>
 <tr class="separator:a097b16dfb972e51ca6687948a8cfa4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70b0503b3b02e707af62010dd5082438"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">name_length</a></td></tr>
+<tr class="memitem:a70b0503b3b02e707af62010dd5082438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">name_length</a></td></tr>
 <tr class="memdesc:a70b0503b3b02e707af62010dd5082438"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of characters in name.  <a href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">More...</a><br /></td></tr>
 <tr class="separator:a70b0503b3b02e707af62010dd5082438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf8526b3149f1794ec85fe646680e157"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__param.html">stumpless_param</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#adf8526b3149f1794ec85fe646680e157">params</a></td></tr>
 <tr class="memdesc:adf8526b3149f1794ec85fe646680e157"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parameters this element contains.  <a href="structstumpless__element.html#adf8526b3149f1794ec85fe646680e157">More...</a><br /></td></tr>
 <tr class="separator:adf8526b3149f1794ec85fe646680e157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaecd8d2740361b7689c7973713c6164a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">param_count</a></td></tr>
+<tr class="memitem:aaecd8d2740361b7689c7973713c6164a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">param_count</a></td></tr>
 <tr class="memdesc:aaecd8d2740361b7689c7973713c6164a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of params in the array.  <a href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">More...</a><br /></td></tr>
 <tr class="separator:aaecd8d2740361b7689c7973713c6164a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d2644df0008fef6083ab1599fa79552"><td class="memItemLeft" align="right" valign="top"><a class="el" href="element_8h.html#a64be50a804bce45f249d083c5d4dff5e">stumpless_element_namer_func_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552">get_journald_name</a></td></tr>
+<tr class="memdesc:a0d2644df0008fef6083ab1599fa79552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name to use for the journald field corresponding to this element.  <a href="structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552">More...</a><br /></td></tr>
+<tr class="separator:a0d2644df0008fef6083ab1599fa79552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a008161e9e4dd4d8403ea1bd7ca19a33a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__element.html#a008161e9e4dd4d8403ea1bd7ca19a33a">mutex</a></td></tr>
+<tr class="memdesc:a008161e9e4dd4d8403ea1bd7ca19a33a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to a mutex which protects all element fields.  <a href="structstumpless__element.html#a008161e9e4dd4d8403ea1bd7ca19a33a">More...</a><br /></td></tr>
+<tr class="separator:a008161e9e4dd4d8403ea1bd7ca19a33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An element of structured data. </p>
 <p>Elements must have a name, but may or may not have any parameters. Their components must comply with RFC 5424. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="a0d2644df0008fef6083ab1599fa79552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d2644df0008fef6083ab1599fa79552">&#9670;&nbsp;</a></span>get_journald_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="element_8h.html#a64be50a804bce45f249d083c5d4dff5e">stumpless_element_namer_func_t</a> stumpless_element::get_journald_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the name to use for the journald field corresponding to this element. </p>
+
+</div>
+</div>
+<a id="a008161e9e4dd4d8403ea1bd7ca19a33a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a008161e9e4dd4d8403ea1bd7ca19a33a">&#9670;&nbsp;</a></span>mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* stumpless_element::mutex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A pointer to a mutex which protects all element fields. </p>
+<p>The exact type of this mutex depends on the build. </p>
+
+</div>
+</div>
 <a id="a097b16dfb972e51ca6687948a8cfa4d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a097b16dfb972e51ca6687948a8cfa4d0">&#9670;&nbsp;</a></span>name</h2>
 
@@ -120,7 +159,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t stumpless_element::name_length</td>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> stumpless_element::name_length</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -136,7 +175,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t stumpless_element::param_count</td>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> stumpless_element::param_count</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -168,7 +207,7 @@ Data Fields</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

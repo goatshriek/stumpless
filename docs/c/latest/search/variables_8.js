@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['param_5fcount_598',['param_count',['../structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a',1,'stumpless_element']]],
-  ['params_599',['params',['../structstumpless__element.html#adf8526b3149f1794ec85fe646680e157',1,'stumpless_element']]],
-  ['patch_600',['patch',['../structstumpless__version.html#a165a76808a13aa4a1d492754d463783e',1,'stumpless_version']]],
-  ['prival_601',['prival',['../structstumpless__entry.html#a62c2d179bccb759de9564454282c71b0',1,'stumpless_entry']]]
+  ['line_440',['line',['../log_8h.html#ab6f50345dda5cfb559216163acd05f70',1,'line():&#160;log.h'],['../target_8h.html#ab6f50345dda5cfb559216163acd05f70',1,'line():&#160;target.h']]],
+  ['local_5fsocket_441',['local_socket',['../socket_8h.html#a3c55f3ba68b85431b4d60ddb6dd0ca74',1,'socket.h']]],
+  ['log_5ffunction_442',['log_function',['../function_8h.html#a452252fc3a524c5ebbfdc41b2b7e52a0',1,'function.h']]]
 ];

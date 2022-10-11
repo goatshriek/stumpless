@@ -65,14 +65,18 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">target.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">stumpless/config.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="entry_8h_source.html">stumpless/entry.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="id_8h_source.html">stumpless/id.h</a>&gt;</code><br />
@@ -94,15 +98,22 @@ Macros</h2></td></tr>
 <tr class="memdesc:a4422588e51c1126ebb7ee70c70794450"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the default target.  <a href="target_8h.html#a4422588e51c1126ebb7ee70c70794450">More...</a><br /></td></tr>
 <tr class="separator:a4422588e51c1126ebb7ee70c70794450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a0a67fb2a040cb61aece233f8a1789064"><td class="memItemLeft" align="right" valign="top">typedef bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a0a67fb2a040cb61aece233f8a1789064">stumpless_filter_func_t</a>) (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *<a class="el" href="target_8h.html#a22871e414a8307a6a7fb3c16bd8be352">entry</a>)</td></tr>
+<tr class="memdesc:a0a67fb2a040cb61aece233f8a1789064"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that determines whether a given entry should be sent to a given target.  <a href="target_8h.html#a0a67fb2a040cb61aece233f8a1789064">More...</a><br /></td></tr>
+<tr class="separator:a0a67fb2a040cb61aece233f8a1789064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a896c8add2861787681f97c6addc2294d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294d">stumpless_target_type</a> { <br />
 &#160;&#160;<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da71ce1ceaa43c55d41f7aff31dd58e76c">STUMPLESS_BUFFER_TARGET</a>, 
 <a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da99f37500d7624ac2c109d3627b9c2c66">STUMPLESS_FILE_TARGET</a>, 
 <a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da5f2c898bbaa914210e9fce5386ce0c38">STUMPLESS_FUNCTION_TARGET</a>, 
-<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294dab6dc48a1c1e02b5b03f3921f56bc4f60">STUMPLESS_NETWORK_TARGET</a>, 
+<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294dab052cb80a91d37997fb018fd1e428543">STUMPLESS_JOURNALD_TARGET</a>, 
 <br />
-&#160;&#160;<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da5d9c1b9e9a74cf170998378dca074a7a">STUMPLESS_SOCKET_TARGET</a>, 
+&#160;&#160;<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294dab6dc48a1c1e02b5b03f3921f56bc4f60">STUMPLESS_NETWORK_TARGET</a>, 
+<a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da5d9c1b9e9a74cf170998378dca074a7a">STUMPLESS_SOCKET_TARGET</a>, 
 <a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294dacc3ad6700bbc8368919b91331d489f9f">STUMPLESS_STREAM_TARGET</a>, 
 <a class="el" href="target_8h.html#a896c8add2861787681f97c6addc2294da2c7fd7951f3e644e3dd2119bf857919a">STUMPLESS_WINDOWS_EVENT_LOG_TARGET</a>
 <br />
@@ -112,81 +123,38 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">stump</a> (const char *message,...)</td></tr>
-<tr class="memdesc:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#a2c81e0ae3ce13cd81ee7a464bfb1d751">More...</a><br /></td></tr>
-<tr class="separator:a2c81e0ae3ce13cd81ee7a464bfb1d751"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a020475261f73fba86caa8bb1f3d7f4df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df">stumplog</a> (int priority, const char *message,...)</td></tr>
-<tr class="memdesc:a020475261f73fba86caa8bb1f3d7f4df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target with the given priority.  <a href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df">More...</a><br /></td></tr>
-<tr class="separator:a020475261f73fba86caa8bb1f3d7f4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcedd25dc109cde0d3f61266f1a60b14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#abcedd25dc109cde0d3f61266f1a60b14">stumpless_add_entry</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry)</td></tr>
-<tr class="memdesc:abcedd25dc109cde0d3f61266f1a60b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry into a given target.  <a href="target_8h.html#abcedd25dc109cde0d3f61266f1a60b14">More...</a><br /></td></tr>
-<tr class="separator:abcedd25dc109cde0d3f61266f1a60b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af55fc1aefcedc8b207bbbcea7995bc0a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#af55fc1aefcedc8b207bbbcea7995bc0a">stumpless_add_log</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int priority, const char *message,...)</td></tr>
-<tr class="memdesc:af55fc1aefcedc8b207bbbcea7995bc0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a log message with a priority to a given target.  <a href="target_8h.html#af55fc1aefcedc8b207bbbcea7995bc0a">More...</a><br /></td></tr>
-<tr class="separator:af55fc1aefcedc8b207bbbcea7995bc0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6584fafc1a009fe10c7f92ec93f5bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a6a6584fafc1a009fe10c7f92ec93f5bc">stumpless_add_message</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const char *message,...)</td></tr>
-<tr class="memdesc:a6a6584fafc1a009fe10c7f92ec93f5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a message to a given target.  <a href="target_8h.html#a6a6584fafc1a009fe10c7f92ec93f5bc">More...</a><br /></td></tr>
-<tr class="separator:a6a6584fafc1a009fe10c7f92ec93f5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e8795c2d7d39ba562e0281a61abba7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a5e8795c2d7d39ba562e0281a61abba7f">stumpless_close_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a5e8795c2d7d39ba562e0281a61abba7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a target.  <a href="target_8h.html#a5e8795c2d7d39ba562e0281a61abba7f">More...</a><br /></td></tr>
-<tr class="separator:a5e8795c2d7d39ba562e0281a61abba7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed281765c55ba37fd374f605aaff2227"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aed281765c55ba37fd374f605aaff2227">stumpless_get_current_target</a> (void)</td></tr>
-<tr class="memdesc:aed281765c55ba37fd374f605aaff2227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current target.  <a href="target_8h.html#aed281765c55ba37fd374f605aaff2227">More...</a><br /></td></tr>
-<tr class="separator:aed281765c55ba37fd374f605aaff2227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc3fc2b615f09db71db71185a19a5135"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#adc3fc2b615f09db71db71185a19a5135">stumpless_get_default_facility</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:adc3fc2b615f09db71db71185a19a5135"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default facility of a target.  <a href="target_8h.html#adc3fc2b615f09db71db71185a19a5135">More...</a><br /></td></tr>
-<tr class="separator:adc3fc2b615f09db71db71185a19a5135"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a137ec6ade02951be14bff3572725f076"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a137ec6ade02951be14bff3572725f076">stumpless_get_default_target</a> (void)</td></tr>
-<tr class="memdesc:a137ec6ade02951be14bff3572725f076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default target.  <a href="target_8h.html#a137ec6ade02951be14bff3572725f076">More...</a><br /></td></tr>
-<tr class="separator:a137ec6ade02951be14bff3572725f076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aed16b4ce57d0bc6c489b0e67b7403a13">stumpless_get_option</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int option)</td></tr>
-<tr class="memdesc:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a given option of a target.  <a href="target_8h.html#aed16b4ce57d0bc6c489b0e67b7403a13">More...</a><br /></td></tr>
-<tr class="separator:aed16b4ce57d0bc6c489b0e67b7403a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61798fafd6055275c7948757f15597f6"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a61798fafd6055275c7948757f15597f6">stumpless_get_target_default_app_name</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a61798fafd6055275c7948757f15597f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default app name of the given target.  <a href="target_8h.html#a61798fafd6055275c7948757f15597f6">More...</a><br /></td></tr>
-<tr class="separator:a61798fafd6055275c7948757f15597f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2088153afde4d7fad973540ffc3de445"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a2088153afde4d7fad973540ffc3de445">stumpless_get_target_default_msgid</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a2088153afde4d7fad973540ffc3de445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default msgid of the given target.  <a href="target_8h.html#a2088153afde4d7fad973540ffc3de445">More...</a><br /></td></tr>
-<tr class="separator:a2088153afde4d7fad973540ffc3de445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa6060d6b5a97fb47af3f05a61b344a7a">stumpless_get_target_name</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the given target.  <a href="target_8h.html#aa6060d6b5a97fb47af3f05a61b344a7a">More...</a><br /></td></tr>
-<tr class="separator:aa6060d6b5a97fb47af3f05a61b344a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a070986b2efb20440e2ae1ba8b0b7de07"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a070986b2efb20440e2ae1ba8b0b7de07">stumpless_open_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a070986b2efb20440e2ae1ba8b0b7de07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a target that has already been created and configured.  <a href="target_8h.html#a070986b2efb20440e2ae1ba8b0b7de07">More...</a><br /></td></tr>
-<tr class="separator:a070986b2efb20440e2ae1ba8b0b7de07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33ab9d3dd3d55f39c1df420dbc8327d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4">stumpless_set_current_target</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:a33ab9d3dd3d55f39c1df420dbc8327d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the target used when one is not provided.  <a href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4">More...</a><br /></td></tr>
-<tr class="separator:a33ab9d3dd3d55f39c1df420dbc8327d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a198b05d8d77a483465024c0cf2a6f6a8"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a198b05d8d77a483465024c0cf2a6f6a8">stumpless_set_default_facility</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int default_facility)</td></tr>
-<tr class="memdesc:a198b05d8d77a483465024c0cf2a6f6a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default facility of a target.  <a href="target_8h.html#a198b05d8d77a483465024c0cf2a6f6a8">More...</a><br /></td></tr>
-<tr class="separator:a198b05d8d77a483465024c0cf2a6f6a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41a1ba9b5770efdce875e70c5e373fbd"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a41a1ba9b5770efdce875e70c5e373fbd">stumpless_set_option</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int option)</td></tr>
-<tr class="memdesc:a41a1ba9b5770efdce875e70c5e373fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an option on a target.  <a href="target_8h.html#a41a1ba9b5770efdce875e70c5e373fbd">More...</a><br /></td></tr>
-<tr class="separator:a41a1ba9b5770efdce875e70c5e373fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c37a8f9cb5a89da964df2c234e3e62a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a3c37a8f9cb5a89da964df2c234e3e62a">stumpless_set_target_default_app_name</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const char *app_name)</td></tr>
-<tr class="memdesc:a3c37a8f9cb5a89da964df2c234e3e62a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default app name for a given target.  <a href="target_8h.html#a3c37a8f9cb5a89da964df2c234e3e62a">More...</a><br /></td></tr>
-<tr class="separator:a3c37a8f9cb5a89da964df2c234e3e62a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a699f5bbb114849f6c72582adf140cd6b"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a699f5bbb114849f6c72582adf140cd6b">stumpless_set_target_default_msgid</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const char *msgid)</td></tr>
-<tr class="memdesc:a699f5bbb114849f6c72582adf140cd6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default msgid for a given target.  <a href="target_8h.html#a699f5bbb114849f6c72582adf140cd6b">More...</a><br /></td></tr>
-<tr class="separator:a699f5bbb114849f6c72582adf140cd6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab28ed424f93212dd72697ae757502e96"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#ab28ed424f93212dd72697ae757502e96">stumpless_target_is_open</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
-<tr class="memdesc:ab28ed424f93212dd72697ae757502e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks to see if the given target is open.  <a href="target_8h.html#ab28ed424f93212dd72697ae757502e96">More...</a><br /></td></tr>
-<tr class="separator:ab28ed424f93212dd72697ae757502e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#adeccfe0bfd8cad1e82eef3e8806bb191">stumpless_unset_option</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int option)</td></tr>
-<tr class="memdesc:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets an option on a target.  <a href="target_8h.html#adeccfe0bfd8cad1e82eef3e8806bb191">More...</a><br /></td></tr>
-<tr class="separator:adeccfe0bfd8cad1e82eef3e8806bb191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02f3968128fa180088368881e96074bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a02f3968128fa180088368881e96074bb">vstump</a> (const char *message, va_list subs)</td></tr>
-<tr class="memdesc:a02f3968128fa180088368881e96074bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target.  <a href="target_8h.html#a02f3968128fa180088368881e96074bb">More...</a><br /></td></tr>
-<tr class="separator:a02f3968128fa180088368881e96074bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa3ad35a684b4d4cdcac9eefa36c459c5">vstumplog</a> (int priority, const char *message, va_list subs)</td></tr>
-<tr class="memdesc:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a message to the default target with the given priority.  <a href="target_8h.html#aa3ad35a684b4d4cdcac9eefa36c459c5">More...</a><br /></td></tr>
-<tr class="separator:aa3ad35a684b4d4cdcac9eefa36c459c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4115e8973baebd2124dad14dd1be36b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a4115e8973baebd2124dad14dd1be36b2">vstumpless_add_log</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, int priority, const char *message, va_list subs)</td></tr>
-<tr class="memdesc:a4115e8973baebd2124dad14dd1be36b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a log message with a priority to a given target.  <a href="target_8h.html#a4115e8973baebd2124dad14dd1be36b2">More...</a><br /></td></tr>
-<tr class="separator:a4115e8973baebd2124dad14dd1be36b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c6bbad60db98797c2ae3b178a90d4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa6c6bbad60db98797c2ae3b178a90d4b">vstumpless_add_message</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const char *message, va_list subs)</td></tr>
-<tr class="memdesc:aa6c6bbad60db98797c2ae3b178a90d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a message to a given target.  <a href="target_8h.html#aa6c6bbad60db98797c2ae3b178a90d4b">More...</a><br /></td></tr>
-<tr class="separator:aa6c6bbad60db98797c2ae3b178a90d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af551565dff20d396955e1154544d53e3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#af551565dff20d396955e1154544d53e3">__attribute__</a> ((visibility(&quot;default&quot;))) int stumpless_add_entry(struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target</td></tr>
+<tr class="memdesc:af551565dff20d396955e1154544d53e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an entry into a given target.  <a href="target_8h.html#af551565dff20d396955e1154544d53e3">More...</a><br /></td></tr>
+<tr class="separator:af551565dff20d396955e1154544d53e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a22871e414a8307a6a7fb3c16bd8be352"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a22871e414a8307a6a7fb3c16bd8be352">entry</a></td></tr>
+<tr class="separator:a22871e414a8307a6a7fb3c16bd8be352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec9ce2df15222151ad66fcb1d74eb9f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#acec9ce2df15222151ad66fcb1d74eb9f">priority</a></td></tr>
+<tr class="separator:acec9ce2df15222151ad66fcb1d74eb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0c6a146efb3d1ede27ef1d929c8a1e9"><td class="memItemLeft" align="right" valign="top">int const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#aa0c6a146efb3d1ede27ef1d929c8a1e9">message</a></td></tr>
+<tr class="separator:aa0c6a146efb3d1ede27ef1d929c8a1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96613d07df4205a377ad9cb38b3a9d27"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a96613d07df4205a377ad9cb38b3a9d27">option</a></td></tr>
+<tr class="separator:a96613d07df4205a377ad9cb38b3a9d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abff0a45edf3a17ac50d50d92e0c42c5c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#abff0a45edf3a17ac50d50d92e0c42c5c">default_facility</a></td></tr>
+<tr class="separator:abff0a45edf3a17ac50d50d92e0c42c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf1ea5e87740f6cff319842196971cf"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a7cf1ea5e87740f6cff319842196971cf">app_name</a></td></tr>
+<tr class="separator:a7cf1ea5e87740f6cff319842196971cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830ed8121b1621a775c904279677c4f4"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a830ed8121b1621a775c904279677c4f4">msgid</a></td></tr>
+<tr class="separator:a830ed8121b1621a775c904279677c4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cc1e878b91974d0f3c077ff30ec0629"><td class="memItemLeft" align="right" valign="top"><a class="el" href="target_8h.html#a0a67fb2a040cb61aece233f8a1789064">stumpless_filter_func_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a6cc1e878b91974d0f3c077ff30ec0629">filter</a></td></tr>
+<tr class="separator:a6cc1e878b91974d0f3c077ff30ec0629"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab77cc972f3ee899689ba053015472ccd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#ab77cc972f3ee899689ba053015472ccd">mask</a></td></tr>
+<tr class="separator:ab77cc972f3ee899689ba053015472ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0baa3ccdd9d2a6adf03b72e2bea5789"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#af0baa3ccdd9d2a6adf03b72e2bea5789">file</a></td></tr>
+<tr class="separator:af0baa3ccdd9d2a6adf03b72e2bea5789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f50345dda5cfb559216163acd05f70"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> const char int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#ab6f50345dda5cfb559216163acd05f70">line</a></td></tr>
+<tr class="separator:ab6f50345dda5cfb559216163acd05f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad623180f819998483b1a07c5c3765ec8"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> const char int const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#ad623180f819998483b1a07c5c3765ec8">func</a></td></tr>
+<tr class="separator:ad623180f819998483b1a07c5c3765ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82e4329f460e0b96d36050b6f64302c3"><td class="memItemLeft" align="right" valign="top">int const char va_list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="target_8h.html#a82e4329f460e0b96d36050b6f64302c3">subs</a></td></tr>
+<tr class="separator:a82e4329f460e0b96d36050b6f64302c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>General types and functions for working with all targets. </p>
@@ -223,6 +191,34 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a0a67fb2a040cb61aece233f8a1789064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a67fb2a040cb61aece233f8a1789064">&#9670;&nbsp;</a></span>stumpless_filter_func_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool( * stumpless_filter_func_t) (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *<a class="el" href="target_8h.html#a22871e414a8307a6a7fb3c16bd8be352">entry</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A function that determines whether a given entry should be sent to a given target. </p>
+<p>The two parameters are guaranteed not to be NULL whenever a filter function is called by the library itself, and so NULL checks are not necessary.</p>
+<p>Note that this function does not actually add the entry to the target, but only evaluates whether or not it should be sent.</p>
+<p>The safety attributes (thread, async, async-cancel) of a filter function come into play whenever an entry is sent to a target via stumpless_add_entry or another function that results in a call to this. If the function is not safe in conditions where the add function is, the target will need to be treated as though it is also unsafe in these conditions when entries are passed to it.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target that the entry will be sent to if it passes. Will not be NULL when called during logging.</td></tr>
+    <tr><td class="paramname">entry</td><td>The entry that is being submitted to the target. Will not be NULL when called during logging.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the entry should be sent to the target, false if not. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a896c8add2861787681f97c6addc2294d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a896c8add2861787681f97c6addc2294d">&#9670;&nbsp;</a></span>stumpless_target_type</h2>
@@ -244,6 +240,8 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a896c8add2861787681f97c6addc2294da5f2c898bbaa914210e9fce5386ce0c38"></a>STUMPLESS_FUNCTION_TARGET&#160;</td><td class="fielddoc"><p>call a custom function </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a896c8add2861787681f97c6addc2294dab052cb80a91d37997fb018fd1e428543"></a>STUMPLESS_JOURNALD_TARGET&#160;</td><td class="fielddoc"><p>send to the systemd journald service </p>
+</td></tr>
 <tr><td class="fieldname"><a id="a896c8add2861787681f97c6addc2294dab6dc48a1c1e02b5b03f3921f56bc4f60"></a>STUMPLESS_NETWORK_TARGET&#160;</td><td class="fielddoc"><p>send to a network endpoint </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a896c8add2861787681f97c6addc2294da5d9c1b9e9a74cf170998378dca074a7a"></a>STUMPLESS_SOCKET_TARGET&#160;</td><td class="fielddoc"><p>write to a Unix socket </p>
@@ -257,74 +255,50 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a2c81e0ae3ce13cd81ee7a464bfb1d751"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c81e0ae3ce13cd81ee7a464bfb1d751">&#9670;&nbsp;</a></span>stump()</h2>
+<a id="af551565dff20d396955e1154544d53e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af551565dff20d396955e1154544d53e3">&#9670;&nbsp;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int stump </td>
+          <td class="memname">__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">(visibility(&quot;default&quot;))&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target. </p>
-<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
-<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
-<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="abcedd25dc109cde0d3f61266f1a60b14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcedd25dc109cde0d3f61266f1a60b14">&#9670;&nbsp;</a></span>stumpless_add_entry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless_add_entry </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *&#160;</td>
-          <td class="paramname"><em>entry</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Adds an entry into a given target. </p>
+<p>Closes a file target.</p>
+<p>Unsets an option on a target.</p>
+<p>Adds a message to a given target, along with the file, line, and function information specified in a structured data element.</p>
+<p>Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element.</p>
+<p>Checks to see if the given target is open.</p>
+<p>Sets the log mask of a target.</p>
+<p>Sets the filter used to determine whether entries should be logged by a given target.</p>
+<p>Sets the default msgid for a given target.</p>
+<p>Sets the default app name for a given target.</p>
+<p>Sets an option on a target.</p>
+<p>Sets the default facility of a target.</p>
+<p>Sets the target used when one is not provided.</p>
+<p>Sets the console stream to write logs to.</p>
+<p>Opens a target that has already been created and configured.</p>
+<p>Returns the name of the given target.</p>
+<p>Gets the log mask of a target.</p>
+<p>Returns the current filter used by the given target to determine if entries should be allowed through it.</p>
+<p>Returns the default msgid of the given target.</p>
+<p>Returns the default app name of the given target.</p>
+<p>Gets a given option of a target.</p>
+<p>Gets the default target.</p>
+<p>Gets the default facility of a target.</p>
+<p>Gets the current target.</p>
+<p>Closes a target.</p>
+<p>Adds a string message to a given target.</p>
+<p>Adds a message to a given target.</p>
+<p>Adds a log message with a priority to a given target.</p>
 <p>This is the primary logging function of stumpless; all other logging functions call this one after performing any setup specific to themselves.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access.</p>
@@ -336,49 +310,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="af55fc1aefcedc8b207bbbcea7995bc0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af55fc1aefcedc8b207bbbcea7995bc0a">&#9670;&nbsp;</a></span>stumpless_add_log()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless_add_log </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a log message with a priority to a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards. This means that it should not be a user-controlled value under any circumstances. If you need a safer alternative without the risks of format strings, use <code>stumpless_add_log_str</code> instead.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
@@ -386,137 +319,67 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
     <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>. This must be a valid UTF-8 string in shortest form.</td></tr>
     <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a6a6584fafc1a009fe10c7f92ec93f5bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a6584fafc1a009fe10c7f92ec93f5bc">&#9670;&nbsp;</a></span>stumpless_add_message()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless_add_message </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a message to a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log. This must be a valid UTF-8 string in shortest form.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards. This means that it should not be a user-controlled value under any circumstances. If you need a safer alternative without the risks of format strings, use <code>stumpless_add_message_str</code> instead.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>. This may be NULL, in which case an event with no message is logged.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>. This may be NULL, in which case an event with no message is logged. This must be a valid UTF-8 string in shortest form.</td></tr>
     <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a5e8795c2d7d39ba562e0281a61abba7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e8795c2d7d39ba562e0281a61abba7f">&#9670;&nbsp;</a></span>stumpless_close_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_close_target </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Closes a target. </p>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log. This may be NULL, in which case an event with no message is logged. This must be a valid UTF-8 string in shortest form.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
 <p>This function can be used when you'd like to avoid checking the type of the target and then calling the appropriate close function. Note that use of this doesn't actually avoid the check - it just does the check on your behalf. It is more efficient to call the specific close function if you know the type of the target.</p>
 <p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target</td><td>The target to close. </td></tr>
+    <tr><td class="paramname">target</td><td>The target to close.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="aed281765c55ba37fd374f605aaff2227"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed281765c55ba37fd374f605aaff2227">&#9670;&nbsp;</a></span>stumpless_get_current_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_get_current_target </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the current target. </p>
-<p>The current target is either the last target that was opened, set by a call to <a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4" title="Sets the target used when one is not provided.">stumpless_set_current_target()</a>, or the default target if neither of the former exists.</p>
+<p>The current target is either the last target that was opened, set by a call to stumpless_set_current_target(), or the default target if neither of the former exists.</p>
 <p>If the target that is designated as the current target is closed, then the current target will be reset to the default target until another target is opened.</p>
 <p>Be careful not to confuse this target with the default target, which is the target used when no suitable current target exists. While these may be the same in some cases, they will not always be.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
 <p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
-<dl class="section return"><dt>Returns</dt><dd>The current target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="adc3fc2b615f09db71db71185a19a5135"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc3fc2b615f09db71db71185a19a5135">&#9670;&nbsp;</a></span>stumpless_get_default_facility()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless_get_default_facility </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the default facility of a target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -526,65 +389,15 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The default facility if no error is encountered. If an error is encountered, then -1 is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a137ec6ade02951be14bff3572725f076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a137ec6ade02951be14bff3572725f076">&#9670;&nbsp;</a></span>stumpless_get_default_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_get_default_target </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the default target. </p>
-<p>The default target is opened when a logging call is made with no target open. It will not be opened until either this happens or a call to this function is made. It will not be closed until a call to <a class="el" href="memory_8h.html#a290757bff049c42f1f7d3cb387f04072" title="Closes the default target if it has been opened, frees all memory allocated internally,...">stumpless_free_all()</a> is made.</p>
-<p>Be careful not to confuse this target with the current target, which is the last target opened or set via <a class="el" href="target_8h.html#a33ab9d3dd3d55f39c1df420dbc8327d4" title="Sets the target used when one is not provided.">stumpless_set_current_target()</a>. While these will return the same target in some cases, such as if they are called before opening any targets, they are not equivalent.</p>
+<dl class="section return"><dt>Returns</dt><dd>The default facility if no error is encountered. If an error is encountered, then -1 is returned and an error code is set appropriately.</dd></dl>
+<p>The default target is opened when a logging call is made with no target open. It will not be opened until either this happens or a call to this function is made. It will not be closed until a call to stumpless_free_all() is made. It should not be closed manually outside of the free all function.</p>
+<p>Be careful not to confuse this target with the current target, which is the last target opened or set via stumpless_set_current_target(). While these will return the same target in some cases, such as if they are called before opening any targets, they are not equivalent.</p>
 <p>The default target type will change depending on the configuration of the system configuration. If Windows Event Log targets are supported, then the default target will log to an event log named <code>STUMPLESS_DEFAULT_TARGET_NAME</code>. If Windows Event Log targets are not supported and socket targets are, then the default target will point at the socket named in STUMPLESS_DEFAULT_SOCKET, which will be /var/run/syslog if it existed at build time, or else /dev/log. If neither of these target types are supported then a file target is opened to log to the file named in <code>STUMPLESS_DEFAULT_FILE</code>.</p>
 <p>The default target will not have any options set, and will have a default facility of <code>STUMPLESS_FACILITY_USER</code>. These settings may be modified by calling the appropriate modifiers on the target after retrieving it with this function.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target.</p>
 <p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions.</p>
-<dl class="section return"><dt>Returns</dt><dd>The default target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aed16b4ce57d0bc6c489b0e67b7403a13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed16b4ce57d0bc6c489b0e67b7403a13">&#9670;&nbsp;</a></span>stumpless_get_option()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int stumpless_get_option </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>option</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets a given option of a target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The default target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>While the returned value is the option if it is set, code can also simply check the truth value of the return to see if the provided option is set.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
@@ -596,27 +409,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The option if it is set on the target. If the option is not set, then zero is returned. If an error is encountered, then zero is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a61798fafd6055275c7948757f15597f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61798fafd6055275c7948757f15597f6">&#9670;&nbsp;</a></span>stumpless_get_target_default_app_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_target_default_app_name </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the default app name of the given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The option if it is set on the target. If the option is not set, then zero is returned. If an error is encountered, then zero is returned and an error code is set appropriately.</dd></dl>
 <p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
@@ -628,27 +421,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The default app name of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a2088153afde4d7fad973540ffc3de445"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2088153afde4d7fad973540ffc3de445">&#9670;&nbsp;</a></span>stumpless_get_target_default_msgid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_target_default_msgid </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the default msgid of the given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The default app name of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
@@ -660,27 +433,31 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The default msgid of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aa6060d6b5a97fb47af3f05a61b344a7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6060d6b5a97fb47af3f05a61b344a7a">&#9670;&nbsp;</a></span>stumpless_get_target_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char* stumpless_get_target_name </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the name of the given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The default msgid of the target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
+<p>Note that NULL is a valid return value from this function, indicating that the target does not currently have a filter set. In order to detect an error condition, use the <code>stumpless_has_error</code> function instead.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the filter from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The filter function in use by the target, or NULL if an error is encountered. If an error is encountered, an error code is set appropriately.</dd></dl>
+<p>The mask is a bit field of severities that this target will allow if the default mask-based filter is in use. These can be formed and checked using the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and combining them using bitwise or operations.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the mask from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The current mask of the target. If an error is encountered, then zero is returned and an error code is set appropriately.</dd></dl>
 <p>The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate the read of the target with other accesses and modifications.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result.</p>
@@ -692,27 +469,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The name of target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a070986b2efb20440e2ae1ba8b0b7de07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a070986b2efb20440e2ae1ba8b0b7de07">&#9670;&nbsp;</a></span>stumpless_open_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_open_target </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Opens a target that has already been created and configured. </p>
+<dl class="section return"><dt>Returns</dt><dd>The name of target, if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>Targets that have been created using the <code>stumpless_new_*_target</code> family of functions need to be opened once they have been configured with all of the desired parameters, or if a previous change caused them to pause.</p>
 <p>If the provided target has not had all mandatory settings configured or some other error is encountered, then the operation will fail and the target will remain in a paused state.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate accesses and updates to the current target.</p>
@@ -724,67 +481,28 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The opened target if it was opened successfully (which will be equal to the target argument). If an error was encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a33ab9d3dd3d55f39c1df420dbc8327d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33ab9d3dd3d55f39c1df420dbc8327d4">&#9670;&nbsp;</a></span>stumpless_set_current_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumpless_set_current_target </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the target used when one is not provided. </p>
-<p>Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened. The current target is used by functions like <a class="el" href="target_8h.html#a020475261f73fba86caa8bb1f3d7f4df" title="Logs a message to the default target with the given priority.">stumplog()</a> and stumpless() where a target is not explicitly provided to the call.</p>
+<dl class="section return"><dt>Returns</dt><dd>The opened target if it was opened successfully (which will be equal to the target argument). If an error was encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
+<p>This will be stdout by default, but can be set to any stream. If it is set to NULL then console messages will not be printed.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic variables are used to store and retrieve the console stream.</p>
+<p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers.</p>
+<p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be ansynchronously cancelled.</p>
+<dl class="section since"><dt>Since</dt><dd>v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>The stream to write logs to. If this is NULL then the messages intended for the console stream will be ignored.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened. The current target is used by functions like stumplog() and stumpless() where a target is not explicitly provided to the call.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Atomic operations are used to work with the default target.</p>
 <p><b>Async Signal Safety: AS-Safe</b> This function is safe to call from signal handlers as it only consists of an atomic read.</p>
 <p><b>Async Cancel Safety: AC-Safe</b> This function is safe to call from threads that may be asynchronously cancelled, as it only consists of an atomic read.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target</td><td>The target to use as the current target. </td></tr>
+    <tr><td class="paramname">target</td><td>The target to use as the current target.</td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a198b05d8d77a483465024c0cf2a6f6a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a198b05d8d77a483465024c0cf2a6f6a8">&#9670;&nbsp;</a></span>stumpless_set_default_facility()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_set_default_facility </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>default_facility</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the default facility of a target. </p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -795,37 +513,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a41a1ba9b5770efdce875e70c5e373fbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41a1ba9b5770efdce875e70c5e373fbd">&#9670;&nbsp;</a></span>stumpless_set_option()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_set_option </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>option</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets an option on a target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -836,37 +524,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a3c37a8f9cb5a89da964df2c234e3e62a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c37a8f9cb5a89da964df2c234e3e62a">&#9670;&nbsp;</a></span>stumpless_set_target_default_app_name()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_set_target_default_app_name </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>app_name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the default app name for a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:app_name</b> This function is thread safe, of course assuming that the name is not changed by any other threads during exeuction. A mutex is used to coordinate changes to the target while it is being modified.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
@@ -877,68 +535,43 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a699f5bbb114849f6c72582adf140cd6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a699f5bbb114849f6c72582adf140cd6b">&#9670;&nbsp;</a></span>stumpless_set_target_default_msgid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_set_target_default_msgid </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>msgid</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the default msgid for a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe race:msgid</b> This function is thread safe, of course assuming that the msgid is not changed by any other threads during exeuction. A mutex is used to coordinate changes to the target while it is being modified.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
-    <tr><td class="paramname">msgid</td><td>The new default msgid, as a NULL-terminated string.</td></tr>
+    <tr><td class="paramname">msgid</td><td>The new default msgid, as a NULL-terminated string. The string must be in the ASCII printable range 33 &lt;= character &lt;= 126 as specified in RFC5424.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="ab28ed424f93212dd72697ae757502e96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab28ed424f93212dd72697ae757502e96">&#9670;&nbsp;</a></span>stumpless_target_is_open()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_target_is_open </td>
-          <td>(</td>
-          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks to see if the given target is open. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to set the filter function for.</td></tr>
+    <tr><td class="paramname">filter</td><td>The filter to be used by the target. This can be NULL if all entries should be logged by the target with no filtering.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
+<p>The mask is a bit field of severities that this target will allow if the default mask-based filter is in use. These can be formed and checked using the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and combining them using bitwise or operations.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to modify.</td></tr>
+    <tr><td class="paramname">mask</td><td>The mask to use with the target.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p>For targets that are opened with a single <code>open</code> function call, they will likely be considered open as long as they are non-NULL, as the target creation would otherwise fail before it could be opened. Targets are be considered in a paused state if they were created but not opened yet, for example with <code>stumpless_new_network_target</code> as opposed to <code>stumpless_open_network_target</code>. Targets may also be paused if a settings change has been made that could not be validated, such as changing the port on a TCP network target to one that does not respond on the server.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being accessed.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
@@ -949,37 +582,92 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The target if it is currently open, and NULL if not. </dd></dl>
-
-</div>
-</div>
-<a id="adeccfe0bfd8cad1e82eef3e8806bb191"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adeccfe0bfd8cad1e82eef3e8806bb191">&#9670;&nbsp;</a></span>stumpless_unset_option()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a>* stumpless_unset_option </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>option</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Unsets an option on a target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The target if it is currently open, and NULL if not.</dd></dl>
+<p>The entry has a structured data element added to it with the file, line, and function information specified.</p>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">entry</td><td>The entry to send to the target.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the entry should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the entry should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the entry should be tied to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p>The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards. This means that it should not be a user-controlled value under any circumstances. If you need a safer alternative without the risks of format strings, use <code>stumpless_trace_log_str</code> instead.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>. This must be a valid UTF-8 string in shortest form.</td></tr>
+    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log. This must be a valid UTF-8 string in shortest form.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p>The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards. This means that it should not be a user-controlled value under any circumstances. If you need a safer alternative without the risks of format strings, use <code>stumpless_trace_message_str</code> instead.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>. This may be NULL, in which case an event with no message is logged. This must be a valid UTF-8 string in shortest form.</td></tr>
+    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="section since"><dt>Since</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log. This may be NULL, in which case an event with no message is logged. This must be a valid UTF-8 string in shortest form.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being modified.</p>
 <p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked.</p>
@@ -990,139 +678,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a020475261f73fba86caa8bb1f3d7f4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a020475261f73fba86caa8bb1f3d7f4df">&#9670;&nbsp;</a></span>stumplog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void stumplog </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target with the given priority. </p>
-<p>This function can serve as a replacement for the traditional <code>syslog</code> function.</p>
-<p>For detailed information on what the default target will be for a given system, check the <a class="el" href="target_8h.html#a137ec6ade02951be14bff3572725f076" title="Gets the default target.">stumpless_get_default_target()</a> function documentation.</p>
-<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
-<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
-<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">...</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a02f3968128fa180088368881e96074bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02f3968128fa180088368881e96074bb">&#9670;&nbsp;</a></span>vstump()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vstump </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">va_list&#160;</td>
-          <td class="paramname"><em>subs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target. </p>
-<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
-<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
-<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="a4115e8973baebd2124dad14dd1be36b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4115e8973baebd2124dad14dd1be36b2">&#9670;&nbsp;</a></span>vstumpless_add_log()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vstumpless_add_log </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">va_list&#160;</td>
-          <td class="paramname"><em>subs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a log message with a priority to a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
@@ -1135,43 +691,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aa6c6bbad60db98797c2ae3b178a90d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6c6bbad60db98797c2ae3b178a90d4b">&#9670;&nbsp;</a></span>vstumpless_add_message()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vstumpless_add_message </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">va_list&#160;</td>
-          <td class="paramname"><em>subs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Adds a message to a given target. </p>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
@@ -1183,63 +703,230 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. </dd></dl>
-
-</div>
-</div>
-<a id="aa3ad35a684b4d4cdcac9eefa36c459c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3ad35a684b4d4cdcac9eefa36c459c5">&#9670;&nbsp;</a></span>vstumplog()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vstumplog </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">va_list&#160;</td>
-          <td class="paramname"><em>subs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Logs a message to the default target with the given priority. </p>
-<p>Can serve as a replacement for the traditional <code>vsyslog</code> function.</p>
-<p>For detailed information on what the default target will be for a given system, check the <a class="el" href="target_8h.html#a137ec6ade02951be14bff3572725f076" title="Gets the default target.">stumpless_get_default_target()</a> function documentation.</p>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
 <p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
 <p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
 <p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
     <tr><td class="paramname">priority</td><td>The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
     <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
-    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it. </td></tr>
+    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned.</dd></dl>
+<p>The trace information is added in an element named <code>trace</code> with params named <code>file</code>, <code>line</code>, and <code>function</code> for the respective pieces of information.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the <code>stumpless/target</code> include folder).</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to send the message to.</td></tr>
+    <tr><td class="paramname">file</td><td>The name of the source file the message should be tied to.</td></tr>
+    <tr><td class="paramname">line</td><td>The line in the source file that the message should be tied to.</td></tr>
+    <tr><td class="paramname">func</td><td>The name of the function that the message should be tied to.</td></tr>
+    <tr><td class="paramname">message</td><td>The message to log, optionally containing any format specifiers valid in <code>printf</code>.</td></tr>
+    <tr><td class="paramname">subs</td><td>Substitutions for any format specifiers provided in message. The number of substitutions provided must exactly match the number of specifiers given. This list must be started via <code>va_start</code> before being used, and <code>va_end</code> should be called afterwards, as this function does not call it.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A non-negative value if no error is encountered. If an error is encountered, then a negative value is returned and an error code is set appropriately. If the entry was rejected by the target's filter, then 0 is returned. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a7cf1ea5e87740f6cff319842196971cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cf1ea5e87740f6cff319842196971cf">&#9670;&nbsp;</a></span>app_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* app_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abff0a45edf3a17ac50d50d92e0c42c5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abff0a45edf3a17ac50d50d92e0c42c5c">&#9670;&nbsp;</a></span>default_facility</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int default_facility</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a22871e414a8307a6a7fb3c16bd8be352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22871e414a8307a6a7fb3c16bd8be352">&#9670;&nbsp;</a></span>entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a>* entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af0baa3ccdd9d2a6adf03b72e2bea5789"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0baa3ccdd9d2a6adf03b72e2bea5789">&#9670;&nbsp;</a></span>file</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* file</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6cc1e878b91974d0f3c077ff30ec0629"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cc1e878b91974d0f3c077ff30ec0629">&#9670;&nbsp;</a></span>filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="target_8h.html#a0a67fb2a040cb61aece233f8a1789064">stumpless_filter_func_t</a> filter</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad623180f819998483b1a07c5c3765ec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad623180f819998483b1a07c5c3765ec8">&#9670;&nbsp;</a></span>func</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char int const char* func</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab6f50345dda5cfb559216163acd05f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6f50345dda5cfb559216163acd05f70">&#9670;&nbsp;</a></span>line</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char int line</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab77cc972f3ee899689ba053015472ccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab77cc972f3ee899689ba053015472ccd">&#9670;&nbsp;</a></span>mask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int mask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0c6a146efb3d1ede27ef1d929c8a1e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c6a146efb3d1ede27ef1d929c8a1e9">&#9670;&nbsp;</a></span>message</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char int const char const char* message</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a830ed8121b1621a775c904279677c4f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a830ed8121b1621a775c904279677c4f4">&#9670;&nbsp;</a></span>msgid</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* msgid</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96613d07df4205a377ad9cb38b3a9d27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96613d07df4205a377ad9cb38b3a9d27">&#9670;&nbsp;</a></span>option</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int option</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acec9ce2df15222151ad66fcb1d74eb9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec9ce2df15222151ad66fcb1d74eb9f">&#9670;&nbsp;</a></span>priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int priority</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a82e4329f460e0b96d36050b6f64302c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82e4329f460e0b96d36050b6f64302c3">&#9670;&nbsp;</a></span>subs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char int const char const char va_list subs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:44 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>

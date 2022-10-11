@@ -79,20 +79,59 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a1e0746c3ebd33334d8a9ad0906f6a4da">name</a></td></tr>
 <tr class="memdesc:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the parameter.  <a href="structstumpless__param.html#a1e0746c3ebd33334d8a9ad0906f6a4da">More...</a><br /></td></tr>
 <tr class="separator:a1e0746c3ebd33334d8a9ad0906f6a4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a2b4ea1c374f35edd5cb0cbcef1e10a14">name_length</a></td></tr>
+<tr class="memitem:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a2b4ea1c374f35edd5cb0cbcef1e10a14">name_length</a></td></tr>
 <tr class="memdesc:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of characters in name (not including the NULL character).  <a href="structstumpless__param.html#a2b4ea1c374f35edd5cb0cbcef1e10a14">More...</a><br /></td></tr>
 <tr class="separator:a2b4ea1c374f35edd5cb0cbcef1e10a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a515d92ed0193197635cea91735e0d7b0"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#a515d92ed0193197635cea91735e0d7b0">value</a></td></tr>
 <tr class="memdesc:a515d92ed0193197635cea91735e0d7b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value may be any UTF-8 string.  <a href="structstumpless__param.html#a515d92ed0193197635cea91735e0d7b0">More...</a><br /></td></tr>
 <tr class="separator:a515d92ed0193197635cea91735e0d7b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb5e0d5998b20c5d1180ad9d27400beb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#acb5e0d5998b20c5d1180ad9d27400beb">value_length</a></td></tr>
+<tr class="memitem:acb5e0d5998b20c5d1180ad9d27400beb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#acb5e0d5998b20c5d1180ad9d27400beb">value_length</a></td></tr>
 <tr class="memdesc:acb5e0d5998b20c5d1180ad9d27400beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of characters in value (not including the NULL character).  <a href="structstumpless__param.html#acb5e0d5998b20c5d1180ad9d27400beb">More...</a><br /></td></tr>
 <tr class="separator:acb5e0d5998b20c5d1180ad9d27400beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca01fd74412be41f74678587e6ea4de4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="param_8h.html#ae7e27acffda96b10a846445b17251892">stumpless_param_namer_func_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#aca01fd74412be41f74678587e6ea4de4">get_journald_name</a></td></tr>
+<tr class="memdesc:aca01fd74412be41f74678587e6ea4de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name to use for the journald field corresponding to this param.  <a href="structstumpless__param.html#aca01fd74412be41f74678587e6ea4de4">More...</a><br /></td></tr>
+<tr class="separator:aca01fd74412be41f74678587e6ea4de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef8ed12bfa10199ea55ca2d0e5bdaa5"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstumpless__param.html#abef8ed12bfa10199ea55ca2d0e5bdaa5">mutex</a></td></tr>
+<tr class="memdesc:abef8ed12bfa10199ea55ca2d0e5bdaa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to a mutex which protects all target fields.  <a href="structstumpless__param.html#abef8ed12bfa10199ea55ca2d0e5bdaa5">More...</a><br /></td></tr>
+<tr class="separator:abef8ed12bfa10199ea55ca2d0e5bdaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A parameter within a structured data element. </p>
 <p>A parameter must have both a name and a value in compliance with RFC 5424. </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a id="aca01fd74412be41f74678587e6ea4de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca01fd74412be41f74678587e6ea4de4">&#9670;&nbsp;</a></span>get_journald_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="param_8h.html#ae7e27acffda96b10a846445b17251892">stumpless_param_namer_func_t</a> stumpless_param::get_journald_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the name to use for the journald field corresponding to this param. </p>
+
+</div>
+</div>
+<a id="abef8ed12bfa10199ea55ca2d0e5bdaa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abef8ed12bfa10199ea55ca2d0e5bdaa5">&#9670;&nbsp;</a></span>mutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* stumpless_param::mutex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A pointer to a mutex which protects all target fields. </p>
+<p>The exact type of this mutex depends on the build. </p>
+
+</div>
+</div>
 <a id="a1e0746c3ebd33334d8a9ad0906f6a4da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1e0746c3ebd33334d8a9ad0906f6a4da">&#9670;&nbsp;</a></span>name</h2>
 
@@ -119,7 +158,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t stumpless_param::name_length</td>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> stumpless_param::name_length</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -154,7 +193,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t stumpless_param::value_length</td>
+          <td class="memname"><a class="el" href="memory_8h.html#a1de1ad716e56455dd12745e3f014b642">size_t</a> stumpless_param::value_length</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -169,7 +208,7 @@ Data Fields</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 21:42:40 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2022 21:47:45 for stumpless by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.19
 </small></address>
