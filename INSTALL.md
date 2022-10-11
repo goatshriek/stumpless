@@ -1,7 +1,7 @@
 # Installing a Stumpless package
 If you just want to use stumpless and aren't looking to modify or otherwise
 develop it, the easiest path is to use one of the release packages. These are
-available for a few common platforms, and are attached to each
+available for a few common platforms and are attached to each
 [release](https://github.com/goatshriek/stumpless/releases) of stumpless. If you
 need a package format that is not available here, please submit an issue with a
 request for the format and the project team will see if this can be added.
@@ -23,7 +23,7 @@ dpkg -i stumpless-2.0.0-amd64.deb
 
 ## RPM Package
 A `.rpm` package is provided for use in Red Hat Linux environments. It can be
-installed in the traditional way as well:
+installed in the traditionally as well:
 
 ```sh
 # again, make sure you have the correct permissions
@@ -33,7 +33,7 @@ rpm -i stumpless-2.0.0-x86_64.rpm
 
 ## Generic Shell Installer
 CMake generates a shell script that can be used to install the library on
-systems lacking a more traditional package manager, for example Cygwin. Simply
+systems lacking a more traditional package manager, for example, Cygwin. Simply
 execute the script from the prefix where you want to install the library. The
 script is a self-extracting TGZ archive that provides the headers and library
 files.
@@ -47,7 +47,7 @@ cd /usr
 
 
 ## Windows Installer
-A simple `.msi` installer is provided that puts the DLL, `.lib`, and include
+A simple `.msi` installer is provided that puts the DLL, `.lib`, and includes
 headers into a Program Files folder. Note that you may need to update search
 paths to locate these resources after installation, as the installer does not
 currently handle this.
@@ -61,11 +61,11 @@ can use this one to install it at the same time as the base library.
 
 
 # Building Stumpless from the source
-In order to compile Stumpless you will at a bare minimum cmake and a compatible
+To compile Stumpless, you will at a bare minimum cmake and a compatible
 build system such as the GNU toolchain or Microsoft Visual Studio. While the
-source itself can be downloaded using a number of tools (wget, a browser, etc.)
+source itself can be downloaded using several tools (wget, a browser, etc.)
 git is the recommended way to do this if you need to get specific release tags,
-branches, or make any changes yourself.
+and branches, or make any changes yourself.
 
 
 ## Prepping your System
@@ -80,9 +80,9 @@ tools (for a GNU toolchain) with something like the following:
 sudo apt-get install git cmake make gcc g++ doxygen
 ```
 
-Cygwin lacks a package manager in the environment itself, requiring packges to
+Cygwin lacks a package manager in the environment itself, requiring packages to
 be installed using the setup script. You can install the needed packages in the
-GUI, or if you want to just do it via command line, you can do something like
+GUI, or if you want to just do it via the command line, you can do something like
 this:
 
 ```sh
@@ -110,7 +110,7 @@ cmake ../stumpless
 make all
 ```
 
-Other environments should be built according to their normal style. For example
+Other environments should be built according to their normal style. For example,
 Visual Studio provides a CMake menu in the IDE that will display all available
 targets.
 
@@ -128,7 +128,7 @@ cmake --build . --target all
 cmake --build . --target all
 ```
 
-The type of build can be changed at configuation time by defining the
+The type of build can be changed at configuration time by defining the
 `CMAKE_BUILD_TYPE` symbol during configuration.
 
 ```sh
@@ -139,7 +139,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ../stumpless
 However, some environments (Visual Studio being one) require the configuration
 to be passed in during build steps. In the above example, builds would still use
 the default build type, effectively ignoring the configuration step. To specify
-the build type you will need to provide a config to use during build:
+the build type you will need to provide a config to use during the build:
 
 ```sh
 # explicitly use the Release configuration we have in our toolchain
@@ -147,14 +147,14 @@ cmake --build . --config x64-Release --target bench
 ```
 
 In systems like this, it is easiest to use an IDE that does this work for you,
-for example Visual Studio. For more information on these build topics, refer to
+for example, Visual Studio. For more information on these build topics, refer to
 the CMake documentation on
 [build mode](https://cmake.org/cmake/help/latest/manual/cmake.1.html#build-a-project)
 and
 [multi-config generators](https://cmake.org/cmake/help/latest/prop_gbl/GENERATOR_IS_MULTI_CONFIG.html).
 
-The rest of this documentation uses make commands for simplicity, but for any
-target you can build it using cmake build mode if you need truly portable
+The rest of this documentation uses make commands for simplicity, for any
+target you can build it using cmake build mode if you need a truly portable
 command line invocation.
 
 ## Verifying your Build
@@ -173,7 +173,7 @@ folder to run the tests when it is invoked for the first time.
 
 If you're curious about how the library will perform on your system, use the
 `bench` target to run the performance benchmarks. Like the `check` target, this
-will download and build the Google Benchmark library in order to run.
+will download and build the Google Benchmark library to run.
 
 ```sh
 make bench
@@ -194,8 +194,8 @@ sudo make install
 
 A simple way to make sure that your install is working as you expected is to
 compile one of the examples without using the built-in targets. If the target
-builds but your own compilation doesn't, then there is something wrong with
-your install.
+builds but your compilation doesn't, then there is something wrong with
+your installation.
 
 ```sh
 # first we use the build target to make sure it works
@@ -216,7 +216,7 @@ that stumpless was installed to the search path. Some examples are gcc's `-L`
 option, the `LD_LIBRARY_PATH` environment variable on many Linux systems, and
 the environment variable `LIBRARY_PATH` in Cygwin.
 
-If you find that stumpless has installed to unexpected locations and you want
+If you find that stumpless has been installed to unexpected locations and you want
 to modify this, use the `CMAKE_INSTALL_PREFIX` definition during the
 configuration step of the build. You can always re-run cmake to update this in
 an existing build tree if you need to change it.
@@ -251,8 +251,8 @@ cat install_manifest.txt
 ### Uninstalling
 
 There is currently no uninstall target supported, so removal of the library
-and its include files must be done manually if it is no longer needed. Please
-submit an issue on the project's Github site if you feel that you need a build
+and its included files must be done manually if it is no longer needed. Please
+submit an issue on the project's GitHub site if you feel that you need a build
 target providing this feature. For the time being, you can run the contents
 of the `install_manifest.txt` file (generated during the install) through `rm`
 like this:
