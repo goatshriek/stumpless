@@ -2,7 +2,7 @@
 All notable changes to stumpless will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 For a detailed look at the project's future, including planned features and bug
@@ -117,9 +117,9 @@ fixes, check out the
  - The underlying buffer in buffer targets should no longer be read manually,
    but should instead use the new `stumpless_read_buffer` function as the only
    way to read messages.
- - All target open functions no longer require an options or default facility
+ - All target open functions no longer require an option or default facility
    parameter, resulting in much more concise code. If either of these fields
-   need to be adjusted on a target, use the `stumpless_set_option` and
+   needs to be adjusted on a target, use the `stumpless_set_option` and
    `stumpless_set_default_facility` functions after the target has been
    created.
  - Facilities and severities are now `enum`s instead of preprocessor symbols.
@@ -135,7 +135,7 @@ fixes, check out the
    unintentional memory leaks and use-after-free mistakes.
 
 ### Fixed
- - Memory leak in opening of network targets on systems using `sys/socket.h`
+ - Memory leak in the opening of network targets on systems using `sys/socket.h`
    for network services.
 
 ### Removed
@@ -145,7 +145,7 @@ fixes, check out the
 ## [1.6.0] - 2020-07-16
 ### Added
  - A number of new functions for working with entries, elements, and params.
- - A rollup header, `stumpless.hpp`, for the C++ library to make use easier.
+ - A roll-up header, `stumpless.hpp`, for the C++ library to make use easier.
  - Logging functions that can be removed at compile time.
 
 ### Fixed
@@ -234,7 +234,7 @@ fixes, check out the
  - Integration with SonarCloud for analysis.
 
 ### Fixed
- - Removed versions prior to 1.0.0 to match repository history.
+ - Removed versions before 1.0.0 to match repository history.
  - Benchmark tests now function properly.
  - Memory efficiency improved significantly.
 
