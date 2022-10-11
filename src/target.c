@@ -68,6 +68,20 @@ static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
 
+const char *target_type_enum_to_string[] = {
+  STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
+}
+
+const char *
+stumpless_get_target_type_string( enum stumpless_target_type target_type ){
+  size_t target_type_upper_bound =
+    sizeof target_type_enum_to_string / sizeof target_type_enum_to_string[0];
+  if ( target_type >= 0 && target_type < target_type_upper_bound ) {
+    return target_type_enum_to_string[target_type];
+  }
+  return "NO_SUCH_TARGET_TYPE";
+}
+
 static
 void
 close_unsupported_target( const struct stumpless_target *target ) {
