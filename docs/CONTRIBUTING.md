@@ -65,6 +65,23 @@ it is complete. Or if you don't have time we will add it to the project
 [roadmap](roadmap.md) and eventually implement it depending on other priorities.
 
 
+### **Things we don't accept**
+We appreciate anyone looking to contribute to the project! However, we also need
+to make sure that we make the best use our time spent supporting the project and
+its contributors. For this reason, some types of contributions will not be
+accepted by the project team. We ask potential contributors to review this list
+and make sure that they steer clear of these types of pull requests:
+ * Corrections of obvious spelling errors and grammatical problems may be
+   accepted on a case-by-case basis, based on the severity of the problem
+   addressed. Changes of this nature have a higher probability of being accepted
+   if there are more changes in them than a single one. Put simply, if you want
+   to do a proofreading contribution, you need to proofread more than a single
+   document, and not stop after finding a single problem. We strongly recommend
+   you spend your time contributing in some other way.
+ * Changes of capitalization, punctuation, or other style choices will not be
+   accepted.
+
+
 ### **I don't know where to start**
 If you'd like to contribute but aren't quite sure where to start, take a look at
 the issues and see if there is anything there that you think you can tackle! In

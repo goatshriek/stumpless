@@ -82,7 +82,7 @@ struct stumpless_entry {
 /** The number of elements in this entry. */
   size_t element_count;
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
-/** A pointer to a wel_fields structure. */
+/** A pointer to a wel_data structure. */
   void *wel_data;
 #  endif
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED

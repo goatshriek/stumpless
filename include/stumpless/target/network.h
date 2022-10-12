@@ -669,6 +669,55 @@ struct stumpless_target *
 stumpless_set_udp_max_message_size( struct stumpless_target *target,
                                     size_t max_msg_size );
 
+/**
+ * Gets the network protocol of a network target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to get the network protocol from.
+ *
+ * @return The network protocol of the network target.
+ * In the event of an error, -1 is returned and an error code is 
+ * set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+enum stumpless_network_protocol
+stumpless_get_network_protocol( const struct stumpless_target *target );
+
+/**
+ * Gets the transport protocol of a network target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * target with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @param target The target to get the transport protocol from.
+ *
+ * @return The transport protocol of the network target. In the event of 
+ * an error, -1 is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+enum stumpless_transport_protocol
+stumpless_get_transport_protocol( const struct stumpless_target *target );                     
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif

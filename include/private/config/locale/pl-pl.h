@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
-* Copyright 2020-2021 Joel E. Anderson
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020-2022 Joel E. Anderson
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_PL_PL_H
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_PL_PL_H
@@ -28,11 +28,19 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba zamknięcia pliku docelowego nieobsługiwanego typu"
 
+// todo translate
+#  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CommitTransaction failed"
+
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "awaria połączenia z gniazdem sys/socket.h socketem"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "Awaria połączenia winsock socketem"
+
+// todo translate
+#  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
+"CreateTransaction failed"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "podany plik docelowy jest ważny tylko dla miejsc docelowych w sieci"
@@ -52,14 +60,14 @@
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "komunikat o błędzie - nie udało się zapisać"
 
+#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
+"nieważny " ARG " formát"
+
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "kod powrotu funkcji obsługi protokołu"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
 "obsługa protokołu dla celu funkcji nie powiodła się"
-
-#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego przy użyciu mkstemp"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "funkcja getaddrinfor nie powiodła się podczas podawania nazwy hosta"
@@ -76,14 +84,24 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "wynik GetLastError po nieudanym wywołaniu"
 
+// todo translate
+#  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
+"GetModuleFileNameW failed"
+
+// todo translate
+#  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
+"GetModuleHandleExW failed"
+
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany jako typ danych int"
+"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany" \
+" jako typ danych int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "niezgodne urządzenie"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie z protokołem RFC 5424"
+"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie" \
+" z protokołem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "nieprawidłowy cel ID"
@@ -91,11 +109,20 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "nieprawidłowy indeks " INDEXED_THING
 
+// todo translate
+#  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "nieprawidłowa usługa"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424: wartości pomiędzy 0 a 7 łącznie z"
+"kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424:" \
+" wartości pomiędzy 0 a 7 łącznie z"
+
+// todo translate
+#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
+"target type is incompatible with this operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "kod powrotu sd_journal_sendv"
@@ -103,17 +130,29 @@
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
 "sd_journal_sendv przegrany"
 
+#  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
+"nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego" \
+" przy użyciu mkstemp"
+
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maksymalny rozmiar wiadomości obowiązuje tylko dla UDP"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided multibyte string to a wide char string"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "wywołanie alokacji pamięci nie powiodło się"
 
-#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
-
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "rozmiar wiadomości, która próbowała je wysłać "
+
+#  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
+"wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "wybrany protokół sieciowy nie jest obsługiwany"
@@ -130,6 +169,29 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "określony parametr nie został znaleziony"
 
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be created"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be deleted"
+
+// todo translate
+#  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
+"a registry subkey could not be opened"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
+"a registry value could not be read"
+
+// todo translate
+#  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
+"a registry value could not be set"
+
+#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
+"wysyłanie uniksa socketu (unix socket) przegrany"
+
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba wysłania nieobsługiwanego typu danych wejściowych do celu"
 
@@ -139,17 +201,24 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "wysyłanie gniazda systemowego (sys/socket.h) przegrany"
 
-#  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"wysyłanie uniksa socketu (unix socket) przegrany"
-
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "wysyłanie winsock2 socketu przegrany"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otwór w gnieździe przegrany"
 
+// todo translate
+#  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
+L"Stumpless registration of Windows Event Log Source"
+
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "nie mogę pisać do streamu"
+
+#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
+"długość łańcucha problemu to"
+
+#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
+"długość ciągu przekroczyła maksymalny limit"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "cel danego typu jest nadal otwarty"
@@ -172,6 +241,18 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "Kod błędu Windows Socket"
 
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
+
+// todo translate
+#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
+"could not convert the provided wide char string to a multibyte string"
+
+// todo translate
+#  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
+"the Windows error code returned by the failed call"
+
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "błąd zwracane wartości (error code) Windows socketu"
 
@@ -180,17 +261,5 @@ ARG_NAME " miał wartość NULL"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "wynik WSAGetLastError po niepowodzeniu połączenia"
-
-#  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"długość ciągu przekroczyła maksymalny limit"
-
-#  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"długość łańcucha problemu to"
-
-#  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"nieważny " ARG " formát"
-
-#  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"INVALID TARGET TYPE ERROR MESSAGE"
 
 #endif //STUMPLESS_PL_PL_H

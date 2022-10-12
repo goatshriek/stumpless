@@ -8,7 +8,7 @@ SeverityNames=(
 )
 
 FacilityNames=(
-  Normal=0x256:CUSTOM_FACILITY_NORMAL
+  Normal=0x100:CUSTOM_FACILITY_NORMAL
 )
 
 LanguageNames=(English=0x0409:MSG00409)

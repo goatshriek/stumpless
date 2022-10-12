@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless.h>
+#include <wchar.h>
 #include <windows.h>
 #include "test/function/windows/events.h"
 #include "test/helper/assert.hpp"
@@ -31,10 +32,13 @@ using::testing::HasSubstr;
 namespace {
   class WelTargetTest : public::testing::Test {
     protected:
-      struct stumpless_target *target;
-      struct stumpless_entry *simple_entry;
-      struct stumpless_entry *one_insertion_entry;
-      struct stumpless_entry *two_insertion_entry;
+      struct stumpless_target *target = NULL;
+      struct stumpless_entry *simple_entry = NULL;
+      LPCWSTR simple_entry_message_w = L"This is a simple log message.";
+      struct stumpless_entry *one_insertion_entry = NULL;
+      struct stumpless_entry *two_insertion_entry = NULL;
+      struct stumpless_entry *one_insertion_param_entry = NULL;
+      struct stumpless_param *insertion_param = NULL;
       const char *insertion_string_1 = "insertion-string-1";
       const char *insertion_string_2 = "insertion-string-2";
 
@@ -74,6 +78,21 @@ namespace {
       stumpless_set_wel_type( two_insertion_entry, EVENTLOG_SUCCESS );
       stumpless_set_wel_insertion_string( two_insertion_entry, 0, insertion_string_1 );
       stumpless_set_wel_insertion_string( two_insertion_entry, 1, insertion_string_2 );
+
+      one_insertion_param_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                                       STUMPLESS_SEVERITY_INFO,
+                                                       "stumpless-wel-unit-test",
+                                                       "one-insertion-param-entry",
+                                                       "message with one insertion param" );
+
+      stumpless_set_wel_category( one_insertion_param_entry, CATEGORY_TEST );
+      stumpless_set_wel_event_id( one_insertion_param_entry, MSG_ONE_INSERTION );
+      stumpless_set_wel_type( one_insertion_param_entry, EVENTLOG_SUCCESS );
+
+      insertion_param = stumpless_new_param( "index-0", insertion_string_1 );
+      stumpless_set_wel_insertion_param( one_insertion_param_entry,
+                                         0,
+                                         insertion_param );
     }
 
     virtual void
@@ -82,8 +101,73 @@ namespace {
       stumpless_destroy_entry_and_contents( simple_entry );
       stumpless_destroy_entry_and_contents( one_insertion_entry );
       stumpless_destroy_entry_and_contents( two_insertion_entry );
+      stumpless_destroy_entry_and_contents( one_insertion_param_entry );
+      stumpless_destroy_param( insertion_param );
     }
   };
+
+  TEST_F( WelTargetTest, AddEntryWithOneInsertionParam ) {
+    int result;
+    HANDLE event_log_handle;
+    BOOL success;
+    BYTE record_buffer[1000];
+    DWORD format_result;
+    DWORD bytes_read = 0;
+    DWORD minimum_bytes_to_read = 0;
+    HMODULE resource_dll;
+    PEVENTLOGRECORD record;
+    LPCWSTR insertion_strings[2];
+    size_t string_1_length;
+    WCHAR message_buffer[1000];
+
+    result = stumpless_add_entry( target, one_insertion_param_entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+
+    // read from the event log and find the entry
+    event_log_handle = OpenEventLog( NULL, "wel-target-test" );
+    ASSERT_NOT_NULL( event_log_handle );
+
+    success = ReadEventLogW( event_log_handle,
+                             EVENTLOG_SEQUENTIAL_READ |
+                               EVENTLOG_BACKWARDS_READ,
+                             0,
+                             record_buffer,
+                             1000,
+                             &bytes_read,
+                             &minimum_bytes_to_read );
+    EXPECT_TRUE( success );
+
+    record = ( PEVENTLOGRECORD ) record_buffer;
+    EXPECT_EQ( record->EventID, MSG_ONE_INSERTION );
+    EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
+    EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
+    EXPECT_EQ( record->NumStrings, 1 );
+
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME,
+                                  NULL,
+                                  LOAD_LIBRARY_AS_IMAGE_RESOURCE |
+                                    LOAD_LIBRARY_AS_DATAFILE );
+    EXPECT_NOT_NULL( resource_dll );
+
+    insertion_strings[0] = ( LPCWSTR ) ( record_buffer + record->StringOffset );
+    string_1_length = wcslen( insertion_strings[0] );
+    EXPECT_EQ( string_1_length, strlen( insertion_string_1 ) );
+
+    format_result = FormatMessageW( FORMAT_MESSAGE_FROM_HMODULE |
+                                      FORMAT_MESSAGE_ARGUMENT_ARRAY,
+                                    resource_dll,
+                                    record->EventID,
+                                    0,
+                                    message_buffer,
+                                    1000,
+                                    ( va_list * )( insertion_strings ) );
+    EXPECT_NE( format_result, 0 );
+
+    EXPECT_NOT_NULL( wcsstr( message_buffer, insertion_strings[0] ) );
+
+    CloseEventLog( event_log_handle );
+  }
 
   TEST_F( WelTargetTest, AddEntryWithOneInsertionString ) {
     int result;
@@ -97,14 +181,15 @@ namespace {
     int result;
     HANDLE event_log_handle;
     BOOL success;
-    BYTE buffer[1000];
+    BYTE record_buffer[1000];
     DWORD format_result;
     DWORD bytes_read = 0;
     DWORD minimum_bytes_to_read = 0;
     HMODULE resource_dll;
     PEVENTLOGRECORD record;
-    LPTSTR insertion_strings[2];
-    LPTSTR message_buffer;
+    LPCWSTR insertion_strings[2];
+    size_t string_1_length;
+    WCHAR message_buffer[1000];
 
     result = stumpless_add_entry( target, two_insertion_entry );
     EXPECT_GE( result, 0 );
@@ -112,43 +197,49 @@ namespace {
 
     // read from the event log and find the entry
     event_log_handle = OpenEventLog( NULL, "wel-target-test" );
-    ASSERT_TRUE( event_log_handle != NULL );
+    ASSERT_NOT_NULL( event_log_handle );
 
-    success = ReadEventLog(
-      event_log_handle,
-      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
-      0,
-      buffer,
-      1000,
-      &bytes_read,
-      &minimum_bytes_to_read
-    );
+    success = ReadEventLogW( event_log_handle,
+                             EVENTLOG_SEQUENTIAL_READ |
+                               EVENTLOG_BACKWARDS_READ,
+                             0,
+                             record_buffer,
+                             1000,
+                             &bytes_read,
+                             &minimum_bytes_to_read );
     EXPECT_TRUE( success );
 
-    record = ( PEVENTLOGRECORD ) buffer;
+    record = ( PEVENTLOGRECORD ) record_buffer;
     EXPECT_EQ( record->EventID, MSG_TWO_INSERTIONS );
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
+    EXPECT_EQ( record->NumStrings, 2 );
 
-    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE );
-    EXPECT_TRUE( resource_dll != NULL );
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME,
+                                  NULL,
+                                  LOAD_LIBRARY_AS_IMAGE_RESOURCE |
+                                    LOAD_LIBRARY_AS_DATAFILE );
+    EXPECT_NOT_NULL( resource_dll );
 
-    insertion_strings[0] = ( LPTSTR ) ( buffer + record->StringOffset );
-    insertion_strings[1] = ( LPTSTR ) ( insertion_strings[0] + strlen( insertion_strings[0] ) + 1 );
+    insertion_strings[0] = ( LPCWSTR ) ( record_buffer + record->StringOffset );
+    string_1_length = wcslen( insertion_strings[0] );
+    EXPECT_EQ( string_1_length, strlen( insertion_string_1 ) );
 
-    format_result = FormatMessage(
-      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_ARGUMENT_ARRAY,
-      resource_dll,
-      record->EventID,
-      0,
-      (LPTSTR)&message_buffer,
-      1000,
-      (va_list*)(insertion_strings)
-    );
+    insertion_strings[1] = ( LPCWSTR ) ( insertion_strings[0] + string_1_length + 1 );
+    EXPECT_EQ( wcslen( insertion_strings[1] ), strlen( insertion_string_2 ) );
+
+    format_result = FormatMessageW( FORMAT_MESSAGE_FROM_HMODULE |
+                                      FORMAT_MESSAGE_ARGUMENT_ARRAY,
+                                    resource_dll,
+                                    record->EventID,
+                                    0,
+                                    message_buffer,
+                                    1000,
+                                    ( va_list * )( insertion_strings ) );
     EXPECT_NE( format_result, 0 );
 
-    EXPECT_THAT( message_buffer, HasSubstr( insertion_string_1 ) );
-    EXPECT_THAT( message_buffer, HasSubstr( insertion_string_2 ) );
+    EXPECT_NOT_NULL( wcsstr( message_buffer, insertion_strings[0] ) );
+    EXPECT_NOT_NULL( wcsstr( message_buffer, insertion_strings[1] ) );
 
     CloseEventLog( event_log_handle );
   }
@@ -157,51 +248,52 @@ namespace {
     int result;
     HANDLE event_log_handle;
     BOOL success;
-    BYTE buffer[1000];
+    BYTE record_buffer[1000];
     DWORD format_result;
     DWORD bytes_read = 0;
     DWORD minimum_bytes_to_read = 0;
     HMODULE resource_dll;
     PEVENTLOGRECORD record;
-    LPTSTR message_buffer;
+    WCHAR message_buffer[1000];
 
     result = stumpless_add_entry( target, simple_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
 
     // read from the event log and find the entry
     event_log_handle = OpenEventLog( NULL, "wel-target-test" );
-    ASSERT_TRUE( event_log_handle != NULL );
+    ASSERT_NOT_NULL( event_log_handle );
 
-    success = ReadEventLog(
-      event_log_handle,
-      EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
-      0,
-      buffer,
-      1000,
-      &bytes_read,
-      &minimum_bytes_to_read
-    );
+    success = ReadEventLogW( event_log_handle,
+                             EVENTLOG_SEQUENTIAL_READ | EVENTLOG_BACKWARDS_READ,
+                             0,
+                             record_buffer,
+                             1000,
+                             &bytes_read,
+                             &minimum_bytes_to_read );
     EXPECT_TRUE( success );
 
-    record = ( PEVENTLOGRECORD )buffer;
+    record = ( PEVENTLOGRECORD ) record_buffer;
     EXPECT_EQ( record->EventID, MSG_SIMPLE );
     EXPECT_EQ( record->EventCategory, CATEGORY_TEST );
     EXPECT_EQ( record->EventType, EVENTLOG_SUCCESS );
 
-    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
-    EXPECT_TRUE( resource_dll != NULL );
+    resource_dll = LoadLibraryEx( WEL_EVENTS_LIBRARY_NAME,
+                                  NULL,
+                                  LOAD_LIBRARY_AS_IMAGE_RESOURCE |
+                                    LOAD_LIBRARY_AS_DATAFILE );
+    EXPECT_NOT_NULL( resource_dll );
 
-    format_result = FormatMessage(
-      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_HMODULE,
-      resource_dll,
-      record->EventID,
-      0,
-      (LPTSTR)&message_buffer,
-      1000,
-      NULL
-    );
+    format_result = FormatMessageW( FORMAT_MESSAGE_FROM_HMODULE,
+                                    resource_dll,
+                                    record->EventID,
+                                    0,
+                                    message_buffer,
+                                    1000,
+                                    NULL );
     EXPECT_NE( format_result, 0 );
+
+    EXPECT_NOT_NULL( wcsstr( message_buffer, simple_entry_message_w ) );
 
     CloseEventLog( event_log_handle );
   }

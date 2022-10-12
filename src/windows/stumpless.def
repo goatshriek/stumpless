@@ -189,3 +189,20 @@ EXPORTS
   stumpless_get_facility_string                 @174
   stumpless_get_facility_enum                   @175
   stumpless_get_severity_enum                   @176
+  stumpless_get_network_protocol                @177
+  stumpless_get_transport_protocol              @178
+  stumpless_add_default_wel_event_source        @179
+  stumpless_add_wel_event_source                @180
+  stumpless_add_wel_event_source_w              @181
+  stumpless_get_wel_category                    @182
+  stumpless_get_wel_event_id                    @183
+  stumpless_get_wel_insertion_param             @184
+  stumpless_get_wel_insertion_string_w          @185
+  stumpless_get_wel_type                        @186
+  stumpless_remove_default_wel_event_source     @187
+  stumpless_remove_wel_event_source             @188
+  stumpless_remove_wel_event_source_w           @189
+  stumpless_set_wel_insertion_string_w          @190
+  stumpless_set_wel_insertion_strings_w         @191
+  vstumpless_set_wel_insertion_strings_w        @192
+

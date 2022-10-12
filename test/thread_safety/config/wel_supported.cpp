@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,19 +38,31 @@ namespace {
   void
   read_entry_wel_data( const struct stumpless_entry *entry ) {
     const struct stumpless_entry *copy;
-    const char *insertion_string_1;
+    WORD index;
+    WORD category;
+    DWORD event_id;
+    WORD type;
+    const struct stumpless_param *insertion_param;
+    LPCSTR insertion_string;
+    LPCWSTR insertion_string_w;
 
     std::thread::id thread_id = std::this_thread::get_id(  );
 
     for( int i = 0; i < ITERATION_COUNT; i++ ) {
-      WORD index = i % THREAD_COUNT;
+      index = i % THREAD_COUNT;
 
       copy = stumpless_copy_entry( entry );
 
-      insertion_string_1 = stumpless_get_wel_insertion_string( entry, index );
+      category = stumpless_get_wel_category( entry );
+      event_id = stumpless_get_wel_event_id( entry );
+      type = stumpless_get_wel_type( entry );
+      insertion_param = stumpless_get_wel_insertion_param( entry, index );
+      insertion_string = stumpless_get_wel_insertion_string( entry, index );
+      insertion_string_w = stumpless_get_wel_insertion_string_w( entry, index );
 
       stumpless_destroy_entry_and_contents( copy );
-      free( ( void * ) insertion_string_1 );
+      free( ( void * ) insertion_string );
+      free( ( void * ) insertion_string_w );
     }
 
     stumpless_free_thread(  );
@@ -63,10 +75,14 @@ namespace {
     std::ostringstream insertion_string_1_stream;
     insertion_string_1_stream << "insertion-string-1-" << thread_id;
     std::string insertion_string_1( insertion_string_1_stream.str(  ) );
+    std::wstring insertion_string_1_w( insertion_string_1.begin(  ),
+                                       insertion_string_1.end(  ) );
 
     std::ostringstream insertion_string_2_stream;
     insertion_string_2_stream << "insertion-string-2-" << thread_id;
     std::string insertion_string_2( insertion_string_2_stream.str(  ) );
+    std::wstring insertion_string_2_w( insertion_string_2.begin(  ),
+                                       insertion_string_2.end(  ) );
 
     std::ostringstream param_name_stream;
     param_name_stream << "param-name-" << thread_id;
@@ -84,6 +100,10 @@ namespace {
                                           index,
                                           insertion_string_1.c_str(  ) );
 
+      stumpless_set_wel_insertion_string_w( entry,
+                                            index,
+                                            insertion_string_1_w.c_str(  ) );
+
       stumpless_set_wel_insertion_param( entry,
                                          ( index + 1 ) % THREAD_COUNT,
                                          param );
@@ -92,6 +112,11 @@ namespace {
                                            2,
                                            insertion_string_1.c_str(  ),
                                            insertion_string_2.c_str(  ) );
+
+      stumpless_set_wel_insertion_strings_w( entry,
+                                             2,
+                                             insertion_string_1_w.c_str(  ),
+                                             insertion_string_2_w.c_str(  ) );
 
       stumpless_set_wel_category( entry, CATEGORY_TEST );
       stumpless_set_wel_event_id( entry, MSG_SIMPLE );
