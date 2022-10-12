@@ -37,7 +37,10 @@
 #    define STUMPLESS_OPTION_PID    1
 #  endif
 
-/** Not currently supported. */
+/** 
+ *  Option to log to system console if writing to the 
+ *  target stream fails.
+ */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_OPTION_CONS   LOG_CONS
 #  else

@@ -86,6 +86,9 @@ target_free_global( void );
 void
 target_free_thread( void );
 
+int
+unchecked_get_option( const struct stumpless_target *target, int option );
+
 void
 unlock_target( const struct stumpless_target *target );
 
