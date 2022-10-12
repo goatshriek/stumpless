@@ -399,8 +399,8 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  snprintf( element->name, sizeof(element->name), "%s", name );
-  element->name_length = strlen( element->name );
+  element->name_length = strlen( name );
+  memcpy( element->name, name, element->name_length + 1 );
 
   element->params = NULL;
   element->param_count = 0;
@@ -431,9 +431,10 @@ stumpless_set_element_name( struct stumpless_element *element,
     goto fail;
   }
 
+  element->name_length = strlen( name );
+
   lock_element( element );
-  snprintf( element->name, sizeof(element->name), "%s", name );
-  element->name_length = strlen( element->name );
+  memcpy( element->name, name, element->name_length + 1 );
   unlock_element( element );
 
   clear_error(  );
