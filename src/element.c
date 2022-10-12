@@ -416,6 +416,8 @@ stumpless_new_element( const char *name ) {
   return element;
 
 fail_mutex:
+  free_mem( element );
+
 fail:
   return NULL;
 }
