@@ -85,6 +85,7 @@ fixes, check out the
     * Object cache leak in some allocation failure scenarios
     * Creating network target with unsupported protocols
  - `close` syscall is no longer called on invalid socket handles
+ - TCP network targets do not hang when the session is closed by the receiver.
 
 ## [2.0.0] - 2020-12-27
 ### Added

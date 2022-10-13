@@ -102,6 +102,7 @@
   - "cstring"
   - "string.h"
 "mkstemp": "stdlib.h"
+"MSG_NOSIGNAL": "sys/socket.h"
 "NULL":
   - "cstddef"
   - "stddef.h"
