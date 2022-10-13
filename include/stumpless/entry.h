@@ -39,9 +39,6 @@
 /** The maximum length of a msgid, as specified by RFC 5424. */
 #  define STUMPLESS_MAX_MSGID_LENGTH 32
 
-/** The maximum length of an element name, as specified by RFC 5424. */
-#  define STUMPLESS_MAX_ELEMENT_NAME_LENGTH 32
-
 /** The maximum length of a parameter name, as specified by RFC 5424. */
 #  define STUMPLESS_MAX_PARAM_NAME_LENGTH 32
 
