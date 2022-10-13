@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
+#include "private/memory.h"
 #include "private/windows_wrapper.h"
 
 bool
@@ -44,6 +45,49 @@ windows_compare_exchange_ptr( PVOID volatile *p,
                                                replacement,
                                                ( PVOID ) expected );
   return initial == expected;
+}
+
+LPWSTR
+windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
+  int needed_wchar_length;
+  LPWSTR str_copy;
+  int conversion_result;
+
+  needed_wchar_length = MultiByteToWideChar( CP_UTF8,
+                                             MB_ERR_INVALID_CHARS,
+                                             str,
+                                             -1,
+                                             NULL,
+                                             0 );
+
+  if( needed_wchar_length == 0 ) {
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  str_copy = alloc_mem( needed_wchar_length * sizeof( WCHAR ) );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  conversion_result = MultiByteToWideChar( CP_UTF8,
+                                           MB_ERR_INVALID_CHARS,
+                                           str,
+                                           -1,
+                                           str_copy,
+                                           needed_wchar_length );
+
+  if( conversion_result == 0 ) {
+    free_mem( str_copy );
+    raise_mb_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  if( copy_length ) {
+    *copy_length = conversion_result;
+  }
+
+  return str_copy;
 }
 
 void

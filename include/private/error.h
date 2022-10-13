@@ -59,6 +59,33 @@ COLD_FUNCTION
 void
 raise_element_not_found( void );
 
+/**
+ * Raises an error indicating an issue in the current thread of execution.
+ *
+ * Errors are thread-specific, and so will be save to check without worrying
+ * about thread safety. However, reentrant code will need to signal issues in
+ * other ways, as it cannot safely modify the thread-global error structure.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store the error.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store the error.
+ *
+ * @param id The type of error to raise.
+ *
+ * @param message The message to assign to the error.
+ *
+ * @param code A more specific subtype of the error, or a secondary error code
+ * provided by the failing call or operation.
+ *
+ * @param code_type A description of what the code signifies.
+ */
 COLD_FUNCTION
 void
 raise_error( enum stumpless_error_id id,
@@ -88,6 +115,28 @@ COLD_FUNCTION
 void
 raise_index_out_of_bounds( const char *message, size_t index );
 
+/**
+ * Raises an error indicating that some field had an invalid encoding. This
+ * could mean that something was an invalid UTF-8 or 16 character, wasn't
+ * terminated or otherwise formatted properly, or something similar.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
+ * @param message The message to assign to the error.
+ */
+COLD_FUNCTION
+void
+raise_invalid_encoding( const char *message );
+
 COLD_FUNCTION
 void
 raise_invalid_facility( int facility );
@@ -103,6 +152,27 @@ raise_invalid_severity( int severity );
 COLD_FUNCTION
 void
 raise_journald_failure( int code );
+
+/**
+ * Raises an error indicating that a conversion from a multibyte string to a
+ * wide character string failed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
+ * @param code The result of GetLastError after the failed conversion.
+ */
+COLD_FUNCTION
+void
+raise_mb_conversion_failure( int code );
 
 COLD_FUNCTION
 void
@@ -162,9 +232,41 @@ COLD_FUNCTION
 void
 raise_wel_open_failure( void );
 
+/**
+ * Raises an error indicating that a conversion from a wide string to a
+ * multibyte string failed.
+ *
+ * @param code The result of GetLastError after the failed conversion.
+ */
 COLD_FUNCTION
 void
-raise_invalid_encoding( const char *message );
+raise_wide_conversion_failure( int code );
+
+/**
+ * Raises an error indicating a general failure of a Windows API call. Details
+ * on what call failed and why must be provided.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store errors.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store errors.
+ *
+ * @param message A localized description of the failure that occurred,
+ * including a function name or operation type that failed.
+ *
+ * @param code An error code.
+ *
+ * @param code_type A localized description of what the code type is.
+ */
+COLD_FUNCTION
+void
+raise_windows_failure( const char *message, int code, const char *code_type );
 
 /**
  * Writes a message to the error stream. This is ignored if the error stream

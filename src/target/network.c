@@ -646,6 +646,56 @@ incompatible:
   return NULL;
 }
 
+enum stumpless_network_protocol
+stumpless_get_network_protocol( const struct stumpless_target *target ) {
+
+  struct network_target *net_target;
+  enum stumpless_network_protocol network_protocol;
+
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    goto cleanup_and_fail;
+  }
+
+  net_target = target->id;
+  network_protocol = net_target->network;
+  unlock_target( target );
+
+  return network_protocol;
+
+cleanup_and_fail:
+  unlock_target( target );
+  return ( enum stumpless_network_protocol ) -1;
+}
+
+enum stumpless_transport_protocol
+stumpless_get_transport_protocol( const struct stumpless_target *target ) {
+
+  struct network_target *net_target;
+  enum stumpless_transport_protocol transport_protocol;
+
+  VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
+
+  lock_target( target );
+  if( target->type != STUMPLESS_NETWORK_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    goto cleanup_and_fail;
+  }
+
+  net_target = target->id;
+  transport_protocol = net_target->transport;
+  unlock_target( target );
+
+  return transport_protocol;
+
+cleanup_and_fail:
+  unlock_target( target );
+  return ( enum stumpless_transport_protocol ) -1;
+}
+
 /* private definitions */
 
 void

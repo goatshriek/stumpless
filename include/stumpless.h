@@ -76,6 +76,7 @@
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include <stumpless/config/wel_supported.h>
 #    include <stumpless/target/wel.h>
+#    include <stumpless/windows/default_events.h>
 #  endif
 
 #endif /* __STUMPLESS_H */

@@ -144,3 +144,15 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
   raise_target_unsupported( L10N_NETWORK_TARGETS_UNSUPPORTED );
   return NULL;
 }
+
+enum stumpless_network_protocol
+stumpless_get_network_protocol( const struct stumpless_target *target ) {
+  raise_target_unsupported( L10N_NETWORK_TARGETS_UNSUPPORTED );
+  return -1;
+}
+
+enum stumpless_transport_protocol
+stumpless_get_transport_protocol( const struct stumpless_target *target ) {
+  raise_target_unsupported( L10N_NETWORK_TARGETS_UNSUPPORTED );
+  return -1;
+}
