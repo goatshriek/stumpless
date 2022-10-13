@@ -70,7 +70,7 @@ static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
 
 const char *target_type_enum_to_string[] = {
   STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
-}
+};
 
 const char *
 stumpless_get_target_type_string( enum stumpless_target_type target_type ){

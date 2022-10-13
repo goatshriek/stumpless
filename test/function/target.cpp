@@ -1532,4 +1532,27 @@ namespace {
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );
   }
+
+  TEST( GetTargetString, EachValidTarget ) {
+    const char *result;
+
+    #define CHECK_TARGET( STRING, ENUM ) \
+      result = stumpless_get_target_type_string( STRING ); \
+      EXPECT_STREQ( result, #STRING );
+    STUMPLESS_FOREACH_TARGET_TYPE( CHECK_TARGET )
+  }
+  
+  TEST( GetTargetString, NoSuchTarget ) {
+    int target_count = 0;
+    const char *result;
+
+    #define COUNT_TARGET( STRING, ENUM ) ++target_count;
+    STUMPLESS_FOREACH_TARGET_TYPE( COUNT_TARGET )
+
+    stumpless_target_type wrong_target =
+        static_cast<stumpless_target_type>(target_count + 1);
+
+    result = stumpless_get_target_type_string( wrong_target );
+    EXPECT_STREQ( result, "NO_SUCH_TARGET_TYPE" );
+  }
 }
