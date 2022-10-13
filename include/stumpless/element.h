@@ -29,6 +29,9 @@
 #  include <stumpless/entry.h>
 #  include <stumpless/param.h>
 
+/** The maximum length of an element name, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_ELEMENT_NAME_LENGTH 32
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -108,7 +111,7 @@ struct stumpless_element {
  * functions. These will protect you from changes in the struct in future
  * versions.
  */
-  char *name;
+  char name[STUMPLESS_MAX_ELEMENT_NAME_LENGTH + 1];
 /** The number of characters in name. */
   size_t name_length;
 /**

@@ -34,6 +34,7 @@
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
+#  include <stumpless/generator.h>
 
 /** The file opened if the default target is to a file. */
 #  define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
@@ -45,16 +46,57 @@
 extern "C" {
 #  endif
 
+/**< write to a character buffer */
+# define STUMPLESS_BUFFER_TARGET_VALUE 0
+
+/**< write to a file */
+# define STUMPLESS_FILE_TARGET_VALUE 1
+
+/**< call a custom function */
+# define STUMPLESS_FUNCTION_TARGET_VALUE 2
+
+/**< send to the systemd journald service */
+# define STUMPLESS_JOURNALD_TARGET_VALUE 3
+
+/**< send to a network endpoint */
+# define STUMPLESS_NETWORK_TARGET_VALUE 4
+
+/**< write to a Unix socket */
+# define STUMPLESS_SOCKET_TARGET_VALUE 5
+
+/**< write to a FILE stream */
+# define STUMPLESS_STREAM_TARGET_VALUE 6
+
+/**< add to the Windows Event Log */
+# define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
+
+/**
+ * A macro function that runs the provided action once for each target_type,
+ * providing the symbol and value. The action must take two arguments, the
+ * first being the symbol name of the target_type, and the second the numeric
+ * value of the target_type.
+ */
+#  define STUMPLESS_FOREACH_TARGET_TYPE( ACTION )\
+/**< write to a character buffer */\
+ACTION( STUMPLESS_BUFFER_TARGET, STUMPLESS_BUFFER_TARGET_VALUE )\
+/**< write to a file */\
+ACTION( STUMPLESS_FILE_TARGET, STUMPLESS_FILE_TARGET_VALUE )\
+/**< call a custom function */\
+ACTION( STUMPLESS_FUNCTION_TARGET, STUMPLESS_FUNCTION_TARGET_VALUE )\
+/**< send to the systemd journald service */\
+ACTION( STUMPLESS_JOURNALD_TARGET, STUMPLESS_JOURNALD_TARGET_VALUE )\
+/**< send to a network endpoint */\
+ACTION( STUMPLESS_NETWORK_TARGET, STUMPLESS_NETWORK_TARGET_VALUE )\
+/**< write to a Unix socket */\
+ACTION( STUMPLESS_SOCKET_TARGET, STUMPLESS_SOCKET_TARGET_VALUE )\
+/**< write to a FILE stream */\
+ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
+/**< add to the Windows Event Log */\
+ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )
+
 /** Types of targets that may be created. */
 enum stumpless_target_type {
-  STUMPLESS_BUFFER_TARGET, /**< write to a character buffer */
-  STUMPLESS_FILE_TARGET, /**< write to a file */
-  STUMPLESS_FUNCTION_TARGET, /**< call a custom function */
-  STUMPLESS_JOURNALD_TARGET, /**< send to the systemd journald service */
-  STUMPLESS_NETWORK_TARGET, /**< send to a network endpoint */
-  STUMPLESS_SOCKET_TARGET, /**< write to a Unix socket */
-  STUMPLESS_STREAM_TARGET, /**< write to a FILE stream */
-  STUMPLESS_WINDOWS_EVENT_LOG_TARGET /**< add to the Windows Event Log */
+  STUMPLESS_FOREACH_TARGET_TYPE( STUMPLESS_GENERATE_ENUM )
 };
 
 // needed so that we can define the filter function type before targets
@@ -1534,6 +1576,30 @@ vstumpless_trace_message( struct stumpless_target *target,
                           const char *func,
                           const char *message,
                           va_list subs );
+
+/**
+ * Gets the string representation of the given target_type.
+ *
+ * This is a string literal that should not be modified or freed by the caller.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @param target_type The target_type to get the string from.
+ *
+ * @return The string representation of the given target_type.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+const char *
+stumpless_get_target_type_string( enum stumpless_target_type target );
+
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

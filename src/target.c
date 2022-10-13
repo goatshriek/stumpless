@@ -68,6 +68,20 @@ static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
 
+const char *target_type_enum_to_string[] = {
+  STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
+};
+
+const char *
+stumpless_get_target_type_string( enum stumpless_target_type target_type ){
+  size_t target_type_upper_bound =
+    sizeof target_type_enum_to_string / sizeof target_type_enum_to_string[0];
+  if ( target_type >= 0 && target_type < target_type_upper_bound ) {
+    return target_type_enum_to_string[target_type];
+  }
+  return "NO_SUCH_TARGET_TYPE";
+}
+
 static
 void
 close_unsupported_target( const struct stumpless_target *target ) {
@@ -84,6 +98,9 @@ stumpless_add_entry( struct stumpless_target *target,
   size_t builder_length;
   const char *buffer = NULL;
   int result;
+  int option_cons;
+  FILE *cons_stream; 
+  FILE *error_stream;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
@@ -163,6 +180,17 @@ stumpless_add_entry( struct stumpless_target *target,
 
     default:
       result = sendto_unsupported_target( target, buffer, builder_length );
+  }
+
+  /* STUMPLESS_OPTION_CONS: if target write fails, write to system console.
+   * Important: use unchecked_ to preserve the error from the failed target.
+   * Ignore any further errors; more important to return the original result.
+   */
+  if ( result < 0 && unchecked_get_option( target, STUMPLESS_OPTION_CONS ) ) {
+    cons_stream = stumpless_get_cons_stream( );
+    if ( cons_stream ) {
+      fwrite( buffer, sizeof( char ), builder_length, cons_stream );
+    }
   }
 
 finish:
@@ -354,6 +382,17 @@ stumpless_get_default_target( void ) {
 }
 
 int
+unchecked_get_option( const struct stumpless_target *target, int option ) {
+  int options;
+
+  lock_target( target );
+  options = target->options;
+  unlock_target( target );
+
+  return options & option;
+}
+
+int
 stumpless_get_option( const struct stumpless_target *target, int option ) {
   int options;
 
@@ -362,12 +401,10 @@ stumpless_get_option( const struct stumpless_target *target, int option ) {
     return 0;
   }
 
-  lock_target( target );
-  options = target->options;
-  unlock_target( target );
+  options = unchecked_get_option( target, option );
 
   clear_error(  );
-  return options & option;
+  return options;
 }
 
 const char *
@@ -1049,7 +1086,7 @@ stumpless_get_cons_stream( void ) {
 }
 
 void
-stumpless_set_cons_stream( FILE *stream) {
+stumpless_set_cons_stream( FILE *stream ) {
   config_write_ptr( &cons_stream, stream );
   config_write_bool( &cons_stream_valid, true );
 }
