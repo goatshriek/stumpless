@@ -34,6 +34,7 @@
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/id.h>
+#  include <stumpless/generator.h>
 
 /** The file opened if the default target is to a file. */
 #  define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
