@@ -205,4 +205,4 @@ EXPORTS
   stumpless_set_wel_insertion_string_w          @190
   stumpless_set_wel_insertion_strings_w         @191
   vstumpless_set_wel_insertion_strings_w        @192
-
+  stumpless_get_target_type_string              @193
