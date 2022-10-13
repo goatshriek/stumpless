@@ -191,7 +191,10 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
+"WC_ERR_INVALID_CHARS": "windows.h"
+"WC_NO_BEST_FIT_CHARS": "windows.h"
 "wcslen": "wchar.h"
+"wcstombs": "stdlib.h"
 "WIN32_LEAN_AND_MEAN":
   - "windows.h"
   - "private/windows_wrapper.h"

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,13 @@
  */
 
 #include <stddef.h>
+#include <stddlib.h>
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
+char *
+fallback_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
+  // todo pick up here
+}
 
 int
 fallback_gethostname( char *buffer, size_t namelen ) {

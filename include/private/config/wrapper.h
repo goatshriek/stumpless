@@ -64,6 +64,9 @@
 #  endif
 
 
+/* definition of windows_copy_lpwstr_to_cstring */
+
+
 /* definition of config_fopen */
 #  ifdef HAVE_FOPEN_S
 #    include "private/config/have_fopen_s.h"

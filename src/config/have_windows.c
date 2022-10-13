@@ -48,7 +48,7 @@ windows_compare_exchange_ptr( PVOID volatile *p,
 }
 
 LPWSTR
-windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
+windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length ) {
   int needed_wchar_length;
   LPWSTR str_copy;
   int conversion_result;
@@ -85,6 +85,53 @@ windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length ) {
 
   if( copy_length ) {
     *copy_length = conversion_result;
+  }
+
+  return str_copy;
+}
+
+char *
+windows_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
+  int needed_size;
+  LPWSTR str_copy;
+  int conversion_result;
+
+  needed_size = WideCharToMultiByte( CP_UTF8,
+                                     WC_ERR_INVALID_CHARS,
+                                     str,
+                                     -1,
+                                     NULL,
+                                     0,
+                                     NULL,
+                                     NULL );
+
+  if( needed_size == 0 ) {
+    raise_wide_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  str_copy = alloc_mem( needed_size * sizeof( WCHAR ) );
+  if( !str_copy ) {
+    return NULL;
+  }
+
+  conversion_result = WideCharToMultiByte( CP_UTF8,
+                                           WC_ERR_INVALID_CHARS,
+                                           str,
+                                           -1,
+                                           str_copy,
+                                           needed_size,
+                                           NULL,
+                                           NULL );
+
+  if( conversion_result == 0 ) {
+    free_mem( str_copy );
+    raise_wide_conversion_failure( GetLastError(  ) );
+    return NULL;
+  }
+
+  if( copy_size ) {
+    *copy_size = conversion_result;
   }
 
   return str_copy;

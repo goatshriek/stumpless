@@ -740,7 +740,7 @@ locked_set_wel_insertion_string( struct stumpless_entry *entry,
                                  LPCSTR str ) {
   LPCWSTR str_copy;
 
-  str_copy = windows_copy_cstring_to_lpcwstr( str, NULL );
+  str_copy = windows_copy_cstring_to_lpwstr( str, NULL );
   if( !str_copy ) {
     return NULL;
   }
@@ -785,7 +785,7 @@ set_wel_insertion_string( struct stumpless_entry *entry,
                           LPCSTR str ) {
   LPCWSTR str_copy;
 
-  str_copy = windows_copy_cstring_to_lpcwstr( str, NULL );
+  str_copy = windows_copy_cstring_to_lpwstr( str, NULL );
   if( !str_copy ) {
     return NULL;
   }
@@ -1207,14 +1207,14 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
 
   clear_error(  );
 
-  subkey_name_w = windows_copy_cstring_to_lpcwstr( subkey_name,
+  subkey_name_w = windows_copy_cstring_to_lpwstr( subkey_name,
                                                    &subkey_name_length );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );
     goto finish;
   }
 
-  source_name_w = windows_copy_cstring_to_lpcwstr( source_name,
+  source_name_w = windows_copy_cstring_to_lpwstr( source_name,
                                                    &source_name_length );
   if( !source_name_w ) {
     result = get_windows_error_code(  );
@@ -1222,7 +1222,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   if( category_file ) {
-    category_file_w = windows_copy_cstring_to_lpcwstr( category_file,
+    category_file_w = windows_copy_cstring_to_lpwstr( category_file,
                                                        &category_file_length );
     if( !category_file_w ) {
       result = get_windows_error_code(  );
@@ -1231,7 +1231,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   if( event_file ) {
-    event_file_w = windows_copy_cstring_to_lpcwstr( event_file,
+    event_file_w = windows_copy_cstring_to_lpwstr( event_file,
                                                     &event_file_length );
     if( !event_file_w ) {
       result = get_windows_error_code(  );
@@ -1240,7 +1240,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   }
 
   if( param_file ) {
-    param_file_w = windows_copy_cstring_to_lpcwstr( param_file,
+    param_file_w = windows_copy_cstring_to_lpwstr( param_file,
                                                     &param_file_length );
     if( !param_file_w ) {
       result = get_windows_error_code(  );
@@ -1545,13 +1545,13 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
 
   clear_error(  );
 
-  subkey_name_w = windows_copy_cstring_to_lpcwstr( subkey_name, NULL );
+  subkey_name_w = windows_copy_cstring_to_lpwstr( subkey_name, NULL );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );
     goto finish;
   }
 
-  source_name_w = windows_copy_cstring_to_lpcwstr( source_name, NULL );
+  source_name_w = windows_copy_cstring_to_lpwstr( source_name, NULL );
   if( !source_name_w ) {
     result = get_windows_error_code(  );
     goto cleanup_subkey;
