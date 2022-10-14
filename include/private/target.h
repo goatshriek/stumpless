@@ -96,4 +96,8 @@ COLD_FUNCTION
 int
 unsupported_target_is_open( const struct stumpless_target *target );
 
+static
+void
+close_unsupported_target( const struct stumpless_target *target );
+
 #endif /* __STUMPLESS_PRIVATE_TARGET_H */
