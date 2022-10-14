@@ -243,7 +243,7 @@ sys_socket_sendto_target( struct network_target *target,
   result = send( target->handle,
                  msg,
                  msg_length,
-                 0 );
+                 MSG_NOSIGNAL );
   unlock_network_target( target );
 
   if( result == -1 ){

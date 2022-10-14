@@ -329,23 +329,6 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
-  TEST_F( EntryTest, CopyMallocFailureOnElementName ) {
-    void * (*set_malloc_result)(size_t);
-    const struct stumpless_entry *result;
-    const struct stumpless_error *error;
-
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 14 ) );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    result = stumpless_copy_entry( basic_entry );
-    EXPECT_NULL( result );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-  }
-
   TEST_F( EntryTest, CopyReallocFailure ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;

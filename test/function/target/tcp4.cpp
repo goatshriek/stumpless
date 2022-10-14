@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2019-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -457,5 +457,43 @@ namespace {
 
     close_server_socket( default_port_handle );
     close_server_socket( new_port_handle );
+  }
+
+  TEST( Tcp4AddEntryTest, ClosedSession ) {
+    struct stumpless_target *target;
+    const char *destination = "127.0.0.1";
+    int add_result;
+    socket_handle_t accepted;
+    socket_handle_t port_handle;
+
+    port_handle = open_tcp4_server_socket( destination, "514" );
+
+    if( port_handle == BAD_HANDLE ) {
+      printf( "WARNING: " BINDING_DISABLED_WARNING "\n" );
+      SUCCEED(  ) <<  BINDING_DISABLED_WARNING;
+
+    } else {
+      target = stumpless_open_tcp4_target( "close-test", destination );
+      EXPECT_NO_ERROR;
+      ASSERT_NOT_NULL( target );
+
+      EXPECT_TRUE( stumpless_target_is_open( target ) );
+
+      add_result = stumpless_add_message( target, "first message" );
+      EXPECT_GE( add_result, 0 );
+
+      // accept and then close the connection early
+      accepted = accept_tcp_connection( port_handle );
+      close_server_socket( accepted );
+      close_server_socket( port_handle );
+
+      // we want an error, not program termination
+      while( add_result >= 0 ) {
+        add_result = stumpless_add_message( target, "testing a closed session" );
+      }
+
+      stumpless_close_network_target( target );
+
+    }
   }
 }

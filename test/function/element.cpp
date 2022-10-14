@@ -597,29 +597,6 @@ namespace {
     EXPECT_FALSE( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-  
-  TEST_F( ElementTest, SetNameMemoryFailure ) {
-    void * (*set_malloc_result)(size_t);
-    const char *new_name = "this-wont-work";
-    const struct stumpless_element *result;
-    const struct stumpless_error *error;
-    const char *after_name;
-
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    result = stumpless_set_element_name( basic_element, new_name );
-    EXPECT_NULL( result );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    after_name = stumpless_get_element_name( basic_element );
-    EXPECT_STRNE( after_name, new_name );
-    free( ( void * ) after_name );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-  }
 
   TEST_F( ElementTest, SetName ) {
     const char *new_name = "awesome-new-name";
@@ -970,24 +947,6 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( NewElementTest, MemoryFailureOnName ) {
-    const char *element_name = "this-name-is-awesome";
-    struct stumpless_element *element;
-    const struct stumpless_error *error;
-    void *(*result)(size_t);
-
-    result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
-    ASSERT_NOT_NULL( result );
-
-    element = stumpless_new_element( element_name );
-    EXPECT_EQ( NULL, element );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    stumpless_set_malloc( malloc );
-
-    stumpless_free_all(  );
-  }
-
   TEST( NewElementTest, NullName ) {
     struct stumpless_element *element;
     const struct stumpless_error *error;
@@ -999,7 +958,7 @@ namespace {
 
     stumpless_free_all(  );
   }
-  
+
   TEST( NewElementTest, InvalidName ) {
     struct stumpless_element *element;
     const struct stumpless_error *error;
