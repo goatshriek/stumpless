@@ -38,6 +38,7 @@
 #include "private/config/network_support_wrapper.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/thread_safety.h"

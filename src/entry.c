@@ -28,6 +28,7 @@
 #include "private/cache.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/deprecate.h"
 #include "private/element.h"

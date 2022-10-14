@@ -36,6 +36,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
