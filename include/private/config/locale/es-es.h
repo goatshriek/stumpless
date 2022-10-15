@@ -109,23 +109,21 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "índice " INDEXED_THING " no válido"
 
-// todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
+"un valor de registro MULTI_SZ no estaba ni vacío ni terminado con dos NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
-"la severidad no válida"
+"la gravedad inválida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"los códigos de severidad deben ser definidos de acuerdo al RFC 5424:" \
+"los códigos de gravedad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "mensaje de error por tipo de objetivo no válido"
 
-// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"return code of sd_journal_sendv"
+"código de retorno de sd_journal_sendv"
 
 // todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
@@ -138,9 +136,8 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "el tamaño máximo de mensaje sólo es válido para objetivos de red UDP"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"el resultado de GetLastError después de la llamada fallida"
 
 // todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
@@ -165,30 +162,25 @@
 ARG_NAME " fue NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"se ha tratado de abrir un tipo de objetivo no soportado"
+"se ha intentado abrir un tipo de objetivo no soportado"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
-"un parámetro con las características especificadas no fue encontrado"
+"no se encontró un parámetro con las características especificadas"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be created"
+"no se pudo crear un registro subclave"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be deleted"
+"no pudo eliminarse un registro subclave"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be opened"
+"no pudo abrirse un registro subclave"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"a registry value could not be read"
+"no pudo leerse un registro valor"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"a registry value could not be set"
+"no pudo establecerse un registro valor"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "se ha fallado al enviar con socket unix"
