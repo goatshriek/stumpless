@@ -1,0 +1,63 @@
+ <meta charset="utf-8">    
+    <title>www.premji.com</title>    
+</head>    
+<font color="#A6ACAF" size="5">    
+    <marquee><b><i>Dravida Aadharavaalan</i></b></marquee>    
+</font>    
+<body background="C:\Users\Dell\Music.jpg" link="white" alink="blue" vlink="#F8F8FF" > //background image  
+    <br />    
+               
+        <font face="Lato" size="5"><img src="C:\Users\Dell\Music.jpg" height="50px" width="100px"></font>//logo image  
+                               
+        <font face="cinzel" size="4">    
+            <a href="#">HOME</a>                                                      
+                             
+                                                                                    
+            <a href="#">VIDEOS</a>    
+                        
+            <a href="#">ARTICLES</a>    
+                        
+            <a href="#">BLOG</a>    
+                        
+            <a href=<html>    
+<head>    "#">ABOUT US</a>    
+        </font>    
+    <br /><br /><br /><br />    
+    <br />    
+    <br />    
+    <h1 align="center">    
+        <font color="#F0B27A" size="9" >    
+            Dravida Aadharavaalan<br/>    
+    </font>    
+    Startup   
+    </h1>    
+    <h3 align="center">    
+        <font face="Lato" color="red" size="3">    
+            Polities 
+        </font>    
+    <br /><br /><br /><br /><br /><br/><br/><br/><br/>    
+    <hr width="1500px">    
+    <center>    
+    <b>    
+    <font face="cinzel" size="4">    
+        <a href ="#">About Us|     
+        <a href ="#">Contact Us |    
+        <a href ="#"> Privacy Policy |    
+        <a href ="#"> Terms |     
+        <a href ="#">Media |    
+        <a href ="#"> Sitemap |    
+        <a href ="#"> Report a Bug |    
+        <a href ="#"> FAQ Partners</a><br/>    
+        <a href ="#">Home|    
+        <a href ="#"> Common|    
+        <a href ="#"> Stories |    
+        <a href ="#">Consultants |    
+        <a href ="#"> Ideas |    
+        <a href ="#"> Certifications    
+    </a><br/><br/>    
+            <font color="#FF0000">WELCOME</font>    
+    </font>    
+    </b>    
+    </center>    
+</body>    
+</html>    
