@@ -2194,4 +2194,207 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetProcid, ProcidNotSet ) {
+    struct stumpless_entry *entry;
+    const char *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_get_entry_procid( entry );
+
+    EXPECT_NOT_NULL( result );
+
+    free( (void *) result );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetProcid, ProcidSet ) {
+    struct stumpless_entry *entry;
+    const char *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *procid = "test-procid";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    entry = stumpless_set_entry_procid( entry, procid );
+
+    result = stumpless_get_entry_procid( entry );
+
+    EXPECT_TRUE( entry->procid_override );
+    EXPECT_TRUE( strcmp(procid, result) == 0 );
+
+    free( (void *) result );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetProcid, NullEntry ) {
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *procid;
+
+    procid = stumpless_get_entry_procid( NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL ( procid );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetProcid, SetValue ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *procid = "test-procid";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_procid( entry, procid );
+
+    EXPECT_TRUE( entry->procid_override );
+    EXPECT_TRUE( strcmp( (char *) result->procid, procid ) == 0 );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetProcid, ResetValue ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    char *procid[129];
+    
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_procid( entry, NULL );
+
+    EXPECT_NOT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetProcid, NullEntry ) {
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_procid( NULL, NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL ( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetProcid, ProcidTooLong ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *procid = "test-procid-"
+                         "abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmn";
+    
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_procid( entry, procid );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+    EXPECT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetProcid, ProcidNotPrintable ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *procid = "\n";
+    
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_procid( entry, procid );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetProcid, SetValueBufferValue ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    const char *buffer_name = "output-buffer";
+    char buffer[8096];
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *procid = "test-procid";
+    
+    target = stumpless_open_buffer_target("output buffer", buffer, 8096);
+    stumpless_set_option( target, STUMPLESS_OPTION_PID);
+    ASSERT_NOT_NULL( target );
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+    ASSERT_NOT_NULL( entry );
+
+    stumpless_set_entry_procid( entry, procid );
+    stumpless_add_entry( target, entry );
+    EXPECT_THAT( buffer, HasSubstr( "test-procid" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
 }
