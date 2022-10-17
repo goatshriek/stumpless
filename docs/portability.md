@@ -153,7 +153,7 @@ the platform independent library code to implement its own fallback code.
 
 A good example of this convention can be found in the call to get the memory
 page size of the system, which is used to make the slab caches used for some of
-the internal data structures more efficient. This call is defined in the wrapper
+the internal data structures that are more efficient. This call is defined in the wrapper
 header as described above, like this:
 
 ```c
