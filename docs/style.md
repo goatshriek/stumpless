@@ -14,7 +14,7 @@ the git history.
 Here are a few other style points to follow in the code base:
 
  * **No `#ifdef` directives are allowed in source (`.c`) files.**
-   Source code with preprocesor directives that add, alter, or remove
+   Source code with preprocessor directives that add, alter, or remove
    functionality are easy to add, but scatter configuration-specific behavior
    and build environment dependencies across source files, and make it harder to
    understand program flow. These snippets should instead be factored into
@@ -67,6 +67,6 @@ in your own additions.
    that are standard for arguments. These functions are provided to ease use in
    Windows environments, where wide strings may be the standard instead of
    multibyte. The suffix is similar to the 'A' vs. 'W' suffixes applied to
-   Windows functions to deliniate ASCII vs. wide string arguments. Keep in mind
+   Windows functions to delineate ASCII vs. wide string arguments. Keep in mind
    that this is different though; stumpless uses multibyte strings otherwise,
    not just ASCII!
