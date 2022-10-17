@@ -16,10 +16,15 @@
  * limitations under the License.
  */
 
+#include <errno.h>
+#include <stdbool.h>
 #include <stddef.h>
-#include <stddlib.h>
+#include <stdlib.h>
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
+#include "private/config/locale/wrapper.h"
+#include "private/error.h"
+#include "private/memory.h"
 
 /** Used to prevent data races on calls to wcstombs. */
 static config_atomic_bool_t wcstombs_free = config_atomic_bool_true;
