@@ -4,7 +4,7 @@ This is a lofty goal. The current standard practice is to keep logging at a high
 level and only turn on debug when needed, and even then only for troublesome
 components. And this is for good reason. Consider the pitfall of issuing the
 `debug all` command to a network device, only to have the processor overwhelmed
-and the box crash under the deluge of messages. Administrators may even go so
+and the box crashes under the deluge of messages. Administrators may even go so
 far as to specifically blacklist the command to prevent junior admins from
 unintentionally wreaking havoc.
 
