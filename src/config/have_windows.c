@@ -97,7 +97,8 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   int conversion_result;
 
   needed_size = WideCharToMultiByte( CP_UTF8,
-                                     WC_ERR_INVALID_CHARS,
+                                     WC_ERR_INVALID_CHARS |
+                                       WC_NO_BEST_FIT_CHARS,
                                      str,
                                      -1,
                                      NULL,
@@ -119,7 +120,8 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   }
 
   conversion_result = WideCharToMultiByte( CP_UTF8,
-                                           WC_ERR_INVALID_CHARS,
+                                           WC_ERR_INVALID_CHARS |
+                                             WC_NO_BEST_FIT_CHARS,
                                            str,
                                            -1,
                                            str_copy,

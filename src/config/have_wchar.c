@@ -49,6 +49,10 @@ wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
     goto cleanup_and_fail;
   }
 
+  if( copy_size ) {
+    *copy_size = buffer_size;
+  }
+
   return buffer;
 
 cleanup_and_fail:

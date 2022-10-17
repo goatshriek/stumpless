@@ -37,6 +37,7 @@
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/config/wrapper/wstring.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
@@ -1430,46 +1431,8 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     str_copy[param->value_length] = '\0';
 
   } else if( data->insertion_strings[index] ) {
-    needed_mb_length = WideCharToMultiByte( CP_UTF8,
-                                            WC_ERR_INVALID_CHARS |
-                                              WC_NO_BEST_FIT_CHARS,
-                                            data->insertion_strings[index],
-                                            -1,
-                                            NULL,
-                                            0,
-                                            NULL,
-                                            NULL );
-    if( needed_mb_length == 0 ) {
-      raise_wide_conversion_failure(
-        GetLastError(  ),
-        L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
-      );
-      goto cleanup_and_return;
-    }
-
-    str_copy = alloc_mem( needed_mb_length  );
-    if( !str_copy ) {
-      goto cleanup_and_return;
-    }
-
-    conversion_result = WideCharToMultiByte( CP_UTF8,
-                                             WC_ERR_INVALID_CHARS |
-                                               WC_NO_BEST_FIT_CHARS,
-                                             data->insertion_strings[index],
-                                             -1,
-                                             str_copy,
-                                             needed_mb_length,
-                                             NULL,
-                                             NULL );
-    if( conversion_result == 0 ) {
-      free_mem( str_copy );
-      str_copy = NULL;
-      raise_wide_conversion_failure(
-        GetLastError(  ),
-        L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
-      );
-      goto cleanup_and_return;
-    }
+    str_copy = config_copy_wstring_to_cstring( data->insertion_strings[index],
+                                               NULL );
   }
 
 cleanup_and_return:
