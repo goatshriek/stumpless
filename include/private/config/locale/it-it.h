@@ -227,9 +227,6 @@ L"la registrazione per Stumpless di Windows Event Log Source"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "non è stato possibile aprire il Windows Event Log"
 
-#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"il risultato di GetLastError dopo la chiamata fallita"
-
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "non è stato possibile convertire una stringa \"wide\" a una stringa multibyte"
 
@@ -238,6 +235,9 @@ L"la registrazione per Stumpless di Windows Event Log Source"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "codice di errore di Windows Socket"
+
+#  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"il risultato di GetLastError dopo la chiamata fallita"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket winsock2"

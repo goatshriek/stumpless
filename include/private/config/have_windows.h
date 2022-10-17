@@ -86,7 +86,7 @@ windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length );
  * error is encountered.
  */
 char *
-windows_copy_wstring_to_cstring( wchar_t *str, int *copy_size );
+windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
 
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );

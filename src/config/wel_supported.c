@@ -1440,7 +1440,10 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
                                             NULL,
                                             NULL );
     if( needed_mb_length == 0 ) {
-      raise_wide_conversion_failure( GetLastError(  ) );
+      raise_wide_conversion_failure(
+        GetLastError(  ),
+        L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
+      );
       goto cleanup_and_return;
     }
 
@@ -1461,7 +1464,10 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
     if( conversion_result == 0 ) {
       free_mem( str_copy );
       str_copy = NULL;
-      raise_wide_conversion_failure( GetLastError(  ) );
+      raise_wide_conversion_failure(
+        GetLastError(  ),
+        L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
+      );
       goto cleanup_and_return;
     }
   }

@@ -20,9 +20,62 @@
 #include <stddlib.h>
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
+
+/** Used to prevent data races on calls to wcstombs. */
+static config_atomic_bool_t wcstombs_free = config_atomic_bool_true;
+
+/**
+ * Gains exclusive access to call wcstombs. This is to prevent potential race
+ * conditions with the internal state used by wcstombs.
+ */
+static
+void
+lock_wcstombs( void ) {
+  while( !config_compare_exchange_bool( &wcstombs_free, true, false ) );
+}
+/**
+ * Releases exclusive access to call wcstombs.
+ */
+static
+void
+unlock_wcstombs( void ) {
+  config_write_bool( &wcstombs_free, true );
+}
+
 char *
-fallback_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
-  // todo pick up here
+fallback_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
+  size_t buffer_size;
+  char *buffer;
+  size_t conversion_result;
+
+  lock_wcstombs(  );
+  conversion_result = wcstombs( NULL, &str, 0 );
+  unlock_wcstombs(  );
+  if( conversion_result == -1 ) {
+    raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
+    goto fail;
+  }
+
+  buffer_size = conversion_result + 1; // add NULL terminator
+  buffer = alloc_mem( buffer_size );
+  if( !buffer ) {
+    goto fail;
+  }
+
+  lock_wcstombs(  );
+  conversion_result = wcstombs( buffer, &str, buffer_size );
+  unlock_wcstombs(  );
+  if( conversion_result == -1 ) {
+    raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
+    goto cleanup_and_fail;
+  }
+
+  return buffer;
+
+cleanup_and_fail:
+  free_mem( buffer );
+fail:
+  return NULL;
 }
 
 int

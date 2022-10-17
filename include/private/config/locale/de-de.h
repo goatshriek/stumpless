@@ -261,10 +261,6 @@ L"Stumpless registration of Windows Event Log Source"
 "could not open the Windows Event Log"
 
 // todo translate
-#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
-
-// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "could not convert the provided wide char string to a multibyte string"
 
@@ -274,6 +270,10 @@ L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Windows Socket Fehler Code"
+
+// todo translate
+#  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "Es konnte kein winsock2-Socket geöffnet werden"

@@ -91,7 +91,7 @@ windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length ) {
 }
 
 char *
-windows_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
+windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   int needed_size;
   LPWSTR str_copy;
   int conversion_result;
@@ -106,7 +106,10 @@ windows_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
                                      NULL );
 
   if( needed_size == 0 ) {
-    raise_wide_conversion_failure( GetLastError(  ) );
+    raise_wide_conversion_failure(
+      GetLastError(  ),
+      L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
+    );
     return NULL;
   }
 
@@ -126,7 +129,10 @@ windows_copy_wstring_to_cstring( wchar_t *str, int *copy_size ) {
 
   if( conversion_result == 0 ) {
     free_mem( str_copy );
-    raise_wide_conversion_failure( GetLastError(  ) );
+    raise_wide_conversion_failure(
+      GetLastError(  ),
+      L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
+    );
     return NULL;
   }
 

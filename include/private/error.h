@@ -236,11 +236,13 @@ raise_wel_open_failure( void );
  * Raises an error indicating that a conversion from a wide string to a
  * multibyte string failed.
  *
- * @param code The result of GetLastError after the failed conversion.
+ * @param code The error code.
+ *
+ * @param code_type A localized description of the error code.
  */
 COLD_FUNCTION
 void
-raise_wide_conversion_failure( int code );
+raise_wide_conversion_failure( int code, const char *code_type );
 
 /**
  * Raises an error indicating a general failure of a Windows API call. Details

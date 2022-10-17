@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check Headers
         run: |
-          tools/check_headers/check_headers.rb "include/**/*.h*"
+          tools/check_headers/check_headers.rb "include/**/*.h*" "include/**/**/*.h"
           tools/check_headers/check_headers.rb "src/**/*.c"
           tools/check_headers/check_headers.rb "test/**/*.cpp"
           tools/check_headers/check_headers.rb "docs/examples/**/*.c"
