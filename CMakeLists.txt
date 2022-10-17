@@ -127,6 +127,7 @@ check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
 check_include_files(unistd.h HAVE_UNISTD_H)
+check_include_files(wchar.h HAVE_WCHAR_H)
 check_include_files(windows.h HAVE_WINDOWS_H)
 check_include_files(winsock2.h HAVE_WINSOCK2_H)
 
@@ -274,6 +275,10 @@ if(HAVE_VSNPRINTF_S)
 else()
   list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
 endif(HAVE_VSNPRINTF_S)
+
+if(HAVE_WCHAR_H)
+  list(APPEND STUMPLESS_SOURCES src/config/have_wchar.c)
+endif()
 
 if(HAVE_WINDOWS_H)
   list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
