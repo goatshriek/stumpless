@@ -424,6 +424,8 @@ fail:
 struct stumpless_element *
 stumpless_set_element_name( struct stumpless_element *element,
                             const char *name ) {
+  size_t name_length;
+
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -432,10 +434,11 @@ stumpless_set_element_name( struct stumpless_element *element,
     goto fail;
   }
 
-  element->name_length = strlen( name );
+  name_length = strlen( name );
 
   lock_element( element );
-  memcpy( element->name, name, element->name_length + 1 );
+  memcpy( element->name, name, name_length + 1 );
+  element->name_length = name_length;
   unlock_element( element );
 
   clear_error(  );
