@@ -1,13 +1,13 @@
 ---
 title: Stumpless
 keywords: stumpless, c, logging, library, syslog, splunk, rsyslog, journald
-last_updated: October 10, 2022
+last_updated: October 20, 2022
 layout: default
 ---
 
 # Stumpless at a glance
 Stumpless is a C logging library built for high performance and a rich feature
-set. Check out our [vision](./vision.html) to see what we are all about!
+set.
 
 Stumpless offers a robust set of features to make logging in C faster and
 easier:
@@ -24,11 +24,12 @@ easier:
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
    and [support](https://gitter.im/stumpless/community).
 
-To see where we're heading in the near future, check out the project
+Check out our [vision](./vision.html) to see our ultimate goal! To see where
+we're heading in the near future, check out the project
 [roadmap](./roadmap.html).
 
 
-# More info
+# Examples and Documentation
 If you're just looking to start out, then take a look at some of the examples
 below. There is source code for each of these in the `docs/examples` folder of
 the repository if you want to actually compile and run them.
