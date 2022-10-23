@@ -101,17 +101,4 @@
 #  endif
 
 
-/* definition of config_getpid */
-#  ifdef HAVE_UNISTD_H
-#    include "private/config/have_unistd.h"
-#    define config_getpid unistd_getpid
-#  elif HAVE_WINDOWS_H
-#    include "private/config/have_windows.h"
-#    define config_getpid windows_getpid
-#  else
-#    include "private/config/fallback.h"
-#    define config_getpid fallback_getpid
-#  endif
-
-
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */

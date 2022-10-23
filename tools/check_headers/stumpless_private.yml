@@ -13,6 +13,7 @@
 "config_copy_wstring_to_cstring": "private/config/wrapper/wstring.h"
 "config_destroy_cached_mutex": "private/config/wrapper/thread_safety.h"
 "config_destroy_mutex": "private/config/wrapper/thread_safety.h"
+"config_getpid": "private/config/wrapper/getpid.h"
 "config_get_local_socket_name": "private/config/wrapper/socket.h"
 "config_init_journald_element": "private/config/wrapper/journald.h"
 "config_init_journald_param": "private/config/wrapper/journald.h"
