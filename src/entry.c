@@ -29,6 +29,7 @@
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
 #include "private/config/wrapper/wel.h"
+#include "private/config/wrapper/wstring.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/deprecate.h"
 #include "private/element.h"
@@ -740,6 +741,37 @@ stumpless_set_entry_message_str( struct stumpless_entry *entry,
 
   if( message ) {
     new_message = copy_cstring_with_length( message, &new_message_length );
+    if( !new_message ) {
+      return NULL;
+    }
+  } else {
+    new_message = NULL;
+    new_message_length = 0;
+  }
+
+  lock_entry( entry );
+  old_message = entry->message;
+  entry->message = new_message;
+  entry->message_length = new_message_length;
+  unlock_entry( entry );
+
+  free_mem( old_message );
+  clear_error(  );
+
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_message_str_w( struct stumpless_entry *entry,
+                                   const wchar_t *message ) {
+  char *new_message;
+  size_t new_message_length;
+  const char *old_message;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  if( message ) {
+    new_message = config_copy_wstring_to_cstring(message, &new_message_length);
     if( !new_message ) {
       return NULL;
     }

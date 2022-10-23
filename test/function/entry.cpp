@@ -2101,6 +2101,61 @@ namespace {
     stumpless_free_all(  );
   }
 
+    TEST( SetMessageWideStrTest, MallocFailureOnMessage ) {
+    void * (*set_malloc_result)(size_t);
+    struct stumpless_entry *entry;
+    const wchar_t *new_message = L"nice and long to make sure it beats the first";
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 46 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_set_entry_message_str_w( entry, new_message );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageWideStrTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_message_str_w( NULL, L"test-message" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageWideStrTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+
+    entry = create_empty_entry(  );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, result );
+
+    EXPECT_NULL( entry->message );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
   TEST( SetParam, NullEntry ) {
     struct stumpless_param *param;
     const struct stumpless_entry *result;
