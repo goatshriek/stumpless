@@ -239,10 +239,6 @@ L"Stumpless registration of Windows Event Log Source"
 "Chybový kód Windows Socket"
 
 // todo translate
-#  define L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
-
-// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "could not convert the provided wide char string to a multibyte string"
 
@@ -252,6 +248,10 @@ L"Stumpless registration of Windows Event Log Source"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "chybová návratová hodoty (error code) Windows socketu"
+
+// todo translate
+#  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
+"the result of GetLastError after the failed call"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "selhání otevírání winsock2 socketu"

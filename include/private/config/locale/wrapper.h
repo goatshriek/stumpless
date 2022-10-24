@@ -41,6 +41,10 @@
 #    include "private/config/locale/pl-pl.h"
 # elif defined USE_LOCALE_EL_GR
 #    include "private/config/locale/el-gr.h"
+# elif defined USE_LOCALE_PT_BR
+#    include "private/config/locale/pt-br.h"
+# elif defined USE_LOCALE_ZH_CN
+#    include "private/config/locale/zh-cn.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif

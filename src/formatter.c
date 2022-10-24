@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <stumpless/entry.h>
 #include <stumpless/option.h>
 #include <stumpless/target.h>

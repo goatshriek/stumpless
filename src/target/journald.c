@@ -30,6 +30,7 @@
 #include <systemd/sd-journal.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/getpid.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/entry.h"

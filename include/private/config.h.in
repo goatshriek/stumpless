@@ -25,6 +25,7 @@
 #cmakedefine HAVE_STDATOMIC_H 1
 #cmakedefine HAVE_SYS_SOCKET_H 1
 #cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_WCHAR_H 1
 #cmakedefine HAVE_WINDOWS_H 1
 #cmakedefine HAVE_WINSOCK2_H 1
 

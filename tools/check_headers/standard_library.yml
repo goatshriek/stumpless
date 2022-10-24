@@ -95,6 +95,7 @@
 "malloc":
   - "cstdlib"
   - "stdlib.h"
+"mbstate_t": "wchar.h"
 "memcpy":
   - "cstring"
   - "string.h"
@@ -191,7 +192,16 @@
 "va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
+"WC_ERR_INVALID_CHARS":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"WC_NO_BEST_FIT_CHARS":
+  - "windows.h"
+  - "private/windows_wrapper.h"
+"wchar_t": "stddef.h"
 "wcslen": "wchar.h"
+"wcsrtombs": "wchar.h"
+"wcstombs": "stdlib.h"
 "WIN32_LEAN_AND_MEAN":
   - "windows.h"
   - "private/windows_wrapper.h"

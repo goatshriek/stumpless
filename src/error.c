@@ -361,11 +361,11 @@ raise_wel_open_failure( void ) {
 }
 
 void
-raise_wide_conversion_failure( int code ) {
+raise_wide_conversion_failure( int code, const char *code_type ) {
   raise_error( STUMPLESS_INVALID_ENCODING,
     L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE,
     code,
-    L10N_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE );
+    code_type );
 }
 
 void
