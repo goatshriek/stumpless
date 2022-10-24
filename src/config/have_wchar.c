@@ -29,15 +29,11 @@ wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   size_t buffer_size;
   char *buffer;
   mbstate_t state;
-  size_t conversion_result;
+  size_t conversion_result, str_length;
 
-  conversion_result = wcsrtombs( NULL, &str, 0, &state );
-  if( conversion_result == -1 ) {
-    raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail;
-  }
+  str_length = wcslen(str);
 
-  buffer_size = conversion_result + 1; // add NULL terminator
+  buffer_size = str_length + 1; // add NULL terminator
   buffer = alloc_mem( buffer_size );
   if( !buffer ) {
     goto fail;

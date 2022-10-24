@@ -2101,7 +2101,28 @@ namespace {
     stumpless_free_all(  );
   }
 
-    TEST( SetMessageWideStrTest, MallocFailureOnMessage ) {
+  TEST( SetMessageWideStrTest, BasicLStringTest ) {
+    void * (*set_malloc_result)(size_t);
+    struct stumpless_entry *entry;
+    const wchar_t *new_message = L"nice and long to make sure it beats the first";
+    const char *short_string = "nice and long to make sure it beats the first";
+    const int string_length = 46;
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, new_message );
+    EXPECT_EQ( entry->message_length, string_length);
+    for(int i=0; i<string_length; i++)
+      EXPECT_EQ( entry->message[i], short_string[i]);
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageWideStrTest, MallocFailureOnMessage ) {
     void * (*set_malloc_result)(size_t);
     struct stumpless_entry *entry;
     const wchar_t *new_message = L"nice and long to make sure it beats the first";
