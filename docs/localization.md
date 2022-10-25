@@ -5,7 +5,8 @@ locales varies widely. To see the documentation for a given language, check the
 `l10n` folder in the root of the repository. There are folders for locales with
 translations available. These are structured as a mirror of the root of the
 repository, with documents with no localization missing. Note that some
-files may only have partial translations available.
+files may only have partial translations available. File and folder names may
+be localized as well, though this is not strictly required.
 
 If you would like to contribute localization of part or all of a file, you
 only need to submit a pull request with the changes made. Keep in mind that
