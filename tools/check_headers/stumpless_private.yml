@@ -164,3 +164,4 @@
 "windows_unlock_mutex": "private/config/have_windows.h"
 "write_to_error_stream": "private/error.h"
 "validate_param_name_length": "private/validate.h"
+"config_gethostname": "private/config/wrapper/gethostname.h"
