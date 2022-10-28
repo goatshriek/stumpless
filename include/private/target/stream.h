@@ -32,7 +32,7 @@ struct stream_target {
 /** The stream this target writes to. */
   FILE *stream;
 /** severity colors for console(std) outputs **/
-  char **severity_colors;
+  char *severity_colors[8];
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects stream. This mutex must be locked by a thread before it can write

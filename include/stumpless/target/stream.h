@@ -181,7 +181,7 @@ stumpless_open_stream_target( const char *name, FILE *stream );
  */
 STUMPLESS_PUBLIC_FUNCTION
 void 
-stumpless_set_severity_color( struct stumpless_target *target,
+stumpless_set_severity_color( const struct stumpless_target *target,
                               const enum stumpless_severity severity,
                               const char *escape_code );
 

@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/rfc5424.hpp"
+#include "private/target/stream.h"
 
 namespace {
   int
@@ -287,4 +288,133 @@ namespace {
 
     remove( filename );
   }
+
+  TEST( SetSeverityColor, StdoutBasicArgs ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    target = stumpless_open_stdout_target( "stdout-test" );
+
+    // char *color_codes[] = {
+    //   "\033[31m",
+    //   "\033[32m",
+    //   "\033[33m",
+    //   "\033[34m",
+    //   "\033[35m",
+    //   "\033[36m",
+    //   "\033[37m",
+    //   "\033[38m"
+    // };
+    // for(int i=0; i<8; i++)
+      // stumpless_set_severity_color( target, (const enum stumpless_severity)i, color_codes[i] );
+    // const 
+    // for(int i=0; i<8; i++){
+      // EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[i], color_codes[i] );
+    // }
+      stumpless_set_severity_color( target, STUMPLESS_SEVERITY_EMERG, "\033[31m" );
+      EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[STUMPLESS_SEVERITY_EMERG], "\033[31m" );
+  }
+
+  TEST( SetSeverityColor, StdoutNullTarget ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    enum stumpless_severity severity = STUMPLESS_SEVERITY_CRIT;
+    char color_code[] = "\033[31m";
+
+    target = NULL;
+
+    stumpless_set_severity_color( target, severity, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );    
+  }
+
+  TEST( SetSeverityColor, StdoutInvalidSeverity ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    // enum stumpless_severity severity = 10;
+    char color_code[] = "\033[31m";
+
+    target = stumpless_open_stdout_target( "stdout-test" );
+
+    stumpless_set_severity_color( target, (enum stumpless_severity)10, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );    
+  }
+
+  TEST( SetSeverityColor, StdoutNullEscapeCode ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    enum stumpless_severity severity = STUMPLESS_SEVERITY_CRIT;
+    char *color_code = NULL;
+
+    target = stumpless_open_stdout_target( "stdout-test" );
+
+    stumpless_set_severity_color( target, severity, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );    
+  }
+
+  TEST( SetSeverityColor, StdErrBasicArgs ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    target = stumpless_open_stderr_target( "stderr-test" );
+
+    // char *color_codes[] = {
+    //   "\033[31m",
+    //   "\033[32m",
+    //   "\033[33m",
+    //   "\033[34m",
+    //   "\033[35m",
+    //   "\033[36m",
+    //   "\033[37m",
+    //   "\033[38m"
+    // };
+    // for(int i=0; i<8; i++)
+      // stumpless_set_severity_color( target, (const enum stumpless_severity)i, color_codes[i] );
+    // const 
+    // for(int i=0; i<8; i++){
+      // EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[i], color_codes[i] );
+    // }
+      stumpless_set_severity_color( target, STUMPLESS_SEVERITY_EMERG, "\033[31m" );
+      EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[STUMPLESS_SEVERITY_EMERG], "\033[31m" );
+  }
+
+  TEST( SetSeverityColor, StdErrNullTarget ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    enum stumpless_severity severity = STUMPLESS_SEVERITY_CRIT;
+    char color_code[] = "\033[31m";
+
+    target = NULL;
+
+    stumpless_set_severity_color( target, severity, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );    
+  }
+
+  TEST( SetSeverityColor, StdErrInvalidSeverity ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    // enum stumpless_severity severity = 10;
+    char color_code[] = "\033[31m";
+
+    target = stumpless_open_stderr_target( "stderr-test" );
+
+    stumpless_set_severity_color( target, (enum stumpless_severity)10, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );    
+  }
+
+  TEST( SetSeverityColor, StdErrNullEscapeCode ){
+    const struct stumpless_target *target;
+    const struct stumpless_error *error;
+    enum stumpless_severity severity = STUMPLESS_SEVERITY_CRIT;
+    char *color_code = NULL;
+
+    target = stumpless_open_stderr_target( "stderr-test" );
+
+    stumpless_set_severity_color( target, severity, color_code);
+    
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );    
+  }
+
 }
