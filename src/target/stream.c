@@ -21,6 +21,8 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/stream.h>
+#include <stumpless/severity.h>
+#include <stumpless/entry.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
@@ -54,7 +56,11 @@ stumpless_open_stderr_target( const char *name ) {
     return NULL;
   struct stream_target *stream_target = stumpless_target->id;
   // ? dynamically get number of possible severiy
-  stream_target->severity_colors = (char **)alloc_mem( sizeof(char *)*8 );
+  stream_target->severity_colors = (char **)calloc( 8, sizeof(char *) );
+  if( stream_target->severity_colors==NULL ){
+    raise_memory_allocation_failure( );
+    return stumpless_target;
+  }
   // TODO use predefined array and loop over to init color confs
   stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");
   stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_ALERT, "\033[36m\033[41m");
@@ -73,7 +79,11 @@ stumpless_open_stdout_target( const char *name ) {
   if( stumpless_target==NULL )
     return NULL;
   struct stream_target *stream_target = stumpless_target->id;
-  stream_target->severity_colors = (char **)alloc_mem( sizeof(char *)*8 );
+  stream_target->severity_colors = (char **)calloc( 8, sizeof(char *) );
+  if( stream_target->severity_colors==NULL ){
+    raise_memory_allocation_failure( );
+    return stumpless_target;
+  }
   // ? dynamically get number of possible severiy
   // TODO use predefined array and loop over to init color confs
   stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");

@@ -208,3 +208,4 @@ EXPORTS
   stumpless_get_target_type_string              @193
   stumpless_get_entry_procid                    @194
   stumpless_set_entry_procid                    @195
+  stumpless_set_severity_color                  @196
