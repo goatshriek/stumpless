@@ -50,36 +50,40 @@ stumpless_close_stream_target( const struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name ) {
   struct stumpless_target *stumpless_target= stumpless_open_stream_target( name, stderr );
+  if( stumpless_target==NULL )
+    return NULL;
   struct stream_target *stream_target = stumpless_target->id;
   // ? dynamically get number of possible severiy
   stream_target->severity_colors = (char **)alloc_mem( sizeof(char *)*8 );
   // TODO use predefined array and loop over to init color confs
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_ALERT, "\033[36m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_CRIT, "\033[37m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_ERR, "\033[31m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_WARNING, "\033[33m");
-  // stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_NOTICE, "\033[3m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_INFO, "\033[32m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_DEBUG, "\033[36m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_ALERT, "\033[36m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_CRIT, "\033[37m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_ERR, "\033[31m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_WARNING, "\033[33m");
+  // stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_NOTICE, "\033[3m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_INFO, "\033[32m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_DEBUG, "\033[36m");
   return stumpless_target;
 }
 
 struct stumpless_target *
 stumpless_open_stdout_target( const char *name ) {
   struct stumpless_target *stumpless_target= stumpless_open_stream_target( name, stdout );
+  if( stumpless_target==NULL )
+    return NULL;
   struct stream_target *stream_target = stumpless_target->id;
-  // ? dynamically get number of possible severiy
   stream_target->severity_colors = (char **)alloc_mem( sizeof(char *)*8 );
+  // ? dynamically get number of possible severiy
   // TODO use predefined array and loop over to init color confs
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_ALERT, "\033[36m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_CRIT, "\033[37m\033[41m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_ERR, "\033[31m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_WARNING, "\033[33m");
-  // stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_NOTICE, "\033[3m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_INFO, "\033[32m");
-  stumpless_set_severity_color( stream_target, STUMPLESS_SEVERITY_DEBUG, "\033[36m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_EMERG, "\033[37m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_ALERT, "\033[36m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_CRIT, "\033[37m\033[41m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_ERR, "\033[31m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_WARNING, "\033[33m");
+  // stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_NOTICE, "\033[3m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_INFO, "\033[32m");
+  stumpless_set_severity_color( stumpless_target, STUMPLESS_SEVERITY_DEBUG, "\033[36m");
   return stumpless_target;
 }
 
@@ -179,13 +183,20 @@ write_failure:
 }
 
 void 
-stumpless_set_severity_color( struct stream_target *target,
+stumpless_set_severity_color( struct stumpless_target *stumpless_target,
                               const enum stumpless_severity severity,
                               const char *escape_code ) {
                               
-  if( target == NULL)
+  struct stream_target* target = NULL;
+  
+  if( stumpless_target == NULL)
     return;
   if( escape_code == NULL)
+    return;
+
+  target = (struct stream_target*)stumpless_target->id;
+
+  if( target->severity_colors==NULL )
     return;
 
   config_lock_mutex( &target->stream_mutex );

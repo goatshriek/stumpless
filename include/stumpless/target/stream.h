@@ -39,7 +39,7 @@
 #  include <stumpless/config.h>
 #  include <stumpless/target.h>
 #  include <stumpless/severity.h>
-#  include "private/target/stream.h"
+// #  include "private/target/stream.h"
 
 #  ifdef __cplusplus
 extern "C" {
@@ -181,7 +181,7 @@ stumpless_open_stream_target( const char *name, FILE *stream );
  */
 STUMPLESS_PUBLIC_FUNCTION
 void 
-stumpless_set_severity_color( struct stream_target *target,
+stumpless_set_severity_color( struct stumpless_target *target,
                               const enum stumpless_severity severity,
                               const char *escape_code );
 
