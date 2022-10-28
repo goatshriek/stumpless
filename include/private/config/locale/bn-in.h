@@ -20,13 +20,16 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
 
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"স্থানীয় ইউনিক্স সকেটের সাথে আবদ্ধ করা যায়নি"
+"স্থানীয় ইউনিক্স সকেটের"\
+ "সাথে আবদ্ধ করা যায়নি"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
-"প্রদত্ত বার্তার জন্য বাফারটি খুবই ছোট"
+"প্রদত্ত বার্তার জন্য"\
+ "বাফারটি খুবই ছোট"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"একটি অসমর্থিত টার্গেট টাইপ বন্ধ করার চেষ্টা করা হয়েছে"
+"একটি অসমর্থিত টার্গেট টাইপ"\
+ "বন্ধ করার চেষ্টা করা হয়েছে"
 
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
 "CommitTransaction অসফল"
@@ -44,7 +47,8 @@
 "গন্তব্য শুধুমাত্র নেটওয়ার্ক লক্ষ্যের জন্য বৈধ"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
-"প্রদত্ত নামের একটি উপাদান ইতিমধ্যে এই এন্ট্রিতে উপস্থিত রয়েছে৷"
+"প্রদত্ত নামের একটি উপাদান ইতিমধ্যে"\
+ "এই এন্ট্রিতে উপস্থিত রয়েছে৷"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
 "নির্দিষ্ট বৈশিষ্ট্য সহ একটি উপাদান খুঁজে পাওয়া যায়নি"
@@ -89,14 +93,15 @@
 "GetModuleHandleExW অসফল"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"অবৈধ সূচক, বা এর -1টি একটি int হিসাবে উপস্থাপন করার জন্য খুব বড়"
+"অবৈধ সূচক, বা এর -1টি একটি int হিসাবে"\
+ "উপস্থাপন করার জন্য খুব বড়"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "বাতিল প্রণালী"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"সুবিধা কোডগুলি অবশ্যই RFC 5424 অনুসারে সংজ্ঞায়িত করতে হবে, এর পরে" \
-" 8 দ্বারা গুণ"
+"সুবিধা কোডগুলি অবশ্যই RFC 5424 অনুসারে"\
+ "সংজ্ঞায়িত করতে হবে, এর পরে 8 দ্বারা গুণ"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "অসফল target id"
@@ -105,14 +110,16 @@
 "অসফল " INDEXED_THING " index"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"একটি MULTI_SZ রেজিস্ট্রি মান খালি ছিল না বা দুটি NULL অক্ষর দিয়ে শেষ করা হয়নি" \
+"একটি MULTI_SZ রেজিস্ট্রি মান খালি ছিল না"\
+"বা দুটি NULL অক্ষর দিয়ে শেষ করা হয়নি" \
 
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "অসফল severity"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"তীব্রতা কোড অবশ্যই RFC 5424 অনুসারে সংজ্ঞায়িত করা উচিত: 0 এর মধ্যে মান" \
+"তীব্রতা কোড অবশ্যই RFC 5424 অনুসারে"\
+"সংজ্ঞায়িত করা উচিত: 0 এর মধ্যে মান" \
 " এবং 7 সহ"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
@@ -125,7 +132,8 @@
 "sd_journal_sendv অসফল"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"mkstemp ব্যবহার করে নির্বাচিত স্থানীয় সকেট নাম দিয়ে একটি ফাইল তৈরি করা যায়নি"
+"mkstemp ব্যবহার করে নির্বাচিত স্থানীয় সকেট"\
+ "নাম দিয়ে একটি ফাইল তৈরি করা যায়নি"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "সর্বাধিক বার্তা আকার শুধুমাত্র UDP নেটওয়ার্ক লক্ষ্যগুলির জন্য বৈধ"
