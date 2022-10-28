@@ -38,6 +38,8 @@
 #  include <stdio.h>
 #  include <stumpless/config.h>
 #  include <stumpless/target.h>
+#  include <stumpless/severity.h>
+#  include "private/target/stream.h"
 
 #  ifdef __cplusplus
 extern "C" {
@@ -153,6 +155,35 @@ stumpless_open_stdout_target( const char *name );
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_stream_target( const char *name, FILE *stream );
+
+/**
+ * Sets the color of given severity of given stream target.
+ *
+ * **Thread Safety: MT-Safe race:name**
+ * This function is thread safe, of course assuming that name is not modified by
+ * any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @param target The name of the target whose color will be set.
+ *
+ * @param severity The severity whose color will be set.
+ * 
+ * @param escape_code ascii escape code (https://chrisyeh96.github.io/2020/03/28/terminal-colors.htm)
+ *
+ * @return None
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void 
+stumpless_set_severity_color( struct stream_target *target,
+                              const enum stumpless_severity severity,
+                              const char *escape_code );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */
