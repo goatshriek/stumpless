@@ -27,7 +27,7 @@
 "config_fopen": "private/config/wrapper.h"
 "config_format_string": "private/config/wrapper.h"
 "config_gethostname": "private/config/wrapper.h"
-"config_getpagesize": "private/config/wrapper.h"
+"config_getpagesize": "private/config/wrapper/getpagesize.h"
 "config_get_now": "private/config/wrapper.h"
 "config_init_tcp4": "private/config/network_support_wrapper.h"
 "config_init_udp4": "private/config/network_support_wrapper.h"

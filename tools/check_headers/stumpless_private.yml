@@ -165,3 +165,4 @@
 "write_to_error_stream": "private/error.h"
 "validate_param_name_length": "private/validate.h"
 "config_gethostname": "private/config/wrapper/gethostname.h"
+"config_getpagesize": "private/config/wrapper/getpagesize.h"

@@ -71,21 +71,4 @@
 #    define config_get_now windows_get_now
 #  endif
 
-
-/* definition of config_getpagesize */
-#  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
-#    include "private/config/unistd_sysconf_getpagesize_supported.h"
-#    define config_getpagesize unistd_sysconf_getpagesize
-#  elif HAVE_UNISTD_GETPAGESIZE
-#    include "private/config/have_unistd_getpagesize.h"
-#    define config_getpagesize unistd_getpagesize
-#  elif HAVE_WINDOWS_H
-#    include "private/config/have_windows.h"
-#    define config_getpagesize windows_getpagesize
-#  else
-#    include "private/config/fallback.h"
-#    define config_getpagesize fallback_getpagesize
-#  endif
-
-
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */
