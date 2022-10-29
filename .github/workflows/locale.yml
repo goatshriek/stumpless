@@ -282,7 +282,7 @@ jobs:
           cmake .
       - name: Check Language
         run: |
-          grep -q "STUMPLESS_LANGUAGE \"bn_IN\"" include/stumpless/config.h
+          grep -q "STUMPLESS_LANGUAGE \"bn-IN\"" include/stumpless/config.h
       - name: Build
         run: |
           make all
