@@ -19,8 +19,6 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
 
-#  include "private/config.h"
-
 /* definition of config_get_now */
 #  ifdef HAVE_GMTIME_R
 #    include "private/config/have_gmtime_r.h"
