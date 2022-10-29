@@ -25,6 +25,7 @@
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"
+#include "private/config/wrapper/get_now.h"
 
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry,

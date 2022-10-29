@@ -44,6 +44,7 @@
 #include "private/target.h"
 #include "private/target/journald.h"
 #include "private/validate.h"
+#include "private/config/wrapper/get_now.h"
 
 #define PRIORITY_PREFIX_SIZE 9
 #define FACILITY_PREFIX_SIZE 16
