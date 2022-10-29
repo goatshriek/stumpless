@@ -21,6 +21,7 @@
 #include <stumpless/memory.h>
 #include "private/config/network_support_wrapper.h"
 #include "private/config/wrapper.h"
+#include "private/config/wrapper/getpagesize.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
