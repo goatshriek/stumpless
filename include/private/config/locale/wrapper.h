@@ -47,6 +47,8 @@
 #    include "private/config/locale/zh-cn.h"
 # elif defined USE_LOCALE_HI_IN
 #    include "private/config/locale/hi-in.h"
+# elif defined USE_LOCALE_BN_IN
+#    include "private/config/locale/bn-in.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
