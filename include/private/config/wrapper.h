@@ -61,14 +61,4 @@
 #    define config_format_string no_vsnprintf_s_format_string
 #  endif
 
-
-/* definition of config_get_now */
-#  ifdef HAVE_GMTIME_R
-#    include "private/config/have_gmtime_r.h"
-#    define config_get_now gmtime_r_get_now
-#  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/windows_get_now_supported.h"
-#    define config_get_now windows_get_now
-#  endif
-
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */
