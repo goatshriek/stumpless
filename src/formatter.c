@@ -21,7 +21,6 @@
 #include <stumpless/entry.h>
 #include <stumpless/option.h>
 #include <stumpless/target.h>
-#include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"

@@ -29,8 +29,8 @@
 #include <sys/uio.h>
 #include <systemd/sd-journal.h>
 #include "private/config/locale/wrapper.h"
-#include "private/config/wrapper.h"
 #include "private/config/wrapper/getpid.h"
+#include "private/config/wrapper/get_now.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -44,7 +44,6 @@
 #include "private/target.h"
 #include "private/target/journald.h"
 #include "private/validate.h"
-#include "private/config/wrapper/get_now.h"
 
 #define PRIORITY_PREFIX_SIZE 9
 #define FACILITY_PREFIX_SIZE 16
