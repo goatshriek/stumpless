@@ -21,6 +21,7 @@
 "config_init_mutex": "private/config/wrapper/thread_safety.h"
 "config_journald_free_thread": "private/config/wrapper/journald.h"
 "config_lock_mutex": "private/config/wrapper/thread_safety.h"
+"config_open_default_target": "private/config/wrapper/config_open_default_target.h"
 "config_read_flag": "private/config/wrapper/thread_safety.h"
 "config_read_ptr": "private/config/wrapper/thread_safety.h"
 "config_send_entry_to_journald_target": "private/config/wrapper/journald.h"
