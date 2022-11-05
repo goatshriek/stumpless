@@ -19,7 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "private/cache.h"
-#include "private/config/wrapper.h"
+#include "private/config/wrapper/getpagesize.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"

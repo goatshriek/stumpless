@@ -47,9 +47,11 @@
 
 
 /* locale definition */
+#cmakedefine USE_LOCALE_BN_IN 1
 #cmakedefine USE_LOCALE_DE_DE 1
 #cmakedefine USE_LOCALE_ES_ES 1
 #cmakedefine USE_LOCALE_FR_FR 1
+#cmakedefine USE_LOCALE_HI_IN 1
 #cmakedefine USE_LOCALE_IT_IT 1
 #cmakedefine USE_LOCALE_SV_SE 1
 #cmakedefine USE_LOCALE_EN_US 1

@@ -39,6 +39,20 @@ static bool validate_string_length( const char* str, size_t max_length ) {
   return validation_status;
 }
 
+bool validate_procid_length(const char* procid ) {
+  size_t length = strlen( procid );
+  bool validation_status = true;
+
+  if( length > STUMPLESS_MAX_PROCID_LENGTH ) {
+    raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                            length,
+                            L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+    validation_status = false;
+  }
+
+  return validation_status;
+}
+
 bool validate_msgid_length(const char* msgid ) {
   size_t msgid_char_length = strlen( msgid );
   bool validation_status = true;
@@ -53,6 +67,7 @@ bool validate_msgid_length(const char* msgid ) {
 
   return validation_status;
 }
+
 bool validate_printable_ascii( const char* str ) {
   size_t str_length = strlen( str );
 

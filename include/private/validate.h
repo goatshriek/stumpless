@@ -65,6 +65,16 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
 }
 
 /**
+ * Checks the char length of procid.
+ *
+ * @param the procid.
+ * 
+ * @return True if the procid is at or below the maximum allowed length, otherwise
+ * it will return false and raise the appropriate error.
+ */
+bool validate_procid_length( const char* procid );
+
+/**
  * Checks the char length of msgid.
  *
  * @param the msgid.
@@ -72,7 +82,7 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
  * @return True if the msgid is at or below the maximum allowed length, otherwise
  * it will return false and raise the appropriate error.
  */
-bool validate_msgid_length(const char* msgid );
+bool validate_msgid_length( const char* msgid );
 
 /**
  * Checks that the passed in app_name contains only ASCII characters (33 <= char <= 126).
