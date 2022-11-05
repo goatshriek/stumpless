@@ -784,6 +784,36 @@ int
 stumpless_get_entry_prival( const struct stumpless_entry *entry );
 
 /**
+ * Returns the procid of a given entry. If procid is not set it will return the
+ * ProcessID. The result character buffer must be freed by the caller when it is 
+ * no longer needed to avoid memory leaks.
+ * 
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.1.0.
+ * 
+ * @param entry The entry to get the procid of.
+ * 
+ * @return The procid of the entry if no error is encountered. If an error
+ * was encountered, then NULL is returned and an error code is set 
+ * appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+const char *
+stumpless_get_entry_procid( const struct stumpless_entry *entry );
+
+/**
  * Returns the severity code of the given entry.
  *
  * In versions prior to v2.0.0, this function returned an int, and -1 in the
@@ -1341,6 +1371,35 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
                             int prival );
 
 /**
+ * Sets the procid of a given entry. If procid is NULL it will set procid to
+ * be the ProcessID.
+ * 
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0.
+ * 
+ * @param entry The entry to modify.
+ * 
+ * @param procid The new procid to set on the entry.
+ * 
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_set_entry_procid( struct stumpless_entry *entry, const char *procid );
+
+/**
  * Sets the severity of an entry.
  *
  * In versions prior to 2.0.0, the severity parameter was an int type instead
@@ -1466,61 +1525,6 @@ struct stumpless_entry *
 vstumpless_set_entry_message( struct stumpless_entry *entry,
                               const char *message,
                               va_list subs );
-
-/**
- * Returns the procid of a given entry. If procid is not set it will return the
- * ProcessID. The result character buffer must be freed by the caller when it is 
- * no longer needed to avoid memory leaks.
- * 
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * entry while it is being modified.
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate changes.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
- * 
- * @param entry The entry to get the procid of.
- * 
- * @return The procid of the entry if no error is encountered. If an error
- * was encountered, then NULL is returned and an error code is set 
- * appropriately.
- */
-STUMPLESS_PUBLIC_FUNCTION
-const char *
-stumpless_get_entry_procid( const struct stumpless_entry *entry );
-
-/**
- * Sets the procid of a given entry. If procid is NULL it will set procid to
- * be the ProcessID.
- * 
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate changes to the
- * entry while it is being modified.
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate changes.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked.
- * 
- * @param entry The entry to modify.
- * 
- * @param procid The new procid to set on the entry.
- * 
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-STUMPLESS_PUBLIC_FUNCTION
-struct stumpless_entry *
-stumpless_set_entry_procid( struct stumpless_entry *entry, const char *procid );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

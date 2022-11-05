@@ -546,6 +546,29 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   return prival;
 }
 
+const char *
+stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
+  struct strbuilder *procid_builder;
+  const char *procid;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  procid_builder = strbuilder_new(  );
+
+  lock_entry( entry );
+  if( entry->procid_override ) {
+    strbuilder_append_string( procid_builder, entry->procid );
+  } else {
+    strbuilder_append_procid( procid_builder );
+  }
+  unlock_entry( entry );
+
+  procid = strbuilder_to_string( procid_builder );
+  strbuilder_destroy( procid_builder );
+
+  return procid;
+}
+
 enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
   int prival;
@@ -898,6 +921,28 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_set_entry_procid( struct stumpless_entry *entry,
+                            const char *procid ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+
+  if( !procid ) {
+    entry->procid_override = false;
+  } else {
+    if( !validate_printable_ascii( procid ) ||
+          !validate_procid_length( procid ) ) {
+      return NULL;
+    }
+    strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
+    entry->procid_override = true;
+  }
+
+  unlock_entry(entry);
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry,
                               enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
@@ -975,51 +1020,6 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
 
   free_mem( old_message );
   clear_error(  );
-  return entry;
-}
-
-const char *
-stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
-  struct strbuilder *procid_builder;
-  char *procid;
-  
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-  
-  procid_builder = strbuilder_new();
-
-  if( entry->procid_override == false ) {
-    strbuilder_append_procid( procid_builder );
-  }
-  else {
-    strbuilder_append_string( procid_builder, entry->procid );
-  }
-
-  procid = strbuilder_to_string( procid_builder );
-
-  strbuilder_destroy( procid_builder );
-
-  unlock_entry( entry );
-  return procid;
-}
-
-struct stumpless_entry *
-stumpless_set_entry_procid( struct stumpless_entry *entry, const char *procid ) {
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-
-  if( procid == NULL ) {
-    entry->procid_override = false;
-  }
-  else {
-    if( !validate_printable_ascii( procid ) || !validate_procid_length( procid ) ) return NULL;
-    strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
-    entry->procid_override = true;
-  }
-
-  unlock_entry(entry);
   return entry;
 }
 
