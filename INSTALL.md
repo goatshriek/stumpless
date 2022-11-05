@@ -80,7 +80,7 @@ tools (for a GNU toolchain) with something like the following:
 sudo apt-get install git cmake make gcc g++ doxygen
 ```
 
-Cygwin lacks a package manager in the environment itself, requiring packges to
+Cygwin lacks a package manager in the environment itself, requiring packages to
 be installed using the setup script. You can install the needed packages in the
 GUI, or if you want to just do it via command line, you can do something like
 this:
@@ -128,7 +128,7 @@ cmake --build . --target all
 cmake --build . --target all
 ```
 
-The type of build can be changed at configuation time by defining the
+The type of build can be changed at configuration time by defining the
 `CMAKE_BUILD_TYPE` symbol during configuration.
 
 ```sh
