@@ -190,9 +190,9 @@ stumpless_add_new_element( struct stumpless_entry *entry,
  * @param entry The entry to add the new param to.
  *
  * @param element_name The name of the element to add the param to. If an
- * element with this name is not found, it will be created. Valid name should 
- * have printable ASCII charecters expect '=', ']' , '"' and should be 32 
- * charecters long 
+ * element with this name is not found, it will be created. Valid name should
+ * have printable ASCII characters expect '=', ']' , '"' and should be 32
+ * characters long.
  *
  * @param param_name The name of the new param to add.
  *
