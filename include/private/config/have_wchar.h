@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_FALLBACK_H
-#  define __STUMPLESS_PRIVATE_CONFIG_FALLBACK_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H
 
-#include <stddef.h>
+#  include <stddef.h>
 
 /**
  * Creates a copy of a NULL terminated wide character string in UTF-8 multibyte
@@ -47,15 +47,6 @@
  * error is encountered.
  */
 char *
-fallback_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
+wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
 
-int
-fallback_gethostname( char *buffer, size_t namelen );
-
-size_t
-fallback_getpagesize( void );
-
-int
-fallback_getpid( void );
-
-#endif /* __STUMPLESS_PRIVATE_CONFIG_FALLBACK_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H */

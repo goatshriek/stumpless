@@ -19,9 +19,10 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WINDOWS_H
 
+#  include "private/windows_wrapper.h"
+
 #  include <stdbool.h>
 #  include <stddef.h>
-#  include "private/windows_wrapper.h"
 
 bool
 windows_compare_exchange_bool( LONG volatile *b,
@@ -58,7 +59,34 @@ windows_compare_exchange_ptr( PVOID volatile *p,
  * error is encountered.
  */
 LPWSTR
-windows_copy_cstring_to_lpcwstr( LPCSTR str, int *copy_length );
+windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length );
+
+/**
+ * Creates a copy of a NULL terminated wide character string in UTF-8 multibyte
+ * format.
+ *
+ * **Thread Safety: MT-Safe race:str**
+ * This function is thread safe, of course assuming that the string is not
+ * changed during operation.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the copy.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions.
+ *
+ * @param str A wide character string to copy, in UTF-16 format.
+ *
+ * @param copy_size The size of the copy including the NULL terminator, in
+ * bytes. If this is NULL or the function fails, then it is ignored.
+ *
+ * @return A copy of the given string in wide string format, or NULL if an
+ * error is encountered.
+ */
+char *
+windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
 
 void
 windows_destroy_mutex( const CRITICAL_SECTION *mutex );

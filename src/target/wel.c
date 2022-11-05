@@ -212,8 +212,8 @@ sendto_wel_target( const struct wel_target *target,
     event_id = get_event_id( prival );
     insertion_string_count = 1;
     lock_entry( entry );
-    msg_insertion_strings[0] = windows_copy_cstring_to_lpcwstr( entry->message,
-                                                                NULL );
+    msg_insertion_strings[0] = windows_copy_cstring_to_lpwstr( entry->message,
+                                                               NULL );
     unlock_entry( entry );
     insertion_strings = msg_insertion_strings;
   }

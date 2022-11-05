@@ -17,13 +17,14 @@
  */
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <stumpless/entry.h>
 #include <stumpless/option.h>
 #include <stumpless/target.h>
-#include "private/config/wrapper.h"
 #include "private/entry.h"
 #include "private/strbuilder.h"
 #include "private/formatter.h"
+#include "private/config/wrapper/get_now.h"
 
 struct strbuilder *
 format_entry( const struct stumpless_entry *entry,
@@ -47,8 +48,13 @@ format_entry( const struct stumpless_entry *entry,
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_app_name( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );
-  if (target->options & STUMPLESS_OPTION_PID) {
-    builder = strbuilder_append_procid( builder );
+  if ( target->options & STUMPLESS_OPTION_PID ) {
+    if( entry->procid_override == true ) {
+      builder = strbuilder_append_string( builder, entry->procid );
+    }
+    else {
+      builder = strbuilder_append_procid( builder );
+    }
   } else {
     builder = strbuilder_append_char( builder, RFC_5424_NILVALUE );
   }

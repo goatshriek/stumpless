@@ -16,233 +16,233 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H
-#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_PT_BR_H
+#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_PT_BR_H
 
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"bind con socket locale unix fallita"
+"não foi possível conectar com o socket unix local"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
-"il buffer è troppo piccolo per il messaggio"
+"o buffer é pequeno demais para a mensagem dada"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"tentativo di chiusura di un target non supportato"
+"foi tentado fechar um tipo de objetivo não suportado"
 
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CommitTransaction fallita"
+"CommitTransaction falhou"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"connect fallita con un socket sys/socket.h"
+"conexão falhou com um socket sys/socket.h"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"connect fallita con un socket winsock2"
+"conexão falhou com um socket winsock2"
 
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CreateTransaction fallita"
+"CreateTransaction falhou"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
-"la destinazione è valida solo per target di rete"
+"o destino só é válido para objetivos de rede"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
-"un elemento con il nome dato è già presente in questa voce"
+"um elemento com este nome já está presente nesta entrada"
 
 #  define L10N_ELEMENT_NOT_FOUND_ERROR_MESSAGE \
-"non è stato possibile trovare un elemento con le caratteristiche date"
+"um elemento com estas características não pode ser encontrado"
 
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
-"errno dopo la chiamata fallita"
+"errno depois da chamada com erro"
 
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"non è stato possibile aprire un file con il nome scelto"
+"não foi possível abrir o arquivo especificado"
 
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
-"non è stato possibile scrivere al file scelto"
+"não foi possível escrever no arquivo"
 
 #  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"formato di " ARG " non valido"
+"formato  " ARG " inválido"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
-"il codice di ritorno della chiamata funzione fallita"
+"código de retorno da função tratadora de log"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
-"la funzione per un target di funzione fallita"
+"o tratador de log para a função objetivo falhou"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
-"getaddrinfo fallita con l'hostname dato"
+"getaddrinfo falhou com o  hostname dado"
 
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
-"il codice di ritorno della chiamata getaddrinfo fallita"
+"código de retorno da chamada com erro de getaddrinfo"
 
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"GetComputerName fallita"
+"GetComputerName falhou"
 
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"gethostname fallita"
+"gethostname falhou"
 
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
-"il risultato di GetLastError dopo la chiamata fallita"
+"o resultado de GetLastError depois da chamada com erro"
 
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"GetModuleFileNameW fallita"
+"GetModuleFileNameW falhou"
 
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"GetModuleHandleExW fallita"
+"GetModuleHandleExW falhou"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"l'indice non valido, oppure -1 se è troppo grande da rappresentare con un int"
+"o índice inválidou, ou -1, é grande demais para representar como inteiro"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
-"il servizio non valido"
+"o recurso inválido"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"i codici di servizio devono essere definiti in osservanza del RFC 5424," \
-" dopo la moltiplicazione per 8"
+"códigos de recurso (facility) devem ser definidos de acordo com a " \
+"RFC 5424, após a multiplicação por 8"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
-"target id non valido"
+"id de objetivo inválido"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
-"indice " INDEXED_THING " non valido"
+"índice " INDEXED_THING " inválido"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due" \
-" caratteri nullo"
+"um valor de registro MULTI_SZ não estava nem vazio nem finalizado" \
+"com dois caracteres NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
-"gravità non valida"
+"a gravidade inválida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0" \
-" e 7, compreso"
+"códigos de gravidade devem ser definidos de acordo com a RFC 5424:" \
+" valores entre 0 e 7, incluso"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"il tipo di target è incompatibile con questa operazione"
+"tipo de objetivo é incompatível com esta operação"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"il codice di ritorno della chiamata sd_journal_sendv"
+"código de retorno de sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"sd_journal_sendv fallita"
+"sd_journal_sendv falhou"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"non è stato possibile creare un file con il nome scelto per la socket" \
-" locale usando mkstemp"
+"não foi possível criar um arquivo com o nome de socket local" \
+" escolhido usando mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
-"la dimensione massima del messaggio è solo valido per target di rete UDP"
+"tamanho máximo de menságem só é válido para objetivos de rede UDP"
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
-"il risultato di GetLastError dopo la chiamata fallita"
+"o resultado de GetLastError após a chamada com erro"
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"non è stato possibile convertire una stringa multibyte a una stringa \"wide\""
+"não foi possível converter a string multibyte para wide char"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"una chiamata di allocazione della memoria fallita"
+"uma chamada de alocação de memória falhou"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
-"la dimensione del messaggio che si è tentato di inviare"
+"o tamanho da mensagem que se tentou enviar"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
-"il messaggio è troppo grande per essere inviato in unico datagram"
+"a mensagem é grande demais para ser enviada em um único datagrama"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"il protocollo di rete non è supportato"
+"o protocolo de rede escolhido não é suportado"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
-"i target di rete non sono supportati in questa build"
+"objetivos de rede não são suportados por essa build"
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
 ARG_NAME " era NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"tentativo di apertura di un target di tipo non supportato"
+"foi tentado abrir um tipo não suportado de objetivo"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
-"non è stato possibile trovare un parametro con le caratteristiche definite"
+"um parâmetro com as características especificadas não foi encontrado"
 
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
-"non è stato possibile creare una chiave nel registro"
+"uma subchave de registro não pode ser criada"
 
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
-"non è stato possibile eliminare una chiave nel registro"
+"uma subchave de registro não pode ser deletada"
 
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"non è stato possibile aprire una chiave nel registro"
+"uma subchave de registro não pode ser aberta"
 
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"non è stato possibile leggere un valore nel registro"
+"uma subchave de registro não pode ser lida"
 
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"non è stato possibile assegnare un valore nel registro"
+"não foi possivel escrever um valor de registro"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto fallita con un socket unix"
+"sendto falhou com um socket unix"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"tentativo di invio di una voce a un tipo di target non supportato"
+"foi tentado enviar uma entrada com um tipo de objetivo não suportado"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"tentativo di invio di un messaggio a un tipo di target non supportato"
+"foi tentado enviar uma mensagem com um tipo de objetivo não suportado"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"send fallita con un socket sys/socket.h"
+"envio falhou com um socket sys/socket.h"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"send fallita con un socket winsock2"
+"envio falhou com um socket winsock2"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
-"fallita apertura di un socket"
+"erro ao tentar abrir um socket"
 
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
-L"la registrazione per Stumpless di Windows Event Log Source"
+L"Registro do Stumpless no Windows Event Log Source"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"non è stato possibile scrivere al stream"
+"não foi possível escrever na stream"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"la lunghezza della stringa non valida"
+"o tamanho da string infratora"
 
 #  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"la lunghezza della stringa eccede il limite massimo"
+"o tamanho da string excedeu o limite máximo"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
-"questo tipo di target è sempre aperto"
+"esse tipo de objetivo está sempre aberto"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
-"le porte di trasporto sono solo valide per target di rete"
+"portas de transporte só são válidas para objetivos de rede"
 
 #  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"il protocollo di trasporto non è supportato"
+"o protocolo de transporte escolhido não é válido"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"fallita apertura di un socket unix usando la funzione socket"
+"erro ao abrir um socket unix com a função socket"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
-"controllato se un tipo di target non supportato era aperto"
+"foi conferido se um tipo de objetivo não suportado estava aberto"
 
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
-"non è stato possibile chiudere il Windows Event Log"
+"não foi possível fechar o Windows Event Log"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"non è stato possibile aprire il Windows Event Log"
+"não foi possível abrir o Windows Event Log"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"non è stato possibile convertire una stringa \"wide\" a una stringa multibyte"
+"não foi possível converter a string wide char dada para uma string multibyte"
 
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"il codice di errore di ritorno della chiamata fallita"
+"o código de erro do Windows retornado pela chamada com erro"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
-"codice di errore di Windows Socket"
+"código de erro do Windows Socket"
 
 #  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"il risultato di GetLastError dopo la chiamata fallita"
+"o resultado de GetLastError depois da chamada com erro"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"fallita apertura di un socket winsock2"
+"erro ao abrir um socket winsock2"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
-"il risultato di WSAGetLastError dopo la chiamata fallita"
+"o resultado de WSAGetLastError depois da chamada com erro"
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_IT_IT_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H */
