@@ -14,7 +14,7 @@
 "config_destroy_cached_mutex": "private/config/wrapper/thread_safety.h"
 "config_destroy_mutex": "private/config/wrapper/thread_safety.h"
 "config_getpid": "private/config/wrapper/getpid.h"
-"config_format_string": "private/config/wrapper/config_format_string.h"
+"config_format_string": "private/config/wrapper/format_string.h"
 "config_get_local_socket_name": "private/config/wrapper/socket.h"
 "config_get_now": "private/config/wrapper/get_now.h"
 "config_init_journald_element": "private/config/wrapper/journald.h"
