@@ -801,7 +801,7 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
  * cancelled, due to the use of a lock that could be left locked as well as
  * memory management functions.
  *
- * @since release v2.1.0.
+ * @since release v2.1.0
  * 
  * @param entry The entry to get the procid of.
  * 
@@ -831,7 +831,7 @@ stumpless_get_entry_procid( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
- * @since release v1.6.0.
+ * @since release v1.6.0
  *
  * @param entry The entry to get the severity of.
  *
