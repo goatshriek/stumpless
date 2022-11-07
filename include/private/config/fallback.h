@@ -58,4 +58,21 @@ fallback_getpagesize( void );
 int
 fallback_getpid( void );
 
+/**
+ * Copies the NULL-terminated string from src into dest. The dest will always
+ * be NULL-terminated, even if count is less than the size of the source.
+ *
+ * @since release v2.1.0
+ *
+ * @param dest The buffer to copy the string into.
+ *
+ * @param src The string to copy.
+ *
+ * @param count The maximum number of characters to copy into dest.
+ *
+ * @return dest on success, or NULL on failure.
+ */
+char *
+fallback_strncpy( char *dest, const char *src, size_t count );
+
 #endif /* __STUMPLESS_PRIVATE_CONFIG_FALLBACK_H */

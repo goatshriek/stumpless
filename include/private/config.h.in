@@ -33,6 +33,7 @@
 /* symbol checks */
 #cmakedefine HAVE_FOPEN_S 1
 #cmakedefine HAVE_GMTIME_R 1
+#cmakedefine HAVE_STRNCPY_S 1
 #cmakedefine HAVE_UNISTD_SC_PAGESIZE 1
 #cmakedefine HAVE_UNISTD_GETHOSTNAME 1
 #cmakedefine HAVE_UNISTD_GETPAGESIZE 1

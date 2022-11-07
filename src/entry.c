@@ -30,8 +30,9 @@
 #include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
 #include "private/config/wrapper/getpid.h"
-#include "private/config/wrapper/wel.h"
+#include "private/config/wrapper/strncpy.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/config/wrapper/wel.h"
 #include "private/deprecate.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -934,7 +935,7 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
           !validate_procid_length( procid ) ) {
       return NULL;
     }
-    strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
+    config_strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
     entry->procid_override = true;
   }
 

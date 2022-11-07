@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
 #include "private/config/locale/wrapper.h"
@@ -106,4 +107,14 @@ fallback_getpagesize( void ) {
 int
 fallback_getpid( void ) {
   return 0;
+}
+
+char *
+fallback_strncpy( char *dest, const char *src, size_t count ) {
+  char *result;
+
+  result = strncpy( dest, src, count );
+  dest[count-1] = '\0';
+
+  return result;
 }
