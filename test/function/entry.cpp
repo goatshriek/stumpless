@@ -2197,20 +2197,17 @@ namespace {
   TEST( GetProcid, ProcidNotSet ) {
     struct stumpless_entry *entry;
     const char *result;
-    const struct stumpless_error *error;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_get_entry_procid( entry );
 
     EXPECT_NOT_NULL( result );
+    EXPECT_NO_ERROR;
 
     free( (void *) result );
     stumpless_destroy_entry_and_contents( entry );
@@ -2219,33 +2216,33 @@ namespace {
 
   TEST( GetProcid, ProcidSet ) {
     struct stumpless_entry *entry;
-    const char *result;
-    const struct stumpless_error *error;
+    const struct stumpless_entry *entry_result;
+    const char *str_result;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     const char *procid = "test-procid";
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
-    entry = stumpless_set_entry_procid( entry, procid );
+    entry_result = stumpless_set_entry_procid( entry, procid );
+    EXPECT_NOT_NULL( entry_result );
+    EXPECT_NO_ERROR;
 
-    result = stumpless_get_entry_procid( entry );
+    str_result = stumpless_get_entry_procid( entry );
+    EXPECT_NOT_NULL( str_result );
+    EXPECT_NO_ERROR;
 
     EXPECT_TRUE( entry->procid_override );
-    EXPECT_TRUE( strcmp(procid, result) == 0 );
+    EXPECT_STREQ( str_result, procid );
 
-    free( (void *) result );
+    free( (void *) str_result );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
 
   TEST( GetProcid, NullEntry ) {
-    struct stumpless_entry *result;
     const struct stumpless_error *error;
     const char *procid;
 
@@ -2260,22 +2257,20 @@ namespace {
   TEST( SetProcid, SetValue ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     const char *procid = "test-procid";
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_entry_procid( entry, procid );
+    EXPECT_EQ( result, entry );
+    EXPECT_NO_ERROR;
 
     EXPECT_TRUE( entry->procid_override );
-    EXPECT_TRUE( strcmp( (char *) result->procid, procid ) == 0 );
+    EXPECT_STREQ( entry->procid, procid );
 
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
@@ -2284,21 +2279,17 @@ namespace {
   TEST( SetProcid, ResetValue ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
-    char *procid[129];
-    
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_entry_procid( entry, NULL );
 
     EXPECT_NOT_NULL( result );
+    EXPECT_NO_ERROR;
 
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
