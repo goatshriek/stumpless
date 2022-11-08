@@ -20,7 +20,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
 #include "private/config/locale/wrapper.h"

@@ -939,6 +939,7 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
 
     entry->procid_length = strlen( procid );
     memcpy( entry->procid, procid, entry->procid_length );
+    entry->procid[entry->procid_length] = '\0';
   }
 
   unlock_entry(entry);

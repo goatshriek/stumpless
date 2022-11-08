@@ -59,7 +59,7 @@ extern "C" {
 struct stumpless_entry {
 /** A unique identifier of this entry. */
   stumpless_id_t id;
-/** 
+/**
  * The procid of this entry, as a NULL-terminated string.
  */
   char procid[STUMPLESS_MAX_PROCID_LENGTH + 1];
@@ -792,9 +792,9 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
 
 /**
  * Returns the procid of a given entry. If procid is not set it will return the
- * ProcessID. The result character buffer must be freed by the caller when it is 
+ * ProcessID. The result character buffer must be freed by the caller when it is
  * no longer needed to avoid memory leaks.
- * 
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being modified.
@@ -809,11 +809,11 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry );
  * memory management functions.
  *
  * @since release v2.1.0
- * 
+ *
  * @param entry The entry to get the procid of.
- * 
+ *
  * @return The procid of the entry if no error is encountered. If an error
- * was encountered, then NULL is returned and an error code is set 
+ * was encountered, then NULL is returned and an error code is set
  * appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
@@ -1380,7 +1380,7 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 /**
  * Sets the procid of a given entry. If procid is NULL it will set procid to
  * be the ProcessID.
- * 
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
  * entry while it is being modified.
@@ -1393,12 +1393,12 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
- * @since release v2.1.0.
- * 
+ * @since release v2.1.0
+ *
  * @param entry The entry to modify.
- * 
+ *
  * @param procid The new procid to set on the entry.
- * 
+ *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
