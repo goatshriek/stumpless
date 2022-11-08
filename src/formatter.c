@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,11 @@ format_entry( const struct stumpless_entry *entry,
   builder = strbuilder_append_app_name( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );
   if ( target->options & STUMPLESS_OPTION_PID ) {
-    if( entry->procid_override == true ) {
-      builder = strbuilder_append_string( builder, entry->procid );
-    }
-    else {
+    if( entry->procid_length > 0 ) {
+      builder = strbuilder_append_buffer( builder,
+                                          entry->procid,
+                                          entry->procid_length );
+    } else {
       builder = strbuilder_append_procid( builder );
     }
   } else {

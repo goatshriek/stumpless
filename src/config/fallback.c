@@ -109,13 +109,3 @@ int
 fallback_getpid( void ) {
   return 0;
 }
-
-char *
-fallback_strncpy( char *dest, const char *src, size_t count ) {
-  char *result;
-
-  result = strncpy( dest, src, count );
-  dest[count-1] = '\0';
-
-  return result;
-}

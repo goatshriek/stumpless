@@ -2234,7 +2234,7 @@ namespace {
     EXPECT_NOT_NULL( str_result );
     EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( entry->procid_override );
+    EXPECT_GT( entry->procid_length, 0 );
     EXPECT_STREQ( str_result, procid );
 
     free( (void *) str_result );
@@ -2269,7 +2269,7 @@ namespace {
     EXPECT_EQ( result, entry );
     EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( entry->procid_override );
+    EXPECT_GE( entry->procid_length, 0 );
     EXPECT_STREQ( entry->procid, procid );
 
     stumpless_destroy_entry_and_contents( entry );

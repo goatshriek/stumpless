@@ -30,7 +30,6 @@
 #include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
 #include "private/config/wrapper/getpid.h"
-#include "private/config/wrapper/strncpy.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/config/wrapper/wel.h"
 #include "private/deprecate.h"
@@ -557,8 +556,10 @@ stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
   procid_builder = strbuilder_new(  );
 
   lock_entry( entry );
-  if( entry->procid_override ) {
-    strbuilder_append_string( procid_builder, entry->procid );
+  if( entry->procid_length > 0 ) {
+    strbuilder_append_buffer( procid_builder,
+                              entry->procid,
+                              entry->procid_length );
   } else {
     strbuilder_append_procid( procid_builder );
   }
@@ -929,14 +930,15 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
   lock_entry( entry );
 
   if( !procid ) {
-    entry->procid_override = false;
+    entry->procid_length = 0;
   } else {
     if( !validate_printable_ascii( procid ) ||
           !validate_procid_length( procid ) ) {
       return NULL;
     }
-    config_strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
-    entry->procid_override = true;
+
+    entry->procid_length = strlen( procid );
+    memcpy( entry->procid, procid, entry->procid_length );
   }
 
   unlock_entry(entry);
@@ -1158,7 +1160,7 @@ new_entry( enum stumpless_facility facility,
     goto fail_after_cache;
   }
 
-  entry->procid_override = false;
+  entry->procid_length = 0;
   entry->message = message;
   entry->message_length = message_length;
   entry->prival = get_prival( facility, severity );

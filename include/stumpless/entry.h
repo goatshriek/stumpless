@@ -59,10 +59,17 @@ extern "C" {
 struct stumpless_entry {
 /** A unique identifier of this entry. */
   stumpless_id_t id;
-/** The procid of this entry, as a NULL-terminated string. */
+/** 
+ * The procid of this entry, as a NULL-terminated string.
+ */
   char procid[STUMPLESS_MAX_PROCID_LENGTH + 1];
-/** A bool specifying whether or not procid has been overriden. */
-  bool procid_override;
+/**
+ * The length of the procid of this entry (in bytes), without a NULL terminator.
+ * If this is zero, then the default procid will be used.
+ *
+ * @since release v2.1.0
+ */
+  size_t procid_length;
 /**
  * The prival of this entry. This is a combination of the facility and severity
  * of the event, combined using a bitwise or.
