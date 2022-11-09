@@ -2413,8 +2413,10 @@ namespace {
     ASSERT_NOT_NULL( entry );
 
     stumpless_set_entry_hostname( entry, hostname );
-    EXPECT_THAT( stumpless_get_entry_hostname( entry ), HasSubstr( hostname ) );
+    const char *result = stumpless_get_entry_hostname( entry );
+    EXPECT_THAT( result, HasSubstr( hostname ) );
 
+    free( (void *) result );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
@@ -2436,6 +2438,7 @@ namespace {
     hostname = stumpless_get_entry_hostname( entry );
     EXPECT_NOT_NULL( hostname );
 
+    free( (void *) hostname );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
@@ -2467,8 +2470,10 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( result );
     EXPECT_EQ( result, entry );
-    EXPECT_THAT( stumpless_get_entry_hostname( entry ), HasSubstr( hostname ) );
+    const char *result_hostname = stumpless_get_entry_hostname( entry );
+    EXPECT_THAT( result_hostname, HasSubstr( hostname ) );
 
+    free( (void *) result_hostname );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
