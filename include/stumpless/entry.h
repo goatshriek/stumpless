@@ -1552,7 +1552,8 @@ stumpless_set_entry_procid( struct stumpless_entry *entry, const char *procid );
  * appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
-const char *stumpless_get_entry_hostname( const struct stumpless_entry *entry );
+const char *
+stumpless_get_entry_hostname( const struct stumpless_entry *entry );
 
 /**
  * Sets the hostname of a given entry. If hostname is NULL it will set hostname to
@@ -1572,7 +1573,7 @@ const char *stumpless_get_entry_hostname( const struct stumpless_entry *entry );
  *
  * @param entry The entry to modify.
  *
- * @param procid The new hostname to set on the entry.
+ * @param hostname The new hostname to set on the entry.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

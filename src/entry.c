@@ -1205,6 +1205,7 @@ new_entry( enum stumpless_facility facility,
   }
 
   entry->procid_override = false;
+  entry->hostname_override = false;
   entry->message = message;
   entry->message_length = message_length;
   entry->prival = get_prival( facility, severity );

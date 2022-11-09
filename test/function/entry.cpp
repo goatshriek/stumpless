@@ -2436,7 +2436,6 @@ namespace {
     hostname = stumpless_get_entry_hostname( entry );
     EXPECT_NOT_NULL( hostname );
 
-    free( (void *) hostname );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
