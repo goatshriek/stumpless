@@ -168,7 +168,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     EXPECT_NULL( result );
   }
-  
+
   TEST_F( EntryTest, InvalidNameLength ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -599,7 +599,7 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-  
+
   TEST_F( EntryTest, GetParamValueByIndex ) {
     const char *result;
 
@@ -698,7 +698,7 @@ namespace {
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-  
+
   TEST_F( EntryTest, HasElement ) {
     bool result;
 
@@ -740,7 +740,7 @@ namespace {
     EXPECT_FALSE( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-  
+
   TEST_F( EntryTest, GetElementInvalidName ) {
     bool result;
     const struct stumpless_error *error;
@@ -757,7 +757,7 @@ namespace {
     EXPECT_FALSE( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
   }
-  
+
   TEST_F( EntryTest, GetElementIdxInvalidName ) {
     bool result;
     const struct stumpless_error *error;
@@ -2289,7 +2289,7 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     char *procid[129];
-    
+
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  app_name,
@@ -2329,7 +2329,7 @@ namespace {
                          "-abcdefghijklmnopqrstuvwxy"
                          "-abcdefghijklmnopqrstuvwxy"
                          "-abcdefghijklmn";
-    
+
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  app_name,
@@ -2353,7 +2353,7 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     const char *procid = "\n";
-    
+
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
                                  app_name,
@@ -2378,7 +2378,7 @@ namespace {
     const char *msgid = "test-msgid";
     const char *message = "test-message";
     const char *procid = "test-procid";
-    
+
     target = stumpless_open_buffer_target("output buffer", buffer, 8096);
     stumpless_set_option( target, STUMPLESS_OPTION_PID);
     ASSERT_NOT_NULL( target );
@@ -2393,6 +2393,178 @@ namespace {
     stumpless_set_entry_procid( entry, procid );
     stumpless_add_entry( target, entry );
     EXPECT_THAT( buffer, HasSubstr( "test-procid" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetHostName, HostNameSet ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *hostname = "test-hostname";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+    ASSERT_NOT_NULL( entry );
+
+    stumpless_set_entry_hostname( entry, hostname );
+    const char *result = stumpless_get_entry_hostname( entry );
+    EXPECT_THAT( result, HasSubstr( hostname ) );
+
+    free( (void *) result );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetHostName, HostNameNotSet ) {
+    struct stumpless_entry *entry;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *hostname;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+    ASSERT_NOT_NULL( entry );
+
+    hostname = stumpless_get_entry_hostname( entry );
+    EXPECT_NOT_NULL( hostname );
+
+    free( (void *) hostname );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( GetHostName, NullEntry ) {
+    const char *hostname;
+
+    hostname = stumpless_get_entry_hostname( NULL );
+
+    EXPECT_NULL( hostname );
+  }
+
+  TEST( SetHostName, SetValue ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *hostname = "test-hostname";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_hostname( entry, hostname );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+    EXPECT_EQ( result, entry );
+    const char *result_hostname = stumpless_get_entry_hostname( entry );
+    EXPECT_THAT( result_hostname, HasSubstr( hostname ) );
+
+    free( (void *) result_hostname );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetHostName, ResetValue ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_hostname( entry, NULL );
+
+    EXPECT_NOT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetHostName, NullEntry ) {
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_hostname( NULL, NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetHostName, HostNameTooLong ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *hostname = "test-procid-"
+                         "abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy"
+                         "-abcdefghijklmnopqrstuvwxy";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_hostname( entry, hostname );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+    EXPECT_NULL( result );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetHostName, HostNameNotPrintable ) {
+    struct stumpless_entry *entry;
+    struct stumpless_entry *result;
+    const struct stumpless_error *error;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+    const char *hostname = "test-procid-\x01";
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 app_name,
+                                 msgid,
+                                 message );
+
+    result = stumpless_set_entry_hostname( entry, hostname );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( result );
 
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );

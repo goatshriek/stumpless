@@ -208,3 +208,5 @@ EXPORTS
   stumpless_get_target_type_string              @193
   stumpless_get_entry_procid                    @194
   stumpless_set_entry_procid                    @195
+  stumpless_get_entry_hostname                  @196
+  stumpless_set_entry_hostname                  @197
