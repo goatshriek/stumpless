@@ -53,6 +53,20 @@ bool validate_procid_length(const char* procid ) {
   return validation_status;
 }
 
+bool validate_hostname_length( const char* hostname ) {
+  size_t length = strlen( hostname );
+  bool validation_status = true;
+
+  if( length > STUMPLESS_MAX_HOSTNAME_LENGTH ) {
+    raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                            length,
+                            L10N_STRING_LENGTH_ERROR_CODE_TYPE );
+    validation_status = false;
+  }
+
+  return validation_status;
+}
+
 bool validate_msgid_length(const char* msgid ) {
   size_t msgid_char_length = strlen( msgid );
   bool validation_status = true;

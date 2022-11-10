@@ -68,17 +68,27 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
  * Checks the char length of procid.
  *
  * @param the procid.
- * 
+ *
  * @return True if the procid is at or below the maximum allowed length, otherwise
  * it will return false and raise the appropriate error.
  */
 bool validate_procid_length( const char* procid );
 
 /**
+ * Checks the char length of a hostname.
+ *
+ * @param the hostname.
+ *
+ * @return True if the hostname is at or below the maximum allowed length, otherwise
+ * it will return false and raise the appropriate error.
+ */
+bool validate_hostname_length( const char* hostname );
+
+/**
  * Checks the char length of msgid.
  *
  * @param the msgid.
- * 
+ *
  * @return True if the msgid is at or below the maximum allowed length, otherwise
  * it will return false and raise the appropriate error.
  */
@@ -99,7 +109,7 @@ bool validate_printable_ascii( const char* str );
  *
  * @param the app name
  *
- * @return True if the app name is less than allowed length 
+ * @return True if the app name is less than allowed length
  * (48 characters not including NULL terminating),otherwise
  * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
  */
@@ -121,7 +131,7 @@ bool validate_param_name( const char* str);
  *
  * @param the param name(string).
  *
- * @return True if the param name is less than allowed length 
+ * @return True if the param name is less than allowed length
  * (32 characters not including NULL terminating), otherwise
  * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
  */
@@ -143,7 +153,7 @@ bool validate_element_name( const char* str);
  *
  * @param the element name(string).
  *
- * @return True if the element name is less than allowed length 
+ * @return True if the element name is less than allowed length
  * (32 characters not including NULL terminating),otherwise
  * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
  */

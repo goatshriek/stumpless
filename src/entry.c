@@ -399,6 +399,32 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 }
 
 const char *
+stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
+  struct strbuilder *hostname_builder;
+  char *hostname;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+
+  hostname_builder = strbuilder_new();
+
+  if( entry->hostname_override == false ) {
+    strbuilder_append_hostname( hostname_builder );
+  }
+  else {
+    strbuilder_append_string( hostname_builder, entry->hostname );
+  }
+
+  hostname = strbuilder_to_string( hostname_builder );
+
+  strbuilder_destroy( hostname_builder );
+  unlock_entry( entry );
+
+  return hostname;
+}
+
+const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
   char *message_copy;
 
@@ -713,6 +739,28 @@ stumpless_set_entry_facility( struct stumpless_entry *entry,
   unlock_entry( entry );
 
   clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_hostname( struct stumpless_entry *entry,
+                              const char *hostname ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+
+  if( hostname == NULL ) {
+    // setting the hostname to a NULL pointer should effectively restore default behavior.
+    entry->hostname_override = false;
+  }
+  else {
+    // the setter should return the modified entry in the case of success, and NULL if not.
+    if( !validate_printable_ascii( hostname ) || !validate_hostname_length( hostname ) ) return NULL;
+    strncpy( entry->hostname, hostname, STUMPLESS_MAX_HOSTNAME_LENGTH + 1 );
+    entry->hostname_override = true;
+  }
+
+  unlock_entry(entry);
   return entry;
 }
 
@@ -1162,6 +1210,7 @@ new_entry( enum stumpless_facility facility,
   }
 
   entry->procid_length = 0;
+  entry->hostname_override = false;
   entry->message = message;
   entry->message_length = message_length;
   entry->prival = get_prival( facility, severity );
