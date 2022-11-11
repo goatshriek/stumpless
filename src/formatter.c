@@ -43,11 +43,19 @@ format_entry( const struct stumpless_entry *entry,
   builder = strbuilder_append_string( builder, ">1 " );
   builder = strbuilder_append_buffer( builder, timestamp, timestamp_size );
   builder = strbuilder_append_char( builder, ' ' );
-  builder = strbuilder_append_hostname( builder );
+
+  if( entry->hostname_length > 0 ) {
+    builder = strbuilder_append_buffer( builder,
+                                        entry->hostname,
+                                        entry->hostname_length );
+  } else {
+    builder = strbuilder_append_hostname( builder );
+  }
+
   builder = strbuilder_append_char( builder, ' ' );
   builder = strbuilder_append_app_name( builder, entry );
   builder = strbuilder_append_char( builder, ' ' );
-  if ( target->options & STUMPLESS_OPTION_PID ) {
+  if( target->options & STUMPLESS_OPTION_PID ) {
     if( entry->procid_length > 0 ) {
       builder = strbuilder_append_buffer( builder,
                                           entry->procid,

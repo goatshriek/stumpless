@@ -33,7 +33,10 @@
 #  include <stumpless/param.h>
 #  include <stumpless/severity.h>
 
+/** The maximum length of a procid, as specified by RFC 5424. */
 #define STUMPLESS_MAX_PROCID_LENGTH 128
+
+/** The maximum length of a hostname, as specified by RFC 5424. */
 #define STUMPLESS_MAX_HOSTNAME_LENGTH 255
 
 /** The maximum length of an app name, as specified by RFC 5424. */
@@ -62,6 +65,8 @@ struct stumpless_entry {
   stumpless_id_t id;
 /**
  * The procid of this entry, as a NULL-terminated string.
+ *
+ * @since release v2.1.0
  */
   char procid[STUMPLESS_MAX_PROCID_LENGTH + 1];
 /**
@@ -71,10 +76,19 @@ struct stumpless_entry {
  * @since release v2.1.0
  */
   size_t procid_length;
-/** The hostname of this entry, as a NULL-terminated string. */
+/**
+ * The hostname of this entry, as a NULL-terminated string.
+ *
+ * @since release v2.1.0
+ */
   char hostname[STUMPLESS_MAX_HOSTNAME_LENGTH + 1];
-/** A bool specifying whether or not hostname has been overriden. */
-  bool hostname_override;
+/**
+ * The length of the hostname of this entry (in bytes), without a NULL
+ * terminator. If this is zero, then the default hostname will be used.
+ *
+ * @since release v2.1.0
+ */
+  size_t hostname_length;
 /**
  * The prival of this entry. This is a combination of the facility and severity
  * of the event, combined using a bitwise or.

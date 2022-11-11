@@ -70,9 +70,11 @@ fixes, check out the
     * `vstumpless_set_wel_insertion_strings_w`
  - `STUMPLESS_OPTION_CONS` is now supported with similar semantics to `LOG_CONS`
    from `syslog.h`.
- - The procid can be overriden if the default PID is not wanted, via the
-   functions:
+ - The procid and hostname can be overriden if the defaults are not wanted, via
+   the functions:
+    * `stumpless_get_entry_hostname`
     * `stumpless_get_entry_procid`
+    * `stumpless_set_entry_hostname`
     * `stumpless_set_entry_procid`
  - Other new functions:
     * `stumpless_get_network_protocol`

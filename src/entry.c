@@ -405,21 +405,20 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  lock_entry( entry );
-
   hostname_builder = strbuilder_new();
 
-  if( entry->hostname_override == false ) {
+  lock_entry( entry );
+  if( entry->hostname_length > 0 ) {
+    strbuilder_append_buffer( hostname_builder,
+                              entry->hostname,
+                              entry->hostname_length );
+  } else {
     strbuilder_append_hostname( hostname_builder );
   }
-  else {
-    strbuilder_append_string( hostname_builder, entry->hostname );
-  }
+  unlock_entry( entry );
 
   hostname = strbuilder_to_string( hostname_builder );
-
   strbuilder_destroy( hostname_builder );
-  unlock_entry( entry );
 
   return hostname;
 }
@@ -749,15 +748,19 @@ stumpless_set_entry_hostname( struct stumpless_entry *entry,
 
   lock_entry( entry );
 
-  if( hostname == NULL ) {
-    // setting the hostname to a NULL pointer should effectively restore default behavior.
-    entry->hostname_override = false;
+  if( !hostname ) {
+    // setting the hostname to NULL effectively restores default behavior
+    entry->hostname_length = 0;
   }
   else {
     // the setter should return the modified entry in the case of success, and NULL if not.
-    if( !validate_printable_ascii( hostname ) || !validate_hostname_length( hostname ) ) return NULL;
-    strncpy( entry->hostname, hostname, STUMPLESS_MAX_HOSTNAME_LENGTH + 1 );
-    entry->hostname_override = true;
+    if( !validate_printable_ascii( hostname ) ||
+          !validate_hostname_length( hostname ) ) {
+      return NULL;
+    }
+    entry->hostname_length = strlen( hostname );
+    memcpy( entry->hostname, hostname, entry->hostname_length );
+    entry->hostname[entry->hostname_length] = '\0';
   }
 
   unlock_entry(entry);
@@ -1210,7 +1213,7 @@ new_entry( enum stumpless_facility facility,
   }
 
   entry->procid_length = 0;
-  entry->hostname_override = false;
+  entry->hostname_length = 0;
   entry->message = message;
   entry->message_length = message_length;
   entry->prival = get_prival( facility, severity );

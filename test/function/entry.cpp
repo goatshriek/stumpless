@@ -2309,11 +2309,8 @@ namespace {
 
   TEST( SetProcid, ProcidTooLong ) {
     struct stumpless_entry *entry;
-    struct stumpless_entry *result;
+    const struct stumpless_entry *result;
     const struct stumpless_error *error;
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
     const char *procid = "test-procid-"
                          "abcdefghijklmnopqrstuvwxy"
                          "-abcdefghijklmnopqrstuvwxy"
@@ -2321,11 +2318,8 @@ namespace {
                          "-abcdefghijklmnopqrstuvwxy"
                          "-abcdefghijklmn";
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     result = stumpless_set_entry_procid( entry, procid );
 
@@ -2391,23 +2385,22 @@ namespace {
 
   TEST( GetHostName, HostNameSet ) {
     struct stumpless_entry *entry;
-    const char *app_name = "test-app-name";
-    const char *msgid = "test-msgid";
-    const char *message = "test-message";
     const char *hostname = "test-hostname";
+    const struct stumpless_entry *set_result;
+    const char *str_result;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 app_name,
-                                 msgid,
-                                 message );
+    entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
 
-    stumpless_set_entry_hostname( entry, hostname );
-    const char *result = stumpless_get_entry_hostname( entry );
-    EXPECT_THAT( result, HasSubstr( hostname ) );
+    set_result = stumpless_set_entry_hostname( entry, hostname );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( set_result, entry );
 
-    free( (void *) result );
+    str_result = stumpless_get_entry_hostname( entry );
+    EXPECT_NO_ERROR;
+    EXPECT_THAT( str_result, HasSubstr( hostname ) );
+
+    free( ( void * ) str_result );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
