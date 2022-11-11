@@ -99,9 +99,7 @@ stumpless_add_entry( struct stumpless_target *target,
   size_t builder_length;
   const char *buffer = NULL;
   int result;
-  int option_cons;
-  FILE *cons_stream; 
-  FILE *error_stream;
+  FILE *current_cons_stream;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
@@ -188,9 +186,9 @@ stumpless_add_entry( struct stumpless_target *target,
    * Ignore any further errors; more important to return the original result.
    */
   if ( result < 0 && unchecked_get_option( target, STUMPLESS_OPTION_CONS ) ) {
-    cons_stream = stumpless_get_cons_stream( );
-    if ( cons_stream ) {
-      fwrite( buffer, sizeof( char ), builder_length, cons_stream );
+    current_cons_stream = stumpless_get_cons_stream(  );
+    if ( current_cons_stream ) {
+      fwrite( buffer, sizeof( char ), builder_length, current_cons_stream );
     }
   }
 

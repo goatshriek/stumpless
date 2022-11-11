@@ -86,7 +86,10 @@ and make sure that they steer clear of these types of pull requests:
 If you'd like to contribute but aren't quite sure where to start, take a look at
 the issues and see if there is anything there that you think you can tackle! In
 particular, the 'help wanted' and 'good first issue' labels mark issues that
-need attention and are relatively simple to fix, respectively.
+need attention and are relatively simple to fix, respectively. Issues marked as
+'good first issue' are not time critical, so don't worry about timelines to
+completion, as long as you check in occasionally if it is taking longer than
+you initially thought.
 
 The [development notes](development.md) have a getting started section for
 newcomers to the project, and are worth a read.

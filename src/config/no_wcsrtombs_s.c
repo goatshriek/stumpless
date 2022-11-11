@@ -19,13 +19,14 @@
 #include <errno.h>
 #include <stddef.h>
 #include <wchar.h>
-#include "private/config/have_wchar.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/no_wcsrtombs_s.h"
 #include "private/error.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 
 char *
-wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
+no_wcsrtombs_s_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   size_t buffer_size;
   char *buffer;
   mbstate_t state;
@@ -50,7 +51,7 @@ wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   }
 
   if( copy_size ) {
-    *copy_size = buffer_size;
+    *copy_size = cap_size_t_to_int( buffer_size );
   }
 
   return buffer;
