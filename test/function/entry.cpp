@@ -2372,6 +2372,7 @@ namespace {
     stumpless_add_entry( target, entry );
     EXPECT_THAT( buffer, HasSubstr( "test-procid" ) );
 
+    stumpless_close_buffer_target( target );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
