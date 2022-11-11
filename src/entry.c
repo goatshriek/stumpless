@@ -400,7 +400,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
-  char *message_copy;
+  const char *message_copy;
 
   VALIDATE_ARG_NOT_NULL( entry );
 

@@ -5,8 +5,8 @@ if(MSVC)
   # platform-dependent code, such as the _s functions, just for tests
   set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
 else()
-  set(function_test_compile_flags "-std=gnu++11 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
-  set(performance_test_compile_flags "-std=gnu++11")
+  set(function_test_compile_flags "-std=gnu++14 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
+  set(performance_test_compile_flags "-std=gnu++14")
 endif(MSVC)
 
 function(private_add_function_test)
