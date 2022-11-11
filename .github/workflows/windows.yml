@@ -14,7 +14,7 @@ jobs:
     name: "windows, debug"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
@@ -34,7 +34,7 @@ jobs:
     name: "windows, release"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release .
@@ -54,7 +54,7 @@ jobs:
     name: "windows, release, static library"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
@@ -74,7 +74,7 @@ jobs:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -G "Visual Studio 16 2019" -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DCMAKE_BUILD_TYPE=Release -DENABLE_THREAD_SAFETY=OFF .
@@ -91,7 +91,7 @@ jobs:
     name: "windows, with c++"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-ruby@v1.1.2
       - name: Install Gems
         run: |

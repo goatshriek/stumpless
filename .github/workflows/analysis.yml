@@ -12,7 +12,7 @@ jobs:
     name: "custom analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Check Headers
         run: |
           tools/check_headers/check_headers.rb "include/**/*.h*" "include/**/**/*.h"
@@ -36,7 +36,7 @@ jobs:
         language: [ 'cpp' ]
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
@@ -49,7 +49,7 @@ jobs:
     name: "sonarcloud analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Configure

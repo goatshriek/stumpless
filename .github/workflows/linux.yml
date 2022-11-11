@@ -18,7 +18,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install doxygen libsystemd-dev valgrind
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
@@ -64,7 +64,7 @@ jobs:
     name: "linux, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
@@ -106,7 +106,7 @@ jobs:
     name: "linux, release, static library"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF .
@@ -148,7 +148,7 @@ jobs:
     name: "linux, all features disabled, debug"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
@@ -173,7 +173,7 @@ jobs:
     name: "linux, all features disabled, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
@@ -194,7 +194,7 @@ jobs:
     name: "linux, with c++, debug"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-ruby@v1.1.2
       - name: Install Prereqs
         run: |
@@ -227,7 +227,7 @@ jobs:
     name: "linux, with c++, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-ruby@v1.1.2
       - name: Install Gems
         run: |
