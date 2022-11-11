@@ -68,7 +68,7 @@ if(${gtest_lib} STREQUAL "gtest_lib-NOTFOUND" OR ${gtest_main_lib} STREQUAL "gte
   ExternalProject_Add(gtest
     URL https://github.com/google/googletest/archive/44c03643cfbc649488a0f437cd18e05f11960d19.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS=${google_libs_cxx_flags} -DCMAKE_CXX_STANDARD=14
+    CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_SH=${CMAKE_SH} -DBUILD_SHARED_LIBS=ON -DCMAKE_CXX_FLAGS=${google_libs_cxx_flags}
     UPDATE_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_gtest_shared_dir} ${CMAKE_CURRENT_BINARY_DIR}
     BUILD_BYPRODUCTS ${local_gtest_byproducts}
