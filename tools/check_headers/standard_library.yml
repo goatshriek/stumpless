@@ -20,6 +20,13 @@
   - "windows.h"
   - "private/windows_wrapper.h"
 "errno": "errno.h"
+"errno_t":
+  - "stddef.h"
+  - "stdio.h"
+  - "stdlib.h"
+  - "string.h"
+  - "time.h"
+  - "wchar.h"
 "EVENTLOG_ERROR_TYPE":
   - "windows.h"
   - "private/windows_wrapper.h"
@@ -173,6 +180,7 @@
   - "cstring"
   - "string.h"
 "strncpy": "string.h"
+"strncpy_s": "string.h"
 "struct addrinfo": "netdb.h"
 "struct iovec": "sys/uio.h"
 "struct timespec": "time.h"

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2019 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef __STUMPLESS_PRIVATE_CONFIG_FORMAT_STRING_H
+#  define __STUMPLESS_PRIVATE_CONFIG_FORMAT_STRING_H
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_VSNPRINTF_S_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_VSNPRINTF_S_H
+#  include "private/config.h"
 
-#  include <stdarg.h>
-#  include <stddef.h>
+/* definition of config_format_string */
+#  ifdef HAVE_VSNPRINTF_S
+#    include "private/config/have_vsnprintf_s.h"
+#    define config_format_string vsnprintf_s_format_string
+#  else
+#    include "private/config/no_vsnprintf_s.h"
+#    define config_format_string no_vsnprintf_s_format_string
+#  endif
 
-char *
-vsnprintf_s_format_string( const char *format, va_list subs, size_t *length );
-
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_VSNPRINTF_S_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_FORMAT_STRING_H */

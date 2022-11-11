@@ -1592,6 +1592,8 @@ vstumpless_trace_message( struct stumpless_target *target,
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since release v2.1.0
+ *
  * @param target_type The target_type to get the string from.
  *
  * @return The string representation of the given target_type.

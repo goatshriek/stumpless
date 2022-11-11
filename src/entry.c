@@ -27,11 +27,11 @@
 #include <stumpless/severity.h>
 #include "private/cache.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
 #include "private/config/wrapper/getpid.h"
-#include "private/config/wrapper/config_format_string.h"
-#include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/config/wrapper/wel.h"
 #include "private/deprecate.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -399,6 +399,31 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 }
 
 const char *
+stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
+  struct strbuilder *hostname_builder;
+  char *hostname;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  hostname_builder = strbuilder_new();
+
+  lock_entry( entry );
+  if( entry->hostname_length > 0 ) {
+    strbuilder_append_buffer( hostname_builder,
+                              entry->hostname,
+                              entry->hostname_length );
+  } else {
+    strbuilder_append_hostname( hostname_builder );
+  }
+  unlock_entry( entry );
+
+  hostname = strbuilder_to_string( hostname_builder );
+  strbuilder_destroy( hostname_builder );
+
+  return hostname;
+}
+
+const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
   const char *message_copy;
 
@@ -546,6 +571,31 @@ stumpless_get_entry_prival( const struct stumpless_entry *entry ) {
   return prival;
 }
 
+const char *
+stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
+  struct strbuilder *procid_builder;
+  const char *procid;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  procid_builder = strbuilder_new(  );
+
+  lock_entry( entry );
+  if( entry->procid_length > 0 ) {
+    strbuilder_append_buffer( procid_builder,
+                              entry->procid,
+                              entry->procid_length );
+  } else {
+    strbuilder_append_procid( procid_builder );
+  }
+  unlock_entry( entry );
+
+  procid = strbuilder_to_string( procid_builder );
+  strbuilder_destroy( procid_builder );
+
+  return procid;
+}
+
 enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
   int prival;
@@ -688,6 +738,32 @@ stumpless_set_entry_facility( struct stumpless_entry *entry,
   unlock_entry( entry );
 
   clear_error(  );
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_hostname( struct stumpless_entry *entry,
+                              const char *hostname ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+
+  if( !hostname ) {
+    // setting the hostname to NULL effectively restores default behavior
+    entry->hostname_length = 0;
+  }
+  else {
+    // the setter should return the modified entry in the case of success, and NULL if not.
+    if( !validate_printable_ascii( hostname ) ||
+          !validate_hostname_length( hostname ) ) {
+      return NULL;
+    }
+    entry->hostname_length = strlen( hostname );
+    memcpy( entry->hostname, hostname, entry->hostname_length );
+    entry->hostname[entry->hostname_length] = '\0';
+  }
+
+  unlock_entry(entry);
   return entry;
 }
 
@@ -898,6 +974,30 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 }
 
 struct stumpless_entry *
+stumpless_set_entry_procid( struct stumpless_entry *entry,
+                            const char *procid ) {
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  lock_entry( entry );
+
+  if( !procid ) {
+    entry->procid_length = 0;
+  } else {
+    if( !validate_printable_ascii( procid ) ||
+          !validate_procid_length( procid ) ) {
+      return NULL;
+    }
+
+    entry->procid_length = strlen( procid );
+    memcpy( entry->procid, procid, entry->procid_length );
+    entry->procid[entry->procid_length] = '\0';
+  }
+
+  unlock_entry(entry);
+  return entry;
+}
+
+struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry,
                               enum stumpless_severity severity ) {
   VALIDATE_ARG_NOT_NULL( entry );
@@ -975,98 +1075,6 @@ vstumpless_set_entry_message( struct stumpless_entry *entry,
 
   free_mem( old_message );
   clear_error(  );
-  return entry;
-}
-
-const char *
-stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
-  struct strbuilder *procid_builder;
-  char *procid;
-
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-
-  procid_builder = strbuilder_new();
-
-  if( entry->procid_override == false ) {
-    strbuilder_append_procid( procid_builder );
-  }
-  else {
-    strbuilder_append_string( procid_builder, entry->procid );
-  }
-
-  procid = strbuilder_to_string( procid_builder );
-
-  strbuilder_destroy( procid_builder );
-
-  unlock_entry( entry );
-  return procid;
-}
-
-struct stumpless_entry *
-stumpless_set_entry_procid( struct stumpless_entry *entry, const char *procid ) {
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-
-  if( procid == NULL ) {
-    entry->procid_override = false;
-  }
-  else {
-    if( !validate_printable_ascii( procid ) || !validate_procid_length( procid ) ) return NULL;
-    strncpy( entry->procid, procid, STUMPLESS_MAX_PROCID_LENGTH + 1 );
-    entry->procid_override = true;
-  }
-
-  unlock_entry(entry);
-  return entry;
-}
-
-const char *
-stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
-  struct strbuilder *hostname_builder;
-  char *hostname;
-
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-
-  hostname_builder = strbuilder_new();
-
-  if( entry->hostname_override == false ) {
-    strbuilder_append_hostname( hostname_builder );
-  }
-  else {
-    strbuilder_append_string( hostname_builder, entry->hostname );
-  }
-
-  hostname = strbuilder_to_string( hostname_builder );
-
-  strbuilder_destroy( hostname_builder );
-  unlock_entry( entry );
-
-  return hostname;
-}
-
-struct stumpless_entry *
-stumpless_set_entry_hostname( struct stumpless_entry *entry, const char *hostname ) {
-  VALIDATE_ARG_NOT_NULL( entry );
-
-  lock_entry( entry );
-
-  if( hostname == NULL ) {
-    // setting the hostname to a NULL pointer should effectively restore default behavior.
-    entry->hostname_override = false;
-  }
-  else {
-    // the setter should return the modified entry in the case of success, and NULL if not.
-    if( !validate_printable_ascii( hostname ) || !validate_hostname_length( hostname ) ) return NULL;
-    strncpy( entry->hostname, hostname, STUMPLESS_MAX_HOSTNAME_LENGTH + 1 );
-    entry->hostname_override = true;
-  }
-
-  unlock_entry(entry);
   return entry;
 }
 
@@ -1204,8 +1212,8 @@ new_entry( enum stumpless_facility facility,
     goto fail_after_cache;
   }
 
-  entry->procid_override = false;
-  entry->hostname_override = false;
+  entry->procid_length = 0;
+  entry->hostname_length = 0;
   entry->message = message;
   entry->message_length = message_length;
   entry->prival = get_prival( facility, severity );
