@@ -425,7 +425,7 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
 
 const char *
 stumpless_get_entry_message( const struct stumpless_entry *entry ) {
-  const char *message_copy;
+  char *message_copy;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
