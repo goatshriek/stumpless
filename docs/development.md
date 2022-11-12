@@ -55,9 +55,8 @@ vim ../stumpless/src/target.c
 cmake --build . --parallel 4 --target check
 
 # for multi-config systems like Visual Studio, you'll also need to add a config
-# argument to every build command to use the intended config (for example Debug
-# and Release are defaults)
-cmake --build . --parallel 4 --config Debug --target check
+# argument to every build command to use the intended config
+cmake --build . --parallel 4 --config x64-Debug --target check
 
 # you can be more specific to your own environment if you'd like
 # for example, if you're using make as your build system, you could just do:
