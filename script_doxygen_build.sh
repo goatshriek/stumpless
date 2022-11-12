@@ -11,7 +11,7 @@ make docs-cpp
 # replace the markdown tags with html entities
 sed -i -E "s/:brazil:/\&#127463;\&#127479;/g" docs/html/index.html
 sed -i -E "s/:bulgaria:/\&#127463;\&#127468;/g" docs/html/index.html
-sed -i -E "s/:cn:/\&#58643;/g" docs/html/index.html
+sed -i -E "s/:cn:/\&#127464;\&#127475;/g" docs/html/index.html
 sed -i -E "s/:czech_republic:/\&#127464;\&#127487;/g" docs/html/index.html
 sed -i -E "s/:de:/\&#127465;\&#127466;/g" docs/html/index.html
 sed -i -E "s/:es:/\&#127466;\&#127480;/g" docs/html/index.html
