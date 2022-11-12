@@ -9,3 +9,6 @@ header_pages:
   - roadmap.md
   - docs/c/latest/index.html
   - docs/cpp/latest/index.html
+
+exclude:
+  - script_*

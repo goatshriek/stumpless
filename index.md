@@ -1,7 +1,7 @@
 ---
 title: Stumpless
 keywords: stumpless, c, logging, library, syslog, splunk, rsyslog, journald
-last_updated: October 20, 2022
+last_updated: November 12, 2022
 layout: default
 ---
 
@@ -17,7 +17,7 @@ easier:
  * can be adjusted or removed during compilation for zero runtime impact
  * interoperability with standard syslog daemons and library functions
  * an extensive test suite is run continuously to ensure proper functionality
- * localized for multiple languages &#127463;&#127468; &#127464;&#127487; &#127465;&#127466; &#127466;&#127480; &#127467;&#127479; &#127470;&#127481; &#127477;&#127473; &#127480;&#127466; &#127480;&#127472; &#127482;&#127480; &#127468;&#127479;
+ * localized for multiple languages &#127463;&#127479; &#127463;&#127468; &#58643; &#127464;&#127487; &#127465;&#127466; &#127466;&#127480; &#127467;&#127479; &#127468;&#127479; &#127470;&#127475; &#127470;&#127481; &#127477;&#127473; &#127480;&#127466; &#127480;&#127472; &#127482;&#127480; 
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),

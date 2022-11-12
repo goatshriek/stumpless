@@ -1,10 +1,9 @@
 ---
 title: The Future
-last_updated: October 10, 2022
+last_updated: November 12, 2022
 ---
 
 # The Future of Stumpless
-
 See below for details about upcoming releases of Stumpless. If you have feedback
 or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
@@ -16,11 +15,12 @@ or want to make a suggestion, please submit an issue on the project's
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
- * [ADD] **Abstract socket support**
-   When creating a Unix socket target, an abstract socket name would allow the
-   socket to be hidden from the local filesystem. This has currently been left
-   out due to portability issues, but using this capability when it is available
-   would increase the 'cleanliness' of using socket targets.
+ * [ADD] **Improved network target error detection**
+   Network targets do not currently detect errors that they would be able to in
+   some cases, such as with `select` or `poll`. This may lead to a connection
+   being left open for longer than necessary if the error is already detected.
+   This change will improve error detection in network targets to reduce the
+   time needed to pass these errors on to callers.
 
 
 ## 3.0.0 (next major release)
@@ -28,6 +28,8 @@ or want to make a suggestion, please submit an issue on the project's
    Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**
    Removing previously deprecated feature.
+ * [REMOVE] **entry id field**
+   Removing unused field.
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
    The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
@@ -41,6 +43,11 @@ or want to make a suggestion, please submit an issue on the project's
    application. This will provide more benefit to some targets than others,
    most notably network-based targets. Because some error reporting mechanisms
    may need to change to accomodate this, it will be done in a major release.
+ * [CHANGE] **Error enum values start from 1 instead of 0**
+   This will allow function that return negative integers in error scenarios to
+   pass along a more meaningful return value.
+ * [CHANGE] **Entry app name and msgid no longer NULL-terminated.**
+   Improve efficiency and memory safety by only using these as byte buffers.
 
 
 ## Unallocated to a release
@@ -54,8 +61,12 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
  * [ADD] **Hyperledger/blockchain logging target**
+ * [ADD] **Apache Kafka logging target**
  * [ADD] **Ability to limit the rate of logging (per message, per byte)**
  * [ADD] **Logging target for Windows Debug log**
+ * [ADD] **Error callbacks**
+   Allow the user to define actions to take when specific errors are
+   encountered.
  * [ADD] **Configuration file support**
    Many other logging solutions provide a way to configure logging via a
    separate configuration file that defines targets and their options. Stumpless
