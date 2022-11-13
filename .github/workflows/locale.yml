@@ -16,7 +16,7 @@ jobs:
     env:
       LANG: "de_DE.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -36,7 +36,7 @@ jobs:
     env:
       LANG: "cz_ES.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -56,7 +56,7 @@ jobs:
     env:
       LANG: "es_ES.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -76,7 +76,7 @@ jobs:
     env:
       LANG: "fr_FR.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -96,7 +96,7 @@ jobs:
     env:
       LANG: "it_IT.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -116,7 +116,7 @@ jobs:
     env:
       LANG: "sk_SK.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -136,7 +136,7 @@ jobs:
     env:
       LANG: "pl_PL.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -156,7 +156,7 @@ jobs:
     env:
       LANG: "sv_SE.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -176,7 +176,7 @@ jobs:
     env:
       LANG: "bg_BG.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -196,7 +196,7 @@ jobs:
     env:
       LANG: "el_GR.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -216,7 +216,7 @@ jobs:
     env:
       LANG: "pt_BR.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -236,7 +236,7 @@ jobs:
     env:
       LANG: "zh_CN.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -256,7 +256,7 @@ jobs:
     env:
       LANG: "hi_IN.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .
@@ -276,7 +276,7 @@ jobs:
     env:
       LANG: "bn_IN.UTF-8"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake .

@@ -401,7 +401,7 @@ stumpless_get_entry_facility( const struct stumpless_entry *entry ) {
 const char *
 stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
   struct strbuilder *hostname_builder;
-  char *hostname;
+  const char *hostname;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
@@ -753,7 +753,8 @@ stumpless_set_entry_hostname( struct stumpless_entry *entry,
     entry->hostname_length = 0;
   }
   else {
-    // the setter should return the modified entry in the case of success, and NULL if not.
+    // the setter returns the modified entry in the case of success, or NULL
+    // on failure
     if( !validate_printable_ascii( hostname ) ||
           !validate_hostname_length( hostname ) ) {
       return NULL;

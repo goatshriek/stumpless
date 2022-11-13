@@ -14,7 +14,7 @@ jobs:
     name: "cygwin, release"
     runs-on: "windows-2019"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache Google Test and Benchmark
         uses: actions/cache@v2
         id: cache-google-libs

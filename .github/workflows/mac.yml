@@ -14,7 +14,7 @@ jobs:
     name: "debug"
     runs-on: "macos-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
@@ -53,7 +53,7 @@ jobs:
     name: "release"
     runs-on: "macos-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release .
@@ -92,7 +92,7 @@ jobs:
     name: "release, static library"
     runs-on: "macos-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
@@ -133,7 +133,7 @@ jobs:
     name: "all features disabled"
     runs-on: "macos-latest"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
@@ -158,8 +158,8 @@ jobs:
     name: "with c++"
     runs-on: "macos-latest"
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-ruby@v1.1.3
       - name: Install Gems
         run: |
           gem install bundler

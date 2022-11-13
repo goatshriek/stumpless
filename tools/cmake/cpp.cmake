@@ -188,7 +188,7 @@ if(MINGW)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-  target_compile_options(stumplesscpp PUBLIC "-std=c++11")
+  target_compile_options(stumplesscpp PUBLIC "-std=c++14")
 endif()
 
 add_cpp_test(element

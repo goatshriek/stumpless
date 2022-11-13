@@ -326,6 +326,15 @@ stumpless_close_target( struct stumpless_target *target ) {
   }
 }
 
+FILE *
+stumpless_get_cons_stream( void ) {
+  if( config_read_bool( &cons_stream_valid ) ) {
+    return config_read_ptr( &cons_stream );
+  } else {
+    return stdout;
+  }
+}
+
 struct stumpless_target *
 stumpless_get_current_target( void ) {
   struct stumpless_target *result;
@@ -413,9 +422,6 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
-  if( !target->default_app_name ) {
-    goto cleanup_and_return;
-  }
 
   name_copy = alloc_mem( target->default_app_name_length + 1 );
   if( !name_copy ) {
@@ -440,9 +446,6 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
-  if( !target->default_msgid ) {
-    goto cleanup_and_return;
-  }
 
   msgid_copy = alloc_mem( target->default_msgid_length + 1 );
   if( !msgid_copy ) {
@@ -526,6 +529,12 @@ stumpless_open_target( struct stumpless_target *target ) {
   unlock_target( target );
 
   return result;
+}
+
+void
+stumpless_set_cons_stream( FILE *stream ) {
+  config_write_ptr( &cons_stream, stream );
+  config_write_bool( &cons_stream_valid, true );
 }
 
 void
@@ -1073,19 +1082,4 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
-}
-
-FILE *
-stumpless_get_cons_stream( void ) {
-  if( config_read_bool( &cons_stream_valid ) ) {
-    return config_read_ptr( &cons_stream );
-  } else {
-    return stdout;
-  }
-}
-
-void
-stumpless_set_cons_stream( FILE *stream ) {
-  config_write_ptr( &cons_stream, stream );
-  config_write_bool( &cons_stream_valid, true );
 }
