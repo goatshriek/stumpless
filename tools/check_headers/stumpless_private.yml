@@ -13,6 +13,7 @@
 "config_copy_wstring_to_cstring": "private/config/wrapper/wstring.h"
 "config_destroy_cached_mutex": "private/config/wrapper/thread_safety.h"
 "config_destroy_mutex": "private/config/wrapper/thread_safety.h"
+"config_fopen": "private/config/wrapper/fopen.h"
 "config_getpid": "private/config/wrapper/getpid.h"
 "config_format_string": "private/config/wrapper/config_format_string.h"
 "config_get_local_socket_name": "private/config/wrapper/socket.h"
