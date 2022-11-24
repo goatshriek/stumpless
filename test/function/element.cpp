@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -258,6 +258,23 @@ namespace {
     const struct stumpless_element *result;
     const char *result_name;
 
+    result = stumpless_copy_element( basic_element );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result != basic_element );
+
+    result_name = stumpless_get_element_name( result );
+    EXPECT_STREQ( result_name, basic_name );
+    free( ( void * ) result_name );
+
+    EXPECT_EQ( stumpless_get_param_count( result ), 0 );
+
+    stumpless_destroy_element_and_contents( result );
+  }
+
+  TEST_F( ElementTest, CopyWithParams ) {
+    const struct stumpless_element *result;
+    const char *result_name;
+
     result = stumpless_copy_element( element_with_params );
     EXPECT_NO_ERROR;
     EXPECT_TRUE( result != element_with_params );
@@ -272,21 +289,19 @@ namespace {
     stumpless_destroy_element_and_contents( result );
   }
 
-  TEST_F( ElementTest, CopyWithParams ) {
+  TEST_F( ElementTest, CopyWithParamsMallocFailure ) {
+    size_t param_count;
     const struct stumpless_element *result;
-    const char *result_name;
+    const struct stumpless_error *error;
 
-    result = stumpless_copy_element( basic_element );
-    EXPECT_NO_ERROR;
-    EXPECT_TRUE( result != basic_element );
+    stumpless_set_malloc( MALLOC_FAIL_ON_SIZE(
+                            sizeof( struct stumpless_param * ) * 2) );
 
-    result_name = stumpless_get_element_name( result );
-    EXPECT_STREQ( result_name, basic_name );
-    free( ( void * ) result_name );
+    result = stumpless_copy_element( element_with_params );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
-    EXPECT_EQ( stumpless_get_param_count( result ), 0 );
-
-    stumpless_destroy_element_and_contents( result );
+    stumpless_set_malloc( malloc );
   }
 
   TEST_F( ElementTest, GetName ) {
