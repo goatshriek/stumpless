@@ -100,6 +100,7 @@ stumpless_add_entry( struct stumpless_target *target,
   const char *buffer = NULL;
   int result;
   FILE *current_cons_stream;
+  bool locked;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
@@ -188,7 +189,13 @@ stumpless_add_entry( struct stumpless_target *target,
   if ( result < 0 && unchecked_get_option( target, STUMPLESS_OPTION_CONS ) ) {
     current_cons_stream = stumpless_get_cons_stream(  );
     if ( current_cons_stream ) {
+      do {
+        locked = config_compare_exchange_bool( &cons_stream_free, true, false );
+      } while( !locked );
+
       fwrite( buffer, sizeof( char ), builder_length, current_cons_stream );
+
+      config_write_bool( &cons_stream_free, true );
     }
   }
 
