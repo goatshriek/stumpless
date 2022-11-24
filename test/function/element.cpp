@@ -290,18 +290,21 @@ namespace {
   }
 
   TEST_F( ElementTest, CopyWithParamsMallocFailure ) {
-    size_t param_count;
+    void * ( *fail_malloc )( size_t );
+    void * ( *set_malloc_result )( size_t );
     const struct stumpless_element *result;
     const struct stumpless_error *error;
 
-    stumpless_set_malloc( MALLOC_FAIL_ON_SIZE(
-                            sizeof( struct stumpless_param * ) * 2) );
+    fail_malloc = MALLOC_FAIL_ON_SIZE( sizeof( struct stumpless_param * ) * 2 );
+    set_malloc_result = stumpless_set_malloc( fail_malloc );
 
     result = stumpless_copy_element( element_with_params );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
-    stumpless_set_malloc( malloc );
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST_F( ElementTest, GetName ) {
