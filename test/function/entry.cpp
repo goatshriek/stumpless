@@ -331,13 +331,13 @@ namespace {
   }
 
   TEST_F( EntryTest, CopyMallocFailureOnElementArray ) {
-    void * ( *fail_malloc )( size_t );
+    void * ( *fail )( size_t );
     void * ( *set_malloc_result )( size_t );
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    fail_malloc = MALLOC_FAIL_ON_SIZE( sizeof( struct stumpless_element * ) );
-    set_malloc_result = stumpless_set_malloc( fail_malloc );
+    fail = MALLOC_FAIL_ON_SIZE( sizeof( struct stumpless_element * ) * 2 );
+    set_malloc_result = stumpless_set_malloc( fail );
     ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_copy_entry( basic_entry );
