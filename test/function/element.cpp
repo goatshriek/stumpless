@@ -314,6 +314,19 @@ namespace {
     free( ( void * ) name );
   }
 
+  TEST_F( ElementTest, GetNameMallocFailure ) {
+    const char *name;
+    const struct stumpless_error *error;
+
+    stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 14 ) );
+
+    name = stumpless_get_element_name( basic_element );
+    EXPECT_NULL( name );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    stumpless_set_malloc( malloc );
+  }
+
   TEST_F( ElementTest, GetParamByNameAndModify ) {
     struct stumpless_param *param;
     struct stumpless_param *set_result;
