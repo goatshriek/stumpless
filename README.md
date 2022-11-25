@@ -12,7 +12,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
 [Key Features](#key-features) |
-[Download and Build](#quick-build-and-install) |
+[Build and Install](#quick-build-and-install) |
 [Basic Usage](#basic-usage) |
 [Contributing](#contributing)
 
