@@ -28,9 +28,8 @@
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentative de fermeture d'un type de cible no supporté"
 
-// todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CommitTransaction failed"
+"échec de CommitTransaction"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "échec de connexion avec un socket sys/socket.h"
@@ -38,9 +37,8 @@
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "échec de connexion avec un socket winsock2"
 
-// todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CreateTransaction failed"
+"échec de CreateTransaction"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "destination valide uniquement pour les cibles réseaux"
@@ -54,25 +52,20 @@
 #  define L10N_ERRNO_ERROR_CODE_TYPE \
 "errno après l'échec d'appel"
 
-// todo translate
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"could not open the specified file"
+"échec de l'ouverture du fichier spécifié"
 
-// todo translate
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
-"could not write to the file"
+"échec de l'écriture sur le fichier"
 
-// todo translate
 #  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"invalid " ARG " format"
+"le format pour " ARG " est invalid"
 
-// todo translate
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
-"return code of the log handler function"
+"code retourné par la fonction du gestionnaire de log"
 
-// todo translate
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
-"the log handler for a function target failed"
+"le gestionnaire de log pour une cible fonction à échoué"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "echec de getaddrinfo sur le hostname fourni"
@@ -80,25 +73,20 @@
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "code de retour de l'échec d'appel getaddrinfo"
 
-// todo translate
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"GetComputerName failed"
+"échec de GetComputerName"
 
-// todo translate
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"gethostname failed"
+"échec de gethostname"
 
-// todo translate
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"le résultat de GetLastError après l'échec de l'appel"
 
-// todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"GetModuleFileNameW failed"
+"échec de GetModuleFileNameW"
 
-// todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"GetModuleHandleExW failed"
+"échec de GetModuleHandleExW"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "l'index invalide, ou son -1 est trop grand pour être représenté comme un int"
@@ -110,16 +98,14 @@
 "les codes d'installations doivent être définis confirmément au RFC 5424," \
 " après la multiplication par 8"
 
-// todo translate
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
-"invalid target id"
+"id cible invalide"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "index " INDEXED_THING " invalide"
 
-// todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
+"la valeur d'un registre MULTI_SZ n'était ni vide ni terminée par deux NULL"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la sévérité invalide"
@@ -128,17 +114,14 @@
 "les codes de sévérité doivent être définis conformément au RFC 5424:" \
 " valeurs entre 0 et 7 inclus"
 
-// todo translate
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"target type is incompatible with this operation"
+"le type de la cible est incompatible avec cette opération"
 
-// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
-"return code of sd_journal_sendv"
+"code retourné par sd_journal_sendv"
 
-// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"sd_journal_sendv failed"
+"échec de sd_journal_sendv"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "échec de création de fichier avec le nom de socket local choisi utilisant" \
@@ -147,17 +130,14 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "taille maximale des messages valide uniquement pour les cibles réseaux UDP"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"le résultat de GetLastError après l'échec de l'appel"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided multibyte string to a wide char string"
+"échec de la conversion du multibyte string fourni en un wide char string"
 
-// todo translate
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"a memory allocation call failed"
+"un appel à l'allocation de la mémoire a échoué"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "la taille du message qui a été tenté d'être envoyé"
@@ -165,9 +145,8 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "message trop grand pour être envoyé en un seul datagramme"
 
-// todo translate
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"chosen network protocol is unsupported"
+"le protocol réseaux choisi n'est pas supporté"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
 "les cibles réseaux ne sont pas supportés par cette build"
@@ -181,25 +160,20 @@ ARG_NAME " a été NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "un paramètre avec les caractéristiques spécifiées est introuvable"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be created"
+"une sous-clé de registre n'a pas pu être créée"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be deleted"
+"une sous-clé de registre n'a pas pu être supprimée"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be opened"
+"une sous-clé de registre n'a pas pu être ouverte"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"a registry value could not be read"
+"une valeur de registre n'a pas pu être lue"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"a registry value could not be set"
+"une valeur de registre n'a pas pu être définie"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "sendto échoué avec un socket unix"
@@ -219,21 +193,17 @@ ARG_NAME " a été NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket"
 
-// todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
-L"Stumpless registration of Windows Event Log Source"
+L"enregistrement Stumpless de Windows Event Log Source"
 
-// todo translate
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"could not write to the stream"
+"impossible d'écrire dans le flux"
 
-// todo translate
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"the length of the offending string"
+"la longueur du string offensant"
 
-// todo translate
 #  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"length of string exceeded maximum limit"
+"la longueur du string a excédée la limite maximale"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
 "ce type de cible est toujours ouvert"
@@ -241,9 +211,8 @@ L"Stumpless registration of Windows Event Log Source"
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
 "ports de transport valides uniquement pour les cibles réseaux"
 
-// todo translate
 #  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"chosen transport protocol is unsupported"
+"le protocol de transport choisi n'est pas supporté"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket unix avec la fonction socket"
@@ -251,28 +220,23 @@ L"Stumpless registration of Windows Event Log Source"
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
 "vérification pour voir si un type de cible non supporté a été ouvert"
 
-// todo translate
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
-"could not close the Windows Event Log"
+"échec de la fermeture de Windows Event Log"
 
-// todo translate
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"could not open the Windows Event Log"
+"échec de l'ouverture de Windows Event Log"
 
-// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided wide char string to a multibyte string"
+"échec de la conversion du wide char string fourni en un multibyte string"
 
-// todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"the Windows error code returned by the failed call"
+"le code d'erreur Windows retourné par l'échec de l'appel"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "Code d'erreur Windows Socket"
 
-// todo translate
 #  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"le résultat de GetLastError après l'échec de l'appel"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket winsock2"
