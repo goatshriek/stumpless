@@ -384,12 +384,13 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
 
 struct stumpless_element *
 stumpless_new_element( const char *name ) {
+  size_t name_length;
   struct stumpless_element *element;
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name( name ) ||
-       !validate_element_name_length( name )) {
+  if ( !validate_element_name_length( name, &name_length ) ||
+       !validate_element_name( name )) {
     goto fail;
   }
 
@@ -398,8 +399,8 @@ stumpless_new_element( const char *name ) {
     goto fail;
   }
 
-  element->name_length = strlen( name );
-  memcpy( element->name, name, element->name_length + 1 );
+  element->name_length = name_length;
+  memcpy( element->name, name, name_length + 1 );
 
   element->params = NULL;
   element->param_count = 0;
@@ -429,12 +430,10 @@ stumpless_set_element_name( struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name( name ) ||
-       !validate_element_name_length( name )) {
+  if ( !validate_element_name_length( name, &name_length ) ||
+       !validate_element_name( name )) {
     goto fail;
   }
-
-  name_length = strlen( name );
 
   lock_element( element );
   memcpy( element->name, name, name_length + 1 );
