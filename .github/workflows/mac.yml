@@ -39,6 +39,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
+          gcov: true
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -148,6 +149,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
+          gcov: true
       - name: Run Examples
         run: |
           make examples

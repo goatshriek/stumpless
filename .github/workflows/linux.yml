@@ -39,10 +39,6 @@ jobs:
           sudo ./function-test-udp4_leak
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v3
-        with:
-          fail_ci_if_error: true
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -60,6 +56,11 @@ jobs:
       - name: Build Documentation
         run: |
           make docs
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          gcov: true
   linux-release:
     name: "linux, release"
     runs-on: "ubuntu-latest"
@@ -159,16 +160,17 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
-      - name: Codecov Upload
-        uses: codecov/codecov-action@v3
-        with:
-          fail_ci_if_error: true
       - name: Run Examples
         run: |
           make examples
       - name: Install
         run: |
           sudo make install
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          gcov: true
   linux-all-disabled-release:
     name: "linux, all features disabled, release"
     runs-on: "ubuntu-latest"
