@@ -348,6 +348,24 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST_F( EntryTest, CopyMallocFailureOnElementName ) {
+    void * ( *fail )( size_t );
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    fail = MALLOC_FAIL_ON_SIZE( 16 );
+    set_malloc_result = stumpless_set_malloc( fail );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   TEST_F( EntryTest, CopyReallocFailure ) {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
@@ -1371,12 +1389,12 @@ namespace {
     const struct stumpless_error *error;
 
     element = stumpless_new_element( "test-new-element" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( element );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( NULL, element );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    ASSERT_TRUE( entry == NULL );
+    ASSERT_NULL( entry );
 
     stumpless_destroy_element_and_contents( element );
 
@@ -1724,9 +1742,9 @@ namespace {
                                  int_sub );
 
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( entry != NULL );
+    EXPECT_NOT_NULL( entry );
     EXPECT_NULL( stumpless_get_error(  ) );
-    EXPECT_TRUE( entry->message != NULL );
+    EXPECT_NOT_NULL( entry->message );
 
     expected_message_length = strlen( expected_message );
     EXPECT_EQ( entry->message_length, expected_message_length );
