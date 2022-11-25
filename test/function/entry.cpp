@@ -354,7 +354,7 @@ namespace {
     const struct stumpless_entry *result;
     const struct stumpless_error *error;
 
-    fail = MALLOC_FAIL_ON_SIZE( 16 );
+    fail = MALLOC_FAIL_ON_SIZE( 12 );
     set_malloc_result = stumpless_set_malloc( fail );
     ASSERT_NOT_NULL( set_malloc_result );
 
