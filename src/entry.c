@@ -704,7 +704,6 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
   }
 
   lock_entry( entry );
-  entry->app_name_length = new_name_length;
   if( app_name ) {
     entry->app_name_length = new_name_length;
     memcpy( entry->app_name, app_name, new_name_length + 1 );
@@ -1170,8 +1169,6 @@ new_entry( enum stumpless_facility facility,
            char *message,
            size_t message_length ) {
   struct stumpless_entry *entry;
-  const char *effective_app_name;
-  const char *effective_msgid;
 
   if( !entry_cache ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
