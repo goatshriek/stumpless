@@ -110,7 +110,6 @@
 "RFC_5424_FULL_TIME_BUFFER_SIZE": "private/formatter.h"
 "RFC_5424_MAX_PRI_LENGTH": "private/formatter.h"
 "RFC_5424_MAX_TIMESTAMP_LENGTH": "private/formatter.h"
-"RFC_5424_MAX_PROCID_LENGTH": "private/formatter.h"
 "RFC_5424_REGEX_STRING": "test/helper/rfc5424.hpp"
 "RFC_5424_TIME_SECFRAC_BUFFER_SIZE": "private/formatter.h"
 "RFC_5424_TIMESTAMP_BUFFER_SIZE": "private/formatter.h"
