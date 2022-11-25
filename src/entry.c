@@ -37,7 +37,6 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
-#include "private/formatter.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
@@ -1240,10 +1239,10 @@ strbuilder_append_app_name( struct strbuilder *builder,
 
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder ) {
-  char buffer[RFC_5424_MAX_HOSTNAME_LENGTH + 1];
+  char buffer[STUMPLESS_MAX_HOSTNAME_LENGTH + 1];
   int result;
 
-  result = config_gethostname( buffer, RFC_5424_MAX_HOSTNAME_LENGTH + 1 );
+  result = config_gethostname( buffer, STUMPLESS_MAX_HOSTNAME_LENGTH + 1 );
 
   if( result == -1 ) {
     return strbuilder_append_char( builder, '-' );

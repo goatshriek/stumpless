@@ -4,7 +4,7 @@ if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
 endif()
 
-project(stumpless VERSION 2.1.0)
+project(stumpless VERSION 2.2.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)

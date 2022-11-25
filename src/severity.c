@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,7 @@ static char *severity_enum_to_string[] = {
 
 const char *
 stumpless_get_severity_string( enum stumpless_severity severity ) {
-  size_t severity_upper_bound =
-    sizeof severity_enum_to_string / sizeof severity_enum_to_string[0];
-  if ( severity >= 0 && severity < severity_upper_bound ) {
+  if ( !severity_is_invalid( severity ) ) {
     return severity_enum_to_string[severity];
   }
   return "NO_SUCH_SEVERITY";
@@ -38,9 +36,18 @@ stumpless_get_severity_string( enum stumpless_severity severity ) {
 
 enum stumpless_severity
 stumpless_get_severity_enum( const char *severity_string ) {
-  for (int i = 0; i < sizeof severity_enum_to_string / sizeof severity_enum_to_string[0]; i++)
-    if (strcmp(severity_string, severity_enum_to_string[i]) == 0)
+  size_t severity_bound;
+  size_t i;
+
+  severity_bound = sizeof( severity_enum_to_string ) /
+                     sizeof( severity_enum_to_string[0] );
+
+  for( i = 0; i < severity_bound;  i++ ) {
+    if( strcmp( severity_string, severity_enum_to_string[i] ) == 0 ) {
       return i;
+    }
+  }
+
   return -1;
 }
 

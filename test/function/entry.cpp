@@ -95,12 +95,13 @@ namespace {
     struct stumpless_element *element;
 
     element = stumpless_new_element( "test-new-element" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( element );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( basic_entry, element );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( entry );
+
     EXPECT_EQ( basic_entry, entry );
   }
 
@@ -131,14 +132,14 @@ namespace {
     void * (*set_realloc_result)(void *, size_t);
 
     element = stumpless_new_element( "test-memory-failure" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( element );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     set_realloc_result = stumpless_set_realloc( REALLOC_FAIL );
     ASSERT_NOT_NULL( set_realloc_result );
 
     entry = stumpless_add_element( basic_entry, element );
-    EXPECT_EQ( NULL, entry );
+    EXPECT_NULL( entry );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_realloc_result = stumpless_set_realloc( realloc );
@@ -194,7 +195,7 @@ namespace {
 
     new_param = stumpless_get_param_by_name( element_1, "new-param-name" );
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( new_param != NULL );
+    EXPECT_NOT_NULL( new_param );
   }
 
   TEST_F( EntryTest, AddNewParamAndNewElement ) {
@@ -211,12 +212,12 @@ namespace {
 
     new_element = stumpless_get_element_by_name( basic_entry, "new-element-name" );
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( new_element != NULL );
+    EXPECT_NOT_NULL( new_element );
     EXPECT_EQ( stumpless_get_param_count( new_element ), 1 );
 
     new_param = stumpless_get_param_by_name( new_element, "new-param-name" );
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( new_param != NULL );
+    EXPECT_NOT_NULL( new_param );
   }
 
   TEST_F( EntryTest, AddNewParamAndNewElementMallocFailure ) {
@@ -275,7 +276,7 @@ namespace {
 
     result = stumpless_add_element( basic_entry, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    ASSERT_TRUE( result == NULL );
+    ASSERT_NULL( result );
   }
 
   TEST_F( EntryTest, AddTwoElements ) {
@@ -293,8 +294,8 @@ namespace {
     EXPECT_EQ( basic_entry, entry );
 
     element2 = stumpless_new_element( "test-new-element-2" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( element2 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( basic_entry, element2 );
     EXPECT_NO_ERROR;
@@ -323,6 +324,42 @@ namespace {
     result = stumpless_copy_entry( basic_entry );
     EXPECT_NULL( result );
 
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, CopyMallocFailureOnElementArray ) {
+    void * ( *fail )( size_t );
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    fail = MALLOC_FAIL_ON_SIZE( sizeof( struct stumpless_element * ) * 2 );
+    set_malloc_result = stumpless_set_malloc( fail );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, CopyMallocFailureOnElementName ) {
+    void * ( *fail )( size_t );
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    fail = MALLOC_FAIL_ON_SIZE( 12 );
+    set_malloc_result = stumpless_set_malloc( fail );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_copy_entry( basic_entry );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -1352,12 +1389,12 @@ namespace {
     const struct stumpless_error *error;
 
     element = stumpless_new_element( "test-new-element" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( element );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
 
     entry = stumpless_add_element( NULL, element );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    ASSERT_TRUE( entry == NULL );
+    ASSERT_NULL( entry );
 
     stumpless_destroy_element_and_contents( element );
 
@@ -1705,9 +1742,9 @@ namespace {
                                  int_sub );
 
     EXPECT_NO_ERROR;
-    EXPECT_TRUE( entry != NULL );
+    EXPECT_NOT_NULL( entry );
     EXPECT_NULL( stumpless_get_error(  ) );
-    EXPECT_TRUE( entry->message != NULL );
+    EXPECT_NOT_NULL( entry->message );
 
     expected_message_length = strlen( expected_message );
     EXPECT_EQ( entry->message_length, expected_message_length );
