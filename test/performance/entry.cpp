@@ -33,7 +33,7 @@ static void SetAppName(benchmark::State& state){
 
   INIT_MEMORY_COUNTER( set_app_name );
 
-  entry = create_entry(  ); 
+  entry = create_entry(  );
 
   for(auto _ : state){
     result = stumpless_set_entry_app_name( entry, app_name );
@@ -54,7 +54,7 @@ static void SetHostname(benchmark::State& state){
 
   INIT_MEMORY_COUNTER( set_hostname );
 
-  entry = create_entry(  ); 
+  entry = create_entry(  );
 
   for(auto _ : state){
     result = stumpless_set_entry_hostname( entry, hostname );
@@ -75,7 +75,7 @@ static void SetMsgid(benchmark::State& state){
 
   INIT_MEMORY_COUNTER( set_msgid );
 
-  entry = create_entry(  ); 
+  entry = create_entry(  );
 
   for(auto _ : state){
     result = stumpless_set_entry_msgid( entry, msgid );
@@ -96,7 +96,7 @@ static void SetProcid(benchmark::State& state){
 
   INIT_MEMORY_COUNTER( set_procid );
 
-  entry = create_entry(  ); 
+  entry = create_entry(  );
 
   for(auto _ : state){
     result = stumpless_set_entry_procid( entry, procid );
