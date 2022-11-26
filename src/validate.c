@@ -58,6 +58,12 @@ validate_procid_length( const char *procid, size_t *length ) {
 }
 
 bool
+validate_hostname( const char *hostname, size_t *length ) {
+  return validate_hostname_length( hostname, length ) &&
+         validate_printable_ascii( hostname );
+}
+
+bool
 validate_hostname_length( const char *hostname, size_t *length ) {
   return validate_string_length( hostname,
                                  STUMPLESS_MAX_HOSTNAME_LENGTH,

@@ -697,9 +697,9 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( app_name &&
-      ( !validate_app_name_length( app_name, &new_name_length ) ||
-        !validate_printable_ascii( app_name ) ) ) {
+  if( unlikely( app_name &&
+                ( !validate_app_name_length( app_name, &new_name_length ) ||
+                  !validate_printable_ascii( app_name ) ) ) ) {
     return NULL;
   }
 
@@ -743,9 +743,7 @@ stumpless_set_entry_hostname( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( hostname &&
-      ( !validate_hostname_length( hostname, &new_length ) ||
-        !validate_printable_ascii( hostname ) ) ) {
+  if( unlikely( hostname && !validate_hostname( hostname, &new_length ) ) ) {
     return NULL;
   }
 
@@ -754,10 +752,9 @@ stumpless_set_entry_hostname( struct stumpless_entry *entry,
     // setting the hostname to NULL effectively restores default behavior
     entry->hostname_length = 0;
   } else {
-    // the setter returns the modified entry in the case of success, or NULL
-    // on failure
     entry->hostname_length = new_length;
-    memcpy( entry->hostname, hostname, new_length + 1 );
+    memcpy( entry->hostname, hostname, new_length );
+    entry->hostname[new_length] = '\0';
   }
   unlock_entry(entry);
 
@@ -772,9 +769,9 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( msgid &&
-      ( !validate_msgid_length( msgid, &new_msgid_length ) ||
-        !validate_printable_ascii( msgid ) ) ) {
+  if( unlikely( msgid &&
+                ( !validate_msgid_length( msgid, &new_msgid_length ) ||
+                  !validate_printable_ascii( msgid ) ) ) ) {
     return NULL;
   }
 
@@ -983,8 +980,8 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
   if( !procid ) {
     procid_length = 0;
   } else {
-    if( !validate_procid_length( procid, &procid_length ) ||
-          !validate_printable_ascii( procid ) ) {
+    if( unlikely( !validate_procid_length( procid, &procid_length ) ||
+                  !validate_printable_ascii( procid ) ) ) {
       return NULL;
     }
   }
@@ -992,10 +989,12 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
   lock_entry( entry );
   entry->procid_length = procid_length;
   if( procid ) {
-    memcpy( entry->procid, procid, procid_length + 1 );
+    memcpy( entry->procid, procid, procid_length );
+    entry->procid[procid_length] = '\0';
   }
   unlock_entry(entry);
 
+  clear_error(  );
   return entry;
 }
 

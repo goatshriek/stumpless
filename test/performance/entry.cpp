@@ -43,6 +43,7 @@ static void SetAppName(benchmark::State& state){
   }
 
   stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, set_app_name );
 }
@@ -64,6 +65,7 @@ static void SetHostname(benchmark::State& state){
   }
 
   stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, set_hostname );
 }
@@ -85,6 +87,7 @@ static void SetMsgid(benchmark::State& state){
   }
 
   stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, set_msgid );
 }
@@ -106,6 +109,7 @@ static void SetProcid(benchmark::State& state){
   }
 
   stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, set_procid );
 }

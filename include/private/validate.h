@@ -79,7 +79,21 @@ bool
 validate_procid_length( const char *procid, size_t *length );
 
 /**
- * Checks the char length of a hostname.
+ * Checks a hostname for validity.
+ *
+ * @param hostname The hostname.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the hostname is valid. If the hostname is not valid then
+ * false is returned and an appropriate error is raised.
+ */
+bool
+validate_hostname( const char *hostname, size_t *length );
+
+/**
+ * Checks the length of a hostname.
  *
  * @param hostname The hostname.
  *
