@@ -26,6 +26,7 @@
 #include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include "private/cache.h"
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
@@ -87,7 +88,7 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *element_name,
                                   const char *param_name,
                                   const char *param_value ) {
-  size_t element_name_length;
+  size_t element_name_len;
   struct stumpless_element *element;
   bool element_created = false;
   const void *result;
@@ -95,8 +96,7 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
    VALIDATE_ARG_NOT_NULL( entry );
    VALIDATE_ARG_NOT_NULL( element_name );
 
-  if ( !validate_element_name_length( element_name, &element_name_length ) ||
-       !validate_element_name( element_name )) {
+  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
     goto fail;
   }
 
@@ -225,6 +225,7 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
+  size_t name_len;
   bool result;
 
   if( !entry ) {
@@ -237,7 +238,7 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
     return false;
   }
 
-  if ( !validate_element_name( name ) ) {
+  if( unlikely( !validate_element_name( name, &name_len ) ) ) {
     return false;
   }
 
@@ -274,19 +275,13 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name ) {
+  size_t name_len;
   struct stumpless_element *result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( name );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return 0;
-  }
-
-  if ( !validate_element_name( name ) ) {
+  if( unlikely( !validate_element_name( name, &name_len ) ) ) {
     return 0;
   }
 
@@ -315,21 +310,15 @@ stumpless_get_element_count( const struct stumpless_entry *entry ) {
 size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
+  size_t name_len;
   size_t i;
   const struct stumpless_element *element;
   int cmp_result;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( name );
 
-  if( !name ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
-    return 0;
-  }
-
-  if ( !validate_element_name( name ) ) {
+  if ( unlikely( !validate_element_name( name, &name_len ) ) ) {
     return 0;
   }
 
@@ -338,7 +327,7 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
     element = entry->elements[i];
 
     lock_element( element );
-    cmp_result = strcmp( element->name, name );
+    cmp_result = memcmp( element->name, name, name_len );
     unlock_element( element );
 
     if( cmp_result == 0 ) {
@@ -477,17 +466,19 @@ struct stumpless_param *
 stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *element_name,
                                    const char *param_name ) {
+  size_t element_name_len;
+  size_t param_name_len;
   const struct stumpless_element *element;
 
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
-  if ( !validate_param_name( param_name ) ) {
+  if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
     return NULL;
   }
 
-  if ( !validate_element_name( element_name ) ) {
+  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
     return NULL;
   }
 
@@ -525,17 +516,19 @@ const char *
 stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
                                          const char *element_name,
                                          const char *param_name ) {
+  size_t element_name_len;
+  size_t param_name_len;
   const struct stumpless_element *element;
 
   VALIDATE_ARG_NOT_NULL( entry );
   VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
-  if (!validate_param_name(param_name)) {
+  if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
       return NULL;
   }
 
-  if ( !validate_element_name( element_name ) ) {
+  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
     return NULL;
   }
 
@@ -980,8 +973,7 @@ stumpless_set_entry_procid( struct stumpless_entry *entry,
   if( !procid ) {
     procid_length = 0;
   } else {
-    if( unlikely( !validate_procid_length( procid, &procid_length ) ||
-                  !validate_printable_ascii( procid ) ) ) {
+    if( unlikely( !validate_procid( procid, &procid_length ) ) ) {
       return NULL;
     }
   }

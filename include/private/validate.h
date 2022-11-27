@@ -65,18 +65,49 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
 }
 
 /**
- * Checks the char length of procid.
+ * Checks the length of app name.
  *
- * @param procid The procid.
+ * @param app_name the app name
  *
  * @param length A pointer to a variable that will be set to the length
  * of the string. Must not be NULL.
  *
- * @return True if the procid is at or below the maximum allowed length,
- * otherwise it will return false and raise the appropriate error.
+ * @return True if the app name is less than allowed length
+ * (48 characters not including NULL terminating),otherwise
+ * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
  */
 bool
-validate_procid_length( const char *procid, size_t *length );
+validate_app_name_length( const char *app_name, size_t *length );
+
+/**
+ * Checks that the passed in element name contains only ASCII characters and
+ * also does not contain any of the following characters: '=',']','"'.
+ *
+ * @param str The element name to validate.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the element name has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool
+validate_element_name( const char *str, size_t *length );
+
+/**
+ * Checks that the passed in element name is of valid length
+ *
+ * @param the element name(string).
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the element name is less than allowed length
+ * (32 characters not including NULL terminating),otherwise
+ * it will return false and raise an STUMPLESS_ARGUMENT_TOO_BIG error.
+ */
+bool
+validate_element_name_length( const char *str, size_t *length );
 
 /**
  * Checks a hostname for validity.
@@ -121,43 +152,31 @@ bool
 validate_msgid_length( const char *msgid, size_t *length );
 
 /**
- * Checks that the passed in app_name contains only ASCII characters
- * (33 <= char <= 126).
+ * Checks that the passed in string contains only ASCII characters
+ * (33 <= char <= 126) and not '=', ']', or '"' characters.
  *
- * @param the app_name.
+ * @param str The string to validate.
  *
- * @return True if the app_name has the correct format, otherwise
+ * @return True if the string has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
 bool
-validate_printable_ascii( const char *str );
-
-/**
- * Checks the length of app name.
- *
- * @param app_name the app name
- *
- * @param length A pointer to a variable that will be set to the length
- * of the string. Must not be NULL.
- *
- * @return True if the app name is less than allowed length
- * (48 characters not including NULL terminating),otherwise
- * it will return false and raise STUMPLESS_ARGUMENT_TOO_BIG error.
- */
-bool
-validate_app_name_length( const char *app_name, size_t *length );
+validate_name_chars( const char *str, size_t length );
 
 /**
  * Checks that the passed in param name contains only ASCII characters and
  * also does not contain any of the following characters: '=',']','"'.
  *
- * @param the param name.
+ * @param str The param name to validate.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
  *
  * @return True if the param name has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
 bool
-validate_param_name( const char *str );
+validate_param_name( const char *str, size_t *length );
 
 /**
  * Checks that the passed in param name is of valid length.
@@ -175,30 +194,43 @@ bool
 validate_param_name_length( const char *str, size_t *length );
 
 /**
- * Checks that the passed in element name contains only ASCII characters and
- * also does not contain any of the following characters: '=',']','"'.
+ * Checks that the passed in string contains only ASCII characters
+ * (33 <= char <= 126).
  *
- * @param the element name(string).
+ * @param str The string to validate.
  *
- * @return True if the element name has the correct format, otherwise
+ * @return True if the string has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
 bool
-validate_element_name( const char *str );
+validate_printable_ascii( const char *str );
 
 /**
- * Checks that the passed in element name is of valid length
+ * Checks a procid for validity.
  *
- * @param the element name(string).
+ * @param procid The procid to validate.
  *
  * @param length A pointer to a variable that will be set to the length
  * of the string. Must not be NULL.
  *
- * @return True if the element name is less than allowed length
- * (32 characters not including NULL terminating),otherwise
- * it will return false and raise an STUMPLESS_ARGUMENT_TOO_BIG error.
+ * @return True if the procid is valid. If the procid is not valid then
+ * false is returned and an appropriate error is raised.
  */
 bool
-validate_element_name_length( const char *str, size_t *length );
+validate_procid( const char *procid, size_t *length );
+
+/**
+ * Checks the char length of procid.
+ *
+ * @param procid The procid.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the procid is at or below the maximum allowed length,
+ * otherwise it will return false and raise the appropriate error.
+ */
+bool
+validate_procid_length( const char *procid, size_t *length );
 
 #endif /* __STUMPLESS_PRIVATE_VALIDATE_H */

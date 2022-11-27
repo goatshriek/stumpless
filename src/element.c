@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stumpless/element.h>
 #include <stumpless/param.h>
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
@@ -157,6 +158,7 @@ stumpless_destroy_element_only( const struct stumpless_element *element ) {
 bool
 stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name ) {
+  size_t name_length;
   size_t i;
   const struct stumpless_param *param;
   int cmp_result;
@@ -171,7 +173,7 @@ stumpless_element_has_param( const struct stumpless_element *element,
     return false;
   }
 
-  if ( !validate_param_name( name ) ) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     return false;
   }
 
@@ -230,6 +232,7 @@ stumpless_get_param_by_index( const struct stumpless_element *element,
 struct stumpless_param *
 stumpless_get_param_by_name( const struct stumpless_element *element,
                              const char *name ) {
+  size_t name_length;
   size_t i;
   struct stumpless_param *param;
   int cmp_result;
@@ -237,13 +240,13 @@ stumpless_get_param_by_name( const struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_param_name( name ) ) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     return NULL;
   }
 
+  clear_error(  );
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
-    clear_error(  );
     goto cleanup_and_return;
   }
 
@@ -275,6 +278,7 @@ stumpless_get_param_count( const struct stumpless_element *element ) {
 size_t
 stumpless_get_param_index( const struct stumpless_element *element,
                            const char *name ) {
+  size_t name_length;
   size_t i;
   const struct stumpless_param *param;
   int cmp_result;
@@ -289,13 +293,13 @@ stumpless_get_param_index( const struct stumpless_element *element,
     return 0;
   }
 
-  if  ( !validate_param_name(name) ) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     return 0;
   }
 
+  clear_error(  );
   lock_element( element );
   FOR_EACH_PARAM_WITH_NAME( element, name )
-    clear_error(  );
     goto cleanup_and_return;
   }
 
@@ -323,22 +327,16 @@ stumpless_get_param_name_by_index( const struct stumpless_element *element,
 size_t
 stumpless_get_param_name_count( const struct stumpless_element *element,
                                 const char *name ) {
+  size_t name_length;
   size_t i;
   size_t count = 0;
   const struct stumpless_param *param;
   int cmp_result;
 
-  if( !element ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "element" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( element );
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( name );
 
-  if( !name ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
-    return 0;
-  }
-
-  if (!validate_param_name(name)) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     return 0;
   }
 
@@ -368,9 +366,10 @@ stumpless_get_param_value_by_index( const struct stumpless_element *element,
 const char *
 stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name ) {
+  size_t name_length;
   const struct stumpless_param *param;
 
-  if (name && !validate_param_name(name)) {
+  if( unlikely( name && !validate_param_name ( name, &name_length ) ) ) {
     return NULL;
   }
 
@@ -389,18 +388,18 @@ stumpless_new_element( const char *name ) {
 
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name_length( name, &name_length ) ||
-       !validate_element_name( name )) {
+  if( unlikely( !validate_element_name( name, &name_length ) ) ) {
     goto fail;
   }
 
   element = alloc_mem( sizeof( *element ) );
-  if( !element ) {
+  if( unlikely( !element ) ) {
     goto fail;
   }
 
   element->name_length = name_length;
-  memcpy( element->name, name, name_length + 1 );
+  memcpy( element->name, name, name_length );
+  element->name[name_length] = '\0';
 
   element->params = NULL;
   element->param_count = 0;
@@ -430,14 +429,14 @@ stumpless_set_element_name( struct stumpless_element *element,
   VALIDATE_ARG_NOT_NULL( element );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_element_name_length( name, &name_length ) ||
-       !validate_element_name( name )) {
+  if( unlikely( !validate_element_name( name, &name_length ) ) ) {
     goto fail;
   }
 
   lock_element( element );
-  memcpy( element->name, name, name_length + 1 );
   element->name_length = name_length;
+  memcpy( element->name, name, name_length );
+  element->name[name_length] = '\0';
   unlock_element( element );
 
   clear_error(  );

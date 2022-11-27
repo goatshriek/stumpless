@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,14 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( copy_element )
+NEW_MEMORY_COUNTER( new_element )
+NEW_MEMORY_COUNTER( set_element_name )
 
 static void CopyElement(benchmark::State& state){
   struct stumpless_element *element;
   const struct stumpless_element *result;
 
   INIT_MEMORY_COUNTER( copy_element );
-  stumpless_set_malloc( copy_element_memory_counter_malloc );
-  stumpless_set_realloc( copy_element_memory_counter_realloc );
-  stumpless_set_free( copy_element_memory_counter_free );
 
   element = stumpless_new_element( "copy-element-perf" );
   stumpless_add_new_param( element, "param-1", "value-1" );
@@ -45,12 +44,53 @@ static void CopyElement(benchmark::State& state){
   }
 
   stumpless_destroy_element_and_contents( element );
+  stumpless_free_all(  );
 
-  state.counters["CallsToAlloc"] = ( double ) copy_element_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) copy_element_memory_counter.alloc_total;
-  state.counters["CallsToRealloc"] = ( double ) copy_element_memory_counter.realloc_count;
-  state.counters["CallsToFree"] = ( double ) copy_element_memory_counter.free_count;
-  state.counters["MemoryFreed"] = ( double ) copy_element_memory_counter.free_total;
+  SET_STATE_COUNTERS( state, copy_element );
+}
+
+static void NewElement(benchmark::State& state){
+  const char *element_name = "new-element-perf";
+  const struct stumpless_element *result;
+
+  INIT_MEMORY_COUNTER( new_element );
+
+  for(auto _ : state){
+    result = stumpless_new_element( element_name );
+    if( !result ) {
+      state.SkipWithError( "the element creation failed" );
+    } else {
+      stumpless_destroy_element_and_contents( result );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, new_element );
+}
+
+static void SetElementName(benchmark::State& state){
+  struct stumpless_element *element;
+  const char *name = "new-element-name";
+  const struct stumpless_element *result;
+
+  INIT_MEMORY_COUNTER( set_element_name );
+
+  element = stumpless_new_element( "original-name" );
+
+  for(auto _ : state){
+    result = stumpless_set_element_name( element, name );
+    if( !result ) {
+      state.SkipWithError( "could not set the element name" );
+    }
+  }
+
+  stumpless_destroy_element_and_contents( element );
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, set_element_name );
 }
 
 BENCHMARK(CopyElement);
+BENCHMARK(NewElement);
+BENCHMARK(SetElementName);

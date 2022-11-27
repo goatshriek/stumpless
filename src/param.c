@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/param.h>
+#include "private/config.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
@@ -98,8 +99,7 @@ stumpless_new_param( const char *name, const char *value ) {
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
-  if ( !validate_param_name_length( name, &name_length ) ||
-       !validate_param_name( name )) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     goto fail;
   }
 
@@ -152,16 +152,16 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_param_name_length( name, &new_size ) ||
-       !validate_param_name( name )) {
+  if( unlikely( !validate_param_name( name, &new_size ) ) ) {
     goto fail;
   }
 
   new_name = alloc_mem( new_size + 1 );
-  if( !new_name ) {
+  if( unlikely( !new_name ) ) {
     goto fail;
   }
-  memcpy( new_name, name, new_size + 1 );
+  memcpy( new_name, name, new_size );
+  new_name[new_size] = '\0';
 
   lock_param( param );
   old_name = param->name;

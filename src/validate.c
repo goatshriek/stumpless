@@ -51,9 +51,22 @@ validate_string_length( const char *str, size_t max_length, size_t *length ) {
 }
 
 bool
-validate_procid_length( const char *procid, size_t *length ) {
-  return validate_string_length( procid,
-                                 STUMPLESS_MAX_PROCID_LENGTH,
+validate_app_name_length( const char *app_name, size_t *length ) {
+  return validate_string_length( app_name,
+                                 STUMPLESS_MAX_APP_NAME_LENGTH,
+                                 length );
+}
+
+bool
+validate_element_name( const char *str, size_t *length ) {
+  return validate_element_name_length( str, length ) &&
+         validate_name_chars( str, *length );
+}
+
+bool
+validate_element_name_length( const char *name, size_t *length ) {
+  return validate_string_length( name,
+                                 STUMPLESS_MAX_ELEMENT_NAME_LENGTH,
                                  length );
 }
 
@@ -78,6 +91,37 @@ validate_msgid_length( const char *msgid, size_t *length ) {
 }
 
 bool
+validate_name_chars( const char *str, size_t length ) {
+  size_t i;
+
+  for( i = 0; i < length; i++ ) {
+    if( str[i] < 33 ||
+        str[i] > 126 ||
+        str[i] == '=' ||
+        str[i] == ']' ||
+        str[i] == '"' ) {
+      raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "identifier" ) );
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool
+validate_param_name( const char *str, size_t *length ) {
+  return validate_param_name_length( str, length ) &&
+         validate_name_chars( str, *length );
+}
+
+bool
+validate_param_name_length( const char *name, size_t *length ) {
+  return validate_string_length( name,
+                                 STUMPLESS_MAX_PARAM_NAME_LENGTH,
+                                 length );
+}
+
+bool
 validate_printable_ascii( const char *str ) {
   while( *str != '\0' ) {
     if( *str < 33 || *str > 126 ) {
@@ -92,58 +136,14 @@ validate_printable_ascii( const char *str ) {
 }
 
 bool
-validate_app_name_length( const char *app_name, size_t *length ) {
-  return validate_string_length( app_name,
-                                 STUMPLESS_MAX_APP_NAME_LENGTH,
-                                 length );
+validate_procid( const char *procid, size_t *length ) {
+  return validate_procid_length( procid, length ) &&
+         validate_printable_ascii( procid );
 }
 
 bool
-validate_param_name( const char *str ) {
-  while( *str != '\0' ) {
-    if( *str < 33 ||
-        *str > 126 ||
-        *str == '=' ||
-        *str == ']' ||
-        *str == '"' ) {
-      raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "param" ) );
-      return false;
-    }
-
-    str++;
-  }
-
-  return true;
-}
-
-bool
-validate_param_name_length( const char *name, size_t *length ) {
-  return validate_string_length( name,
-                                 STUMPLESS_MAX_PARAM_NAME_LENGTH,
-                                 length );
-}
-
-bool
-validate_element_name( const char *str ) {
-  while( *str != '\0' ) {
-    if( *str < 33 ||
-        *str > 126 ||
-        *str == '=' ||
-        *str == ']' ||
-        *str == '"' ) {
-      raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "element" ) );
-      return false;
-    }
-
-    str++;
-  }
-
-  return true;
-}
-
-bool
-validate_element_name_length( const char *name, size_t *length ) {
-  return validate_string_length( name,
-                                 STUMPLESS_MAX_ELEMENT_NAME_LENGTH,
+validate_procid_length( const char *procid, size_t *length ) {
+  return validate_string_length( procid,
+                                 STUMPLESS_MAX_PROCID_LENGTH,
                                  length );
 }
