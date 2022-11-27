@@ -648,8 +648,7 @@ incompatible:
 
 enum stumpless_network_protocol
 stumpless_get_network_protocol( const struct stumpless_target *target ) {
-
-  struct network_target *net_target;
+  const struct network_target *net_target;
   enum stumpless_network_protocol network_protocol;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
@@ -673,8 +672,7 @@ cleanup_and_fail:
 
 enum stumpless_transport_protocol
 stumpless_get_transport_protocol( const struct stumpless_target *target ) {
-
-  struct network_target *net_target;
+  const struct network_target *net_target;
   enum stumpless_transport_protocol transport_protocol;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );

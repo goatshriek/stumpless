@@ -1,10 +1,9 @@
 # Developing Stumpless
-
 If you're going to work on the library itself, here are some helpful tips that
 will make the experience a little smoother and faster.
 
-## Getting Started
 
+## Getting Started
 Stumpless is configured using the popular [CMake](https://cmake.org/) build
 platform. In order to build it from the source you will need this tool
 available, as well as any of a number of supported build systems.
@@ -47,17 +46,25 @@ cmake ../stumpless
 
 # after the above initial commands, a normal development cycle would be:
 
-# update a few files (your favorite editor - here we use vim)
+# update a few files with your favorite editor - here we use vim
 vim ../stumpless/src/target.c
 
 # build and run the test suite
-# change the number of threads with the j parameter to make things faster
+# add a parallel argument to make things faster
 # your processor's core count is a good starting place
-make -j 4 check
+cmake --build . --parallel 4 --target check
+
+# for multi-config systems like Visual Studio, you'll also need to add a config
+# argument to every build command to use the intended config
+cmake --build . --parallel 4 --config x64-Debug --target check
+
+# you can be more specific to your own environment if you'd like
+# for example, if you're using make as your build system, you could just do:
+# make -j 4 check
 
 # if you want to build a single test, you can do this using the executable
 # name, which for functionality tests is function-test-<name>
-make -j 4 function-test-target && ./function-test-target
+cmake --build . --target --parallel 4 function-test-target && ./function-test-target
 ```
 
 More details about building the library are available in the
@@ -97,8 +104,8 @@ A few other documents may be helpful for newcomers to glance through:
    implementation approach. Be sure that you follow the principles outlined
    here for any new functionality you implement.
 
-## Error Handling
 
+## Error Handling
 Stumpless has a framework for handling errors that happen at runtime. If you
 are writing new functionality or extending something that already exists
 then you will need to make sure that this framework is used whenever an
@@ -163,8 +170,8 @@ functions provided for the user. Some of the common useful ones are:
  * `stumpless_has_error` is true if the last call failed, false if it succeeded
  * `stumpless_perror` prints the current error if there is one
 
-## Adding new functions
 
+## Adding new functions
 If you're adding a new function to stumpless, here are a few notes that will
 help you along the way.
 
@@ -220,8 +227,8 @@ the second has functions and symbols that are only used internally. Adding your
 function and the associated header it is declared in to the correct manifest
 will resolve this error as the tool will now know why the include is required.
 
-## Continuous Integration Tools
 
+## Continuous Integration Tools
 Stumpless uses a number of CI tools to test builds and monitor code coverage
 and quality. These tools each have badges in the project
 [README](../README.md) that link to their respective pages.
@@ -267,8 +274,8 @@ output of any of these tools, consider temporarily removing the
 adding it back before creating a pull request. This conserves build resources
 and may allow your pull request to pass its checks faster.
 
-## Caching Google Test and Benchmark
 
+## Caching Google Test and Benchmark
 If you are going to be repeatedly building the library from scratch, for example
 to ensure nothing is cached between builds or to try different configurations,
 it will quickly become tedious to wait for the Google Test and/or Benchmark
@@ -341,8 +348,8 @@ make check
 make bench
 ```
 
-## Other development notes
 
+## Other development notes
 For a detailed discussion of the performance testing framework used to gauge
 the speed and efficiency of various calls, check out the
 [benchmark](benchmark.md) documentation for the basic strategy and a full

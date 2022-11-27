@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,7 @@ static char *facility_enum_to_string[] = {
 
 const char *
 stumpless_get_facility_string( enum stumpless_facility facility ) {
-  size_t facility_upper_bound = sizeof facility_enum_to_string;
-  if ( !facility_is_invalid(facility) ) {
+  if ( !facility_is_invalid( facility ) ) {
     return facility_enum_to_string[facility >> 3];
   }
   return "NO_SUCH_FACILITY";
@@ -37,9 +36,18 @@ stumpless_get_facility_string( enum stumpless_facility facility ) {
 
 enum stumpless_facility
 stumpless_get_facility_enum( const char *facility_string ) {
-  for (int i = 0; i < sizeof facility_enum_to_string / sizeof facility_enum_to_string[0]; i++)
-    if (strcmp(facility_string, facility_enum_to_string[i]) == 0)
+  size_t facility_bound;
+  size_t i;
+
+  facility_bound = sizeof( facility_enum_to_string ) /
+                     sizeof( facility_enum_to_string[0] );
+
+  for( i = 0; i < facility_bound; i++ ) {
+    if( strcmp( facility_string, facility_enum_to_string[i] ) == 0 ) {
       return i << 3;
+    }
+  }
+
   return -1;
 }
 

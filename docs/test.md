@@ -52,7 +52,7 @@ As with any development project, the need to write code that can be used across
 many tests will arise. The helper test modules exist for this purpose and are
 found in the `test/helper` directory of the project, with headers in the
 `include/test/helper` directory. There are already a number of utilities in
-these folders for tasks like adding customr assertions, tracking memory
+these folders for tasks like adding custom assertions, tracking memory
 allocations and deallocations for leak testing, running network services, and
 so on. If you find yourself writing something for your tests that would be
 useful for more than just one test suite, consider putting it here for reuse.

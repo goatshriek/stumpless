@@ -99,9 +99,8 @@ stumpless_add_entry( struct stumpless_target *target,
   size_t builder_length;
   const char *buffer = NULL;
   int result;
-  int option_cons;
-  FILE *cons_stream; 
-  FILE *error_stream;
+  FILE *current_cons_stream;
+  bool locked;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
@@ -188,9 +187,15 @@ stumpless_add_entry( struct stumpless_target *target,
    * Ignore any further errors; more important to return the original result.
    */
   if ( result < 0 && unchecked_get_option( target, STUMPLESS_OPTION_CONS ) ) {
-    cons_stream = stumpless_get_cons_stream( );
-    if ( cons_stream ) {
-      fwrite( buffer, sizeof( char ), builder_length, cons_stream );
+    current_cons_stream = stumpless_get_cons_stream(  );
+    if ( current_cons_stream ) {
+      do {
+        locked = config_compare_exchange_bool( &cons_stream_free, true, false );
+      } while( !locked );
+
+      fwrite( buffer, sizeof( char ), builder_length, current_cons_stream );
+
+      config_write_bool( &cons_stream_free, true );
     }
   }
 
@@ -328,6 +333,15 @@ stumpless_close_target( struct stumpless_target *target ) {
   }
 }
 
+FILE *
+stumpless_get_cons_stream( void ) {
+  if( config_read_bool( &cons_stream_valid ) ) {
+    return config_read_ptr( &cons_stream );
+  } else {
+    return stdout;
+  }
+}
+
 struct stumpless_target *
 stumpless_get_current_target( void ) {
   struct stumpless_target *result;
@@ -415,9 +429,6 @@ stumpless_get_target_default_app_name( const struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
-  if( !target->default_app_name ) {
-    goto cleanup_and_return;
-  }
 
   name_copy = alloc_mem( target->default_app_name_length + 1 );
   if( !name_copy ) {
@@ -442,9 +453,6 @@ stumpless_get_target_default_msgid( const struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
-  if( !target->default_msgid ) {
-    goto cleanup_and_return;
-  }
 
   msgid_copy = alloc_mem( target->default_msgid_length + 1 );
   if( !msgid_copy ) {
@@ -531,6 +539,12 @@ stumpless_open_target( struct stumpless_target *target ) {
 }
 
 void
+stumpless_set_cons_stream( FILE *stream ) {
+  config_write_ptr( &cons_stream, stream );
+  config_write_bool( &cons_stream_valid, true );
+}
+
+void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
   config_write_ptr( &current_target, target );
@@ -577,16 +591,11 @@ stumpless_set_target_default_app_name( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( app_name );
 
-  if( unlikely( !validate_app_name_length( app_name ) ||
-                !validate_printable_ascii( app_name ) ) ) {
+  if( unlikely( !validate_app_name( app_name, &new_length ) ) ) {
     return NULL;
   }
 
   clear_error(  );
-
-  // TODO this could be more efficient if the validation routine also returned
-  // the size as a byproduct
-  new_length = strlen( app_name );
 
   lock_target( target );
   memcpy( target->default_app_name, app_name, new_length );
@@ -604,16 +613,11 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
   VALIDATE_ARG_NOT_NULL( msgid );
 
-  if( unlikely( !validate_msgid_length( msgid ) ||
-                !validate_printable_ascii( msgid ) ) ) {
-      return NULL;
+  if( unlikely( !validate_msgid( msgid, &new_length ) ) ) {
+    return NULL;
   }
 
   clear_error(  );
-
-  // TODO this could be more efficient if the validation routine also returned
-  // the size as a byproduct
-  new_length = strlen( msgid );
 
   lock_target( target );
   memcpy( target->default_msgid, msgid, new_length );
@@ -1075,19 +1079,4 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
 
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
-}
-
-FILE *
-stumpless_get_cons_stream( void ) {
-  if( config_read_bool( &cons_stream_valid ) ) {
-    return config_read_ptr( &cons_stream );
-  } else {
-    return stdout;
-  }
-}
-
-void
-stumpless_set_cons_stream( FILE *stream ) {
-  config_write_ptr( &cons_stream, stream );
-  config_write_bool( &cons_stream_valid, true );
 }

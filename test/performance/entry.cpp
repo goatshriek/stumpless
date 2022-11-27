@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,58 +21,100 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( add_entry )
-NEW_MEMORY_COUNTER( add_message )
+NEW_MEMORY_COUNTER( set_app_name )
+NEW_MEMORY_COUNTER( set_hostname )
+NEW_MEMORY_COUNTER( set_msgid )
+NEW_MEMORY_COUNTER( set_procid )
 
-static void AddEntry(benchmark::State& state){
+static void SetAppName(benchmark::State& state){
   struct stumpless_entry *entry;
-  char buffer[1024];
-  struct stumpless_target *target;
-  int result;
+  const char *app_name = "new-app-name";
+  const struct stumpless_entry *result;
 
-  INIT_MEMORY_COUNTER( add_entry );
+  INIT_MEMORY_COUNTER( set_app_name );
 
   entry = create_entry(  );
-  target = stumpless_open_buffer_target( "add-entry-perf",
-                                         buffer,
-                                         sizeof( buffer ) );
 
   for(auto _ : state){
-    result = stumpless_add_entry( target, entry );
-    if( result <= 0 ) {
-      state.SkipWithError( "could not send an entry to the target" );
+    result = stumpless_set_entry_app_name( entry, app_name );
+    if( !result ) {
+      state.SkipWithError( "could not set the entry app name" );
     }
   }
 
-  stumpless_close_buffer_target( target );
   stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
-  SET_STATE_COUNTERS( state, add_entry );
+  SET_STATE_COUNTERS( state, set_app_name );
 }
 
-static void AddMessage(benchmark::State& state){
-  char buffer[1024];
-  struct stumpless_target *target;
-  int i = 0;
-  int result;
+static void SetHostname(benchmark::State& state){
+  struct stumpless_entry *entry;
+  const char *hostname = "new-hostname";
+  const struct stumpless_entry *result;
 
-  INIT_MEMORY_COUNTER( add_message );
+  INIT_MEMORY_COUNTER( set_hostname );
 
-  target = stumpless_open_buffer_target( "add-message-perf",
-                                         buffer,
-                                         sizeof( buffer ) );
+  entry = create_entry(  );
 
   for(auto _ : state){
-    result = stumpless_add_message( target, "testing: %s, %d\n", "test-string", i++ );
-    if( result <= 0 ) {
-      state.SkipWithError( "could not send a message to the target" );
+    result = stumpless_set_entry_hostname( entry, hostname );
+    if( !result ) {
+      state.SkipWithError( "could not set the entry hostname" );
     }
   }
 
-  stumpless_close_buffer_target( target );
+  stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
 
-  SET_STATE_COUNTERS( state, add_message );
+  SET_STATE_COUNTERS( state, set_hostname );
 }
 
-BENCHMARK( AddEntry );
-BENCHMARK( AddMessage );
+static void SetMsgid(benchmark::State& state){
+  struct stumpless_entry *entry;
+  const char *msgid = "new-msgid";
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( set_msgid );
+
+  entry = create_entry(  );
+
+  for(auto _ : state){
+    result = stumpless_set_entry_msgid( entry, msgid );
+    if( !result ) {
+      state.SkipWithError( "could not set the entry msgid" );
+    }
+  }
+
+  stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, set_msgid );
+}
+
+static void SetProcid(benchmark::State& state){
+  struct stumpless_entry *entry;
+  const char *procid = "new-procid";
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( set_procid );
+
+  entry = create_entry(  );
+
+  for(auto _ : state){
+    result = stumpless_set_entry_procid( entry, procid );
+    if( !result ) {
+      state.SkipWithError( "could not set the entry procid" );
+    }
+  }
+
+  stumpless_destroy_entry_and_contents( entry );
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, set_procid );
+}
+
+BENCHMARK( SetAppName );
+BENCHMARK( SetHostname );
+BENCHMARK( SetMsgid );
+BENCHMARK( SetProcid );

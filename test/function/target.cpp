@@ -1176,7 +1176,6 @@ namespace {
 
   TEST( WithCons, ConsDisabled ) {
     struct stumpless_target *target;
-    struct stumpless_target *target_result;
     const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
 

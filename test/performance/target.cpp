@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2019 Joel E. Anderson
- * 
+ * Copyright 2019-2021 Joel E. Anderson
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,64 +18,61 @@
 
 #include <benchmark/benchmark.h>
 #include <stumpless.h>
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( stump )
-NEW_MEMORY_COUNTER( stumplog )
+NEW_MEMORY_COUNTER( add_entry )
+NEW_MEMORY_COUNTER( add_message )
 
-static void Stump(benchmark::State& state){
-  char buffer[1000];
+static void AddEntry(benchmark::State& state){
+  struct stumpless_entry *entry;
+  char buffer[1024];
   struct stumpless_target *target;
+  int result;
 
-  INIT_MEMORY_COUNTER( stump );
-  stumpless_set_malloc( stump_memory_counter_malloc );
-  stumpless_set_realloc( stump_memory_counter_realloc );
-  stumpless_set_free( stump_memory_counter_free );
+  INIT_MEMORY_COUNTER( add_entry );
 
-  target = stumpless_open_buffer_target( "stump-perf",
+  entry = create_entry(  );
+  target = stumpless_open_buffer_target( "add-entry-perf",
                                          buffer,
                                          sizeof( buffer ) );
-  stumpless_set_current_target( target );
 
   for(auto _ : state){
-    stump( "testing" );
+    result = stumpless_add_entry( target, entry );
+    if( result <= 0 ) {
+      state.SkipWithError( "could not send an entry to the target" );
+    }
   }
 
   stumpless_close_buffer_target( target );
-  stumpless_free_all(  );
+  stumpless_destroy_entry_and_contents( entry );
 
-  state.counters["CallsToAlloc"] = ( double ) stump_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) stump_memory_counter.alloc_total;
-  state.counters["CallsToRealloc"] = ( double ) stump_memory_counter.realloc_count;
-  state.counters["CallsToFree"] = ( double ) stump_memory_counter.free_count;
-  state.counters["MemoryFreed"] = ( double ) stump_memory_counter.free_total;
+  SET_STATE_COUNTERS( state, add_entry );
 }
 
-static void Stumplog( benchmark::State& state ) {
+static void AddMessage(benchmark::State& state){
+  char buffer[1024];
+  struct stumpless_target *target;
   int i = 0;
+  int result;
 
-  INIT_MEMORY_COUNTER( stumplog );
-  stumpless_set_malloc( stumplog_memory_counter_malloc );
-  stumpless_set_realloc( stumplog_memory_counter_realloc );
-  stumpless_set_free( stumplog_memory_counter_free );
+  INIT_MEMORY_COUNTER( add_message );
 
-  // ensure that the current target is the default target
-  stumpless_set_current_target( stumpless_get_default_target(  ) );
+  target = stumpless_open_buffer_target( "add-message-perf",
+                                         buffer,
+                                         sizeof( buffer ) );
 
   for(auto _ : state){
-    stumplog( STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER,
-              "testing message %d\n",
-              i++ );
+    result = stumpless_add_message( target, "testing: %s, %d\n", "test-string", i++ );
+    if( result <= 0 ) {
+      state.SkipWithError( "could not send a message to the target" );
+    }
   }
 
-  stumpless_free_all(  );
+  stumpless_close_buffer_target( target );
 
-  state.counters["CallsToAlloc"] = ( double ) stumplog_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) stumplog_memory_counter.alloc_total;
-  state.counters["CallsToRealloc"] = ( double ) stumplog_memory_counter.realloc_count;
-  state.counters["CallsToFree"] = ( double ) stumplog_memory_counter.free_count;
-  state.counters["MemoryFreed"] = ( double ) stumplog_memory_counter.free_total;
+  SET_STATE_COUNTERS( state, add_message );
 }
 
-BENCHMARK( Stump );
-BENCHMARK( Stumplog );
+BENCHMARK( AddEntry );
+BENCHMARK( AddMessage );

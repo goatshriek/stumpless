@@ -1,4 +1,21 @@
-## Localization
+## Documentation Localization
+Some documentation for stumpless has localization available. This is completely
+community supported, and the amount of translations available for different
+locales varies widely. To see the documentation for a given language, check the
+`l10n` folder in the root of the repository. There are folders for locales with
+translations available. These are structured as a mirror of the root of the
+repository, with documents with no localization missing. Note that some
+files may only have partial translations available. File and folder names may
+be localized as well, though this is not strictly required.
+
+If you would like to contribute localization of part or all of a file, you
+only need to submit a pull request with the changes made. Keep in mind that
+only requests with a substantial addition will be added. For example, an update
+that simply adds a filename with no contents or only a few sentences will not
+be accepted.
+
+
+## Library Localization
 Stumpless implements a simple framework to support different languages for
 human-readable output, such as error messages. This implementation is based on
 the use of header files with definitions for the strings based on a specific

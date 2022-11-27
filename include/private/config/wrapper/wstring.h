@@ -25,9 +25,9 @@
 #  ifdef HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
 #    define config_copy_wstring_to_cstring  windows_copy_wstring_to_cstring
-#  elif HAVE_WCHAR_H
-#    include "private/config/have_wchar.h"
-#    define config_copy_wstring_to_cstring wchar_copy_wstring_to_cstring
+#  elif !defined HAVE_WCSRTOMBS_S
+#    include "private/config/no_wcsrtombs_s.h"
+#    define config_copy_wstring_to_cstring no_wcsrtombs_s_copy_wstring_to_cstring
 #  else
 #    include "private/config/fallback.h"
 #    define config_copy_wstring_to_cstring  fallback_copy_wstring_to_cstring

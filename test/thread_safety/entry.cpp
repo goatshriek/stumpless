@@ -35,8 +35,10 @@ namespace {
     size_t element_count;
     const char *param_value;
     const char *app_name;
+    const char *hostname;
     const char *msgid;
     const char *message;
+    const char *procid;
 
     std::thread::id thread_id = std::this_thread::get_id(  );
 
@@ -80,15 +82,19 @@ namespace {
       free( ( void * ) param_value );
 
       app_name = stumpless_get_entry_app_name( entry );
+      hostname = stumpless_get_entry_hostname( entry );
       msgid = stumpless_get_entry_msgid( entry );
       message = stumpless_get_entry_message( entry );
+      procid = stumpless_get_entry_procid( entry );
 
       stumpless_entry_has_element( entry, element_name.c_str(  ) );
 
       stumpless_destroy_entry_and_contents( copy );
       free( ( void * ) app_name );
+      free( ( void * ) hostname );
       free( ( void * ) msgid );
       free( ( void * ) message );
+      free( ( void * ) procid );
     }
   }
 
@@ -119,11 +125,19 @@ namespace {
       app_stream << "app-" << thread_id;
       stumpless_set_entry_app_name( entry, app_stream.str(  ).c_str(  ) );
 
+      std::ostringstream hostname_stream;
+      hostname_stream << "hostname-" << thread_id;
+      stumpless_set_entry_hostname( entry, hostname_stream.str(  ).c_str(  ) );
+
       std::ostringstream msgid_stream;
       msgid_stream << "msgid-" << thread_id;
       stumpless_set_entry_msgid( entry, msgid_stream.str(  ).c_str(  ) );
 
       stumpless_set_entry_message( entry, "message number #%d from thread %d", i, thread_id );
+
+      std::ostringstream procid_stream;
+      procid_stream << "procid-" << thread_id;
+      stumpless_set_entry_procid( entry, procid_stream.str(  ).c_str(  ) );
 
       stumpless_set_entry_facility( entry, STUMPLESS_FACILITY_USER);
       stumpless_set_entry_priority( entry,
