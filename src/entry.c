@@ -282,7 +282,7 @@ stumpless_get_element_by_name( const struct stumpless_entry *entry,
   VALIDATE_ARG_NOT_NULL( name );
 
   if( unlikely( !validate_element_name( name, &name_len ) ) ) {
-    return 0;
+    return NULL;
   }
 
   clear_error(  );
@@ -466,26 +466,16 @@ struct stumpless_param *
 stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *element_name,
                                    const char *param_name ) {
-  size_t element_name_len;
   size_t param_name_len;
   const struct stumpless_element *element;
 
-  VALIDATE_ARG_NOT_NULL( entry );
-  VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
   if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
     return NULL;
   }
 
-  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
-    return NULL;
-  }
-
-  lock_entry( entry );
-  element = locked_get_element_by_name( entry, element_name );
-  unlock_entry( entry );
-
+  element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
     return NULL;
   }
@@ -516,26 +506,16 @@ const char *
 stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
                                          const char *element_name,
                                          const char *param_name ) {
-  size_t element_name_len;
   size_t param_name_len;
   const struct stumpless_element *element;
 
-  VALIDATE_ARG_NOT_NULL( entry );
-  VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
   if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
-      return NULL;
-  }
-
-  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
     return NULL;
   }
 
-  lock_entry( entry );
-  element = locked_get_element_by_name( entry, element_name );
-  unlock_entry( entry );
-
+  element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
     return NULL;
   }
