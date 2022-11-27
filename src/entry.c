@@ -686,24 +686,23 @@ cleanup_and_return:
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  size_t new_name_length;
+  size_t name_length;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( unlikely( app_name &&
-                ( !validate_app_name_length( app_name, &new_name_length ) ||
-                  !validate_printable_ascii( app_name, new_name_length ) ) ) ) {
+  if( unlikely( app_name && !validate_app_name( app_name, &name_length ) ) ) {
     return NULL;
   }
 
   lock_entry( entry );
   if( app_name ) {
-    entry->app_name_length = new_name_length;
-    memcpy( entry->app_name, app_name, new_name_length + 1 );
+    entry->app_name_length = name_length;
+    memcpy( entry->app_name, app_name, name_length );
+    entry->app_name[name_length] = '\0';
   } else {
+    entry->app_name_length = 1;
     entry->app_name[0] = '-';
     entry->app_name[1] = '\0';
-    entry->app_name_length = 1;
   }
   unlock_entry( entry );
 
@@ -762,16 +761,15 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  if( unlikely( msgid &&
-                ( !validate_msgid_length( msgid, &new_msgid_length ) ||
-                  !validate_printable_ascii( msgid, new_msgid_length ) ) ) ) {
+  if( unlikely( msgid && !validate_msgid( msgid, &new_msgid_length ) ) ) {
     return NULL;
   }
 
   lock_entry( entry );
   if( msgid ) {
     entry->msgid_length = new_msgid_length;
-    memcpy( entry->msgid, msgid, new_msgid_length + 1 );
+    memcpy( entry->msgid, msgid, new_msgid_length );
+    entry->msgid[new_msgid_length] = '\0';
   } else {
     entry->msgid[0] = '-';
     entry->msgid[1] = '\0';
@@ -1161,7 +1159,7 @@ new_entry( enum stumpless_facility facility,
            size_t message_length ) {
   struct stumpless_entry *entry;
 
-  if( !entry_cache ) {
+  if( unlikely( !entry_cache ) ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
     if( !entry_cache ) {
       goto fail;
@@ -1169,13 +1167,12 @@ new_entry( enum stumpless_facility facility,
   }
 
   entry = cache_alloc( entry_cache );
-  if( !entry ) {
+  if( unlikely( !entry ) ) {
     goto fail;
   }
 
   if( app_name ) {
-    if ( !validate_app_name_length ( app_name, &entry->app_name_length ) ||
-         !validate_printable_ascii( app_name, entry->app_name_length ) ) {
+    if( unlikely( !validate_app_name( app_name, &entry->app_name_length ) ) ) {
       goto fail_after_cache;
     }
     memcpy( entry->app_name, app_name, entry->app_name_length + 1 );
@@ -1186,11 +1183,11 @@ new_entry( enum stumpless_facility facility,
   }
 
   if( msgid ) {
-    if ( !validate_msgid_length ( msgid, &entry->msgid_length ) ||
-         !validate_printable_ascii( msgid, entry->msgid_length ) ) {
+    if( unlikely( !validate_msgid( msgid, &entry->msgid_length ) ) ) {
       goto fail_after_cache;
     }
-    memcpy( entry->msgid, msgid, entry->msgid_length + 1 );
+    memcpy( entry->msgid, msgid, entry->msgid_length );
+    entry->msgid[entry->msgid_length] = '\0';
   } else {
     entry->msgid[0] = '-';
     entry->msgid[1] = '\0';

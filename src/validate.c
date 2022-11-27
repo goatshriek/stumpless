@@ -51,6 +51,12 @@ validate_string_length( const char *str, size_t max_length, size_t *length ) {
 }
 
 bool
+validate_app_name( const char *str, size_t *length ) {
+  return validate_app_name_length( str, length ) &&
+         validate_printable_ascii( str, *length );
+}
+
+bool
 validate_app_name_length( const char *app_name, size_t *length ) {
   return validate_string_length( app_name,
                                  STUMPLESS_MAX_APP_NAME_LENGTH,
@@ -81,6 +87,12 @@ validate_hostname_length( const char *hostname, size_t *length ) {
   return validate_string_length( hostname,
                                  STUMPLESS_MAX_HOSTNAME_LENGTH,
                                  length );
+}
+
+bool
+validate_msgid( const char *str, size_t *length ) {
+  return validate_msgid_length( str, length ) &&
+         validate_printable_ascii( str, *length );
 }
 
 bool

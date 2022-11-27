@@ -65,6 +65,21 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
 }
 
 /**
+ * Checks that the passed in app name is of the appropriate length and
+ * contains only printable ASCII characters.
+ *
+ * @param str The app name to validate.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the app name has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool
+validate_app_name( const char *str, size_t *length );
+
+/**
  * Checks the length of app name.
  *
  * @param app_name the app name
@@ -136,6 +151,21 @@ validate_hostname( const char *hostname, size_t *length );
  */
 bool
 validate_hostname_length( const char *hostname, size_t *length );
+
+/**
+ * Checks that the passed in msgid is of the appropriate length and
+ * contains only printable ASCII characters.
+ *
+ * @param str The msgid to validate.
+ *
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return True if the msgid has the correct format, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool
+validate_msgid( const char *str, size_t *length );
 
 /**
  * Checks the char length of msgid.
