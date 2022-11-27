@@ -73,7 +73,7 @@ validate_element_name_length( const char *name, size_t *length ) {
 bool
 validate_hostname( const char *hostname, size_t *length ) {
   return validate_hostname_length( hostname, length ) &&
-         validate_printable_ascii( hostname );
+         validate_printable_ascii( hostname, *length );
 }
 
 bool
@@ -122,14 +122,14 @@ validate_param_name_length( const char *name, size_t *length ) {
 }
 
 bool
-validate_printable_ascii( const char *str ) {
-  while( *str != '\0' ) {
-    if( *str < 33 || *str > 126 ) {
+validate_printable_ascii( const char *str, size_t length ) {
+  size_t i;
+
+  for( i = 0; i < length; i++ ) {
+    if( str[i] < 33 || str[i] > 126 ) {
       raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "printable ascii" ) );
       return false;
     }
-
-    str++;
   }
 
   return true;
@@ -138,7 +138,7 @@ validate_printable_ascii( const char *str ) {
 bool
 validate_procid( const char *procid, size_t *length ) {
   return validate_procid_length( procid, length ) &&
-         validate_printable_ascii( procid );
+         validate_printable_ascii( procid, *length );
 }
 
 bool

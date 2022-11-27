@@ -692,7 +692,7 @@ stumpless_set_entry_app_name( struct stumpless_entry *entry,
 
   if( unlikely( app_name &&
                 ( !validate_app_name_length( app_name, &new_name_length ) ||
-                  !validate_printable_ascii( app_name ) ) ) ) {
+                  !validate_printable_ascii( app_name, new_name_length ) ) ) ) {
     return NULL;
   }
 
@@ -764,7 +764,7 @@ stumpless_set_entry_msgid( struct stumpless_entry *entry,
 
   if( unlikely( msgid &&
                 ( !validate_msgid_length( msgid, &new_msgid_length ) ||
-                  !validate_printable_ascii( msgid ) ) ) ) {
+                  !validate_printable_ascii( msgid, new_msgid_length ) ) ) ) {
     return NULL;
   }
 
@@ -1175,7 +1175,7 @@ new_entry( enum stumpless_facility facility,
 
   if( app_name ) {
     if ( !validate_app_name_length ( app_name, &entry->app_name_length ) ||
-         !validate_printable_ascii( app_name ) ) {
+         !validate_printable_ascii( app_name, entry->app_name_length ) ) {
       goto fail_after_cache;
     }
     memcpy( entry->app_name, app_name, entry->app_name_length + 1 );
@@ -1187,7 +1187,7 @@ new_entry( enum stumpless_facility facility,
 
   if( msgid ) {
     if ( !validate_msgid_length ( msgid, &entry->msgid_length ) ||
-         !validate_printable_ascii( msgid ) ) {
+         !validate_printable_ascii( msgid, entry->msgid_length ) ) {
       goto fail_after_cache;
     }
     memcpy( entry->msgid, msgid, entry->msgid_length + 1 );

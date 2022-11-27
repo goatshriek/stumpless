@@ -157,6 +157,8 @@ validate_msgid_length( const char *msgid, size_t *length );
  *
  * @param str The string to validate.
  *
+ * @param length The length of the string to validate.
+ *
  * @return True if the string has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
@@ -199,11 +201,13 @@ validate_param_name_length( const char *str, size_t *length );
  *
  * @param str The string to validate.
  *
+ * @param length The length of the string to validate.
+ *
  * @return True if the string has the correct format, otherwise
  * it will return false and raise STUMPLESS_INVALID_ENCODING error.
  */
 bool
-validate_printable_ascii( const char *str );
+validate_printable_ascii( const char *str, size_t length );
 
 /**
  * Checks a procid for validity.
