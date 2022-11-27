@@ -1300,8 +1300,20 @@ add_performance_test(function
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
+add_performance_test(log
+  SOURCES test/performance/log.cpp
+)
+
+add_performance_test(param
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/performance/param.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_performance_test(target
-  SOURCES test/performance/target.cpp
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/performance/target.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(version

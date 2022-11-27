@@ -26,6 +26,7 @@
 #include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include "private/cache.h"
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
@@ -87,22 +88,15 @@ stumpless_add_new_param_to_entry( struct stumpless_entry *entry,
                                   const char *element_name,
                                   const char *param_name,
                                   const char *param_value ) {
+  size_t element_name_len;
   struct stumpless_element *element;
   bool element_created = false;
   const void *result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    goto fail;
-  }
+   VALIDATE_ARG_NOT_NULL( entry );
+   VALIDATE_ARG_NOT_NULL( element_name );
 
-  if( !element_name ) {
-    raise_argument_empty( "element_name is NULL" );
-    goto fail;
-  }
-
-  if ( !validate_element_name( element_name ) ||
-       !validate_element_name_length( element_name )) {
+  if( unlikely( !validate_element_name( element_name, &element_name_len ) ) ) {
     goto fail;
   }
 
@@ -231,6 +225,7 @@ stumpless_destroy_entry_only( const struct stumpless_entry *entry ) {
 bool
 stumpless_entry_has_element( const struct stumpless_entry *entry,
                              const char *name ) {
+  size_t name_len;
   bool result;
 
   if( !entry ) {
@@ -243,7 +238,7 @@ stumpless_entry_has_element( const struct stumpless_entry *entry,
     return false;
   }
 
-  if ( !validate_element_name( name ) ) {
+  if( unlikely( !validate_element_name( name, &name_len ) ) ) {
     return false;
   }
 
@@ -280,20 +275,14 @@ stumpless_get_element_by_index( const struct stumpless_entry *entry,
 struct stumpless_element *
 stumpless_get_element_by_name( const struct stumpless_entry *entry,
                                const char *name ) {
+  size_t name_len;
   struct stumpless_element *result;
 
-  if( !entry ) {
-    raise_argument_empty( "entry is NULL" );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL( entry );
+  VALIDATE_ARG_NOT_NULL( name );
 
-  if( !name ) {
-    raise_argument_empty( "name is NULL" );
-    return 0;
-  }
-
-  if ( !validate_element_name( name ) ) {
-    return 0;
+  if( unlikely( !validate_element_name( name, &name_len ) ) ) {
+    return NULL;
   }
 
   clear_error(  );
@@ -321,21 +310,15 @@ stumpless_get_element_count( const struct stumpless_entry *entry ) {
 size_t
 stumpless_get_element_index( const struct stumpless_entry *entry,
                              const char *name ) {
+  size_t name_len;
   size_t i;
   const struct stumpless_element *element;
   int cmp_result;
 
-  if( !entry ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "entry" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( entry );
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( name );
 
-  if( !name ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "name" ) );
-    return 0;
-  }
-
-  if ( !validate_element_name( name ) ) {
+  if ( unlikely( !validate_element_name( name, &name_len ) ) ) {
     return 0;
   }
 
@@ -344,7 +327,7 @@ stumpless_get_element_index( const struct stumpless_entry *entry,
     element = entry->elements[i];
 
     lock_element( element );
-    cmp_result = strcmp( element->name, name );
+    cmp_result = memcmp( element->name, name, name_len );
     unlock_element( element );
 
     if( cmp_result == 0 ) {
@@ -483,24 +466,16 @@ struct stumpless_param *
 stumpless_get_entry_param_by_name( const struct stumpless_entry *entry,
                                    const char *element_name,
                                    const char *param_name ) {
+  size_t param_name_len;
   const struct stumpless_element *element;
 
-  VALIDATE_ARG_NOT_NULL( entry );
-  VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
-  if ( !validate_param_name( param_name ) ) {
+  if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
     return NULL;
   }
 
-  if ( !validate_element_name( element_name ) ) {
-    return NULL;
-  }
-
-  lock_entry( entry );
-  element = locked_get_element_by_name( entry, element_name );
-  unlock_entry( entry );
-
+  element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
     return NULL;
   }
@@ -531,24 +506,16 @@ const char *
 stumpless_get_entry_param_value_by_name( const struct stumpless_entry *entry,
                                          const char *element_name,
                                          const char *param_name ) {
+  size_t param_name_len;
   const struct stumpless_element *element;
 
-  VALIDATE_ARG_NOT_NULL( entry );
-  VALIDATE_ARG_NOT_NULL( element_name );
   VALIDATE_ARG_NOT_NULL( param_name );
 
-  if (!validate_param_name(param_name)) {
-      return NULL;
-  }
-
-  if ( !validate_element_name( element_name ) ) {
+  if( unlikely( !validate_param_name( param_name, &param_name_len ) ) ) {
     return NULL;
   }
 
-  lock_entry( entry );
-  element = locked_get_element_by_name( entry, element_name );
-  unlock_entry( entry );
-
+  element = stumpless_get_element_by_name( entry, element_name );
   if( !element ) {
     return NULL;
   }
@@ -699,23 +666,24 @@ cleanup_and_return:
 struct stumpless_entry *
 stumpless_set_entry_app_name( struct stumpless_entry *entry,
                               const char *app_name ) {
-  const char *effective_name;
-  size_t new_name_length;
+  size_t name_length;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  effective_name = app_name ? app_name : "-";
-  if( !validate_app_name_length( effective_name ) ||
-      !validate_printable_ascii( effective_name ) ) {
+  if( unlikely( app_name && !validate_app_name( app_name, &name_length ) ) ) {
     return NULL;
   }
 
-  new_name_length = strlen( effective_name );
-
   lock_entry( entry );
-  entry->app_name_length = new_name_length;
-  memcpy( entry->app_name, effective_name, new_name_length );
-  entry->app_name[new_name_length] = '\0';
+  if( app_name ) {
+    entry->app_name_length = name_length;
+    memcpy( entry->app_name, app_name, name_length );
+    entry->app_name[name_length] = '\0';
+  } else {
+    entry->app_name_length = 1;
+    entry->app_name[0] = '-';
+    entry->app_name[1] = '\0';
+  }
   unlock_entry( entry );
 
   clear_error(  );
@@ -743,50 +711,50 @@ stumpless_set_entry_facility( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_hostname( struct stumpless_entry *entry,
                               const char *hostname ) {
+  size_t new_length;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
-  lock_entry( entry );
+  if( unlikely( hostname && !validate_hostname( hostname, &new_length ) ) ) {
+    return NULL;
+  }
 
+  lock_entry( entry );
   if( !hostname ) {
     // setting the hostname to NULL effectively restores default behavior
     entry->hostname_length = 0;
+  } else {
+    entry->hostname_length = new_length;
+    memcpy( entry->hostname, hostname, new_length );
+    entry->hostname[new_length] = '\0';
   }
-  else {
-    // the setter returns the modified entry in the case of success, or NULL
-    // on failure
-    if( !validate_printable_ascii( hostname ) ||
-          !validate_hostname_length( hostname ) ) {
-      return NULL;
-    }
-    entry->hostname_length = strlen( hostname );
-    memcpy( entry->hostname, hostname, entry->hostname_length );
-    entry->hostname[entry->hostname_length] = '\0';
-  }
-
   unlock_entry(entry);
+
+  clear_error(  );
   return entry;
 }
 
 struct stumpless_entry *
 stumpless_set_entry_msgid( struct stumpless_entry *entry,
                            const char *msgid ) {
-  const char *effective_msgid;
   size_t new_msgid_length;
 
   VALIDATE_ARG_NOT_NULL( entry );
 
-  effective_msgid = msgid ? msgid : "-";
-  if( !validate_msgid_length( effective_msgid ) ||
-      !validate_printable_ascii( effective_msgid ) ) {
+  if( unlikely( msgid && !validate_msgid( msgid, &new_msgid_length ) ) ) {
     return NULL;
   }
 
-  new_msgid_length = strlen( effective_msgid );
-
   lock_entry( entry );
-  entry->msgid_length = new_msgid_length;
-  memcpy( entry->msgid, effective_msgid, new_msgid_length );
-  entry->msgid[new_msgid_length] = '\0';
+  if( msgid ) {
+    entry->msgid_length = new_msgid_length;
+    memcpy( entry->msgid, msgid, new_msgid_length );
+    entry->msgid[new_msgid_length] = '\0';
+  } else {
+    entry->msgid[0] = '-';
+    entry->msgid[1] = '\0';
+    entry->msgid_length = 1;
+  }
   unlock_entry( entry );
 
   clear_error(  );
@@ -976,24 +944,27 @@ stumpless_set_entry_prival( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_procid( struct stumpless_entry *entry,
                             const char *procid ) {
+  size_t procid_length;
+
   VALIDATE_ARG_NOT_NULL( entry );
 
-  lock_entry( entry );
-
   if( !procid ) {
-    entry->procid_length = 0;
+    procid_length = 0;
   } else {
-    if( !validate_printable_ascii( procid ) ||
-          !validate_procid_length( procid ) ) {
+    if( unlikely( !validate_procid( procid, &procid_length ) ) ) {
       return NULL;
     }
-
-    entry->procid_length = strlen( procid );
-    memcpy( entry->procid, procid, entry->procid_length );
-    entry->procid[entry->procid_length] = '\0';
   }
 
+  lock_entry( entry );
+  entry->procid_length = procid_length;
+  if( procid ) {
+    memcpy( entry->procid, procid, procid_length );
+    entry->procid[procid_length] = '\0';
+  }
   unlock_entry(entry);
+
+  clear_error(  );
   return entry;
 }
 
@@ -1167,10 +1138,8 @@ new_entry( enum stumpless_facility facility,
            char *message,
            size_t message_length ) {
   struct stumpless_entry *entry;
-  const char *effective_app_name;
-  const char *effective_msgid;
 
-  if( !entry_cache ) {
+  if( unlikely( !entry_cache ) ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
     if( !entry_cache ) {
       goto fail;
@@ -1178,29 +1147,32 @@ new_entry( enum stumpless_facility facility,
   }
 
   entry = cache_alloc( entry_cache );
-  if( !entry ) {
+  if( unlikely( !entry ) ) {
     goto fail;
   }
 
-  effective_app_name = app_name ? app_name : "-";
-  if ( !validate_app_name_length ( effective_app_name ) ||
-       !validate_printable_ascii( effective_app_name ) ) {
+  if( app_name ) {
+    if( unlikely( !validate_app_name( app_name, &entry->app_name_length ) ) ) {
       goto fail_after_cache;
+    }
+    memcpy( entry->app_name, app_name, entry->app_name_length + 1 );
+  } else {
+    entry->app_name[0] = '-';
+    entry->app_name[1] = '\0';
+    entry->app_name_length = 1;
   }
 
-  entry->app_name_length = strlen( effective_app_name );
-  memcpy( entry->app_name, effective_app_name, entry->app_name_length );
-  entry->app_name[entry->app_name_length] = '\0';
-
-  effective_msgid = msgid ? msgid : "-";
-  if( !validate_msgid_length( effective_msgid ) ||
-      !validate_printable_ascii( effective_msgid ) ) {
-    goto fail_after_cache;
+  if( msgid ) {
+    if( unlikely( !validate_msgid( msgid, &entry->msgid_length ) ) ) {
+      goto fail_after_cache;
+    }
+    memcpy( entry->msgid, msgid, entry->msgid_length );
+    entry->msgid[entry->msgid_length] = '\0';
+  } else {
+    entry->msgid[0] = '-';
+    entry->msgid[1] = '\0';
+    entry->msgid_length = 1;
   }
-
-  entry->msgid_length = strlen( effective_msgid );
-  memcpy( entry->msgid, effective_msgid, entry->msgid_length );
-  entry->msgid[entry->msgid_length] = '\0';
 
   if( !config_initialize_wel_data( entry ) ) {
     goto fail_after_cache;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/param.h>
+#include "private/config.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
@@ -92,13 +93,13 @@ cleanup_and_return:
 
 struct stumpless_param *
 stumpless_new_param( const char *name, const char *value ) {
+  size_t name_length;
   struct stumpless_param *param;
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
-  if ( !validate_param_name( name ) ||
-       !validate_param_name_length( name )) {
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
     goto fail;
   }
 
@@ -107,10 +108,12 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail;
   }
 
-  param->name = copy_cstring_with_length( name, &( param->name_length ) );
+  param->name = alloc_mem( name_length + 1 );
   if( !param->name ) {
     goto fail_name;
   }
+  param->name_length = name_length;
+  memcpy( param->name, name, name_length + 1 );
 
   param->value = copy_cstring_with_length( value, &( param->value_length ) );
   if( !param->value ) {
@@ -149,15 +152,16 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
 
-  if ( !validate_param_name( name ) ||
-       !validate_param_name_length( name )) {
+  if( unlikely( !validate_param_name( name, &new_size ) ) ) {
     goto fail;
   }
 
-  new_name = copy_cstring_with_length( name, &new_size );
-  if( !new_name ) {
+  new_name = alloc_mem( new_size + 1 );
+  if( unlikely( !new_name ) ) {
     goto fail;
   }
+  memcpy( new_name, name, new_size );
+  new_name[new_size] = '\0';
 
   lock_param( param );
   old_name = param->name;
