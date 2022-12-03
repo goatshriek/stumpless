@@ -294,6 +294,7 @@
 "STUMPLESS_JOURNALD_TARGET": "stumpless/target.h"
 "STUMPLESS_JOURNALD_TARGETS_SUPPORTED": "stumpless/config.h"
 "STUMPLESS_LANGUAGE": "stumpless/config.h"
+"stumpless_load_param": "stumpless/param.h"
 "stumpless_log_func_t": "stumpless/target/function.h"
 "STUMPLESS_MAJOR_VERSION": "stumpless/config.h"
 "stumpless_mask_filter": "stumpless/filter.h"

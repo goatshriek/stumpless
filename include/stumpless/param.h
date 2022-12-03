@@ -251,6 +251,39 @@ const char *
 stumpless_get_param_value( const struct stumpless_param *param );
 
 /**
+ * Loads a provided param with the given values.
+ *
+ * **Thread Safety: MT-Safe race:param race:name**
+ * This function is thread safe, assuming that the param and name are
+ * not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers, due to the possible
+ * call to a mutex initialization function that is not async safe.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @param param The struct to load with the given values.
+ *
+ * @param name The name of the param.
+ *
+ * @param value The value of the param. This pointer will be stored and used
+ * over the lifetime of the param, and must be valid until
+ * `stumpless_unload_param` is called on this loaded param.
+ *
+ * @return A pointer to the created param, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_param *
+stumpless_load_param( struct stumpless_param *param,
+                      const char *name,
+                      const char *value );
+
+/**
  * Creates a new param with the given name and value.
  *
  * **Thread Safety: MT-Safe race:name race:value**
@@ -265,7 +298,8 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory management functions.
  *
- * @param name The name of the new param. Restricted to printable ASCII characters different from '=', ']' and '"'.
+ * @param name The name of the new param. Restricted to printable ASCII
+ * characters different from '=', ']' and '"'.
  *
  * @param value The value of the new param.
  *
