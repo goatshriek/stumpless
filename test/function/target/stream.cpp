@@ -291,10 +291,11 @@ namespace {
   TEST( SetSeverityColor, Generic ){
     
     char color_code[] = "\033[31m";
+    char reset_code[] = "\033[0m";
 
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    const char *filename = "filetargetformattest.log";
+    const char *filename = "setseveritycolortest.log";
     FILE *stream;
     size_t line_count = 3;
     size_t i;
@@ -322,13 +323,13 @@ namespace {
     std::ifstream infile( filename );
     std::string encoded_line, reset_line;
 
-    std::getline( infile, encoded_line );
-    std::getline( infile, reset_line );
+    std::getline( infile, encoded_line, '\n' );
+    std::getline( infile, reset_line, '\n' );
     
     encoded_line[5] = '\0';
 
-    EXPECT_STREQ( encoded_line, color_code );
-    EXPECT_STREQ( reset_line, "\033[0m" );
+    EXPECT_STREQ( encoded_line.c_str(), color_code );
+    EXPECT_STREQ( reset_line.c_str(), reset_code );
 
     remove(filename);
   }
