@@ -684,6 +684,8 @@ stumpless_set_udp_max_message_size( struct stumpless_target *target,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
  *
+ * @since release v2.1.0
+ *
  * @param target The target to get the network protocol from.
  *
  * @return The network protocol of the network target.
@@ -708,6 +710,8 @@ stumpless_get_network_protocol( const struct stumpless_target *target );
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.1.0
  *
  * @param target The target to get the transport protocol from.
  *

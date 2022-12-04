@@ -19,7 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "private/cache.h"
-#include "private/config/wrapper.h"
+#include "private/config/wrapper/getpagesize.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/strbuilder.h"
@@ -42,7 +42,7 @@ strbuilder_teardown( void *builder ) {
 
 static size_t
 increase_size( struct strbuilder *builder ) {
-  char *old_buffer;
+  const char *old_buffer;
   char *new_buffer;
   size_t old_size;
   size_t new_size;

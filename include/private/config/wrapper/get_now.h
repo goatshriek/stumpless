@@ -16,21 +16,18 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
 
 #  include "private/config.h"
 
-/* definition of config_copy_wstring_to_cstring */
-#  ifdef HAVE_WINDOWS_H
-#    include "private/config/have_windows.h"
-#    define config_copy_wstring_to_cstring  windows_copy_wstring_to_cstring
-#  elif !defined HAVE_WCSRTOMBS_S
-#    include "private/config/no_wcsrtombs_s.h"
-#    define config_copy_wstring_to_cstring no_wcsrtombs_s_copy_wstring_to_cstring
-#  else
-#    include "private/config/fallback.h"
-#    define config_copy_wstring_to_cstring  fallback_copy_wstring_to_cstring
+/* definition of config_get_now */
+#  ifdef HAVE_GMTIME_R
+#    include "private/config/have_gmtime_r.h"
+#    define config_get_now gmtime_r_get_now
+#  elif SUPPORT_WINDOWS_GET_NOW
+#    include "private/config/windows_get_now_supported.h"
+#    define config_get_now windows_get_now
 #  endif
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H */

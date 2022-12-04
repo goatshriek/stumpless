@@ -50,42 +50,4 @@
 #    include <stdio.h>
 #    define config_fopen fopen
 #  endif
-
-
-/* definition of config_format_string */
-#  ifdef HAVE_VSNPRINTF_S
-#    include "private/config/have_vsnprintf_s.h"
-#    define config_format_string vsnprintf_s_format_string
-#  else
-#    include "private/config/no_vsnprintf_s.h"
-#    define config_format_string no_vsnprintf_s_format_string
-#  endif
-
-
-/* definition of config_get_now */
-#  ifdef HAVE_GMTIME_R
-#    include "private/config/have_gmtime_r.h"
-#    define config_get_now gmtime_r_get_now
-#  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/windows_get_now_supported.h"
-#    define config_get_now windows_get_now
-#  endif
-
-
-/* definition of config_getpagesize */
-#  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
-#    include "private/config/unistd_sysconf_getpagesize_supported.h"
-#    define config_getpagesize unistd_sysconf_getpagesize
-#  elif HAVE_UNISTD_GETPAGESIZE
-#    include "private/config/have_unistd_getpagesize.h"
-#    define config_getpagesize unistd_getpagesize
-#  elif HAVE_WINDOWS_H
-#    include "private/config/have_windows.h"
-#    define config_getpagesize windows_getpagesize
-#  else
-#    include "private/config/fallback.h"
-#    define config_getpagesize fallback_getpagesize
-#  endif
-
-
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */

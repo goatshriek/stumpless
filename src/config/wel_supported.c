@@ -1405,8 +1405,6 @@ stumpless_get_wel_insertion_string( const struct stumpless_entry *entry,
   struct wel_data *data;
   const struct stumpless_param *param;
   char *str_copy = NULL;
-  int needed_mb_length;
-  int conversion_result;
 
   VALIDATE_ARG_NOT_NULL( entry );
 

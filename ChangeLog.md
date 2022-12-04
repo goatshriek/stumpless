@@ -9,13 +9,24 @@ For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
-## [2.1.0] - 2022-10-10
+
+## [2.2.0] - 2022-11-26
+### Fixed
+ - Deadlock potential in `stumpless_set_entry_hostname` and
+   `stumpless_set_entry_procid` when validation fails.
+
+
+## [2.1.0] - 2022-11-13
 ### Added
  - Custom function logging targets.
  - Localizations for:
-    * Spanish (es-ES :es:)
+    * Bengali (bn-IN :india:)
+    * Chinese (zh-CN :cn:)
     * Czech (cz-CZ :czech_republic:)
+    * Hindi (hi-IN :india:)
     * Polish (pl-PL :poland:)
+    * Portuguese (pt-BR :brazil:)
+    * Spanish (es-ES :es:)
  - Systemd journal logging targets (journald).
  - Log source file tracing functions:
     * `stump_trace`
@@ -64,6 +75,18 @@ fixes, check out the
     * `stumpless_set_wel_insertion_string_w`
     * `stumpless_set_wel_insertion_strings_w`
     * `vstumpless_set_wel_insertion_strings_w`
+ - `STUMPLESS_OPTION_CONS` is now supported with similar semantics to `LOG_CONS`
+   from `syslog.h`.
+ - The procid and hostname can be overriden if the defaults are not wanted, via
+   the functions:
+    * `stumpless_get_entry_hostname`
+    * `stumpless_get_entry_procid`
+    * `stumpless_set_entry_hostname`
+    * `stumpless_set_entry_procid`
+ - Other new functions:
+    * `stumpless_get_network_protocol`
+    * `stumpless_get_target_type_string`
+    * `stumpless_get_transport_protocol`
 
 ### Changed
  - Auto-generated local socket names use abstract socket names if supported.

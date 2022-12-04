@@ -1,3 +1,4 @@
+
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
@@ -16,21 +17,25 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETPAGESIZE_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETPAGESIZE_H
 
 #  include "private/config.h"
 
-/* definition of config_copy_wstring_to_cstring */
-#  ifdef HAVE_WINDOWS_H
+
+/* definition of config_getpagesize */
+#  ifdef SUPPORT_UNISTD_SYSCONF_GETPAGESIZE
+#    include "private/config/unistd_sysconf_getpagesize_supported.h"
+#    define config_getpagesize unistd_sysconf_getpagesize
+#  elif HAVE_UNISTD_GETPAGESIZE
+#    include "private/config/have_unistd_getpagesize.h"
+#    define config_getpagesize unistd_getpagesize
+#  elif HAVE_WINDOWS_H
 #    include "private/config/have_windows.h"
-#    define config_copy_wstring_to_cstring  windows_copy_wstring_to_cstring
-#  elif !defined HAVE_WCSRTOMBS_S
-#    include "private/config/no_wcsrtombs_s.h"
-#    define config_copy_wstring_to_cstring no_wcsrtombs_s_copy_wstring_to_cstring
+#    define config_getpagesize windows_getpagesize
 #  else
 #    include "private/config/fallback.h"
-#    define config_copy_wstring_to_cstring  fallback_copy_wstring_to_cstring
+#    define config_getpagesize fallback_getpagesize
 #  endif
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_WSTRING_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETPAGESIZE_H */

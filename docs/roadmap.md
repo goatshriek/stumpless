@@ -23,6 +23,8 @@ or want to make a suggestion, please submit an issue on the project's
    Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**
    Removing previously deprecated feature.
+ * [REMOVE] **entry id field**
+   Removing unused field.
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
    The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
@@ -54,8 +56,12 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Database logging target**
  * [ADD] **REST endpoint logging target**
  * [ADD] **Hyperledger/blockchain logging target**
+ * [ADD] **Apache Kafka logging target**
  * [ADD] **Ability to limit the rate of logging (per message, per byte)**
  * [ADD] **Logging target for Windows Debug log**
+ * [ADD] **Error callbacks**
+   Allow the user to define actions to take when specific errors are
+   encountered.
  * [ADD] **Configuration file support**
    Many other logging solutions provide a way to configure logging via a
    separate configuration file that defines targets and their options. Stumpless

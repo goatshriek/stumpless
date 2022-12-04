@@ -23,6 +23,7 @@
 #include <stumpless/config.h>
 #include "private/config/fallback.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
 
@@ -54,7 +55,7 @@ fallback_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   size_t conversion_result;
 
   lock_wcstombs(  );
-  conversion_result = wcstombs( NULL, &str, 0 );
+  conversion_result = wcstombs( NULL, str, 0 );
   unlock_wcstombs(  );
   if( conversion_result == -1 ) {
     raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
@@ -68,7 +69,7 @@ fallback_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   }
 
   lock_wcstombs(  );
-  conversion_result = wcstombs( buffer, &str, buffer_size );
+  conversion_result = wcstombs( buffer, str, buffer_size );
   unlock_wcstombs(  );
   if( conversion_result == -1 ) {
     raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );

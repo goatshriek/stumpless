@@ -1,18 +1,21 @@
 # Stumpless Security Policy
+This document describes the security support for Stumpless, including versions
+that will be patched and the procedure for submitting vulnerabilities.
 
 ## Supported Versions
-
-The table below lists the current supported versions of Stumpless.
+The table below lists the current supported versions of Stumpless. Generally,
+the current and previous major versions are supported at their highest minor
+version.
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 2.1.x   | :heavy_check_mark: |
-| 2.0.x   | :heavy_check_mark: |
+| 2.0.x   | :x:                |
 | 1.6.x   | :heavy_check_mark: |
 | <= 1.5  | :x:                |
 
-## Reporting a Vulnerability
 
+## Reporting a Vulnerability
 If you discover a problem with Stumpless, please report it immediately to the
 project owner, [Joel Anderson](mailto:joelanderson333@gmail.com). The issue
 will be investigated as soon as possible and you will receive a response within

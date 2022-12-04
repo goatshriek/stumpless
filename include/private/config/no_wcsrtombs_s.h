@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_NO_WCSRTOMBS_S_H
+#  define __STUMPLESS_PRIVATE_CONFIG_NO_WCSRTOMBS_S_H
 
 #  include <stddef.h>
 
@@ -47,6 +47,6 @@
  * error is encountered.
  */
 char *
-wchar_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
+no_wcsrtombs_s_copy_wstring_to_cstring( const wchar_t *str, int *copy_size );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_WCHAR_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_NO_WCSRTOMBS_S_H */
