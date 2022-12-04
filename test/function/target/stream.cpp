@@ -18,13 +18,15 @@
 
 #include <cstdio>
 #include <fstream>
+#include <string>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/rfc5424.hpp"
-#include "private/target/stream.h"
+// #include "private/target/stream.h"
 
 namespace {
   int
@@ -289,29 +291,41 @@ namespace {
     remove( filename );
   }
 
-  TEST( SetSeverityColor, StdoutBasicArgs ){
-    const struct stumpless_target *target;
-    const struct stumpless_error *error;
-    target = stumpless_open_stdout_target( "stdout-test" );
+  TEST( SetSeverityColor, CorrectEscapeCodeOut ){
+    
+    std::FILE* ofs = tmpfile();
+    struct stumpless_target *target;
+    char color_code[] = "\033[31m";
 
-    // char *color_codes[] = {
-    //   "\033[31m",
-    //   "\033[32m",
-    //   "\033[33m",
-    //   "\033[34m",
-    //   "\033[35m",
-    //   "\033[36m",
-    //   "\033[37m",
-    //   "\033[38m"
-    // };
-    // for(int i=0; i<8; i++)
-      // stumpless_set_severity_color( target, (const enum stumpless_severity)i, color_codes[i] );
-    // const 
-    // for(int i=0; i<8; i++){
-      // EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[i], color_codes[i] );
-    // }
-      stumpless_set_severity_color( target, STUMPLESS_SEVERITY_EMERG, "\033[31m" );
-      EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[STUMPLESS_SEVERITY_EMERG], "\033[31m" );
+    struct stumpless_entry *basic_entry;
+    struct stumpless_entry *result;
+    int log_result;
+
+  
+    target = stumpless_open_stream_target( "stdout-test", ofs );
+
+    stumpless_set_severity_color( target, STUMPLESS_SEVERITY_EMERG, color_code );
+    
+    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_EMERG,
+                                     "stumpless-unit-test",
+                                     "basic-entry",
+                                     "basic test message" );
+    log_result = stumpless_add_entry( target, basic_entry );
+    
+    char *written_msg = NULL;
+    char *reset_code = NULL;
+    size_t line1,line2;
+    
+    fseek(ofs, 0, SEEK_SET);
+    
+    getline( &written_msg, &line1, ofs);    
+    getline( &reset_code, &line2, ofs);
+    
+    written_msg[5] = '\0';
+
+    EXPECT_STREQ( written_msg, color_code );
+    EXPECT_STREQ( reset_code, "\033[0m" );
   }
 
   TEST( SetSeverityColor, StdoutNullTarget ){
@@ -351,31 +365,6 @@ namespace {
     stumpless_set_severity_color( target, severity, color_code);
     
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );    
-  }
-
-  TEST( SetSeverityColor, StdErrBasicArgs ){
-    const struct stumpless_target *target;
-    const struct stumpless_error *error;
-    target = stumpless_open_stderr_target( "stderr-test" );
-
-    // char *color_codes[] = {
-    //   "\033[31m",
-    //   "\033[32m",
-    //   "\033[33m",
-    //   "\033[34m",
-    //   "\033[35m",
-    //   "\033[36m",
-    //   "\033[37m",
-    //   "\033[38m"
-    // };
-    // for(int i=0; i<8; i++)
-      // stumpless_set_severity_color( target, (const enum stumpless_severity)i, color_codes[i] );
-    // const 
-    // for(int i=0; i<8; i++){
-      // EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[i], color_codes[i] );
-    // }
-      stumpless_set_severity_color( target, STUMPLESS_SEVERITY_EMERG, "\033[31m" );
-      EXPECT_STREQ( ((struct stream_target *)(target->id))->severity_colors[STUMPLESS_SEVERITY_EMERG], "\033[31m" );
   }
 
   TEST( SetSeverityColor, StdErrNullTarget ){
