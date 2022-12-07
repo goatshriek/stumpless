@@ -64,25 +64,50 @@ char *SEVERITY_COLORS_DEFAULT[] = {
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name ) {
   struct stumpless_target *stumpless_target= stumpless_open_stream_target( name, stderr );
-  if( stumpless_target==NULL )
-    return NULL;
+  
+  if( !stumpless_target ) {
+    goto fail;
+  }
+
   struct stream_target *stream_target = stumpless_target->id;
   
+  if( !stream_target) {
+    goto fail_id;
+  }
+
   for(int i=0; i<8; i++)
     stumpless_set_severity_color( stumpless_target, (enum stumpless_severity)i, SEVERITY_COLORS_DEFAULT[i]);
   return stumpless_target;
+
+fail_id:
+  destroy_target( stumpless_target );
+fail:
+  return NULL;  
 }
 
 struct stumpless_target *
 stumpless_open_stdout_target( const char *name ) {
   struct stumpless_target *stumpless_target= stumpless_open_stream_target( name, stdout );
-  if( stumpless_target==NULL )
-    return NULL;
+
+  if( !stumpless_target ) {
+    goto fail;
+  }
+
   struct stream_target *stream_target = stumpless_target->id;
+
+  if( !stream_target) {
+    goto fail_id;
+  }
   
   for(int i=0; i<8; i++)
     stumpless_set_severity_color( stumpless_target, (enum stumpless_severity)i, SEVERITY_COLORS_DEFAULT[i]);
+  
   return stumpless_target;
+
+fail_id:
+  destroy_target( stumpless_target );
+fail:
+  return NULL;  
 }
 
 struct stumpless_target *
@@ -99,6 +124,8 @@ stumpless_open_stream_target( const char *name, FILE *stream ) {
   if( !target ) {
     goto fail;
   }
+  
+  target->type = STUMPLESS_STREAM_TARGET;
 
   struct stream_target *stream_target = new_stream_target( stream );
   target->id = stream_target;
@@ -141,6 +168,9 @@ new_stream_target( FILE *stream ) {
   config_init_mutex( &target->stream_mutex );
   target->stream = stream;
 
+  for(int i=0; i<8; i++)
+    target->severity_colors[i] = NULL;
+
   return target;
 }
 
@@ -149,7 +179,7 @@ sendto_stream_target( struct stream_target *target,
                       const struct stumpless_entry * entry,
                       const char *msg,
                       size_t msg_length ) {
-  size_t fwrite_result, escapecode_fwrite_result=0;
+  size_t fwrite_result=0, escapecode_fwrite_result=0;
   enum stumpless_severity severity;
 
   config_lock_mutex( &target->stream_mutex );
@@ -158,7 +188,7 @@ sendto_stream_target( struct stream_target *target,
 
   /* writing escape_code to stream */
   if( target->severity_colors[ severity ] ){
-    escapecode_fwrite_result += fwrite( target->severity_colors[ severity ], sizeof( char ), strlen(target->severity_colors[ severity ]), target->stream );
+    escapecode_fwrite_result = fwrite( target->severity_colors[ severity ], sizeof( char ), strlen(target->severity_colors[ severity ]), target->stream );
     if( escapecode_fwrite_result != strlen(target->severity_colors[ severity ]))
       goto write_failure;    
   }
@@ -167,7 +197,7 @@ sendto_stream_target( struct stream_target *target,
 
   /* writing reset_escape_code to stream */
   if( target->severity_colors[ severity ] ){
-    escapecode_fwrite_result += fwrite( "\033[0m", sizeof( char ), 4, target->stream );
+    escapecode_fwrite_result = fwrite( "\033[0m", sizeof( char ), 4, target->stream );
     if( escapecode_fwrite_result != strlen("\033[0m"))
       goto write_failure;    
   }
