@@ -29,6 +29,7 @@
 #include "private/target.h"
 #include "private/target/file.h"
 #include "private/validate.h"
+#include "private/config/wrapper/fopen.h"
 
 void
 stumpless_close_file_target( struct stumpless_target *target ) {
