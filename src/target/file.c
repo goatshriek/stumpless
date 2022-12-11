@@ -22,7 +22,6 @@
 #include <stumpless/target/file.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
-#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
