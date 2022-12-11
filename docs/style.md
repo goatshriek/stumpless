@@ -78,10 +78,10 @@ in your own additions.
  * **`load` constructors and `unload` destructors** Constructors with "load" in
    the name do the same setup as the "new" constructors, but instead of
    dynamically allocating memory for the structure they populate a structure
-   provided as a parameter. These are often faster, as they are specifically
-   written to avoid dynamic memory allocation routines. Structures initialized
-   this way must be destroyed using the "unload" destructors. One such pair of
-   functions is `stumpless_load_entry` and `stumpless_unload_entry`.
+   provided as a parameter. These are often faster, as they use fewer dynamic
+   memory allocation routines. Structures initialized this way must be
+   destroyed using the "unload" destructors. One such pair of functions is
+   `stumpless_load_entry` and `stumpless_unload_entry`.
  * **`open` constructors** Functions that use "open" instead of "new" or "load"
    do the same as a "new" constructor, but also move them to an opened state.
    Currently, only network targets may be in a state other than open, if the

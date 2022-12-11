@@ -253,17 +253,23 @@ stumpless_get_param_value( const struct stumpless_param *param );
 /**
  * Loads a provided param with the given values.
  *
+ * This function will allocate less memory than stumpless_new_param, but will
+ * still allocate memory for the value of the param, which may be of variable
+ * length.
+ *
  * **Thread Safety: MT-Safe race:param race:name**
  * This function is thread safe, assuming that the param and name are
  * not changed by other threads during execution.
  *
- * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from signal handlers, due to the possible
- * call to a mutex initialization function that is not async safe.
+ * **Async Signal Safety: AS-Unsafe heap lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the param's value as well as the use of
+ * a mutex initialization routine.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe heap lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions and a mutex
+ * initialization routine.
  *
  * @param param The struct to load with the given values.
  *
@@ -290,13 +296,15 @@ stumpless_load_param( struct stumpless_param *param,
  * This function is thread safe, of course assuming that name and value are not
  * changed by other threads during execution.
  *
- * **Async Signal Safety: AS-Unsafe heap**
+ * **Async Signal Safety: AS-Unsafe heap lock**
  * This function is not safe to call from signal handlers due to the use of
- * memory management functions to create the new param.
+ * memory management functions to create the new param as well as the use of
+ * a mutex initialization routine.
  *
- * **Async Cancel Safety: AC-Unsafe heap**
+ * **Async Cancel Safety: AC-Unsafe heap lock**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of memory management functions.
+ * cancelled, due to the use of memory management functions and a mutex
+ * initialization routine.
  *
  * @param name The name of the new param. Restricted to printable ASCII
  * characters different from '=', ']' and '"'.
