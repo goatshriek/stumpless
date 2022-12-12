@@ -48,7 +48,6 @@ stumpless_destroy_param( const struct stumpless_param *param ) {
   }
 
   config_destroy_cached_mutex( param->mutex );
-  free_mem( param->name );
   free_mem( param->value );
   free_mem( param );
 }
@@ -108,10 +107,6 @@ stumpless_new_param( const char *name, const char *value ) {
     goto fail;
   }
 
-  param->name = alloc_mem( name_length + 1 );
-  if( !param->name ) {
-    goto fail_name;
-  }
   param->name_length = name_length;
   memcpy( param->name, name, name_length + 1 );
 
@@ -134,9 +129,6 @@ fail_mutex:
   free_mem( param->value );
 
 fail_value:
-  free_mem( param->name );
-
-fail_name:
   free_mem( param );
 
 fail:
@@ -145,9 +137,7 @@ fail:
 
 struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
-  char *new_name;
   size_t new_size;
-  const char *old_name;
 
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
@@ -156,20 +146,12 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
     goto fail;
   }
 
-  new_name = alloc_mem( new_size + 1 );
-  if( unlikely( !new_name ) ) {
-    goto fail;
-  }
-  memcpy( new_name, name, new_size );
-  new_name[new_size] = '\0';
-
   lock_param( param );
-  old_name = param->name;
-  param->name = new_name;
   param->name_length = new_size;
+  memcpy( param->name, name, new_size );
+  param->name[new_size] = '\0';
   unlock_param( param );
 
-  free_mem( old_name );
   clear_error(  );
   return param;
 

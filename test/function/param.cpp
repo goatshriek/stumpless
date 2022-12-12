@@ -95,26 +95,6 @@ namespace {
     free( ( void * ) value );
   }
 
-  TEST_F( ParamTest, SetNameMemoryFailure ) {
-    void * (*set_malloc_result)(size_t);
-    const char *new_name = "this-wont-work";
-    const struct stumpless_param *result;
-    const struct stumpless_error *error;
-
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    result = stumpless_set_param_name( basic_param, new_name );
-    EXPECT_NULL( result );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    EXPECT_STRNE( stumpless_get_param_name( basic_param ), new_name );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-  }
-
   TEST_F( ParamTest, SetNameToNull ) {
     const struct stumpless_param *result;
     const struct stumpless_error *error;
@@ -238,25 +218,6 @@ namespace {
     ASSERT_NOT_NULL( set_malloc_result );
 
     param = stumpless_new_param( "name", "value" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-
-    stumpless_free_all(  );
-  }
-
-  TEST( NewParamTest, MemoryFailureOnName ) {
-    void * (*set_malloc_result)(size_t);
-    const char *param_name = "this-name-is-awesome";
-    const struct stumpless_param *param;
-    const struct stumpless_error *error;
-
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 21 ) );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    param = stumpless_new_param( param_name, "value" );
     EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 

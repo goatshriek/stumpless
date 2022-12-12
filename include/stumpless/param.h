@@ -27,6 +27,9 @@
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 
+/** The maximum length of a parameter name, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_PARAM_NAME_LENGTH 32
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -102,7 +105,7 @@ struct stumpless_param {
  * functions. These will protect you from changes in the struct in future
  * versions.
  */
-  char *name;
+  char name[STUMPLESS_MAX_PARAM_NAME_LENGTH + 1];
 /** The number of characters in name (not including the NULL character). */
   size_t name_length;
 /**
