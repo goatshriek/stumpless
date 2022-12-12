@@ -91,48 +91,48 @@ cleanup_and_return:
 }
 
 struct stumpless_param *
-stumpless_new_param( const char *name, const char *value ) {
+stumpless_load_param( struct stumpless_param *param,
+                      const char *name,
+                      const char *value ) {
   size_t name_length;
-  struct stumpless_param *param;
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
   if( unlikely( !validate_param_name( name, &name_length ) ) ) {
-    goto fail;
+    return NULL;
   }
+
+  clear_error(  );
+  return unchecked_load_param( param, name, name_length, value );
+}
+
+struct stumpless_param *
+stumpless_new_param( const char *name, const char *value ) {
+  size_t name_length;
+  struct stumpless_param *param;
+  struct stumpless_param *result;
+
+  VALIDATE_ARG_NOT_NULL( name );
+  VALIDATE_ARG_NOT_NULL( value );
+
+  if( unlikely( !validate_param_name( name, &name_length ) ) ) {
+    return NULL;
+  }
+
+  clear_error(  );
 
   param = alloc_mem( sizeof( *param ) );
   if( !param ) {
-    goto fail;
+    return NULL;
   }
 
-  param->name_length = name_length;
-  memcpy( param->name, name, name_length + 1 );
-
-  param->value = copy_cstring_with_length( value, &( param->value_length ) );
-  if( !param->value ) {
-    goto fail_value;
+  result = unchecked_load_param( param, name, name_length, value );
+  if( !result ) {
+    free_mem( param );
   }
 
-  config_assign_cached_mutex( param->mutex );
-  if( !config_check_mutex_valid( param->mutex ) ) {
-    goto fail_mutex;
-  }
-
-  config_init_journald_param( param );
-
-  clear_error(  );
-  return param;
-
-fail_mutex:
-  free_mem( param->value );
-
-fail_value:
-  free_mem( param );
-
-fail:
-  return NULL;
+  return result;
 }
 
 struct stumpless_param *
@@ -236,6 +236,36 @@ fail:
 void
 lock_param( const struct stumpless_param *param ) {
   config_lock_mutex( param->mutex );
+}
+
+struct stumpless_param *
+unchecked_load_param( struct stumpless_param *param,
+                      const char *name,
+                      size_t name_length,
+                      const char *value ) {
+  param->name_length = name_length;
+  memcpy( param->name, name, name_length );
+  param->name[name_length] = '\0';
+
+  param->value = copy_cstring_with_length( value, &( param->value_length ) );
+  if( !param->value ) {
+    goto fail_value;
+  }
+
+  config_assign_cached_mutex( param->mutex );
+  if( !config_check_mutex_valid( param->mutex ) ) {
+    goto fail_mutex;
+  }
+
+  config_init_journald_param( param );
+
+  return param;
+
+fail_mutex:
+  free_mem( param->value );
+
+fail_value:
+  return NULL;
 }
 
 void

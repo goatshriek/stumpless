@@ -667,6 +667,40 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
                                    const char *name );
 
 /**
+ * Loads a provided element with the given name.
+ *
+ * Does not call any memory allocation routines, and is faster than
+ * stumpless_new_element as a result.
+ *
+ * An element loaded using this function must be unloaded with
+ * stumpless_unload_element when it is no longer needed. Calling
+ * stumpless_destroy_element or any function that does (such as
+ * stumpless_destroy_entry_and_contents will result in memory corruption).
+ *
+ * **Thread Safety: MT-Safe race:element race:name**
+ * This function is thread safe, assuming that the element and name are
+ * not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * a mutex initialization routine.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a mutex initialization routine.
+ *
+ * @param element The struct to load.
+ *
+ * @param name The name of the element.
+ *
+ * @return A pointer to the loaded element, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_element *
+stumpless_load_element( struct stumpless_element *element, const char *name );
+
+/**
  * Creates a new element with the given name.
  *
  * **Thread Safety: MT-Safe race:name**

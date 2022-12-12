@@ -260,8 +260,13 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * still allocate memory for the value of the param, which may be of variable
  * length.
  *
- * **Thread Safety: MT-Safe race:param race:name**
- * This function is thread safe, assuming that the param and name are
+ * A param loaded using this function must be unloaded with
+ * stumpless_unload_param when it is no longer needed. Calling
+ * stumpless_destroy_param or any function that does (such as
+ * stumpless_destroy_entry_and_contents will result in memory corruption).
+ *
+ * **Thread Safety: MT-Safe race:param race:name race:value**
+ * This function is thread safe, assuming that the param, name, and value are
  * not changed by other threads during execution.
  *
  * **Async Signal Safety: AS-Unsafe heap lock**
@@ -282,7 +287,7 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * over the lifetime of the param, and must be valid until
  * `stumpless_unload_param` is called on this loaded param.
  *
- * @return A pointer to the created param, if no error is encountered. If an
+ * @return A pointer to the loaded param, if no error is encountered. If an
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */

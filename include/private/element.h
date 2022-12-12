@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2021 Joel E. Anderson
+ * Copyright 2020-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,38 @@ locked_get_param_by_index( const struct stumpless_element *element,
 
 void
 unchecked_destroy_element( const struct stumpless_element *element );
+
+/**
+ * Does the same as stumpless_load_element, but without performing any
+ * validation or NULL checks.
+ *
+ * **Thread Safety: MT-Safe race:element race:name**
+ * This function is thread safe, assuming that the element and name are
+ * not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * a mutex initialization routine.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a mutex initialization routine.
+ *
+ * @param element The struct to load.
+ *
+ * @param name The name of the element.
+ *
+ * @param name_length The length of the name in bytes, not including the NULL
+ * terminator.
+ *
+ * @return A pointer to the loaded element, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+struct stumpless_element *
+unchecked_load_element( struct stumpless_element *element,
+                        const char *name,
+                        size_t name_length );
 
 void
 unlock_element( const struct stumpless_element *element );
