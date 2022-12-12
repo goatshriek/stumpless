@@ -22,13 +22,13 @@
 #include <stumpless/target/file.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
-#include "private/config/wrapper.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/target.h"
 #include "private/target/file.h"
 #include "private/validate.h"
+#include "private/config/wrapper/fopen.h"
 
 void
 stumpless_close_file_target( struct stumpless_target *target ) {

@@ -20,8 +20,6 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H
 
 #  include <stumpless/config.h>
-#  include "private/config.h"
-
 
 /* definition of config_open_default_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
@@ -41,13 +39,4 @@
 #    define config_close_default_target stumpless_close_file_target
 #  endif
 
-
-/* definition of config_fopen */
-#  ifdef HAVE_FOPEN_S
-#    include "private/config/have_fopen_s.h"
-#    define config_fopen fopen_s_fopen
-#  else
-#    include <stdio.h>
-#    define config_fopen fopen
-#  endif
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_H */
