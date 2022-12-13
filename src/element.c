@@ -382,37 +382,44 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
 }
 
 struct stumpless_element *
+stumpless_load_element( struct stumpless_element *element, const char *name ) {
+  size_t name_length;
+
+  VALIDATE_ARG_NOT_NULL( element );
+  VALIDATE_ARG_NOT_NULL( name );
+
+  if( unlikely( !validate_element_name( name, &name_length ) ) ) {
+    return NULL;
+  }
+
+  return unchecked_load_element( element, name, name_length );
+}
+
+struct stumpless_element *
 stumpless_new_element( const char *name ) {
   size_t name_length;
   struct stumpless_element *element;
+  struct stumpless_element *result;
 
   VALIDATE_ARG_NOT_NULL( name );
 
   if( unlikely( !validate_element_name( name, &name_length ) ) ) {
-    goto fail;
+    return NULL;
   }
 
   element = alloc_mem( sizeof( *element ) );
   if( unlikely( !element ) ) {
-    goto fail;
+    return NULL;
   }
-
-  element->name_length = name_length;
-  memcpy( element->name, name, name_length );
-  element->name[name_length] = '\0';
-
-  element->params = NULL;
-  element->param_count = 0;
-
-  config_assign_cached_mutex( element->mutex );
-  if( !config_check_mutex_valid( element->mutex ) ) {
-    goto fail_mutex;
-  }
-
-  config_init_journald_element( element );
 
   clear_error(  );
-  return element;
+
+  result = unchecked_load_element( element, name, name_length );
+  if( !result ) {
+    free_mem( element );
+  }
+
+  return result;
 
 fail_mutex:
   free_mem( element );
@@ -628,6 +635,27 @@ unchecked_destroy_element( const struct stumpless_element *element ) {
   config_destroy_cached_mutex( element->mutex );
   free_mem( element->params );
   free_mem( element );
+}
+
+struct stumpless_element *
+unchecked_load_element( struct stumpless_element *element,
+                        const char *name,
+                        size_t name_length ) {
+  element->name_length = name_length;
+  memcpy( element->name, name, name_length );
+  element->name[name_length] = '\0';
+
+  element->params = NULL;
+  element->param_count = 0;
+
+  config_assign_cached_mutex( element->mutex );
+  if( !config_check_mutex_valid( element->mutex ) ) {
+    return NULL;
+  }
+
+  config_init_journald_element( element );
+
+  return element;
 }
 
 void

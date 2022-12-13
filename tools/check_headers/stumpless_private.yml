@@ -147,6 +147,7 @@
 "TestTruncatedMessage": "test/helper/network.hpp"
 "TestUTF8Compliance": "test/helper/utf8.hpp"
 "unchecked_load_element": "private/element.h"
+"unchecked_load_entry": "private/entry.h"
 "unchecked_load_param": "private/param.h"
 "unistd_sysconf_getpagesize": "private/config/unistd_sysconf_getpagesize_supported.h"
 "unlikely": "private/config.h"

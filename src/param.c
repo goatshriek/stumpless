@@ -96,6 +96,7 @@ stumpless_load_param( struct stumpless_param *param,
                       const char *value ) {
   size_t name_length;
 
+  VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( value );
 
