@@ -683,11 +683,16 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers due to the use of
- * a mutex initialization routine.
+ * a mutex initialization routine. If STUMPLESS_THREAD_SAFETY_SUPPORTED is not
+ * defined, then this function is AS-Safe.
  *
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a mutex initialization routine.
+ * cancelled, due to the use of a mutex initialization routine. If
+ * STUMPLESS_THREAD_SAFETY_SUPPORTED is not defined, then this function is
+ * AC-Safe.
+ *
+ * @since release v2.2.0
  *
  * @param element The struct to load.
  *

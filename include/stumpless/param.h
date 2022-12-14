@@ -279,6 +279,8 @@ stumpless_get_param_value( const struct stumpless_param *param );
  * cancelled, due to the use of memory management functions and a mutex
  * initialization routine.
  *
+ * @since release v2.2.0
+ *
  * @param param The struct to load with the given values.
  *
  * @param name The name of the param.

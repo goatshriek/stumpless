@@ -897,6 +897,93 @@ enum stumpless_severity
 stumpless_get_entry_severity( const struct stumpless_entry *entry );
 
 /**
+ * Loads an entry struct with the given characteristics.
+ *
+ * The message must be a valid format specifier string provided along with the
+ * appropriate number of variable arguments afterwards. This means that it
+ * should not be a user-controlled value under any circumstances. If you need a
+ * safer alternative without the risks of format strings, use
+ * \c stumpless_load_entry_str instead.
+ *
+ * This function has the same behavior as stumpless_new_entry, except it does
+ * not create a new entry, instead loading an existing struct.
+ *
+ * @since release v2.2.0
+ *
+ * @param entry The struct to load.
+ *
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. This message may contain any format
+ * specifiers valid in \c printf. This also means that characters such as % need
+ * to be escaped as they would be in printf. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @param ... Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of specifiers
+ * given.
+ *
+ * @return The loaded entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_load_entry( struct stumpless_entry *entry,
+                      enum stumpless_facility facility,
+                      enum stumpless_severity severity,
+                      const char *app_name,
+                      const char *msgid,
+                      const char *message,
+                      ... );
+
+/**
+ * Creates a new entry with the given characteristics.
+ *
+ * This function has the same behavior as stumpless_load_entry_str, except it
+ * does not create a new entry, instead loading an existing struct.
+ *
+ * @since version v2.2.0
+ *
+ * @param facility The facility code of the event this entry describes. This
+ * should be a \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the event this entry describes. This
+ * should be a \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character).
+ *
+ * @param message The message in the entry. If this is NULL, then it will be
+ * blank in the entry (no characters). This must be a valid UTF-8 string in
+ * shortest form.
+ *
+ * @return The loaded entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_load_entry_str( struct stumpless_entry *entry,
+                          enum stumpless_facility facility,
+                          enum stumpless_severity severity,
+                          const char *app_name,
+                          const char *msgid,
+                          const char *message );
+
+/**
  * Creates a new entry with the given characteristics.
  *
  * In versions prior to 2.0.0, the facility and severity parameters were int
@@ -1514,6 +1601,54 @@ STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_severity( struct stumpless_entry *entry,
                               enum stumpless_severity severity );
+
+/**
+ * Creates a new entry with the given parameters.
+ *
+ * This function has the same behavior as vstumpless_new_entry, except it does
+ * not create a new entry, instead loading an existing struct.
+ *
+ * @since release v2.2.0
+ *
+ * @param entry The struct to load.
+ *
+ * @param facility The facility code of the entry. This should be a
+ * \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the entry. This should be a
+ * \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character). The app name length is restricted
+ * to be 48 characters or less.
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character). The string must be in the
+ * ASCII printable range 33 <= character <= 126 as specified in RFC5424.
+ *
+ * @param message The message in the entry. This message may contain any format
+ * specifiers valid in \c printf. If this is NULL, then it will be blank in the
+ * entry (no characters). This also means that characters such as % need to be
+ * escaped as they would be in printf.
+ *
+ * @param subs Substitutions for any format specifiers provided in message. The
+ * number of substitutions provided must exactly match the number of
+ * specifiers given. This list must be started via \c va_start before being
+ * used, and \c va_end should be called afterwards, as this function does not
+ * call them.
+ *
+ * @return The loaded entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+vstumpless_load_entry( struct stumpless_entry *entry,
+                       enum stumpless_facility facility,
+                       enum stumpless_severity severity,
+                       const char *app_name,
+                       const char *msgid,
+                       const char *message,
+                       va_list subs );
 
 /**
  * Creates a new entry with the given parameters.
