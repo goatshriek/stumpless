@@ -232,6 +232,16 @@ fail:
     return NULL;
 }
 
+void
+stumpless_unload_param( const struct stumpless_param *param ) {
+  if( !param ) {
+    return;
+  }
+
+  config_destroy_cached_mutex( param->mutex );
+  free_mem( param->value );
+}
+
 /* private functions */
 
 void

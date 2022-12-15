@@ -189,6 +189,87 @@ stumpless_element_has_param( const struct stumpless_element *element,
 }
 
 const char *
+stumpless_element_to_string( const struct stumpless_element *element ) {
+    char *format;
+    const char *name;
+    size_t name_len;
+    size_t format_len;
+    size_t param_count;
+    struct stumpless_param **params;
+
+    VALIDATE_ARG_NOT_NULL( element );
+
+    lock_element( element );
+
+    name = element->name;
+    name_len = element->name_length;
+    params = element->params;
+    param_count = element->param_count;
+
+    // acc total format size
+    format_len = name_len;
+
+    const char **params_format = alloc_mem(sizeof(char*) * param_count);
+    for( size_t i = 0; i < param_count; i++ ) {
+      params_format[i] = stumpless_param_to_string(params[i]);
+      // does not count '\0' on purpose
+      format_len += strlen(params_format[i]);
+    }
+
+    if( param_count != 0 ) {
+      // extra param list chars and commas
+      format_len += 6 + param_count - 1;
+    } else {
+      // no params, just name
+      format_len += 3;
+    }
+
+    format = alloc_mem( format_len );
+    if( !format ) {
+      goto fail;
+    }
+
+    memcpy( format + 1, name, name_len );
+
+    // build params list "param_1_to_string,param_2_to_string, ..."
+    size_t pos_offset = name_len + 4;
+    for( size_t i = 0; i < param_count; i++) {
+      // replace '\0' with ',' at the end of each string
+      memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
+      pos_offset += strlen(params_format[i]);
+      if( i < param_count - 1 ) {
+        format[pos_offset++] = ',';
+      }
+      free_mem(params_format[i]);
+    }
+    free_mem(params_format);
+
+    unlock_element( element );
+
+    format[0] = '<';
+    format[name_len + 1] = '>';
+
+    if (param_count != 0 ) {
+      // <name>:[param_1_to_string,param_2_to_string,etc.] (with params)
+      format[name_len + 2] = ':';
+      format[name_len + 3] = '[';
+      format[pos_offset] = ']';
+    } else {
+      // <name> (no params)
+      // pos_offset is name_len + 4 here
+      pos_offset -= 3;
+    }
+
+    format[pos_offset + 1] = '\0';
+
+    clear_error( );
+    return format;
+fail:
+    unlock_element( element );
+    return NULL;
+}
+
+const char *
 stumpless_get_element_name( const struct stumpless_element *element ) {
   char *name_copy;
 
@@ -420,12 +501,6 @@ stumpless_new_element( const char *name ) {
   }
 
   return result;
-
-fail_mutex:
-  free_mem( element );
-
-fail:
-  return NULL;
 }
 
 struct stumpless_element *
@@ -531,85 +606,28 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
   return element;
 }
 
-const char *
-stumpless_element_to_string( const struct stumpless_element *element ) {
-    char *format;
-    const char *name;
-    size_t name_len;
-    size_t format_len;
-    size_t param_count;
-    struct stumpless_param **params;
+void
+stumpless_unload_element_and_contents( const struct stumpless_element *e ) {
+  size_t i;
 
-    VALIDATE_ARG_NOT_NULL( element );
+  if( !e ) {
+    return;
+  }
 
-    lock_element( element );
+  for( i = 0; i < e->param_count; i++ ) {
+    stumpless_destroy_param( e->params[i] );
+  }
 
-    name = element->name;
-    name_len = element->name_length;
-    params = element->params;
-    param_count = element->param_count;
+  unchecked_unload_element( e );
+}
 
-    // acc total format size
-    format_len = name_len;
+void
+stumpless_unload_element_only( const struct stumpless_element *element ) {
+  if( !element ) {
+    return;
+  }
 
-    const char **params_format = alloc_mem(sizeof(char*) * param_count);
-    for( size_t i = 0; i < param_count; i++ ) {
-      params_format[i] = stumpless_param_to_string(params[i]);
-      // does not count '\0' on purpose
-      format_len += strlen(params_format[i]);
-    }
-
-    if( param_count != 0 ) {
-      // extra param list chars and commas
-      format_len += 6 + param_count - 1;
-    } else {
-      // no params, just name
-      format_len += 3;
-    }
-
-    format = alloc_mem( format_len );
-    if( !format ) {
-      goto fail;
-    }
-
-    memcpy( format + 1, name, name_len );
-
-    // build params list "param_1_to_string,param_2_to_string, ..."
-    size_t pos_offset = name_len + 4;
-    for( size_t i = 0; i < param_count; i++) {
-      // replace '\0' with ',' at the end of each string
-      memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
-      pos_offset += strlen(params_format[i]);
-      if( i < param_count - 1 ) {
-        format[pos_offset++] = ',';
-      }
-      free_mem(params_format[i]);
-    }
-    free_mem(params_format);
-
-    unlock_element( element );
-
-    format[0] = '<';
-    format[name_len + 1] = '>';
-
-    if (param_count != 0 ) {
-      // <name>:[param_1_to_string,param_2_to_string,etc.] (with params)
-      format[name_len + 2] = ':';
-      format[name_len + 3] = '[';
-      format[pos_offset] = ']';
-    } else {
-      // <name> (no params)
-      // pos_offset is name_len + 4 here
-      pos_offset -= 3;
-    }
-
-    format[pos_offset + 1] = '\0';
-
-    clear_error( );
-    return format;
-fail:
-    unlock_element( element );
-    return NULL;
+  unchecked_unload_element( element );
 }
 
 /* private functions */
@@ -632,8 +650,7 @@ locked_get_param_by_index( const struct stumpless_element *element,
 
 void
 unchecked_destroy_element( const struct stumpless_element *element ) {
-  config_destroy_cached_mutex( element->mutex );
-  free_mem( element->params );
+  unchecked_unload_element( element );
   free_mem( element );
 }
 
@@ -656,6 +673,12 @@ unchecked_load_element( struct stumpless_element *element,
   config_init_journald_element( element );
 
   return element;
+}
+
+void
+unchecked_unload_element( const struct stumpless_element *element ) {
+  config_destroy_cached_mutex( element->mutex );
+  free_mem( element->params );
 }
 
 void

@@ -348,6 +348,35 @@ stumpless_element_has_param( const struct stumpless_element *element,
                              const char *name );
 
 /**
+ * Returns name and params from element as a formatted string.
+ * The character buffer should be freed when no longer is needed by the caller.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * element with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.2.0
+ *
+ * @param element The element to get the name and params from.
+ *
+ * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
+ * If an error is  encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+const char *
+stumpless_element_to_string( const struct stumpless_element *element );
+
+/**
  * Returns the name of the given element. The character buffer must be freed by
  * the caller when it is no longer needed to avoid memory leaks.
  *
@@ -881,33 +910,59 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
                                    const char *value );
 
 /**
- * Returns name and params from element as a formatted string.
- * The character buffer should be freed when no longer is needed by the caller.
+ * Unloads an element as well as all params that it contains.
  *
- * **Thread Safety: MT-Safe**
- * This function is thread safe. A mutex is used to coordinate the read of the
- * element with other accesses and modifications.
+ * Either this function or stumpless_unload_element_only must be used to clean
+ * up any element struct previously loaded with stumpless_load_element.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate access and the use of memory management
- * functions to create the result.
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
  *
  * **Async Cancel Safety: AC-Unsafe lock heap**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
  *
- * @since release v2.1.0
- *
- * @param element The element to get the name and params from.
- *
- * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
- * If an error is  encountered, then NULL is returned and an error code is set appropriately.
+ * @param e The element to unload.
  */
 STUMPLESS_PUBLIC_FUNCTION
-const char *
-stumpless_element_to_string( const struct stumpless_element *element );
+void
+stumpless_unload_element_and_contents( const struct stumpless_element *e );
+
+/**
+ * Unloads an element, freeing any allocated memory. Associated params are left
+ * untouched, and must be unloaded separately.
+ *
+ * Either this function or stumpless_unload_element_and_contents must be used to
+ * clean up any element struct previously loaded with stumpless_load_element.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param element The element to unload.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_unload_element_only( const struct stumpless_element *element );
 
 
 #  ifdef __cplusplus

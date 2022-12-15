@@ -44,6 +44,25 @@ struct stumpless_param *
 locked_get_param_by_index( const struct stumpless_element *element,
                            size_t index );
 
+/**
+ * Destroys the provided element, without performing a NULL check.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @param element The element to destroy. Must not be NULL.
+ */
 void
 unchecked_destroy_element( const struct stumpless_element *element );
 
@@ -78,6 +97,28 @@ struct stumpless_element *
 unchecked_load_element( struct stumpless_element *element,
                         const char *name,
                         size_t name_length );
+
+/**
+ * Unloads the provided element, without performing a NULL check.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @param element The element to unload. Must not be NULL.
+ */
+void
+unchecked_unload_element( const struct stumpless_element *element );
 
 void
 unlock_element( const struct stumpless_element *element );

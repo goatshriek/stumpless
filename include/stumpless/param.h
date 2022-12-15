@@ -418,6 +418,35 @@ STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_param_to_string( const struct stumpless_param *param );
 
+/**
+ * Unloads a param.
+ *
+ * Either this function, stumpless_unload_element_and_contents, or
+ * stumpless_unload_entry_and_contents must be used to clean up any param struct
+ * previously loaded with stumpless_load_param.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param param The param to unload.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_unload_param( const struct stumpless_param *param );
+
 #  ifdef __cplusplus
 }                               /* extern "C" */
 #  endif
