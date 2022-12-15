@@ -91,6 +91,45 @@ bool
 unchecked_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
 
+/**
+ * Loads an entry with the given parameters.
+ *
+ * @since release v2.2.0.
+ *
+ * @param entry The struct to load.
+ *
+ * @param facility The facility code of the entry. This should be a
+ * \c STUMPLESS_FACILITY value.
+ *
+ * @param severity The severity code of the entry. This should be a
+ * \c STUMPLESS_SEVERITY value.
+ *
+ * @param app_name The app_name of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character). The app name length is restricted
+ * to be 48 characters or less.
+ *
+ * @param msgid The message id of the entry. If this is NULL, then it will be
+ * blank in the entry (a single '-' character). The string must be in the
+ * ASCII printable range 33 <= character <= 126 as specified in RFC5424.
+ *
+ * @param message The message in the entry. This string will be owned by the
+ * entry if (and only if) this call is successful.
+ *
+ * @param message_length The length of the message in bytes, without the NULL
+ * terminator.
+ *
+ * @return The loaded entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_entry *
+unchecked_load_entry( struct stumpless_entry *entry,
+                      enum stumpless_facility facility,
+                      enum stumpless_severity severity,
+                      const char *app_name,
+                      const char *msgid,
+                      char *message,
+                      size_t message_length );
+
 void
 unlock_entry( const struct stumpless_entry *entry );
 

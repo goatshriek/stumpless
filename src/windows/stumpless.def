@@ -211,7 +211,7 @@ EXPORTS
   stumpless_get_entry_hostname                  @196
   stumpless_set_entry_hostname                  @197
 
-; added in v2.1.0
+; added in v2.2.0
   stumpless_load_element                        @198
   stumpless_load_entry                          @199
   stumpless_load_entry_str                      @200
