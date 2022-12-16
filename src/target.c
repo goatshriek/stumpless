@@ -59,6 +59,9 @@
 #include "private/validate.h"
 
 /* global static variables */
+static const char *target_type_enum_to_string[] = {
+  STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
+};
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;
@@ -66,12 +69,9 @@ static config_atomic_bool_t cons_stream_free = config_atomic_bool_true;
 static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 
 /* per-thread static variables */
-static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_entry = NULL;
-static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace = NULL;
-
-const char *target_type_enum_to_string[] = {
-  STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
-};
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry cached_entry;
+static CONFIG_THREAD_LOCAL_STORAGE bool cached_entry_valid = false;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace;
 
 const char *
 stumpless_get_target_type_string( enum stumpless_target_type target_type ){
@@ -225,42 +225,41 @@ int
 stumpless_add_log_str( struct stumpless_target *target,
                        int priority,
                        const char *message ) {
-  const struct stumpless_entry *set_result;
+  const struct stumpless_entry *result;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
-  // TODO it would be better for the cached entry to be a static buffer instead
-  // of heap allocated. This can be done once a way to create an entry within a
-  // given buffer is exposed.
-  if( !cached_entry ) {
-    cached_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                            STUMPLESS_SEVERITY_INFO,
-                                            NULL,
-                                            NULL,
-                                            message );
-    if( unlikely( !cached_entry ) ) {
+  if( unlikely( !cached_entry_valid ) ) {
+    result = stumpless_load_entry_str( &cached_entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       NULL,
+                                       NULL,
+                                       message );
+    if( unlikely( !result ) ) {
       return -1;
     }
+    cached_entry_valid = true;
 
   } else {
-    set_result = stumpless_set_entry_message_str( cached_entry, message );
-    if( unlikely( !set_result ) ) {
+    result = stumpless_set_entry_message_str( &cached_entry, message );
+    if( unlikely( !result ) ) {
       return -1;
     }
   }
 
   // we don't need to lock the cached entry since it is thread-local
-  cached_entry->prival = priority;
-  memcpy( cached_entry->app_name,
+  cached_entry.prival = priority;
+  memcpy( cached_entry.app_name,
           target->default_app_name,
           target->default_app_name_length );
-  cached_entry->app_name_length = target->default_app_name_length;
-  memcpy( cached_entry->msgid,
+  cached_entry.app_name_length = target->default_app_name_length;
+  memcpy( cached_entry.msgid,
           target->default_msgid,
           target->default_msgid_length );
-  cached_entry->msgid_length = target->default_msgid_length;
+  cached_entry.msgid_length = target->default_msgid_length;
 
-  return stumpless_add_entry( target, cached_entry );
+  return stumpless_add_entry( target, &cached_entry );
 }
 
 int
@@ -832,43 +831,42 @@ vstumpless_add_log( struct stumpless_target *target,
                     int priority,
                     const char *message,
                     va_list subs ) {
-  const struct stumpless_entry *set_result;
+  const struct stumpless_entry *result;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
-  // TODO it would be better for the cached entry to be a static buffer instead
-  // of heap allocated. This can be done once a way to create an entry within a
-  // given buffer is exposed.
-  if( !cached_entry ) {
-    cached_entry = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                         NULL,
-                                         NULL,
-                                         message,
-                                         subs );
-    if( unlikely( !cached_entry ) ) {
+  if( unlikely( !cached_entry_valid ) ) {
+    result = vstumpless_load_entry( &cached_entry,
+                                    STUMPLESS_FACILITY_USER,
+                                    STUMPLESS_SEVERITY_INFO,
+                                    NULL,
+                                    NULL,
+                                    message,
+                                    subs );
+    if( unlikely( !result ) ) {
       return -1;
     }
+    cached_entry_valid = true;
 
   } else {
-    set_result = vstumpless_set_entry_message( cached_entry, message, subs );
-    if( unlikely( !set_result ) ) {
+    result = vstumpless_set_entry_message( &cached_entry, message, subs );
+    if( unlikely( !result ) ) {
       return -1;
     }
   }
 
   // we don't need to lock the cached entry since it is thread-local
-  cached_entry->prival = priority;
-  memcpy( cached_entry->app_name,
+  cached_entry.prival = priority;
+  memcpy( cached_entry.app_name,
           target->default_app_name,
           target->default_app_name_length );
-  cached_entry->app_name_length = target->default_app_name_length;
-  memcpy( cached_entry->msgid,
+  cached_entry.app_name_length = target->default_app_name_length;
+  memcpy( cached_entry.msgid,
           target->default_msgid,
           target->default_msgid_length );
-  cached_entry->msgid_length = target->default_msgid_length;
+  cached_entry.msgid_length = target->default_msgid_length;
 
-  return stumpless_add_entry( target, cached_entry );
+  return stumpless_add_entry( target, &cached_entry );
 }
 
 int
@@ -1061,8 +1059,10 @@ target_free_global( void ) {
 
 void
 target_free_thread( void ) {
-  stumpless_destroy_entry_and_contents( cached_entry );
-  cached_entry = NULL;
+  if( cached_entry_valid ) {
+    stumpless_unload_entry_and_contents( &cached_entry );
+  }
+  cached_entry_valid = false;
 
   stumpless_destroy_entry_and_contents( cached_trace );
   cached_trace = NULL;

@@ -1425,15 +1425,15 @@ unchecked_load_entry( struct stumpless_entry *entry,
     entry->msgid_length = 1;
   }
 
-  if( !config_initialize_wel_data( entry ) ) {
-    return NULL;
-  }
-  config_set_entry_wel_type( entry, severity );
-
   config_assign_cached_mutex( entry->mutex );
   if( !config_check_mutex_valid( entry->mutex ) ) {
     return NULL;
   }
+
+  if( !config_initialize_wel_data( entry ) ) {
+    return NULL;
+  }
+  config_set_entry_wel_type( entry, severity );
 
   entry->procid_length = 0;
   entry->hostname_length = 0;
