@@ -71,7 +71,8 @@ static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry cached_entry;
 static CONFIG_THREAD_LOCAL_STORAGE bool cached_entry_valid = false;
-static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry *cached_trace;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry cached_trace;
+static CONFIG_THREAD_LOCAL_STORAGE bool cached_trace_valid = false;
 
 const char *
 stumpless_get_target_type_string( enum stumpless_target_type target_type ){
@@ -742,43 +743,42 @@ stumpless_trace_log_str( struct stumpless_target *target,
                          int line,
                          const char *func,
                          const char *message ) {
-  const struct stumpless_entry *set_result;
+  const struct stumpless_entry *result;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
-  // TODO it would be better for the cached entry to be a static buffer instead
-  // of heap allocated. This can be done once a way to create an entry within a
-  // given buffer is exposed.
-  if( !cached_trace ) {
-    cached_trace = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                            STUMPLESS_SEVERITY_INFO,
-                                            NULL,
-                                            NULL,
-                                            message );
-    if( unlikely( !cached_trace ) ) {
+  if( unlikely( !cached_trace_valid ) ) {
+    result = stumpless_load_entry_str( &cached_trace,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       NULL,
+                                       NULL,
+                                       message );
+    if( unlikely( !result ) ) {
       return -1;
     }
+    cached_trace_valid = true;
 
   } else {
-    set_result = stumpless_set_entry_message_str( cached_trace,
-                                                  message );
-    if( unlikely( !set_result ) ) {
+    result = stumpless_set_entry_message_str( &cached_trace,
+                                              message );
+    if( unlikely( !result ) ) {
       return -1;
     }
   }
 
   // we don't need to lock the cached entry since it is thread-local
-  cached_trace->prival = priority;
-  memcpy( cached_trace->app_name,
+  cached_trace.prival = priority;
+  memcpy( cached_trace.app_name,
           target->default_app_name,
           target->default_app_name_length );
-  cached_trace->app_name_length = target->default_app_name_length;
-  memcpy( cached_trace->msgid,
+  cached_trace.app_name_length = target->default_app_name_length;
+  memcpy( cached_trace.msgid,
           target->default_msgid,
           target->default_msgid_length );
-  cached_trace->msgid_length = target->default_msgid_length;
+  cached_trace.msgid_length = target->default_msgid_length;
 
-  return stumpless_trace_entry( target, cached_trace, file, line, func );
+  return stumpless_trace_entry( target, &cached_trace, file, line, func );
 }
 
 int
@@ -886,45 +886,43 @@ vstumpless_trace_log( struct stumpless_target *target,
                       const char *func,
                       const char *message,
                       va_list subs ) {
-  const struct stumpless_entry *set_result;
+  const struct stumpless_entry *result;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
 
-  // TODO it would be better for the cached entry to be a static buffer instead
-  // of heap allocated. This can be done once a way to create an entry within a
-  // given buffer is exposed.
-  if( !cached_trace ) {
-    cached_trace = vstumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                         NULL,
-                                         NULL,
-                                         message,
-                                         subs );
-    if( unlikely( !cached_trace ) ) {
+  if( unlikely( !cached_trace_valid ) ) {
+    result = vstumpless_load_entry( &cached_trace,
+                                    STUMPLESS_FACILITY_USER,
+                                    STUMPLESS_SEVERITY_INFO,
+                                    NULL,
+                                    NULL,
+                                    message,
+                                    subs );
+    if( unlikely( !result ) ) {
       return -1;
     }
 
   } else {
-    set_result = vstumpless_set_entry_message( cached_trace,
-                                               message,
-                                               subs );
-    if( !set_result ) {
+    result = vstumpless_set_entry_message( &cached_trace,
+                                           message,
+                                           subs );
+    if( !result ) {
       return -1;
     }
   }
 
   // we don't need to lock the cached entry since it is thread-local
-  cached_trace->prival = priority;
-  memcpy( cached_trace->app_name,
+  cached_trace.prival = priority;
+  memcpy( cached_trace.app_name,
           target->default_app_name,
           target->default_app_name_length );
-  cached_trace->app_name_length = target->default_app_name_length;
-  memcpy( cached_trace->msgid,
+  cached_trace.app_name_length = target->default_app_name_length;
+  memcpy( cached_trace.msgid,
           target->default_msgid,
           target->default_msgid_length );
-  cached_trace->msgid_length = target->default_msgid_length;
+  cached_trace.msgid_length = target->default_msgid_length;
 
-  return stumpless_trace_entry( target, cached_trace, file, line, func );
+  return stumpless_trace_entry( target, &cached_trace, file, line, func );
 }
 
 int
@@ -1061,11 +1059,13 @@ void
 target_free_thread( void ) {
   if( cached_entry_valid ) {
     stumpless_unload_entry_and_contents( &cached_entry );
+    cached_entry_valid = false;
   }
-  cached_entry_valid = false;
 
-  stumpless_destroy_entry_and_contents( cached_trace );
-  cached_trace = NULL;
+  if( cached_trace_valid ) {
+    stumpless_unload_entry_and_contents( &cached_trace );
+    cached_trace_valid = false;
+  }
 }
 
 void
