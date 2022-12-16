@@ -1047,6 +1047,30 @@ stumpless_set_entry_severity( struct stumpless_entry *entry,
   return entry;
 }
 
+void
+stumpless_unload_entry_and_contents( const struct stumpless_entry *entry ) {
+  size_t i;
+
+  if( !entry ) {
+    return;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    stumpless_unload_element_and_contents( entry->elements[i] );
+  }
+
+  unchecked_unload_entry( entry );
+}
+
+void
+stumpless_unload_entry_only( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    return;
+  }
+
+  unchecked_unload_entry( entry );
+}
+
 struct stumpless_entry *
 vstumpless_load_entry( struct stumpless_entry *entry,
                        enum stumpless_facility facility,
@@ -1351,13 +1375,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
-  config_destroy_cached_mutex( entry->mutex );
-
-  config_destroy_wel_data( entry );
-
-  free_mem( entry->elements );
-  free_mem( entry->message );
-
+  unchecked_unload_entry( entry );
   cache_free( entry_cache, entry );
 }
 
@@ -1387,7 +1405,8 @@ unchecked_load_entry( struct stumpless_entry *entry,
     if( unlikely( !validate_app_name( app_name, &entry->app_name_length ) ) ) {
       return NULL;
     }
-    memcpy( entry->app_name, app_name, entry->app_name_length + 1 );
+    memcpy( entry->app_name, app_name, entry->app_name_length );
+    entry->app_name[entry->app_name_length] = '\0';
   } else {
     entry->app_name[0] = '-';
     entry->app_name[1] = '\0';
@@ -1425,6 +1444,16 @@ unchecked_load_entry( struct stumpless_entry *entry,
   entry->element_count = 0;
 
   return entry;
+}
+
+void
+unchecked_unload_entry( const struct stumpless_entry *entry ) {
+  config_destroy_cached_mutex( entry->mutex );
+
+  config_destroy_wel_data( entry );
+
+  free_mem( entry->elements );
+  free_mem( entry->message );
 }
 
 void

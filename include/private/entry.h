@@ -94,7 +94,21 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
 /**
  * Loads an entry with the given parameters.
  *
- * @since release v2.2.0.
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is thread safe, of course assuming that the string arguments
+ * are not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap lock**
+ * This function is not safe to call from signal handlers due to the possible
+ * use of memory management functions to create parts of the new entry, as well
+ * as the use of a mutex initialization routine.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions and a mutex
+ * initialization routine.
+ *
+ * @since release v2.2.0
  *
  * @param entry The struct to load.
  *
@@ -129,6 +143,30 @@ unchecked_load_entry( struct stumpless_entry *entry,
                       const char *msgid,
                       char *message,
                       size_t message_length );
+
+/**
+ * Unloads the provided entry, without performing a NULL check.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param entry The entry to unload. Must not be NULL.
+ */
+void
+unchecked_unload_entry( const struct stumpless_entry *entry );
 
 void
 unlock_entry( const struct stumpless_entry *entry );

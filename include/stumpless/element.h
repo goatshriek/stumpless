@@ -929,6 +929,8 @@ stumpless_set_param_value_by_name( struct stumpless_element *element,
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0
+ *
  * @param e The element to unload.
  */
 STUMPLESS_PUBLIC_FUNCTION
