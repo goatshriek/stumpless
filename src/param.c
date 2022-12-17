@@ -63,7 +63,8 @@ stumpless_get_param_name( const struct stumpless_param *param ) {
   if( !name_copy ) {
     goto cleanup_and_return;
   }
-  memcpy( name_copy, param->name, param->name_length + 1 );
+  memcpy( name_copy, param->name, param->name_length );
+  name_copy[param->name_length] = '\0';
   clear_error(  );
 
 cleanup_and_return:
@@ -82,7 +83,8 @@ stumpless_get_param_value( const struct stumpless_param *param ) {
   if( !value_copy ) {
     goto cleanup_and_return;
   }
-  memcpy( value_copy, param->value, param->value_length + 1 );
+  memcpy( value_copy, param->value, param->value_length );
+  value_copy[param->value_length] = '\0';
   clear_error(  );
 
 cleanup_and_return:
