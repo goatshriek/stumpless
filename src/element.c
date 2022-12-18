@@ -473,6 +473,7 @@ stumpless_load_element( struct stumpless_element *element, const char *name ) {
     return NULL;
   }
 
+  clear_error(  );
   return unchecked_load_element( element, name, name_length );
 }
 
