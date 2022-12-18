@@ -22,11 +22,13 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/config.h>
+#include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/error.h>
 #include <stumpless/facility.h>
 #include <stumpless/filter.h>
 #include <stumpless/option.h>
+#include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/error.h>
@@ -77,6 +79,41 @@ static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_file;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_line;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_function;
 static CONFIG_THREAD_LOCAL_STORAGE bool cached_trace_valid = false;
+
+
+/* static functions */
+
+/**
+ * Adds the element with the trace params to the entry used for trace calls.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation routines and mutex initializers.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use memory allocation routines and mutex initializers.
+ *
+ * @return Returns the trace entry upon success, or NULL if an error was
+ * encountered.
+ */
+static
+struct stumpless_entry *
+add_trace_element( void ) {
+    stumpless_load_element( &trace_element, "trace" );
+    stumpless_load_param( &trace_file, "file", "-");
+    stumpless_add_param( &trace_element, &trace_file );
+    stumpless_load_param( &trace_line, "line", "-");
+    stumpless_add_param( &trace_element, &trace_line );
+    stumpless_load_param( &trace_function, "function", "-");
+    stumpless_add_param( &trace_element, &trace_function );
+    stumpless_add_element( &cached_trace, &trace_element );
+}
+
+/* public definitions */
 
 const char *
 stumpless_get_target_type_string( enum stumpless_target_type target_type ){
