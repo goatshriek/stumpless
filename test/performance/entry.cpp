@@ -21,9 +21,9 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( load_entry )
+NEW_MEMORY_COUNTER( vload_entry )
 NEW_MEMORY_COUNTER( load_entry_str )
-NEW_MEMORY_COUNTER( new_entry )
+NEW_MEMORY_COUNTER( vnew_entry )
 NEW_MEMORY_COUNTER( new_entry_str )
 NEW_MEMORY_COUNTER( set_app_name )
 NEW_MEMORY_COUNTER( set_hostname )
@@ -34,7 +34,7 @@ static void LoadEntry( benchmark::State &state ) {
   struct stumpless_entry entry;
   const struct stumpless_entry *result;
 
-  INIT_MEMORY_COUNTER( load_entry );
+  INIT_MEMORY_COUNTER( vload_entry );
 
   for(auto _ : state){
     result = stumpless_load_entry( &entry,
@@ -52,7 +52,7 @@ static void LoadEntry( benchmark::State &state ) {
 
   stumpless_free_all(  );
 
-  SET_STATE_COUNTERS( state, load_entry );
+  SET_STATE_COUNTERS( state, vload_entry );
 }
 
 static void LoadEntryStr( benchmark::State &state ) {
@@ -83,7 +83,7 @@ static void LoadEntryStr( benchmark::State &state ) {
 static void NewEntry(benchmark::State &state){
   const struct stumpless_entry *result;
 
-  INIT_MEMORY_COUNTER( new_entry );
+  INIT_MEMORY_COUNTER( vnew_entry );
 
   for(auto _ : state){
     result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
@@ -101,7 +101,7 @@ static void NewEntry(benchmark::State &state){
 
   stumpless_free_all(  );
 
-  SET_STATE_COUNTERS( state, new_entry );
+  SET_STATE_COUNTERS( state, vnew_entry );
 }
 
 static void NewEntryStr(benchmark::State &state){

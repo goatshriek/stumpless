@@ -731,6 +731,7 @@ stumpless_get_param_value_by_name( const struct stumpless_element *element,
  * error is encountered, then NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_load_element( struct stumpless_element *element, const char *name );
 

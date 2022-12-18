@@ -44,12 +44,14 @@
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/element.h"
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/formatter.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
@@ -103,14 +105,53 @@ static CONFIG_THREAD_LOCAL_STORAGE bool cached_trace_valid = false;
 static
 struct stumpless_entry *
 add_trace_element( void ) {
-    stumpless_load_element( &trace_element, "trace" );
-    stumpless_load_param( &trace_file, "file", "-");
-    stumpless_add_param( &trace_element, &trace_file );
-    stumpless_load_param( &trace_line, "line", "-");
-    stumpless_add_param( &trace_element, &trace_line );
-    stumpless_load_param( &trace_function, "function", "-");
-    stumpless_add_param( &trace_element, &trace_function );
-    stumpless_add_element( &cached_trace, &trace_element );
+    if( unlikely( !unchecked_load_param( &trace_file, "file", 4, "-" ) ) ) {
+      goto fail;
+    }
+
+    if( unlikely( !unchecked_load_param( &trace_line, "line", 4, "-") ) ) {
+      goto fail_line;
+    }
+
+    if( unlikely( !unchecked_load_param( &trace_function,
+                                         "function",
+                                         8,
+                                         "-" ) ) ) {
+      goto fail_function;
+    }
+
+    if( unlikely( !unchecked_load_element( &trace_element, "trace", 5 ) ) ) {
+      goto fail_element;
+    }
+
+    if( unlikely( !stumpless_add_param( &trace_element, &trace_file ) ) ) {
+      goto fail_add;
+    }
+
+    if( unlikely( !stumpless_add_param( &trace_element, &trace_line ) ) ) {
+      goto fail_add;
+    }
+
+    if( unlikely( !stumpless_add_param( &trace_element, &trace_function ) ) ) {
+      goto fail_add;
+    }
+
+    if( unlikely( !stumpless_add_element( &cached_trace, &trace_element ) ) ) {
+      goto fail_add;
+    }
+
+    return &cached_trace;
+
+fail_add:
+    unchecked_unload_element( &trace_element );
+fail_element:
+    stumpless_unload_param( &trace_function );
+fail_function:
+    stumpless_unload_param( &trace_line );
+fail_line:
+    stumpless_unload_param( &trace_file );
+fail:
+    return NULL;
 }
 
 /* public definitions */
@@ -799,14 +840,10 @@ stumpless_trace_log_str( struct stumpless_target *target,
       return -1;
     }
 
-    stumpless_load_element( &trace_element, "trace" );
-    stumpless_load_param( &trace_file, "file", "-");
-    stumpless_add_param( &trace_element, &trace_file );
-    stumpless_load_param( &trace_line, "line", "-");
-    stumpless_add_param( &trace_element, &trace_line );
-    stumpless_load_param( &trace_function, "function", "-");
-    stumpless_add_param( &trace_element, &trace_function );
-    stumpless_add_element( &cached_trace, &trace_element );
+    if( !add_trace_element(  ) ) {
+      unchecked_unload_entry( &cached_trace );
+      return -1;
+    }
 
     cached_trace_valid = true;
 
@@ -953,14 +990,10 @@ vstumpless_trace_log( struct stumpless_target *target,
       return -1;
     }
 
-    stumpless_load_element( &trace_element, "trace" );
-    stumpless_load_param( &trace_file, "file", "-");
-    stumpless_add_param( &trace_element, &trace_file );
-    stumpless_load_param( &trace_line, "line", "-");
-    stumpless_add_param( &trace_element, &trace_line );
-    stumpless_load_param( &trace_function, "function", "-");
-    stumpless_add_param( &trace_element, &trace_function );
-    stumpless_add_element( &cached_trace, &trace_element );
+    if( !add_trace_element(  ) ) {
+      unchecked_unload_entry( &cached_trace );
+      return -1;
+    }
 
     cached_trace_valid = true;
 
