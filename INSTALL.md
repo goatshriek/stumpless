@@ -125,7 +125,7 @@ cmake can run these commands for you if you invoke it in build mode.
 cmake --build . --target all
 
 # build and run the test suite the same way
-cmake --build . --target all
+cmake --build . --target check
 ```
 
 The type of build can be changed at configuration time by defining the
