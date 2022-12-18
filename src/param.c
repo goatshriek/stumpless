@@ -256,10 +256,6 @@ unchecked_load_param( struct stumpless_param *param,
                       const char *name,
                       size_t name_length,
                       const char *value ) {
-  param->name_length = name_length;
-  memcpy( param->name, name, name_length );
-  param->name[name_length] = '\0';
-
   param->value = copy_cstring_with_length( value, &( param->value_length ) );
   if( !param->value ) {
     goto fail_value;
@@ -269,6 +265,10 @@ unchecked_load_param( struct stumpless_param *param,
   if( !config_check_mutex_valid( param->mutex ) ) {
     goto fail_mutex;
   }
+
+  param->name_length = name_length;
+  memcpy( param->name, name, name_length );
+  param->name[name_length] = '\0';
 
   config_init_journald_param( param );
 

@@ -241,6 +241,26 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( LoadParamTest, InvalidName ) {
+    struct stumpless_param param;
+    const struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_load_param( &param, "par=am", "test-value" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_load_param( &param, "param]", "test-value" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    result = stumpless_load_param( &param, "p\"aram", "test-value" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    
+    stumpless_free_all(  );
+  }
+
   TEST( LoadParamTest, LoadAndUnload ) {
     struct stumpless_param param;
     struct stumpless_param *result;
