@@ -625,6 +625,7 @@ stumpless_load_entry_str( struct stumpless_entry *entry,
     msg_length = 0;
   }
 
+  clear_error(  );
   result = unchecked_load_entry( entry,
                                  facility,
                                  severity,
@@ -1094,6 +1095,7 @@ vstumpless_load_entry( struct stumpless_entry *entry,
     msg_length = 0;
   }
 
+  clear_error(  );
   result = unchecked_load_entry( entry,
                                  facility,
                                  severity,

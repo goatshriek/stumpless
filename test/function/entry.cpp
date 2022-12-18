@@ -1628,6 +1628,116 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( LoadEntryTest, FormatSpecifiers ) {
+    struct stumpless_entry entry;
+    const struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *format = "string: %s\nint: %d";
+    const char *string_sub = "added to the string";
+    int int_sub = 2234;
+    const char *expected_message = "string: added to the string\nint: 2234";
+    size_t expected_message_length;
+
+    result = stumpless_load_entry( &entry,
+                                   STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   app_name,
+                                   msgid,
+                                   format,
+                                   string_sub,
+                                   int_sub );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+    EXPECT_NOT_NULL( entry.message );
+
+    expected_message_length = strlen( expected_message );
+    EXPECT_EQ( entry.message_length, expected_message_length );
+    EXPECT_EQ( 0, memcmp( entry.message, expected_message, entry.message_length ) );
+
+    stumpless_unload_entry_only( &entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadEntryStrTest, Success ) {
+    struct stumpless_entry entry;
+    const struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       message );
+    EXPECT_NO_ERROR;
+    ASSERT_TRUE( result == &entry );
+
+    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry.prival );
+    EXPECT_NULL( entry.elements );
+    EXPECT_EQ( 0, entry.element_count );
+
+    confirm_entry_contents( &entry, app_name, msgid, message );
+
+    stumpless_unload_entry_only( &entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadEntryStrTest, NullMesssage ) {
+    struct stumpless_entry entry;
+    const struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       NULL );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+
+    if( result ) {
+      EXPECT_EQ( entry.message_length, 0 );
+    }
+
+    stumpless_unload_entry_only( &entry );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadEntryStrTest, NullMessageId ) {
+    struct stumpless_entry entry;
+    const struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *message = "test-message";
+
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       NULL,
+                                       message );
+
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( result );
+
+    if( result ) {
+      EXPECT_EQ( entry.msgid[0], '-' );
+      EXPECT_EQ( entry.msgid_length, 1 );
+    }
+
+    stumpless_unload_entry_only( &entry );
+
+    stumpless_free_all(  );
+  }
+
   TEST( NewEntryStrTest, New ){
     struct stumpless_entry *entry;
     const char *app_name = "test-app-name";
@@ -1743,7 +1853,6 @@ namespace {
 
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( entry );
-    EXPECT_NULL( stumpless_get_error(  ) );
     EXPECT_NOT_NULL( entry->message );
 
     expected_message_length = strlen( expected_message );
