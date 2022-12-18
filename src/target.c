@@ -72,6 +72,10 @@ static config_atomic_bool_t cons_stream_valid = config_atomic_bool_false;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry cached_entry;
 static CONFIG_THREAD_LOCAL_STORAGE bool cached_entry_valid = false;
 static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_entry cached_trace;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_element trace_element;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_file;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_line;
+static CONFIG_THREAD_LOCAL_STORAGE struct stumpless_param trace_function;
 static CONFIG_THREAD_LOCAL_STORAGE bool cached_trace_valid = false;
 
 const char *
@@ -757,6 +761,16 @@ stumpless_trace_log_str( struct stumpless_target *target,
     if( unlikely( !result ) ) {
       return -1;
     }
+
+    stumpless_load_element( &trace_element, "trace" );
+    stumpless_load_param( &trace_file, "file", "-");
+    stumpless_add_param( &trace_element, &trace_file );
+    stumpless_load_param( &trace_line, "line", "-");
+    stumpless_add_param( &trace_element, &trace_line );
+    stumpless_load_param( &trace_function, "function", "-");
+    stumpless_add_param( &trace_element, &trace_function );
+    stumpless_add_element( &cached_trace, &trace_element );
+
     cached_trace_valid = true;
 
   } else {
@@ -901,6 +915,17 @@ vstumpless_trace_log( struct stumpless_target *target,
     if( unlikely( !result ) ) {
       return -1;
     }
+
+    stumpless_load_element( &trace_element, "trace" );
+    stumpless_load_param( &trace_file, "file", "-");
+    stumpless_add_param( &trace_element, &trace_file );
+    stumpless_load_param( &trace_line, "line", "-");
+    stumpless_add_param( &trace_element, &trace_line );
+    stumpless_load_param( &trace_function, "function", "-");
+    stumpless_add_param( &trace_element, &trace_function );
+    stumpless_add_element( &cached_trace, &trace_element );
+
+    cached_trace_valid = true;
 
   } else {
     result = vstumpless_set_entry_message( &cached_trace,

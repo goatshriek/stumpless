@@ -615,7 +615,7 @@ stumpless_unload_element_and_contents( const struct stumpless_element *e ) {
   }
 
   for( i = 0; i < e->param_count; i++ ) {
-    stumpless_destroy_param( e->params[i] );
+    stumpless_unload_param( e->params[i] );
   }
 
   unchecked_unload_element( e );
