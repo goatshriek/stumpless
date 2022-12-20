@@ -70,14 +70,33 @@ branches, or make any changes yourself.
 
 ## Prepping your System
 Since there are so many possible ways to set up an environment, stumpless does
-not provide any single way to do this. However, here are some one-liners that
+not provide any single way to do this. However, here are some snippets that
 can get everything installed for you in some common environments.
+
+Note that some depenencies for developing Stumpless are left out of these
+snippets, most notably Ruby and Valgrind. For a full list of dependencies check
+the [dependency documentation](./docs/dependencies.md), which lists all of the
+tools you might need. The snippets below allow you to build and test the
+library, as well as build the documentation for it.
+
+Similarly, if you only want to build the library, you may not need all of these.
+A C++ compiler is only needed to build the test suites, and doxygen is only
+needed if you build the documentation. If you only want to build the library and
+immediately install/use it, you can get away with just cmake and a C toolchain.
 
 For Linux systems with a package manager like `apt`, you can install the needed
 tools (for a GNU toolchain) with something like the following:
 
 ```sh
+# for distributions using apt, such as Ubuntu or Debian:
 sudo apt-get install git cmake make gcc g++ doxygen
+
+# for MinGW, you can use the following pacman invocation
+# be sure that you are in a MinGW shell (for example, MSYS2 has several
+# terminals, only some of which are MinGW)
+pacman -S $MINGW_PACKAGE_PREFIX-cmake \
+          $MINGW_PACKAGE_PREFIX-make \
+          $MINGW_PACKAGE_PREFIX-gcc
 ```
 
 Cygwin lacks a package manager in the environment itself, requiring packages to
@@ -115,17 +134,20 @@ Visual Studio provides a CMake menu in the IDE that will display all available
 targets.
 
 If you're unsure of the build commands for the toolchain on your system, then
-cmake can run these commands for you if you invoke it in build mode.
+cmake can run these commands for you if you invoke it in build mode. This is
+especially handy in environments like Visual Studio or MinGW, where the build
+toolchain might require prefixes and/or options to work properly.
 
 ```sh
-# build the `all` target using whatever toolchain cmake detected during the
-# configuration stage
+# build the default target ("all") using whatever toolchain cmake detected
+# during the configuration stage
 # the argument to the `--build` parameter is the root of the folder where we
 # ran the original cmake configuration command
-cmake --build . --target all
+cmake --build .
 
-# build and run the test suite the same way
-cmake --build . --target all
+# we can build and run any other target with the `--target` option
+# for example, this invocation builds and runs the test suite
+cmake --build . --target check
 ```
 
 The type of build can be changed at configuration time by defining the
