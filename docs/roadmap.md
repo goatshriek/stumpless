@@ -6,12 +6,12 @@ or want to make a suggestion, please submit an issue on the project's
 
 ## 2.2.0
  * [ADD] **Target chaining**
-   In some cases a log message needs to be sent to multiple destinations, such
+   : In some cases a log message needs to be sent to multiple destinations, such
    as to a local file as well as a network server. Target chains will allow this
    stream to be defined as a logging target, and a logging call only made to
    this instead of manually logging to each target.
  * [ADD] **Improved network target error detection**
-   Network targets do not currently detect errors that they would be able to in
+  :  Network targets do not currently detect errors that they would be able to in
    some cases, such as with `select` or `poll`. This may lead to a connection
    being left open for longer than necessary if the error is already detected.
    This change will improve error detection in network targets to reduce the
@@ -20,13 +20,13 @@ or want to make a suggestion, please submit an issue on the project's
 
 ## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
-   Removing previously deprecated feature.
+   : Removing previously deprecated feature.
  * [REMOVE] **Stream target constructor using `int` facility**
-   Removing previously deprecated feature.
+   : Removing previously deprecated feature.
  * [REMOVE] **entry id field**
-   Removing unused field.
+   : Removing unused field.
  * [CHANGE] **Python language bindings to Wrapture instead of SWIG**
-   The [Wrapture](https://github.com/goatshriek/wrapture) project is being
+   : The [Wrapture](https://github.com/goatshriek/wrapture) project is being
    built to provide clean, readable, and explicit language binding functionality
    from C to other target languages, specifically to support Stumpless. Once
    Python is added as a target language, this will be utilized to create the
@@ -34,15 +34,15 @@ or want to make a suggestion, please submit an issue on the project's
    the future, other language bindings will be added using Wrapture as they are
    added to the tool.
  * [CHANGE] **Implement asynchronous logging modes**
-   Asynchronous logging can provide significantly less latency to the calling
+   : Asynchronous logging can provide significantly less latency to the calling
    application. This will provide more benefit to some targets than others,
    most notably network-based targets. Because some error reporting mechanisms
    may need to change to accomodate this, it will be done in a major release.
  * [CHANGE] **Error enum values start from 1 instead of 0**
-   This will allow function that return negative integers in error scenarios to
+   : This will allow function that return negative integers in error scenarios to
    pass along a more meaningful return value.
  * [CHANGE] **Entry app name and msgid no longer NULL-terminated.**
-   Improve efficiency and memory safety by only using these as byte buffers.
+   : Improve efficiency and memory safety by only using these as byte buffers.
 
 
 ## Unallocated to a release
@@ -60,10 +60,10 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Ability to limit the rate of logging (per message, per byte)**
  * [ADD] **Logging target for Windows Debug log**
  * [ADD] **Error callbacks**
-   Allow the user to define actions to take when specific errors are
+   : Allow the user to define actions to take when specific errors are
    encountered.
  * [ADD] **Configuration file support**
-   Many other logging solutions provide a way to configure logging via a
+   : Many other logging solutions provide a way to configure logging via a
    separate configuration file that defines targets and their options. Stumpless
    will likely not implement it's own format, but rather add the ability to load
    the configuration files from other such tools to provide equivalent
