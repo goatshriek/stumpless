@@ -17,7 +17,7 @@ Debian and Ubuntu. The package can be installed with the usual command:
 
 ```sh
 # you might need sudo (or root privileges) to install
-dpkg -i stumpless-2.0.0-amd64.deb
+dpkg -i stumpless-2.2.0-amd64.deb
 ```
 
 
@@ -27,7 +27,7 @@ installed in the traditional way as well:
 
 ```sh
 # again, make sure you have the correct permissions
-rpm -i stumpless-2.0.0-x86_64.rpm
+rpm -i stumpless-2.2.0-x86_64.rpm
 ```
 
 
@@ -42,7 +42,7 @@ files.
 # you might need to do this with sudo!
 # make sure your permissions allow you to write to the install locations
 cd /usr
-./stumpless-2.0.0.sh
+./stumpless-2.2.0.sh
 ```
 
 
@@ -74,29 +74,33 @@ not provide any single way to do this. However, here are some snippets that
 can get everything installed for you in some common environments.
 
 Note that some depenencies for developing Stumpless are left out of these
-snippets, most notably Ruby and Valgrind. For a full list of dependencies check
-the [dependency documentation](./docs/dependencies.md), which lists all of the
-tools you might need. The snippets below allow you to build and test the
+snippets, most notably Git, Ruby, and Valgrind. For a full list of dependencies
+check the [dependency documentation](./docs/dependencies.md), which lists all of
+the tools you might need. The snippets below allow you to build and test the
 library, as well as build the documentation for it.
 
 Similarly, if you only want to build the library, you may not need all of these.
 A C++ compiler is only needed to build the test suites, and doxygen is only
 needed if you build the documentation. If you only want to build the library and
-immediately install/use it, you can get away with just cmake and a C toolchain.
+immediately install/use it, you will only need cmake and a C toolchain.
 
 For Linux systems with a package manager like `apt`, you can install the needed
 tools (for a GNU toolchain) with something like the following:
 
 ```sh
 # for distributions using apt, such as Ubuntu or Debian:
-sudo apt-get install git cmake make gcc g++ doxygen
+sudo apt-get install cmake make gcc g++ doxygen
 
-# for MinGW, you can use the following pacman invocation
-# be sure that you are in a MinGW shell (for example, MSYS2 has several
-# terminals, only some of which are MinGW)
+# for distributions that use pacman such as Arch Linux or MSYS2:
+pacman -S cmake make gcc doxygen
+
+# For MinGW be sure that you use the MinGW packages, such as in the following
+# pacman invocation. Be sure that you are in a MinGW shell when building this
+# way. For example, MSYS2 provides some MinGW terminals.
 pacman -S $MINGW_PACKAGE_PREFIX-cmake \
           $MINGW_PACKAGE_PREFIX-make \
-          $MINGW_PACKAGE_PREFIX-gcc
+          $MINGW_PACKAGE_PREFIX-gcc \
+          $MINGW_PACKAGE_PREFIX-doxygen
 ```
 
 Cygwin lacks a package manager in the environment itself, requiring packages to
@@ -105,7 +109,7 @@ GUI, or if you want to just do it via command line, you can do something like
 this:
 
 ```sh
-setup-x86_64.exe -q -P git,cmake,make,gcc-core,gcc-g++,doxygen
+setup-x86_64.exe -q -P cmake,make,gcc-core,gcc-g++,doxygen
 ```
 
 
@@ -116,6 +120,8 @@ using `make` from a fresh clone.
 
 ```sh
 # cloning the latest version of the source tree
+# if you don't want to use git, you can download a zip of the sources from
+# github
 git clone git@github.com:goatshriek/stumpless.git
 
 # creating a new build directory
@@ -133,10 +139,24 @@ Other environments should be built according to their normal style. For example
 Visual Studio provides a CMake menu in the IDE that will display all available
 targets.
 
+CMake will use the build toolchain it feels is best, but on systems with
+multiple available toolchains you may want to override this. For example, MinGW
+systems may default to using Ninja, instead of the MinGW toolchain. In these
+situations, you'll likely want to specify a
+[generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)
+during the configuration stage. Sticking with the MinGW case, this might look
+like this:
+
+```sh
+# run within the MinGW shell, in our fresh build directory
+cmake -G "MinGW Makefiles" ../stumpless
+```
+
 If you're unsure of the build commands for the toolchain on your system, then
-cmake can run these commands for you if you invoke it in build mode. This is
-especially handy in environments like Visual Studio or MinGW, where the build
-toolchain might require prefixes and/or options to work properly.
+cmake can run these commands for you if you invoke it in
+[build mode](https://cmake.org/cmake/help/latest/manual/cmake.1.html#build-a-project).
+This is especially handy in environments like Visual Studio or MinGW, where the
+build toolchain might require prefixes and/or options to work properly.
 
 ```sh
 # build the default target ("all") using whatever toolchain cmake detected
@@ -179,8 +199,20 @@ The rest of this documentation uses make commands for simplicity, but for any
 target you can build it using cmake build mode if you need truly portable
 command line invocation.
 
-## Verifying your Build
 
+## Building Documentation
+The documentation for the library can be built using the `docs` target. Note
+that this target will only be available if doxygen was detected during the
+configuration of the system.
+
+```sh
+# the resulting documentation will appear in a folder named docs in the build
+# directory
+make docs
+```
+
+
+## Verifying your Build
 If you want to run the test suite on the library during development or as a
 sanity check before installation, you can use the `check` target to run all
 tests and display the results. If you're concerned that the build may not work
@@ -201,8 +233,8 @@ will download and build the Google Benchmark library in order to run.
 make bench
 ```
 
-## Installing your Build
 
+## Installing your Build
 You can use the install target to install the library on your machine after the
 build.
 
@@ -270,21 +302,24 @@ cat install_manifest.txt
 # <output truncated>
 ```
 
-### Uninstalling
+Some tools, such as Visual Studio, will run the installation step for you. In
+Visual Studio 2022 for example, this is in the `Build->Install stumpless` menu.
 
+
+### Uninstalling
 There is currently no uninstall target supported, so removal of the library
 and its include files must be done manually if it is no longer needed. Please
 submit an issue on the project's Github site if you feel that you need a build
-target providing this feature. For the time being, you can run the contents
-of the `install_manifest.txt` file (generated during the install) through `rm`
-like this:
+target providing this feature. If you are on a Linux system, you can run the
+contents of the `install_manifest.txt` file (generated during the install)
+through `rm` like this:
 
 ```sh
 xargs rm < install_manifest.txt
 ```
 
-## C++ Library
 
+## C++ Library
 If you want to build, test, and install the C++ bindings for stumpless as well,
 you will need to modify the above steps slightly.
 
