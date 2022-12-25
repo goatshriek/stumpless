@@ -1661,12 +1661,17 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( LoadEntryStrTest, Success ) {
+  TEST( LoadEntryStrTest, MallocFailureOnMessage ) {
+    void * (*set_malloc_result)(size_t);
     struct stumpless_entry entry;
-    const struct stumpless_entry *result;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
-    const char *message = "test-message";
+    const char *message = "nice and long to make sure it beats the first";
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 46 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_load_entry_str( &entry,
                                        STUMPLESS_FACILITY_USER,
@@ -1674,16 +1679,12 @@ namespace {
                                        app_name,
                                        msgid,
                                        message );
-    EXPECT_NO_ERROR;
-    ASSERT_TRUE( result == &entry );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
 
-    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry.prival );
-    EXPECT_NULL( entry.elements );
-    EXPECT_EQ( 0, entry.element_count );
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
 
-    confirm_entry_contents( &entry, app_name, msgid, message );
-
-    stumpless_unload_entry_only( &entry );
     stumpless_free_all(  );
   }
 
@@ -1735,6 +1736,32 @@ namespace {
 
     stumpless_unload_entry_only( &entry );
 
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadEntryStrTest, Success ) {
+    struct stumpless_entry entry;
+    const struct stumpless_entry *result;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    const char *message = "test-message";
+
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       message );
+    EXPECT_NO_ERROR;
+    ASSERT_TRUE( result == &entry );
+
+    EXPECT_EQ( STUMPLESS_FACILITY_USER | STUMPLESS_SEVERITY_INFO, entry.prival );
+    EXPECT_NULL( entry.elements );
+    EXPECT_EQ( 0, entry.element_count );
+
+    confirm_entry_contents( &entry, app_name, msgid, message );
+
+    stumpless_unload_entry_only( &entry );
     stumpless_free_all(  );
   }
 
