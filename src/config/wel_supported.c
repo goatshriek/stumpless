@@ -1192,15 +1192,15 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
                                 LPCSTR param_file,
                                 DWORD types_supported ) {
   DWORD result = ERROR_SUCCESS;
-  DWORD subkey_name_length = 0;
+  int subkey_name_length = 0;
   LPCWSTR subkey_name_w;
-  DWORD source_name_length = 0;
+  int source_name_length = 0;
   LPWSTR source_name_w;
-  DWORD category_file_length = 0;
+  int category_file_length = 0;
   LPCWSTR category_file_w = NULL;
-  DWORD event_file_length = 0;
+  int event_file_length = 0;
   LPCWSTR event_file_w = NULL;
-  DWORD param_file_length = 0;
+  int param_file_length = 0;
   LPCWSTR param_file_w = NULL;
 
   VALIDATE_ARG_NOT_NULL_WINDOWS_RETURN( subkey_name );
@@ -1209,14 +1209,14 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
   clear_error(  );
 
   subkey_name_w = windows_copy_cstring_to_lpwstr( subkey_name,
-                                                   &subkey_name_length );
+                                                  &subkey_name_length );
   if( !subkey_name_w ) {
     result = get_windows_error_code(  );
     goto finish;
   }
 
   source_name_w = windows_copy_cstring_to_lpwstr( source_name,
-                                                   &source_name_length );
+                                                  &source_name_length );
   if( !source_name_w ) {
     result = get_windows_error_code(  );
     goto cleanup_subkey;
@@ -1224,7 +1224,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
 
   if( category_file ) {
     category_file_w = windows_copy_cstring_to_lpwstr( category_file,
-                                                       &category_file_length );
+                                                      &category_file_length );
     if( !category_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_source;
@@ -1233,7 +1233,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
 
   if( event_file ) {
     event_file_w = windows_copy_cstring_to_lpwstr( event_file,
-                                                    &event_file_length );
+                                                   &event_file_length );
     if( !event_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_category;
@@ -1242,7 +1242,7 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
 
   if( param_file ) {
     param_file_w = windows_copy_cstring_to_lpwstr( param_file,
-                                                    &param_file_length );
+                                                   &param_file_length );
     if( !param_file_w ) {
       result = get_windows_error_code(  );
       goto cleanup_event;
