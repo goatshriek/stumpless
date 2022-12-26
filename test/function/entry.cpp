@@ -1661,6 +1661,46 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( LoadEntryTest, InvalidAppName ) {
+    struct stumpless_entry entry;
+    const char *app_name = "test-app-name-错误";
+    const char *msgid = "test-msgid";
+    const struct stumpless_error *error;
+    const struct stumpless_entry *result;
+
+    result = stumpless_load_entry( &entry,
+                                   STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   app_name,
+                                   msgid,
+                                   NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadEntryStrTest, InvalidAppName ) {
+    struct stumpless_entry entry;
+    const char *app_name = "test-app-name-错误";
+    const char *msgid = "test-msgid";
+    const struct stumpless_error *error;
+    const struct stumpless_entry *result;
+
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       app_name,
+                                       msgid,
+                                       NULL );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
   TEST( LoadEntryStrTest, MallocFailureOnMessage ) {
     void * (*set_malloc_result)(size_t);
     struct stumpless_entry entry;
