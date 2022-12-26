@@ -2766,4 +2766,18 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
+
+  TEST( UnloadEntryAndContents, NullEntry ) {
+    const struct stumpless_error *error;
+
+    stumpless_unload_entry_and_contents( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( UnloadEntryOnly, NullEntry ) {
+    const struct stumpless_error *error;
+
+    stumpless_unload_entry_only( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
 }
