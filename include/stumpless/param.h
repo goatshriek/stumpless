@@ -27,6 +27,9 @@
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 
+/** The maximum length of a parameter name, as specified by RFC 5424. */
+#  define STUMPLESS_MAX_PARAM_NAME_LENGTH 32
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -102,7 +105,7 @@ struct stumpless_param {
  * functions. These will protect you from changes in the struct in future
  * versions.
  */
-  char *name;
+  char name[STUMPLESS_MAX_PARAM_NAME_LENGTH + 1];
 /** The number of characters in name (not including the NULL character). */
   size_t name_length;
 /**
@@ -251,21 +254,70 @@ const char *
 stumpless_get_param_value( const struct stumpless_param *param );
 
 /**
+ * Loads a provided param with the given values.
+ *
+ * This function will allocate less memory than stumpless_new_param, but will
+ * still allocate memory for the value of the param, which may be of variable
+ * length.
+ *
+ * A param loaded using this function must be unloaded with
+ * stumpless_unload_param when it is no longer needed. Calling
+ * stumpless_destroy_param or any function that does (such as
+ * stumpless_destroy_entry_and_contents will result in memory corruption).
+ *
+ * **Thread Safety: MT-Safe race:param race:name race:value**
+ * This function is thread safe, assuming that the param, name, and value are
+ * not changed by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions to create the param's value as well as the use of
+ * a mutex initialization routine.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory management functions and a mutex
+ * initialization routine.
+ *
+ * @since release v2.2.0
+ *
+ * @param param The struct to load with the given values.
+ *
+ * @param name The name of the param.
+ *
+ * @param value The value of the param. This pointer will be stored and used
+ * over the lifetime of the param, and must be valid until
+ * `stumpless_unload_param` is called on this loaded param.
+ *
+ * @return A pointer to the loaded param, if no error is encountered. If an
+ * error is encountered, then NULL is returned and an error code is set
+ * appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_param *
+stumpless_load_param( struct stumpless_param *param,
+                      const char *name,
+                      const char *value );
+
+/**
  * Creates a new param with the given name and value.
  *
  * **Thread Safety: MT-Safe race:name race:value**
  * This function is thread safe, of course assuming that name and value are not
  * changed by other threads during execution.
  *
- * **Async Signal Safety: AS-Unsafe heap**
+ * **Async Signal Safety: AS-Unsafe heap lock**
  * This function is not safe to call from signal handlers due to the use of
- * memory management functions to create the new param.
+ * memory management functions to create the new param as well as the use of
+ * a mutex initialization routine.
  *
- * **Async Cancel Safety: AC-Unsafe heap**
+ * **Async Cancel Safety: AC-Unsafe heap lock**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of memory management functions.
+ * cancelled, due to the use of memory management functions and a mutex
+ * initialization routine.
  *
- * @param name The name of the new param. Restricted to printable ASCII characters different from '=', ']' and '"'.
+ * @param name The name of the new param. Restricted to printable ASCII
+ * characters different from '=', ']' and '"'.
  *
  * @param value The value of the new param.
  *
@@ -365,6 +417,35 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
 STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_param_to_string( const struct stumpless_param *param );
+
+/**
+ * Unloads a param.
+ *
+ * Either this function, stumpless_unload_element_and_contents, or
+ * stumpless_unload_entry_and_contents must be used to clean up any param struct
+ * previously loaded with stumpless_load_param.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param param The param to unload.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_unload_param( const struct stumpless_param *param );
 
 #  ifdef __cplusplus
 }                               /* extern "C" */

@@ -21,6 +21,7 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( copy_param )
+NEW_MEMORY_COUNTER( load_param )
 NEW_MEMORY_COUNTER( new_param )
 NEW_MEMORY_COUNTER( set_param_name )
 
@@ -45,6 +46,28 @@ static void CopyParam(benchmark::State& state){
   stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, copy_param );
+}
+
+static void LoadParam( benchmark::State &state ) {
+  struct stumpless_param param;
+  const struct stumpless_param *result;
+
+  INIT_MEMORY_COUNTER( load_param );
+
+  for(auto _ : state){
+    result = stumpless_load_param( &param,
+                                   "new-param-name",
+                                   "new-param-value" );
+    if( !result ) {
+      state.SkipWithError( "the param load failed" );
+    } else {
+      stumpless_unload_param( &param );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, load_param );
 }
 
 static void NewParam(benchmark::State& state){
@@ -89,5 +112,6 @@ static void SetParamName(benchmark::State& state){
 }
 
 BENCHMARK(CopyParam);
+BENCHMARK(LoadParam);
 BENCHMARK(NewParam);
 BENCHMARK(SetParamName);

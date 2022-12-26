@@ -580,6 +580,68 @@ stumpless_get_entry_severity( const struct stumpless_entry *entry ) {
 }
 
 struct stumpless_entry *
+stumpless_load_entry( struct stumpless_entry *entry,
+                      enum stumpless_facility facility,
+                      enum stumpless_severity severity,
+                      const char *app_name,
+                      const char *msgid,
+                      const char *message,
+                      ... ) {
+  va_list subs;
+  struct stumpless_entry *result;
+
+  va_start( subs, message );
+  result = vstumpless_load_entry( entry,
+                                  facility,
+                                  severity,
+                                  app_name,
+                                  msgid,
+                                  message,
+                                  subs );
+  va_end( subs );
+
+  return result;
+}
+
+struct stumpless_entry *
+stumpless_load_entry_str( struct stumpless_entry *entry,
+                          enum stumpless_facility facility,
+                          enum stumpless_severity severity,
+                          const char *app_name,
+                          const char *msgid,
+                          const char *message ) {
+  char *msg;
+  size_t msg_length;
+  struct stumpless_entry *result;
+
+  if( message ) {
+    msg = copy_cstring_with_length( message, &msg_length );
+    if( !msg ) {
+      return NULL;
+    }
+
+  } else {
+    msg = NULL;
+    msg_length = 0;
+  }
+
+  clear_error(  );
+  result = unchecked_load_entry( entry,
+                                 facility,
+                                 severity,
+                                 app_name,
+                                 msgid,
+                                 msg,
+                                 msg_length );
+
+  if( !result ) {
+    free_mem( msg );
+  }
+
+  return result;
+}
+
+struct stumpless_entry *
 stumpless_new_entry( enum stumpless_facility facility,
                      enum stumpless_severity severity,
                      const char *app_name,
@@ -986,6 +1048,69 @@ stumpless_set_entry_severity( struct stumpless_entry *entry,
   return entry;
 }
 
+void
+stumpless_unload_entry_and_contents( const struct stumpless_entry *entry ) {
+  size_t i;
+
+  if( !entry ) {
+    return;
+  }
+
+  for( i = 0; i < entry->element_count; i++ ) {
+    stumpless_unload_element_and_contents( entry->elements[i] );
+  }
+
+  unchecked_unload_entry( entry );
+}
+
+void
+stumpless_unload_entry_only( const struct stumpless_entry *entry ) {
+  if( !entry ) {
+    return;
+  }
+
+  unchecked_unload_entry( entry );
+}
+
+struct stumpless_entry *
+vstumpless_load_entry( struct stumpless_entry *entry,
+                       enum stumpless_facility facility,
+                       enum stumpless_severity severity,
+                       const char *app_name,
+                       const char *msgid,
+                       const char *message,
+                       va_list subs ) {
+  char *msg;
+  size_t msg_length;
+  struct stumpless_entry *result;
+
+  if( message ) {
+    msg = config_format_string( message, subs, &msg_length );
+    if( !msg ) {
+      return NULL;
+    }
+
+  } else {
+    msg = NULL;
+    msg_length = 0;
+  }
+
+  clear_error(  );
+  result = unchecked_load_entry( entry,
+                                 facility,
+                                 severity,
+                                 app_name,
+                                 msgid,
+                                 msg,
+                                 msg_length );
+
+  if( !result ) {
+    free_mem( msg );
+  }
+
+  return result;
+}
+
 struct stumpless_entry *
 vstumpless_new_entry( enum stumpless_facility facility,
                       enum stumpless_severity severity,
@@ -1138,68 +1263,35 @@ new_entry( enum stumpless_facility facility,
            char *message,
            size_t message_length ) {
   struct stumpless_entry *entry;
+  struct stumpless_entry *result;
 
   if( unlikely( !entry_cache ) ) {
     entry_cache = cache_new( sizeof( *entry ), NULL, NULL );
     if( !entry_cache ) {
-      goto fail;
+      return NULL;
     }
   }
 
   entry = cache_alloc( entry_cache );
   if( unlikely( !entry ) ) {
-    goto fail;
+    return NULL;
   }
-
-  if( app_name ) {
-    if( unlikely( !validate_app_name( app_name, &entry->app_name_length ) ) ) {
-      goto fail_after_cache;
-    }
-    memcpy( entry->app_name, app_name, entry->app_name_length + 1 );
-  } else {
-    entry->app_name[0] = '-';
-    entry->app_name[1] = '\0';
-    entry->app_name_length = 1;
-  }
-
-  if( msgid ) {
-    if( unlikely( !validate_msgid( msgid, &entry->msgid_length ) ) ) {
-      goto fail_after_cache;
-    }
-    memcpy( entry->msgid, msgid, entry->msgid_length );
-    entry->msgid[entry->msgid_length] = '\0';
-  } else {
-    entry->msgid[0] = '-';
-    entry->msgid[1] = '\0';
-    entry->msgid_length = 1;
-  }
-
-  if( !config_initialize_wel_data( entry ) ) {
-    goto fail_after_cache;
-  }
-  config_set_entry_wel_type( entry, severity );
-
-  config_assign_cached_mutex( entry->mutex );
-  if( !config_check_mutex_valid( entry->mutex ) ) {
-    goto fail_after_cache;
-  }
-
-  entry->procid_length = 0;
-  entry->hostname_length = 0;
-  entry->message = message;
-  entry->message_length = message_length;
-  entry->prival = get_prival( facility, severity );
-  entry->elements = NULL;
-  entry->element_count = 0;
 
   clear_error(  );
-  return entry;
 
-fail_after_cache:
-  cache_free( entry_cache, entry );
-fail:
-  return NULL;
+  result = unchecked_load_entry( entry,
+                                 facility,
+                                 severity,
+                                 app_name,
+                                 msgid,
+                                 message,
+                                 message_length );
 
+  if( !result ) {
+    cache_free( entry_cache, entry );
+  }
+
+  return result;
 }
 
 struct strbuilder *
@@ -1285,13 +1377,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry ) {
-  config_destroy_cached_mutex( entry->mutex );
-
-  config_destroy_wel_data( entry );
-
-  free_mem( entry->elements );
-  free_mem( entry->message );
-
+  unchecked_unload_entry( entry );
   cache_free( entry_cache, entry );
 }
 
@@ -1307,6 +1393,69 @@ unchecked_entry_has_element( const struct stumpless_entry *entry,
   }
 
   return false;
+}
+
+struct stumpless_entry *
+unchecked_load_entry( struct stumpless_entry *entry,
+                      enum stumpless_facility facility,
+                      enum stumpless_severity severity,
+                      const char *app_name,
+                      const char *msgid,
+                      char *message,
+                      size_t message_length ) {
+  if( app_name ) {
+    if( unlikely( !validate_app_name( app_name, &entry->app_name_length ) ) ) {
+      return NULL;
+    }
+    memcpy( entry->app_name, app_name, entry->app_name_length );
+    entry->app_name[entry->app_name_length] = '\0';
+  } else {
+    entry->app_name[0] = '-';
+    entry->app_name[1] = '\0';
+    entry->app_name_length = 1;
+  }
+
+  if( msgid ) {
+    if( unlikely( !validate_msgid( msgid, &entry->msgid_length ) ) ) {
+      return NULL;
+    }
+    memcpy( entry->msgid, msgid, entry->msgid_length );
+    entry->msgid[entry->msgid_length] = '\0';
+  } else {
+    entry->msgid[0] = '-';
+    entry->msgid[1] = '\0';
+    entry->msgid_length = 1;
+  }
+
+  config_assign_cached_mutex( entry->mutex );
+  if( !config_check_mutex_valid( entry->mutex ) ) {
+    return NULL;
+  }
+
+  if( !config_initialize_wel_data( entry ) ) {
+    return NULL;
+  }
+  config_set_entry_wel_type( entry, severity );
+
+  entry->procid_length = 0;
+  entry->hostname_length = 0;
+  entry->message = message;
+  entry->message_length = message_length;
+  entry->prival = get_prival( facility, severity );
+  entry->elements = NULL;
+  entry->element_count = 0;
+
+  return entry;
+}
+
+void
+unchecked_unload_entry( const struct stumpless_entry *entry ) {
+  config_destroy_cached_mutex( entry->mutex );
+
+  config_destroy_wel_data( entry );
+
+  free_mem( entry->elements );
+  free_mem( entry->message );
 }
 
 void

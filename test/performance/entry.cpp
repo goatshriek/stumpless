@@ -21,10 +21,111 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
+NEW_MEMORY_COUNTER( vload_entry )
+NEW_MEMORY_COUNTER( load_entry_str )
+NEW_MEMORY_COUNTER( vnew_entry )
+NEW_MEMORY_COUNTER( new_entry_str )
 NEW_MEMORY_COUNTER( set_app_name )
 NEW_MEMORY_COUNTER( set_hostname )
 NEW_MEMORY_COUNTER( set_msgid )
 NEW_MEMORY_COUNTER( set_procid )
+
+static void LoadEntry( benchmark::State &state ) {
+  struct stumpless_entry entry;
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( vload_entry );
+
+  for(auto _ : state){
+    result = stumpless_load_entry( &entry,
+                                   STUMPLESS_FACILITY_USER,
+                                   STUMPLESS_SEVERITY_INFO,
+                                   "entry-perf-test",
+                                   "load-entry-test",
+                                   "stumpless_load_entry iteration" );
+    if( !result ) {
+      state.SkipWithError( "the entry load failed" );
+    } else {
+      stumpless_unload_entry_only( &entry );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, vload_entry );
+}
+
+static void LoadEntryStr( benchmark::State &state ) {
+  struct stumpless_entry entry;
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( load_entry_str );
+
+  for(auto _ : state){
+    result = stumpless_load_entry_str( &entry,
+                                       STUMPLESS_FACILITY_USER,
+                                       STUMPLESS_SEVERITY_INFO,
+                                       "entry-perf-test",
+                                       "load-entry-test",
+                                       "stumpless_load_entry iteration" );
+    if( !result ) {
+      state.SkipWithError( "the entry load failed" );
+    } else {
+      stumpless_unload_entry_only( &entry );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, load_entry_str );
+}
+
+static void NewEntry(benchmark::State &state){
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( vnew_entry );
+
+  for(auto _ : state){
+    result = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                  STUMPLESS_SEVERITY_INFO,
+                                  "entry-perf-test",
+                                  "new-entry-test",
+                                  "%s iteration",
+                                  "stumpless_new_entry" );
+    if( !result ) {
+      state.SkipWithError( "the param creation failed" );
+    } else {
+      stumpless_destroy_entry_only( result );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, vnew_entry );
+}
+
+static void NewEntryStr(benchmark::State &state){
+  const struct stumpless_entry *result;
+
+  INIT_MEMORY_COUNTER( new_entry_str );
+
+  for(auto _ : state){
+    result = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                      STUMPLESS_SEVERITY_INFO,
+                                      "entry-perf-test",
+                                      "new-entry-test",
+                                      "stumpless_new_entry iteration" );
+    if( !result ) {
+      state.SkipWithError( "the param creation failed" );
+    } else {
+      stumpless_destroy_entry_only( result );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, new_entry_str );
+}
 
 static void SetAppName(benchmark::State& state){
   struct stumpless_entry *entry;
@@ -114,6 +215,10 @@ static void SetProcid(benchmark::State& state){
   SET_STATE_COUNTERS( state, set_procid );
 }
 
+BENCHMARK( LoadEntry );
+BENCHMARK( LoadEntryStr );
+BENCHMARK( NewEntry );
+BENCHMARK( NewEntryStr );
 BENCHMARK( SetAppName );
 BENCHMARK( SetHostname );
 BENCHMARK( SetMsgid );

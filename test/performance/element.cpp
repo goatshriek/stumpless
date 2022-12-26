@@ -21,6 +21,7 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( copy_element )
+NEW_MEMORY_COUNTER( load_element )
 NEW_MEMORY_COUNTER( new_element )
 NEW_MEMORY_COUNTER( set_element_name )
 
@@ -47,6 +48,27 @@ static void CopyElement(benchmark::State& state){
   stumpless_free_all(  );
 
   SET_STATE_COUNTERS( state, copy_element );
+}
+
+static void LoadElement(benchmark::State& state){
+  const char *element_name = "new-element-perf";
+  struct stumpless_element element;
+  const struct stumpless_element *result;
+
+  INIT_MEMORY_COUNTER( load_element );
+
+  for(auto _ : state){
+    result = stumpless_load_element( &element, element_name );
+    if( !result ) {
+      state.SkipWithError( "the element creation failed" );
+    } else {
+      stumpless_unload_element_and_contents( &element );
+    }
+  }
+
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, load_element );
 }
 
 static void NewElement(benchmark::State& state){
@@ -91,6 +113,7 @@ static void SetElementName(benchmark::State& state){
   SET_STATE_COUNTERS( state, set_element_name );
 }
 
-BENCHMARK(CopyElement);
-BENCHMARK(NewElement);
-BENCHMARK(SetElementName);
+BENCHMARK( CopyElement );
+BENCHMARK( LoadElement );
+BENCHMARK( NewElement );
+BENCHMARK( SetElementName );

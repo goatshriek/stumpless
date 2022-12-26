@@ -70,3 +70,19 @@ in your own additions.
    Windows functions to delineate ASCII vs. wide string arguments. Keep in mind
    that this is different though; stumpless uses multibyte strings otherwise,
    not just ASCII!
+ * **`new` constructors and `destroy` destructors** Constructors with "new" in
+   the name, such as `stumpless_new_entry`, allocate the memory for a new
+   structure and return it after initializing it. Structures created this way
+   should be destroyed using the "destroy" destructors, which deallocate any
+   memory needed to, such as `stumpless_destroy_entry_and_contents`.
+ * **`load` constructors and `unload` destructors** Constructors with "load" in
+   the name do the same setup as the "new" constructors, but instead of
+   dynamically allocating memory for the structure they populate a structure
+   provided as a parameter. These are often faster, as they use fewer dynamic
+   memory allocation routines. Structures initialized this way must be
+   destroyed using the "unload" destructors. One such pair of functions is
+   `stumpless_load_entry` and `stumpless_unload_entry`.
+ * **`open` constructors** Functions that use "open" instead of "new" or "load"
+   do the same as a "new" constructor, but also move them to an opened state.
+   Currently, only network targets may be in a state other than open, if the
+   connection with the log endpoint is not active.

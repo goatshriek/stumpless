@@ -847,6 +847,23 @@ namespace {
 
   /* non-fixture tests */
 
+  TEST( AddParamTest, NameTooLong ) {
+    struct stumpless_element *element;
+    struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    element = stumpless_new_element( "element" );
+
+    result = stumpless_add_new_param( element,
+                                      "very-long-name-abcdefghijklmnopqrstuvwx",
+                                      "test-value" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
+
+    stumpless_destroy_element_and_contents( element );
+    stumpless_free_all(  );
+  }
+
   TEST( AddParamTest, NullElement ) {
     struct stumpless_param *param;
     struct stumpless_element *result;
@@ -890,6 +907,15 @@ namespace {
 
   TEST( DestroyElementTest, NullElement ) {
     stumpless_destroy_element_and_contents( NULL );
+  }
+  
+  TEST( ElementToStringTest, NullElement ) {
+    const char *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_element_to_string( NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetElementNameTest, NullElement ) {
@@ -959,6 +985,52 @@ namespace {
     EXPECT_FALSE( result );
 
     stumpless_free_all(  );
+  }
+
+  TEST( LoadElement, InvalidName ) {
+    struct stumpless_element element;
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_load_element( &element, "ele=ment" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadElement, NullElement ) {
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_load_element( NULL, "irrelevant" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadElement, NullName ) {
+    struct stumpless_element element;
+    const struct stumpless_element *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_load_element( &element, NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( LoadElement, Success ) {
+    struct stumpless_element element;
+    const struct stumpless_element *result;
+
+    result = stumpless_load_element( &element, "success" );
+    EXPECT_NO_ERROR;
+    EXPECT_TRUE( result == &element );
+
+    stumpless_unload_element_only( &element );
   }
 
   TEST( NewElementTest, MemoryFailure ) {
@@ -1070,31 +1142,18 @@ namespace {
     stumpless_destroy_element_and_contents( element );
     stumpless_free_all(  );
   }
-  
-  TEST( ElemenToStringTest, NullElement ) {
-    const char *result;
+
+  TEST( UnloadElementAndContents, NullElement ) {
     const struct stumpless_error *error;
 
-    result = stumpless_element_to_string( NULL );
-    EXPECT_NULL( result );
+    stumpless_unload_element_and_contents( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST( AddParamTest, ParamNameTooLong ) {
-    struct stumpless_element *element;
-    struct stumpless_element *result;
+  TEST( UnloadElementOnly, NullElement ) {
     const struct stumpless_error *error;
 
-    element = stumpless_new_element( "element" );
-
-    result = stumpless_add_new_param( element,
-				      "very-long-name-abcdefghijklmnopqrstuvwxyz",
-				      "test-value" );
-    EXPECT_NULL( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
-
-    stumpless_destroy_element_and_contents( element );
-    stumpless_free_all(  );
+    stumpless_unload_element_only( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
-
 }

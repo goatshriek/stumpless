@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stumpless/entry.h>
+#include <stumpless/param.h>
 #include "private/error.h"
 #include "private/validate.h"
 #include "private/config/locale/wrapper.h"
