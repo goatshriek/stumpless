@@ -21,26 +21,18 @@
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
 
-
 const char *
 stumpless_get_prival_string(int prival) {
     const char *prival_string;
     int severity = get_severity(prival);
     int facility = get_facility(prival);
 
-    asprintf(&prival_string,"%s | %s", stumpless_get_severity_string((enum)*severity), 
-    stumpless_get_facility_string((enum)*facility));
-    return prival_string;
+  if(severity_is_invalid(severity) == 0 || facility_is_invalid(facility) == 0) {
+    return "NO_SUCH_PRIVAL";
+  } else {
+      asprintf(&prival_string,"%s | %s", stumpless_get_severity_string((enum)*severity), 
+      stumpless_get_facility_string((enum)*facility));
+      return prival_string;
+    }
 }
-
-/* private functions */
-
-int
-get_severity( int prival ) {
-    return prival & 0x7;
-}
-
-int
-get_facility( int prival ) {
-  return prival & 0xf8;
-}
+  

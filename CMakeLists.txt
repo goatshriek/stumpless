@@ -219,6 +219,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/log.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
   ${PROJECT_SOURCE_DIR}/src/param.c
+  ${PROJECT_SOURCE_DIR}/src/prival.c
   ${PROJECT_SOURCE_DIR}/src/severity.c
   ${PROJECT_SOURCE_DIR}/src/strbuilder.c
   ${PROJECT_SOURCE_DIR}/src/strhelper.c
@@ -950,6 +951,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/memory.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/option.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/param.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/prival.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/severity.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
@@ -1216,6 +1218,10 @@ add_function_test(param
 
 add_function_test(perror
   SOURCES test/function/startup/perror.cpp
+)
+
+add_function_test(facility
+  SOURCES test/function/prival.cpp
 )
 
 add_function_test(severity

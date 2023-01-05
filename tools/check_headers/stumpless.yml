@@ -632,6 +632,7 @@
 "stumpless_get_severity_enum" : "stumpless/severity.h"
 "stumpless_get_facility_string" : "stumpless/facility.h"
 "stumpless_get_facility_enum" : "stumpless/facility.h"
+"stumpless_get_prival_string" : "stumpless/prival.h"
 "stumpless_get_target_type_string" : "stumpless/target.h"
 "STUMPLESS_FOREACH_TARGET_TYPE" : "stumpless/target.h"
 "STUMPLESS_FOREACH_SEVERITY" : "stumpless/severity.h"
