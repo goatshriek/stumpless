@@ -23,9 +23,6 @@
 #ifndef __STUMPLESS_PRIVAL_H
 #  define __STUMPLESS_PRIVAL_H
 
-#  include <stumpless/config.h>
-#  include <stumpless/generator.h>
-
 /**
  * Gets the string corresponding to the given int prival value.
  *

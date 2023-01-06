@@ -34,5 +34,4 @@ stumpless_get_prival_string(int prival) {
       stumpless_get_facility_string((enum)*facility));
       return prival_string;
     }
-}
-  
+}  

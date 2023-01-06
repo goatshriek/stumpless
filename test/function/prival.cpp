@@ -18,17 +18,17 @@
 
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <prival.h>
 
 namespace {
 
-  class PrivalTest : public::testing::Test {
-  };
+	class PrivalTest : public::testing::Test {
+	};
 
-  TEST( GetPrivalString, ValidPrival ) {
-    const char *result;
+	TEST(GetPrivalString, ValidPrival) {
+	const char *result;
 
-    #define CHECK_PRIVAL_TRUE( STRING, INT ) \
-      result = stumpless_get_prival_string( STRING ); \
-      EXPECT_STREQ( result, #STRING );
+	result = stumpless_get_prival_string( STRING ); \
+	EXPECT_STREQ( result, #STRING );
   }
 }

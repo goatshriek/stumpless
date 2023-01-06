@@ -223,4 +223,3 @@ EXPORTS
   stumpless_unload_param                        @207
   vstumpless_load_entry                         @208
   stumpless_get_prival_string                   @209
-  

@@ -1220,7 +1220,7 @@ add_function_test(perror
   SOURCES test/function/startup/perror.cpp
 )
 
-add_function_test(facility
+add_function_test(prival
   SOURCES test/function/prival.cpp
 )
 
