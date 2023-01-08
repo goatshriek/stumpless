@@ -387,6 +387,56 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( NewParamTest, ValidUTF8 ){
+    const struct stumpless_param *param;
+    const char *name = "test-param-name";
+    // U+2162 U+2264 U+0035(<Roman Numeral Three><Less-Than or Equal To>5)
+    const char *value = "\xe2\x85\xa2\xe2\x89\xa4\x35";
+    const size_t name_length = strlen( name );
+    const size_t value_length = strlen( value );
+
+    param = stumpless_new_param( name, value );
+    ASSERT_NOT_NULL( param );
+    EXPECT_NO_ERROR;
+
+    ASSERT_EQ( name_length, param->name_length );
+    ASSERT_NOT_NULL( param->name );
+    ASSERT_EQ( 0, memcmp( param->name, name, name_length ) );
+
+    ASSERT_EQ( value_length, param->value_length );
+    ASSERT_NOT_NULL( param->value );
+    ASSERT_EQ( 0, memcmp( param->value, value, value_length ) );
+
+    stumpless_destroy_param( param );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( NewParamTest, InvalidUTF8 ){
+    struct stumpless_param *param;
+    const struct stumpless_error *error;
+    const char *name = "test-param-name";
+
+    // invalid lead byte
+    param = stumpless_new_param( name, "\x80" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    // continuation byte should start with 0b10
+    param = stumpless_new_param( name, "\xc0\xc0" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    // U+0000 should be encoded into \x00, not \xc0\x80
+    param = stumpless_new_param( name, "\xc0\x80" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_destroy_param( param );
+
+    stumpless_free_all(  );
+  }
+
   TEST( SetName, Basic ) {
     struct stumpless_param *param;
     const char *original_name = "first-name";
@@ -497,6 +547,69 @@ namespace {
     result = stumpless_set_param_value( NULL, "new-value" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetValue, ValidUTF8 ) {
+    struct stumpless_param *param;
+    // U+2162 U+2264 U+0035(<Roman Numeral Three><Less-Than or Equal To>5)
+    const char *original_value = "\xe2\x85\xa2\xe2\x89\xa4\x35";
+    const char *retrieved_value;
+    // U+0033 U+002e U+0035 U+33A0(3.5<Square Cm Squared>)
+    const char *new_value = "\x33\x2e\x35\xe3\x8e\xa0";
+    const struct stumpless_param *result;
+
+    param = stumpless_new_param( "my-name", original_value );
+    ASSERT_NOT_NULL( param );
+
+    retrieved_value = stumpless_get_param_value( param );
+    EXPECT_STREQ( retrieved_value, original_value );
+    free( ( void * ) retrieved_value );
+
+    result = stumpless_set_param_value( param, new_value );
+    EXPECT_TRUE( result == param );
+    EXPECT_NO_ERROR;
+
+    retrieved_value = stumpless_get_param_value( param );
+    EXPECT_STREQ( retrieved_value, new_value );
+    free( ( void * ) retrieved_value );
+
+    stumpless_destroy_param( param );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetValue, InvalidUTF8 ) {
+    struct stumpless_param *param;
+    const char *original_value = "first-value";
+    const char *retrieved_value;
+    struct stumpless_param *result;
+    const struct stumpless_error *error;
+
+    param = stumpless_new_param( "my-name", original_value );
+    ASSERT_NOT_NULL( param );
+
+    retrieved_value = stumpless_get_param_value( param );
+    EXPECT_STREQ( retrieved_value, original_value );
+    free( ( void * ) retrieved_value );
+
+    // invalid lead byte
+    result = stumpless_set_param_value( param, "\x80" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    // continuation byte should start with 0b10
+    result = stumpless_set_param_value( param, "\xc0\xc0" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    // U+0000 should be encoded into \x00, not \xc0\x80
+    result = stumpless_set_param_value( param, "\xc0\x80" );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+
+    stumpless_destroy_param( param );
 
     stumpless_free_all(  );
   }
