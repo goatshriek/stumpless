@@ -20,18 +20,21 @@
 #include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
+#include <stumpless/memory.h>
+#include "private/facility.h"
+#include "private/severity.h"
+#include "private/memory.h"
 
-const char *
-stumpless_get_prival_string(int prival) {
-    const char *prival_string;
-    int severity = get_severity(prival);
-    int facility = get_facility(prival);
 
-  if(severity_is_invalid(severity) == 0 || facility_is_invalid(facility) == 0) {
-    return "NO_SUCH_PRIVAL";
-  } else {
-      asprintf(&prival_string,"%s | %s", stumpless_get_severity_string((enum)*severity), 
-      stumpless_get_facility_string((enum)*facility));
-      return prival_string;
+const char * stumpless_get_prival_string(int prival) {
+	const char *prival_string;
+	int severit, facility; 
+
+	prival_string = alloc_mem(30);
+	severity = get_severity(prival);
+	facility = get_facility(prival);
+		
+	asprintf(&prival_string, "%s | %s", stumpless_get_severity_string(severity), stumpless_get_facility_string(facility));
+    return prival_string;
     }
 }  

@@ -23,6 +23,12 @@
 #ifndef __STUMPLESS_PRIVAL_H
 #  define __STUMPLESS_PRIVAL_H
 
+#  include <stumpless/config.h>
+
+#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
+#    include <syslog.h>
+#  endif
+
 /**
  * Gets the string corresponding to the given int prival value.
  *
@@ -43,7 +49,7 @@
  * @return The string representation of the severity and facility from the given prival.
 */
 STUMPLESS_PUBLIC_FUNCTION
-const char *
+const char * 
 stumpless_get_prival_string( int prival );
 
 #  ifdef __cplusplus
