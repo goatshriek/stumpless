@@ -34,11 +34,11 @@ const char * stumpless_get_prival_string(int prival) {
 	const char *prival_string;
 	int severity, facility; 
 
-	prival_string = alloc_mem(30);
+	prival_string = alloc_mem(8);
 	severity = get_severity(prival);
 	facility = get_facility(prival);
 		
-	snprintf(&prival_string, 30, "%s | %s", stumpless_get_severity_string(severity),
+	snprintf(&prival_string, 8, "%s | %s", stumpless_get_severity_string(severity),
 	stumpless_get_facility_string(facility));
     return prival_string;
 } 

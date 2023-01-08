@@ -18,7 +18,6 @@
 
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include <prival.h>
 
 namespace {
 
