@@ -24,9 +24,13 @@
 #include "private/facility.h"
 #include "private/severity.h"
 #include "private/memory.h"
+#include "private/validate.h"
 
 
 const char * stumpless_get_prival_string(int prival) {
+
+	VALIDATE_ARG_NOT_NULL(prival);
+
 	const char *prival_string;
 	int severity, facility; 
 
