@@ -32,7 +32,8 @@ const char * stumpless_get_prival_string(int prival) {
 	VALIDATE_ARG_NOT_NULL(prival);
 
 	const char *prival_string;
-	int severity, facility; 
+	int severity;
+	int facility;
 
 	prival_string = alloc_mem(8);
 	severity = get_severity(prival);
