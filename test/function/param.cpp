@@ -556,8 +556,8 @@ namespace {
     // U+2162 U+2264 U+0035(<Roman Numeral Three><Less-Than or Equal To>5)
     const char *original_value = "\xe2\x85\xa2\xe2\x89\xa4\x35";
     const char *retrieved_value;
-    // U+0033 U+002e U+0035 U+33A0(3.5<Square Cm Squared>)
-    const char *new_value = "\x33\x2e\x35\xe3\x8e\xa0";
+    // BOM U+0041 U+0391 U+1d2c U+10ffff(<BOM>A<Alpha><Modifier Letter A><noncharacter>)
+    const char *new_value = "\xef\xbb\xbf\x41\xce\x91\xe1\xb4\xac\xf4\x8f\xbf\xbf";
     const struct stumpless_param *result;
 
     param = stumpless_new_param( "my-name", original_value );
