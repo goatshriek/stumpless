@@ -115,6 +115,9 @@
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
 
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "target type is incompatible with this operation"
 

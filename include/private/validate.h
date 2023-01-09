@@ -226,6 +226,19 @@ bool
 validate_param_name_length( const char *str, size_t *length );
 
 /**
+ * Checks that the passed in param value is valid UTF-8 string.
+ *
+ * @param str The param value(string).
+ *
+ * @param length The length of the string to validate.
+ *
+ * @return True if the param name is valid UTF-8 string, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ */
+bool
+validate_param_value( const char *str, size_t length );
+
+/**
  * Checks that the passed in string contains only ASCII characters
  * (33 <= char <= 126).
  *

@@ -122,6 +122,10 @@
 "সংজ্ঞায়িত করা উচিত: 0 এর মধ্যে মান" \
 " এবং 7 সহ"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "টার্গেট টাইপ এই অপারেশনের সাথে বেমানান"
 

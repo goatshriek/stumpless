@@ -115,6 +115,10 @@
 "códigos de gravidade devem ser definidos de acordo com a RFC 5424:" \
 " valores entre 0 e 7, incluso"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "tipo de objetivo é incompatível com esta operação"
 

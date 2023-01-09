@@ -319,7 +319,7 @@ stumpless_load_param( struct stumpless_param *param,
  * @param name The name of the new param. Restricted to printable ASCII
  * characters different from '=', ']' and '"'.
  *
- * @param value The value of the new param.
+ * @param value The value of the new param. The value must be UTF-8 string.
  *
  * @return The created param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code set appropriately.
@@ -379,7 +379,7 @@ stumpless_set_param_name( struct stumpless_param *param, const char *name );
  *
  * @param param The param to set the value of.
  *
- * @param value The new name of param.
+ * @param value The new name of param. The value must be UTF-8 string.
  *
  * @return The modified param, if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.

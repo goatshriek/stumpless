@@ -130,6 +130,10 @@
 "Werte zwischen 0 und einschließlich 7"
 
 // todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
+// todo translate
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "target type is incompatible with this operation"
 

@@ -119,6 +119,10 @@
 "los códigos de gravedad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "mensaje de error por tipo de objetivo no válido"
 
