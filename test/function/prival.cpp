@@ -27,7 +27,7 @@ namespace {
 	TEST(GetPrivalString, ValidPrival) {
 	const char *result;
 
-	result = stumpless_get_prival_string( STRING ); \
-	EXPECT_STREQ( result, #STRING );
+	result = stumpless_get_prival_string( 11 ); \
+	EXPECT_STREQ( result, "3 | 8" );
   }
 }
