@@ -155,8 +155,6 @@ validate_utf8_compliance( const char *str, size_t length ) {
     TWO_CHAR,
     THREE_CHAR,
     FOUR_CHAR,
-    FIVE_CHAR,
-    SIX_CHAR
   };
 
   enum utf8_state current_state = LEAD_CHAR;
@@ -203,18 +201,6 @@ validate_utf8_compliance( const char *str, size_t length ) {
           char_count = 1;
           break;
         }
-        if( ( c & '\xfc' ) == '\xf8' ) {
-          current_state = FIVE_CHAR;
-          bytes[0] = c & '\x03';
-          char_count = 1;
-          break;
-        }
-        if( ( c & '\xfe' ) == '\xfc' ) {
-          current_state = SIX_CHAR;
-          bytes[0] = c & '\x01';
-          char_count = 1;
-          break;
-        }
         if( ( c & '\x80' ) != 0 ) {
           raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "UTF-8 lead byte" ) );
           return false;
@@ -243,26 +229,6 @@ validate_utf8_compliance( const char *str, size_t length ) {
         char_count++;
         if( char_count == 4 ) {
           VALIDATE_SHORTEST_FORM( bytes[0] | ( bytes[1] & '\x30' ) );
-          current_state = LEAD_CHAR;
-        }
-        break;
-
-      case FIVE_CHAR:
-        VALIDATE_CONTINUATION_BYTE( c );
-        bytes[char_count] = c & '\x3f';
-        char_count++;
-        if( char_count == 5 ) {
-          VALIDATE_SHORTEST_FORM( bytes[0] | ( bytes[1] & '\x38' ) );
-          current_state = LEAD_CHAR;
-        }
-        break;
-
-      case SIX_CHAR:
-        VALIDATE_CONTINUATION_BYTE ( c );
-        bytes[char_count] = c & '\x3f';
-        char_count++;
-        if( char_count == 6 ) {
-          VALIDATE_SHORTEST_FORM( bytes[0] | ( bytes[1] & '\x3c' ) );
           current_state = LEAD_CHAR;
         }
         break;
