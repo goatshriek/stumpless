@@ -116,6 +116,10 @@
 "गंभीरता कोड को RFC 5424 के अनुसार परिभाषित किया जाना चाहिए: 0 . " \
 "के बीच के मान और 7 समावेशी"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "लक्ष्य प्रकार इस ऑपरेशन के साथ असंगत है"
 

@@ -118,6 +118,10 @@
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "severity代码必须根据RFC 5424定义：值在0~7之间"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "目标类型与此操作不兼容"
 

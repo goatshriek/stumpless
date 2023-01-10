@@ -134,6 +134,122 @@ validate_param_name_length( const char *name, size_t *length ) {
                                  length );
 }
 
+/**
+ * Validates that a provided string is UTF-8 compliance.
+ *
+ * @param str The string to validate.
+ *
+ * @param length The length of the string.
+ * 
+ * @return True if the string is valid UTF-8 string, otherwise
+ * it will return false and raise STUMPLESS_INVALID_ENCODING error.
+ * 
+ * @note This implementation is ported from the function
+ * TestUTF8Compliance in test/helper/utf8.cpp.
+ */
+static
+bool
+validate_utf8_compliance( const char *str, size_t length ) {
+  enum utf8_state {
+    LEAD_CHAR,
+    TWO_CHAR,
+    THREE_CHAR,
+    FOUR_CHAR,
+  };
+
+  enum utf8_state current_state = LEAD_CHAR;
+  size_t i;
+  size_t char_count;
+  char bytes[6];
+
+  // strip off the BOM if it exists
+  if( length >= 3 && str[0] == '\xef' && str[1] == '\xbb' && str[2] == '\xbf' ) {
+    str += 3;
+    length -= 3;
+  }
+
+  for( i = 0; i < length; i++ ) {
+    #define VALIDATE_CONTINUATION_BYTE( continuation_byte ) \
+      if( ( ( continuation_byte ) & '\xc0' ) != '\x80' ) { \
+        raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "UTF-8 continuation byte" ) ); \
+        return false; \
+      }
+
+    #define VALIDATE_SHORTEST_FORM( surplus_most_significant_bits ) \
+      if( ( surplus_most_significant_bits ) == 0 ) { \
+        raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "UTF-8 shortest form" ) ); \
+        return false; \
+      }
+
+    const char c = str[i];
+    switch( current_state ) {
+      case LEAD_CHAR:
+        if( ( c & '\xe0' ) == '\xc0' ) {
+          current_state = TWO_CHAR;
+          bytes[0] = c & '\x1f';
+          break;
+        }
+        if( ( c & '\xf0' ) == '\xe0' ) {
+          current_state = THREE_CHAR;
+          bytes[0] = c & '\x0f';
+          char_count = 1;
+          break;
+        }
+        if( ( c & '\xf8' ) == '\xf0' ) {
+          current_state = FOUR_CHAR;
+          bytes[0] = c & '\x07';
+          char_count = 1;
+          break;
+        }
+        if( ( c & '\x80' ) != 0 ) {
+          raise_invalid_encoding( L10N_FORMAT_ERROR_MESSAGE( "UTF-8 lead byte" ) );
+          return false;
+        }
+        break;
+
+      case TWO_CHAR:
+        VALIDATE_CONTINUATION_BYTE( c );
+        VALIDATE_SHORTEST_FORM( bytes[0] & '\x1e' )
+        current_state = LEAD_CHAR;
+        break;
+
+      case THREE_CHAR:
+        VALIDATE_CONTINUATION_BYTE( c );
+        bytes[char_count] = c & '\x3f';
+        char_count++;
+        if( char_count == 3 ) {
+          VALIDATE_SHORTEST_FORM( bytes[0] | ( bytes[1] & '\x20' ) );
+          current_state = LEAD_CHAR;
+        }
+        break;
+
+      case FOUR_CHAR:
+        VALIDATE_CONTINUATION_BYTE( c );
+        bytes[char_count] = c & '\x3f';
+        char_count++;
+        if( char_count == 4 ) {
+          VALIDATE_SHORTEST_FORM( bytes[0] | ( bytes[1] & '\x30' ) );
+          current_state = LEAD_CHAR;
+        }
+        break;
+
+      default:
+        raise_invalid_encoding( L10N_INVALID_STATE_DURING_UTF8_PARSING );
+        return false;
+    }
+
+    #undef VALIDATE_SHORTEST_FORM
+    #undef VALIDATE_CONTINUATION_BYTE
+  }
+
+  return true;
+}
+
+bool
+validate_param_value( const char *str, size_t length ) {
+  return validate_utf8_compliance( str, length );
+}
+
 bool
 validate_printable_ascii( const char *str, size_t length ) {
   size_t i;

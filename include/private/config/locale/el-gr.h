@@ -120,6 +120,10 @@
 "οι κωδικοί σοβαρότητας πρέπει να είναι καθορισμένοι με βάση το RFC 5424" \
 " και οι τιμές να είναι στο εύρος 0 έως 7"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 # define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "ΣΦΑΛΜΑ: ΜΗ ΕΓΚΥΡΟΣ ΤΥΠΟΣ ΣΤΟΧΟΥ"
 

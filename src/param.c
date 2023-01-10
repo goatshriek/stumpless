@@ -123,6 +123,10 @@ stumpless_new_param( const char *name, const char *value ) {
     return NULL;
   }
 
+  if( unlikely( !validate_param_value( value, strlen(value) ) ) ) {
+    return NULL;
+  }
+
   clear_error(  );
 
   param = alloc_mem( sizeof( *param ) );
@@ -170,6 +174,10 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value ) {
 
   VALIDATE_ARG_NOT_NULL( param );
   VALIDATE_ARG_NOT_NULL( value );
+
+  if( unlikely( !validate_param_value( value, strlen(value) ) ) ) {
+    goto fail;
+  }
 
   new_value = copy_cstring_with_length( value, &new_size );
   if( !new_value ) {
