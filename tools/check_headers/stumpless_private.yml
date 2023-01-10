@@ -129,6 +129,7 @@
 "stdatomic_write_flag": "private/config/have_stdatomic.h"
 "stdatomic_write_ptr": "private/config/have_stdatomic.h"
 "strbuilder_append_positive_int": "private/strbuilder.h"
+"struct function_target": "private/target/function.h"
 "SUPPORT_ABSTRACT_SOCKET_NAMES": "private/config.h"
 "SUPPORT_UNISTD_SYSCONF_GETPAGESIZE": "private/config.h"
 "SUPPORT_WINDOWS_GET_NOW": "private/config.h"
