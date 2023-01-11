@@ -28,6 +28,9 @@
 #  elif SUPPORT_WINDOWS_GET_NOW
 #    include "private/config/windows_get_now_supported.h"
 #    define config_get_now windows_get_now
+#  elif HAVE_GMTIME
+#    include "private/config/have_gmtime.h"
+#    define config_get_now gmtime_get_now
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H */

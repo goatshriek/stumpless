@@ -55,6 +55,7 @@
 "get_event_id": "private/config/wel_supported.h"
 "get_journald_field_name": "private/target/journald.h"
 "get_type": "private/config/wel_supported.h"
+"gmtime_get_now": "private/config/have_gmtime.h"
 "HAVE_FOPEN_S": "private/config.h"
 "HAVE_PTHREAD_H": "private/config.h"
 "HAVE_STRNCPY_S": "private/config.h"
