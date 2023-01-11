@@ -17,9 +17,28 @@
  */
 
 #include <stddef.h>
+#include <time.h>
 #include "private/config/have_gmtime.h"
+#include "private/formatter.h"
 
 size_t
 gmtime_get_now( char *buffer ) {
-  return 0;
+  time_t now_time;
+  time_t time_result;
+  struct tm *now_tm;
+
+  time_result = time( &now_time );
+  if( time_result == -1 ) {
+    return 0;
+  }
+
+  now_tm = gmtime( &now_time );
+  if( !now_tm ) {
+    return 0;
+  }
+
+  return strftime( buffer,
+                   RFC_5424_WHOLE_TIME_BUFFER_SIZE,
+                   "%FT%T",
+                   now_tm );
 }
