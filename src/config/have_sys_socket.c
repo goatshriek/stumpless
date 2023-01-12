@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,72 +19,14 @@
 #include "private/config/have_sys_socket.h"
 
 #include <errno.h>
-#include <netdb.h>
 #include <stddef.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/int_connect.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/target/network.h"
-
-static
-int
-sys_socket_open_socket( const char *destination,
-                        const char *port,
-                        int domain,
-                        int type,
-                        int protocol ) {
-  int handle;
-  struct addrinfo hints = { .ai_flags = 0,
-                            .ai_addrlen = 0,
-                            .ai_canonname = NULL,
-                            .ai_addr = NULL,
-                            .ai_next = NULL };
-  struct addrinfo *addr_result;
-  int result;
-
-  handle = socket( domain, type, protocol );
-  if( handle == -1 ) {
-    raise_socket_failure( L10N_SOCKET_FAILED_ERROR_MESSAGE,
-                          errno,
-                          L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail;
-  }
-
-  hints.ai_family = domain;
-  hints.ai_socktype = type;
-  hints.ai_protocol = protocol;
-
-  result = getaddrinfo( destination, port, &hints, &addr_result );
-  if( result != 0 ) {
-    raise_address_failure( L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE,
-                           result,
-                           L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE );
-    goto fail_addr;
-  }
-
-  result = connect( handle,
-                    addr_result->ai_addr,
-                    addr_result->ai_addrlen );
-
-  if( result == -1 ) {
-    raise_socket_connect_failure( L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE,
-                                  errno,
-                                  L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail_connect;
-  }
-
-  freeaddrinfo( addr_result );
-  return handle;
-
-fail_connect:
-  freeaddrinfo( addr_result );
-fail_addr:
-  close( handle );
-fail:
-  return -1;
-}
 
 void
 sys_socket_close_network_target( const struct network_target *target ) {
@@ -106,11 +48,11 @@ sys_socket_open_tcp4_target( struct network_target *target ) {
   int result;
 
   lock_network_target( target );
-  result = sys_socket_open_socket( target->destination,
-                                   target->port,
-                                   AF_INET,
-                                   SOCK_STREAM,
-                                   0 );
+  result = config_int_connect( target->destination,
+                               target->port,
+                               AF_INET,
+                               SOCK_STREAM,
+                               0 );
   target->handle = result;
   unlock_network_target( target );
 
@@ -122,11 +64,11 @@ sys_socket_open_tcp6_target( struct network_target *target ) {
   int result;
 
   lock_network_target( target );
-  result = sys_socket_open_socket( target->destination,
-                                   target->port,
-                                   AF_INET6,
-                                   SOCK_STREAM,
-                                   0 );
+  result = config_int_connect( target->destination,
+                               target->port,
+                               AF_INET6,
+                               SOCK_STREAM,
+                               0 );
   target->handle = result;
   unlock_network_target( target );
 
@@ -138,11 +80,11 @@ sys_socket_open_udp4_target( struct network_target *target ) {
   int result;
 
   lock_network_target( target );
-  result = sys_socket_open_socket( target->destination,
-                                   target->port,
-                                   AF_INET,
-                                   SOCK_DGRAM,
-                                   0 );
+  result = config_int_connect( target->destination,
+                               target->port,
+                               AF_INET,
+                               SOCK_DGRAM,
+                               0 );
   target->handle = result;
   unlock_network_target( target );
 
@@ -154,11 +96,11 @@ sys_socket_open_udp6_target( struct network_target *target ) {
   int result;
 
   lock_network_target( target );
-  result = sys_socket_open_socket( target->destination,
-                                   target->port,
-                                   AF_INET6,
-                                   SOCK_DGRAM,
-                                   0 );
+  result = config_int_connect( target->destination,
+                               target->port,
+                               AF_INET6,
+                               SOCK_DGRAM,
+                               0 );
   target->handle = result;
   unlock_network_target( target );
 
@@ -171,11 +113,11 @@ sys_socket_reopen_tcp4_target( struct network_target *target ) {
 
   if( sys_socket_network_target_is_open( target ) ) {
     close( target->handle );
-    target->handle = sys_socket_open_socket( target->destination,
-                                             target->port,
-                                             AF_INET,
-                                             SOCK_STREAM,
-                                             0 );
+    target->handle = config_int_connect( target->destination,
+                                         target->port,
+                                         AF_INET,
+                                         SOCK_STREAM,
+                                         0 );
   }
 
   unlock_network_target( target );
@@ -188,11 +130,11 @@ sys_socket_reopen_tcp6_target( struct network_target *target ) {
 
   if( sys_socket_network_target_is_open( target ) ) {
     close( target->handle );
-    target->handle = sys_socket_open_socket( target->destination,
-                                             target->port,
-                                             AF_INET6,
-                                             SOCK_STREAM,
-                                             0 );
+    target->handle = config_int_connect( target->destination,
+                                         target->port,
+                                         AF_INET6,
+                                         SOCK_STREAM,
+                                         0 );
   }
 
   unlock_network_target( target );
@@ -205,11 +147,11 @@ sys_socket_reopen_udp4_target( struct network_target *target ) {
 
   if( sys_socket_network_target_is_open( target ) ) {
     close( target->handle );
-    target->handle = sys_socket_open_socket( target->destination,
-                                             target->port,
-                                             AF_INET,
-                                             SOCK_DGRAM,
-                                             0 );
+    target->handle = config_int_connect( target->destination,
+                                         target->port,
+                                         AF_INET,
+                                         SOCK_DGRAM,
+                                         0 );
   }
 
   unlock_network_target( target );
@@ -222,11 +164,11 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 
   if( sys_socket_network_target_is_open( target ) ) {
     close( target->handle );
-    target->handle = sys_socket_open_socket( target->destination,
-                                             target->port,
-                                             AF_INET6,
-                                             SOCK_DGRAM,
-                                             0 );
+    target->handle = config_int_connect( target->destination,
+                                         target->port,
+                                         AF_INET6,
+                                         SOCK_DGRAM,
+                                         0 );
   }
 
   unlock_network_target( target );

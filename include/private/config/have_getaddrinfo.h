@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0
+/* SPDX-License-Identifier: Apache-2.0 */
 
 /*
  * Copyright 2023 Joel E. Anderson
@@ -16,29 +16,17 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <time.h>
-#include "private/config/have_gmtime.h"
-#include "private/formatter.h"
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H
 
-size_t
-gmtime_get_now( char *buffer ) {
-  time_t now_time;
-  time_t time_result;
-  struct tm *now_tm;
+/**
+ *
+ */
+int
+getaddrinfo_int_connect( const char *destination,
+                         const char *port,
+                         int domain,
+                         int type,
+                         int protocol );
 
-  time_result = time( &now_time );
-  if( time_result == -1 ) {
-    return 0;
-  }
-
-  now_tm = gmtime( &now_time );
-  if( !now_tm ) {
-    return 0;
-  }
-
-  return strftime( buffer,
-                   RFC_5424_WHOLE_TIME_BUFFER_SIZE + 1,
-                   "%FT%TZ",
-                   now_tm );
-}
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H */
