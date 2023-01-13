@@ -60,14 +60,12 @@ no_getaddrinfo_int_connect( const char *destination,
   }
 
   if( domain == AF_INET ) {
-    _res.options = _res.options & (~RES_USE_INET6);
     addr4.sin_family = AF_INET;
     addr4.sin_port = htons( port_num );
     domain_address = &( addr4.sin_addr );
     addr = ( struct sockaddr * ) &addr4;
     addrlen = sizeof( addr4 );
   } else {
-    _res.options = _res.options | RES_USE_INET6;
     addr6.sin6_family = AF_INET6;
     addr6.sin6_port = htons( port_num );
     domain_address = &( addr6.sin6_addr );
