@@ -24,6 +24,7 @@ jobs:
           scripts/check_l10n.rb "include/private/config/locale/*-??.h"
       - name: Build Documentation
         run: |
+          sudo apt-get update
           sudo apt-get install doxygen
           cmake .
           make docs

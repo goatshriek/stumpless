@@ -334,6 +334,7 @@ jobs:
           bundle install
       - name: Install Packages
         run: |
+          sudo apt-get update
           sudo apt-get install doxygen
       - name: Configure
         run: |
