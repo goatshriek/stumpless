@@ -161,14 +161,11 @@ namespace {
   }
 
   TEST( NetworkTargetOpenTest, Basic ) {
-    struct stumpless_target *target;
-    const struct stumpless_error *error;
+    const struct stumpless_target *target;
 
     target = stumpless_open_udp6_target( "target-to-self", "::1" );
-    EXPECT_TRUE( target != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
 
     stumpless_close_network_target( target );
   }
@@ -250,8 +247,8 @@ namespace {
     handle = open_udp6_server_socket( "::1", new_port );
 
     target = stumpless_open_udp6_target( "target-to-self", "::1" );
-    ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     TestSetTransportPortOnOpenTarget( target, new_port, handle );
 

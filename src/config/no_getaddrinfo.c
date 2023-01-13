@@ -18,8 +18,9 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
+#include <netdb.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include "private/config/no_getaddrinfo.h"
@@ -33,9 +34,14 @@ no_getaddrinfo_int_connect( const char *destination,
                             int type,
                             int protocol ) {
   int handle;
-  struct sockaddr_in addr;
+  struct sockaddr_in addr4;
+  struct sockaddr_in6 addr6;
+  void *domain_address;
   int port_num;
   int result;
+  struct hostent *host;
+  struct sockaddr *addr;
+  socklen_t addrlen;
 
   handle = socket( domain, type, protocol );
   if( handle == -1 ) {
@@ -50,21 +56,37 @@ no_getaddrinfo_int_connect( const char *destination,
     goto fail_addr;
   }
 
-  if( inet_addr( destination ) == -1 ) {
-    raise_address_failure( "inet_aton failure", // TODO failure
-                           errno,
-                           L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail_addr;
+  if( domain == AF_INET ) {
+    addr4.sin_family = AF_INET;
+    addr4.sin_port = htons( port_num );
+    domain_address = &( addr4.sin_addr );
+    addr = ( struct sockaddr * ) &addr4;
+    addrlen = sizeof( addr4 );
+  } else {
+    addr6.sin6_family = AF_INET6;
+    addr6.sin6_port = htons( port_num );
+    domain_address = &( addr6.sin6_addr );
+    addr = ( struct sockaddr * ) &addr6;
+    addrlen = sizeof( addr6 );
   }
 
-  addr.sin_family = domain;
-  addr.sin_port = ntohs( port_num );
-  addr.sin_addr.s_addr = inet_addr( destination );
+  host = gethostbyname( destination );
+  if( host && host->h_addrtype == domain && host->h_addr_list[0] ) {
+    memcpy( domain_address, host->h_addr_list[0], host->h_length );
+  } else { // AF_INET6
+    if( inet_pton( domain, destination, domain_address ) != 1 ) {
+      raise_address_failure( "both gethostbyname and inet_pton failed", // TODO localize
+                             errno,
+                             L10N_ERRNO_ERROR_CODE_TYPE );
+      goto fail_addr;
+    }
+  }
 
-  result = connect( handle,
-                    ( struct sockaddr * ) &addr,
-                    sizeof( addr ) );
+  result = connect( handle, addr, addrlen );
   if( result == -1 ) {
+    raise_socket_connect_failure( L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE,
+                                  errno,
+                                  L10N_ERRNO_ERROR_CODE_TYPE );
     goto fail_addr;
   }
 

@@ -37,6 +37,7 @@ namespace {
     INIT_MEMORY_COUNTER( set_port );
 
     target = stumpless_open_udp6_target( "set-port-leak", "::1" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );
