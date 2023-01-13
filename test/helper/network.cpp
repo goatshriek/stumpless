@@ -46,8 +46,8 @@ TestSetDestinationOnOpenTarget( struct stumpless_target *target,
 
   EXPECT_TRUE( stumpless_target_is_open( target ) );
   target_result = stumpless_set_destination( target, new_destination );
-  EXPECT_NOT_NULL( target_result );
   EXPECT_NO_ERROR;
+  EXPECT_NOT_NULL( target_result );
 
   EXPECT_TRUE( stumpless_target_is_open( target ) );
 
