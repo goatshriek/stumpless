@@ -80,7 +80,7 @@ fail:
 int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  struct function_target *function_target;
+  const struct function_target *function_target;
   int result;
 
   function_target = target->id;
