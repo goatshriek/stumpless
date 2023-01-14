@@ -65,6 +65,8 @@ gethostbyname2_int_connect( const char *destination,
   } else {
     addr6.sin6_family = AF_INET6;
     addr6.sin6_port = htons( port_num );
+    addr6.sin6_flowinfo = 0;
+    addr6.sin6_scope_id = 0;
     domain_address = &( addr6.sin6_addr );
     addr = ( struct sockaddr * ) &addr6;
     addrlen = sizeof( addr6 );
