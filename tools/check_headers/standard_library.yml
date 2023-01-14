@@ -66,6 +66,7 @@
   - "netdb.h"
   - "ws2tcpip.h"
   - "private/windows_wrapper.h"
+"gethostbyname2": "netdb.h"
 "GetCurrentProcessId":
   - "windows.h"
   - "private/windows_wrapper.h"

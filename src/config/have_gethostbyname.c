@@ -16,26 +16,23 @@
  * limitations under the License.
  */
 
-#include <netinet/in.h>
-#include <arpa/nameser.h>
-#include <resolv.h>
+#include <arpa/inet.h>
 #include <errno.h>
+#include <netdb.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <netdb.h>
-#include <arpa/inet.h>
 #include <unistd.h>
-#include "private/config/no_getaddrinfo.h"
+#include "private/config/have_gethostbyname.h"
 #include "private/config/locale/wrapper.h"
 #include "private/error.h"
 
 int
-no_getaddrinfo_int_connect( const char *destination,
-                            const char *port,
-                            int domain,
-                            int type,
-                            int protocol ) {
+gethostbyname_int_connect( const char *destination,
+                           const char *port,
+                           int domain,
+                           int type,
+                           int protocol ) {
   int handle;
   struct sockaddr_in addr4;
   struct sockaddr_in6 addr6;

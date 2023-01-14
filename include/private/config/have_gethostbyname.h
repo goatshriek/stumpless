@@ -16,17 +16,17 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_NO_GETADDRINFO_H
-#  define __STUMPLESS_PRIVATE_CONFIG_NO_GETADDRINFO_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H
 
 /**
  *
  */
 int
-no_getaddrinfo_int_connect( const char *destination,
-                            const char *port,
-                            int domain,
-                            int type,
-                            int protocol );
+gethostbyname_int_connect( const char *destination,
+                           const char *port,
+                           int domain,
+                           int type,
+                           int protocol );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_NO_GETADDRINFO_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H */

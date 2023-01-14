@@ -21,13 +21,16 @@
 
 #  include "private/config.h"
 
-/* definition of config_get_now */
+/* definition of config_int_connect */
 #  ifdef HAVE_GETADDRINFO
 #    include "private/config/have_getaddrinfo.h"
 #    define config_int_connect getaddrinfo_int_connect
-#  else
-#    include "private/config/no_getaddrinfo.h"
-#    define config_int_connect no_getaddrinfo_int_connect
+#  elif HAVE_GETHOSTBYNAME2
+#    include "private/config/have_gethostbyname2.h"
+#    define config_int_connect gethostbyname2_int_connect
+#  elif HAVE_GETHOSTBYNAME
+#    include "private/config/have_gethostbyname.h"
+#    define config_int_connect gethostbyname_int_connect
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_INT_CONNECT_H */
