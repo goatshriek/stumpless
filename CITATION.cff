@@ -3,6 +3,7 @@ title: Stumpless Logging Library
 license: Apache-2.0
 repository-code: "https://github.com/goatshriek/stumpless"
 version: 2.2.0
+date-released: 2023-01-15
 keywords:
   - journald
   - logging
