@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: Stumpless Logging Library
+license: Apache-2.0
+repository-code: "https://github.com/goatshriek/stumpless"
+version: 2.2.0
+date-released: 2023-01-15
+keywords:
+  - journald
+  - logging
+  - library
+  - "structured logging"
+  - syslog
+  - systemd
+  - "windows event log"
+type: software
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Joel
+    family-names: Anderson
+    email: joelanderson333@gmail.com
