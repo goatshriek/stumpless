@@ -115,6 +115,10 @@
 "i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0" \
 " e 7, compreso"
 
+// todo translate
+#  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
+"invalid state reached during UTF-8 string parsing"
+
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "il tipo di target è incompatibile con questa operazione"
 
