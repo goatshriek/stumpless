@@ -23,8 +23,9 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "private/config/have_gethostbyname.h"
+#include "private/config/gethostbyname_supported.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/gethostbyname.h"
 #include "private/error.h"
 
 int
@@ -72,10 +73,10 @@ gethostbyname_int_connect( const char *destination,
     addrlen = sizeof( addr6 );
   }
 
-  host = gethostbyname( destination );
+  host = config_gethostbyname( destination, domain );
   if( host && host->h_addrtype == domain && host->h_addr_list[0] ) {
     memcpy( domain_address, host->h_addr_list[0], host->h_length );
-  } else { // AF_INET6
+  } else {
     if( inet_pton( domain, destination, domain_address ) != 1 ) {
       raise_address_failure( "both gethostbyname and inet_pton failed", // TODO localize
                              errno,

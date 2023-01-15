@@ -25,11 +25,8 @@
 #  ifdef HAVE_GETADDRINFO
 #    include "private/config/have_getaddrinfo.h"
 #    define config_int_connect getaddrinfo_int_connect
-#  elif HAVE_GETHOSTBYNAME2
-#    include "private/config/have_gethostbyname2.h"
-#    define config_int_connect gethostbyname2_int_connect
-#  elif HAVE_GETHOSTBYNAME
-#    include "private/config/have_gethostbyname.h"
+#  elif SUPPORT_GETHOSTBYNAME
+#    include "private/config/gethostbyname_supported.h"
 #    define config_int_connect gethostbyname_int_connect
 #  endif
 

@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_GETHOSTBYNAME_SUPPORTED_H
+#  define __STUMPLESS_PRIVATE_CONFIG_GETHOSTBYNAME_SUPPORTED_H
 
 /**
  *
@@ -29,4 +29,4 @@ gethostbyname_int_connect( const char *destination,
                            int type,
                            int protocol );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_GETHOSTBYNAME_SUPPORTED_H */

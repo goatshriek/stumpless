@@ -16,17 +16,18 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME2_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME2_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
 
-/**
- *
- */
-int
-gethostbyname2_int_connect( const char *destination,
-                            const char *port,
-                            int domain,
-                            int type,
-                            int protocol );
+#  include "private/config.h"
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GETHOSTBYNAME2_H */
+/* definition of config_gethostbyname */
+#  ifdef HAVE_GETHOSTBYNAME2
+#    include <netdb.h>
+#    define config_gethostbyname gethostbyname2
+#  elif HAVE_GETHOSTBYNAME
+#    include <netdb.h>
+#    define config_gethostbyname( NAME, DOMAIN ) gethostbyname( ( NAME ) )
+#  endif
+
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H */
