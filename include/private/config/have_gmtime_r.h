@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,26 @@
 
 #include <stddef.h>
 
+/**
+ * Gets the current time as a string and places it into the given buffer.
+ *
+ * **Thread Safety: MT-Safe env locale**
+ * This function is thread safe with the caveat that strftime uses env and
+ * locale variables, which may cause issues in some cases.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers, due to the use of
+ * snprintf.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of snprintf and gmtime_r.
+ *
+ * @param buffer The buffer to write the string into.
+ *
+ * @return The number of characters written into the buffer. If an error is
+ * encountered, then 0 is returned.
+ */
 size_t
 gmtime_r_get_now( char *buffer );
 

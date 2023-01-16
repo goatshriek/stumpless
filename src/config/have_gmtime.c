@@ -16,29 +16,44 @@
  * limitations under the License.
  */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <time.h>
 #include "private/config/have_gmtime.h"
+#include "private/config/wrapper/thread_safety.h"
 #include "private/formatter.h"
+
+/** Used to synchronize access to gmtime return values. */
+static config_atomic_bool_t gmtime_free = config_atomic_bool_true;
 
 size_t
 gmtime_get_now( char *buffer ) {
   time_t now_time;
   time_t time_result;
+  bool locked;
   struct tm *now_tm;
+  size_t result = 0;
 
   time_result = time( &now_time );
   if( time_result == -1 ) {
     return 0;
   }
 
+  do {
+    locked = config_compare_exchange_bool( &gmtime_free, true, false );
+  } while( !locked );
+
   now_tm = gmtime( &now_time );
   if( !now_tm ) {
-    return 0;
+    goto cleanup_and_return;
   }
 
-  return strftime( buffer,
-                   RFC_5424_WHOLE_TIME_BUFFER_SIZE + 1,
-                   "%FT%TZ",
-                   now_tm );
+ result = strftime( buffer,
+                    RFC_5424_WHOLE_TIME_BUFFER_SIZE + 1,
+                    "%FT%TZ",
+                    now_tm );
+
+cleanup_and_return:
+  config_write_bool( &gmtime_free, true );
+  return result;
 }

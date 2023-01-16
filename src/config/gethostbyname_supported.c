@@ -32,7 +32,6 @@
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 
-
 /** Used to synchronize access to gethostbyname return values. */
 static config_atomic_bool_t gethostbyname_free = config_atomic_bool_true;
 
