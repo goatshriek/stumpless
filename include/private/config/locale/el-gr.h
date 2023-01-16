@@ -158,6 +158,10 @@
 "το μέγεθος του μηνύματος είναι υπερβολικά μεγάλο για να σταλθεί σε ένα" \
 " διάγραμμα"
 
+// todo translate
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
 # define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "το πρωτόκολλο του δικτύου που επιλέχθηκε δεν υποστηρίζεται"
 

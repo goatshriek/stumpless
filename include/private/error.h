@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -185,6 +185,29 @@ raise_network_protocol_unsupported( void );
 COLD_FUNCTION
 void
 raise_param_not_found( void );
+
+/**
+ * Raises an error indicating an issue in resolving a hostname.
+ *
+ * This assumes that the resolution failed with both gethostbyname[2] and
+ * inet_pton.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store the error.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store the error.
+ *
+ * @param message The message to assign to the error.
+ */
+COLD_FUNCTION
+void
+raise_resolve_hostname_failure( const char *message );
 
 COLD_FUNCTION
 void

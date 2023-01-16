@@ -47,6 +47,7 @@
 #  include <stumpless/config.h>
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
+#  include <stumpless/target/function.h>
 
 #  ifdef __cplusplus
 extern "C" {

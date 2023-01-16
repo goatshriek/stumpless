@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
  */
 
 /** @file
- * Functionality to get the current time, based on gmtime_r.
+ * Functionality to get the current time, based on gmtime.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
-#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_H
+#  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_H
 
 #include <stddef.h>
 
@@ -29,16 +29,21 @@
  * Gets the current time as a string and places it into the given buffer.
  *
  * **Thread Safety: MT-Safe env locale**
- * This function is thread safe with the caveat that strftime uses env and
- * locale variables, which may cause issues in some cases.
+ * This function is thread safe, with some caveats. strftime uses env and
+ * locale variables, which may cause issues for some usages. In addition, note
+ * that a lock is used synchronize all uses of gmtime as it is not thread safe,
+ * meaning that performance will be considerably slower than systems where
+ * gmtime_r is available.
  *
  * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from signal handlers, due to the use of
- * snprintf.
+ * This function is not safe to call from signal handlers due to the use of
+ * static pointers returned by gmtime.
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of snprintf and gmtime_r.
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.2.0
  *
  * @param buffer The buffer to write the string into.
  *
@@ -46,6 +51,6 @@
  * encountered, then 0 is returned.
  */
 size_t
-gmtime_r_get_now( char *buffer );
+gmtime_get_now( char *buffer );
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_H */

@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-# Copyright 2022 Joel E. Anderson
+# Copyright 2022-2023 Joel E. Anderson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,6 +85,7 @@ Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do 
       end
     end
   end
+  new_file_lines.concat(line_buffer)
 
   new_file = File.new(absolute_file, 'w')
   new_file_lines.each { |line| new_file.write(line) }

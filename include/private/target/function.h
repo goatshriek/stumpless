@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,11 @@
 
 #  include <stumpless/entry.h>
 #  include <stumpless/target.h>
+#  include <stumpless/target/function.h>
+
+struct function_target {
+  stumpless_log_func_t log_function;
+};
 
 int
 send_entry_to_function_target( const struct stumpless_target *target,

@@ -8,6 +8,7 @@
   - "private/windows_wrapper.h"
   - "winsock2.h"
 "AF_UNIX": "sys/socket.h"
+"atoi": "stdlib.h"
 "atomic_uint": "stdatomic.h"
 "BOOL":
   - "windows.h"
@@ -65,6 +66,7 @@
   - "netdb.h"
   - "ws2tcpip.h"
   - "private/windows_wrapper.h"
+"gethostbyname2": "netdb.h"
 "GetCurrentProcessId":
   - "windows.h"
   - "private/windows_wrapper.h"
@@ -72,6 +74,7 @@
   - "unistd.h"
   - "winsock2.h"
   - "private/windows_wrapper.h"
+"gethostbyname": "netdb.h"
 "getpagesize":
   - "unistd.h"
   - "windows.h"
@@ -181,7 +184,10 @@
   - "string.h"
 "strncpy": "string.h"
 "strncpy_s": "string.h"
+"strtol": "stdlib.h"
+"strtoul": "stdlib.h"
 "struct addrinfo": "netdb.h"
+"struct hostent": "netdb.h"
 "struct iovec": "sys/uio.h"
 "struct timespec": "time.h"
 "struct tm": "time.h"

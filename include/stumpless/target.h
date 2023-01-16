@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,13 +198,15 @@ struct stumpless_target {
  * stumpless; all other logging functions call this one after performing any
  * setup specific to themselves.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers as some targets make
@@ -237,13 +239,15 @@ stumpless_add_entry( struct stumpless_target *target,
  * safer alternative without the risks of format strings, use
  * \c stumpless_add_log_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -284,13 +288,15 @@ stumpless_add_log( struct stumpless_target *target,
 /**
  * Adds a log message with a priority to a given target.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -333,13 +339,15 @@ stumpless_add_log_str( struct stumpless_target *target,
  * safer alternative without the risks of format strings, use
  * \c stumpless_add_message_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -376,13 +384,15 @@ stumpless_add_message( struct stumpless_target *target,
 /**
  * Adds a string message to a given target.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1057,13 +1067,15 @@ stumpless_target_is_open( const struct stumpless_target *target );
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers as some targets make
@@ -1112,13 +1124,15 @@ stumpless_trace_entry( struct stumpless_target *target,
  * safer alternative without the risks of format strings, use
  * \c stumpless_trace_log_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1173,13 +1187,15 @@ stumpless_trace_log( struct stumpless_target *target,
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1236,13 +1252,15 @@ stumpless_trace_log_str( struct stumpless_target *target,
  * safer alternative without the risks of format strings, use
  * \c stumpless_trace_message_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1293,13 +1311,15 @@ stumpless_trace_message( struct stumpless_target *target,
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1370,13 +1390,15 @@ stumpless_unset_option( struct stumpless_target *target, int option );
 /**
  * Adds a log message with a priority to a given target.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1418,13 +1440,15 @@ vstumpless_add_log( struct stumpless_target *target,
 /**
  * Adds a message to a given target.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1466,13 +1490,15 @@ vstumpless_add_message( struct stumpless_target *target,
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make
@@ -1527,13 +1553,15 @@ vstumpless_trace_log( struct stumpless_target *target,
  * The trace information is added in an element named `trace` with params named
  * `file`, `line`, and `function` for the respective pieces of information.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
  * manner. For target-specific information on how thread safety is supported and
  * whether AS or AC safety can be assumed, refer to the documentation for the
- * target's header file (in the `stumpless/target` include folder).
+ * target's header file (in the `stumpless/target` include folder). For all
+ * targets, the environment variables and locale will be used during some of the
+ * string formatting of the message.
  *
  * **Async Signal Safety: AS-Unsafe lock heap**
  * This function is not safe to call from signal handlers as some targets make

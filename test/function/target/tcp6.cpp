@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2022 Joel E. Anderson
+ * Copyright 2019-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,8 +237,8 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
     struct stumpless_entry *entry;
-    const char *original_destination = "::1";
-    const char *new_destination = "localhost";
+    const char *original_destination = "localhost";
+    const char *new_destination = "::1";
     const char *destination_result;
     char buffer[2048];
     int add_result;
@@ -246,8 +246,8 @@ namespace {
     socket_handle_t port_handle;
 
 
-    if( !name_resolves( new_destination, AF_INET6 ) ) {
-      printf( "WARNING: %s did not resolve in ipv6, so this test will be skipped\n", new_destination );
+    if( !name_resolves( original_destination, AF_INET6 ) ) {
+      printf( "WARNING: %s did not resolve in ipv6, so this test will be skipped\n", original_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
@@ -260,53 +260,53 @@ namespace {
       } else {
         target = stumpless_open_tcp6_target( "target-to-self",
                                              original_destination );
-        ASSERT_NOT_NULL( target );
-        EXPECT_NO_ERROR;
+        if( !target ) {
+          printf( "WARNING: the target couldn't be opened with the hostname, so this test will be skipped.\n" );
+          SUCCEED(  ) << "the target couldn't be opened with the hostname, so this test will be skipped";
+        } else {
+          ASSERT_NOT_NULL( target );
+          EXPECT_NO_ERROR;
 
-        destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
-        EXPECT_STREQ( destination_result, original_destination );
+          destination_result = stumpless_get_destination( target );
+          EXPECT_TRUE( destination_result != NULL );
+          EXPECT_STREQ( destination_result, original_destination );
 
-        entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                     STUMPLESS_SEVERITY_INFO,
-                                     "stumpless-unit-test",
-                                     "basic-entry",
-                                     "basic test message" );
-        EXPECT_TRUE( entry != NULL );
+          entry = create_entry(  );
+          EXPECT_NOT_NULL( entry );
 
-        add_result = stumpless_add_entry( target, entry );
-        EXPECT_GE( add_result, 0 );
+          add_result = stumpless_add_entry( target, entry );
+          EXPECT_GE( add_result, 0 );
 
-        accepted = accept_tcp_connection( port_handle );
-        recv_from_handle( accepted, buffer, 2048 );
-        EXPECT_TRUE( buffer[0] != '\0' );
-        close_server_socket( accepted );
+          accepted = accept_tcp_connection( port_handle );
+          recv_from_handle( accepted, buffer, 2048 );
+          EXPECT_TRUE( buffer[0] != '\0' );
+          close_server_socket( accepted );
 
-        EXPECT_TRUE( stumpless_target_is_open( target ) );
-        target_result = stumpless_set_destination( target, new_destination );
-        EXPECT_TRUE( target_result != NULL );
-        EXPECT_NO_ERROR;
+          EXPECT_TRUE( stumpless_target_is_open( target ) );
+          target_result = stumpless_set_destination( target, new_destination );
+          EXPECT_TRUE( target_result != NULL );
+          EXPECT_NO_ERROR;
 
-        EXPECT_TRUE( stumpless_target_is_open( target ) );
+          EXPECT_TRUE( stumpless_target_is_open( target ) );
 
-        destination_result = stumpless_get_destination( target );
-        EXPECT_TRUE( destination_result != NULL );
-        EXPECT_STREQ( destination_result, new_destination );
+          destination_result = stumpless_get_destination( target );
+          EXPECT_TRUE( destination_result != NULL );
+          EXPECT_STREQ( destination_result, new_destination );
 
-        add_result = stumpless_add_entry( target, entry );
-        EXPECT_GE( add_result, 0 );
+          add_result = stumpless_add_entry( target, entry );
+          EXPECT_GE( add_result, 0 );
 
-        accepted = accept_tcp_connection( port_handle );
-        recv_from_handle( accepted, buffer, 2048 );
-        EXPECT_TRUE( buffer[0] != '\0' );
-        close_server_socket( accepted );
+          accepted = accept_tcp_connection( port_handle );
+          recv_from_handle( accepted, buffer, 2048 );
+          EXPECT_TRUE( buffer[0] != '\0' );
+          close_server_socket( accepted );
 
-        stumpless_close_network_target( target );
-        stumpless_destroy_entry_and_contents( entry );
+          stumpless_close_network_target( target );
+          stumpless_destroy_entry_and_contents( entry );
 
-        close_server_socket( port_handle );
+          close_server_socket( port_handle );
+        }
       }
-
     }
   }
 

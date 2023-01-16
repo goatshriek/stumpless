@@ -10,10 +10,11 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
-## [2.2.0] - 2022-11-26
+## [2.2.0] - 2023-01-16
 ### Fixed
  - Deadlock potential in `stumpless_set_entry_hostname` and
    `stumpless_set_entry_procid` when validation fails.
+ - Builds in ANSI C environments.
 
 
 ## [2.1.0] - 2022-11-13

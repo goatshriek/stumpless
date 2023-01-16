@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ TestSetDestinationOnOpenTarget( struct stumpless_target *target,
 
   EXPECT_TRUE( stumpless_target_is_open( target ) );
   target_result = stumpless_set_destination( target, new_destination );
-  EXPECT_NOT_NULL( target_result );
   EXPECT_NO_ERROR;
+  EXPECT_NOT_NULL( target_result );
 
   EXPECT_TRUE( stumpless_target_is_open( target ) );
 

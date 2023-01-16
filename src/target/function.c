@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 #include <stumpless/target/function.h>
 #include "private/config/locale/wrapper.h"
 #include "private/error.h"
+#include "private/memory.h"
 #include "private/target.h"
 #include "private/target/function.h"
 #include "private/validate.h"
@@ -38,6 +39,7 @@ stumpless_close_function_target( const struct stumpless_target *target ) {
     return;
   }
 
+  free_mem( target->id );
   destroy_target( target );
   clear_error(  );
 }
@@ -46,19 +48,31 @@ struct stumpless_target *
 stumpless_open_function_target( const char *name,
                                 stumpless_log_func_t log_function ) {
   struct stumpless_target *target;
+  struct function_target *function_target;
 
   VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( log_function );
 
   target = new_target( STUMPLESS_FUNCTION_TARGET, name );
   if( !target ) {
-    return NULL;
+   goto fail;
   }
 
-  target->id = log_function;
+  function_target = alloc_mem( sizeof( *function_target ) );
+  if( !function_target ) {
+    goto fail_id;
+  }
+
+  function_target->log_function = log_function;
+  target->id = function_target;
 
   stumpless_set_current_target( target );
   return target;
+
+fail_id:
+  destroy_target( target );
+fail:
+  return NULL;
 }
 
 /* private definitions */
@@ -66,12 +80,11 @@ stumpless_open_function_target( const char *name,
 int
 send_entry_to_function_target( const struct stumpless_target *target,
                                const struct stumpless_entry *entry ) {
-  stumpless_log_func_t log_function;
+  const struct function_target *function_target;
   int result;
 
-  log_function = target->id;
-
-  result = log_function( target, entry );
+  function_target = target->id;
+  result = function_target->log_function( target, entry );
   if( result < 0 ) {
     raise_function_target_failure( result );
   }

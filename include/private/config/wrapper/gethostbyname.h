@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2022-2023 Joel E. Anderson
+ * Copyright 2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,21 @@
  */
 
 /** @file
- * A wrapper for getting a string with the current timestamp.
+ * A wrapper for either gethostbyname or gethostbyname2.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
 
 #  include "private/config.h"
 
-/* definition of config_get_now */
-#  ifdef HAVE_GMTIME_R
-#    include "private/config/have_gmtime_r.h"
-#    define config_get_now gmtime_r_get_now
-#  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/windows_get_now_supported.h"
-#    define config_get_now windows_get_now
-#  elif HAVE_GMTIME
-#    include "private/config/have_gmtime.h"
-#    define config_get_now gmtime_get_now
+/* definition of config_gethostbyname */
+#  ifdef HAVE_GETHOSTBYNAME2
+#    include <netdb.h>
+#    define config_gethostbyname gethostbyname2
+#  elif HAVE_GETHOSTBYNAME
+#    include <netdb.h>
+#    define config_gethostbyname( NAME, DOMAIN ) gethostbyname( ( NAME ) )
 #  endif
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H */

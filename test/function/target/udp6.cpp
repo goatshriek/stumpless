@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2019-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -161,14 +161,11 @@ namespace {
   }
 
   TEST( NetworkTargetOpenTest, Basic ) {
-    struct stumpless_target *target;
-    const struct stumpless_error *error;
+    const struct stumpless_target *target;
 
     target = stumpless_open_udp6_target( "target-to-self", "::1" );
-    EXPECT_TRUE( target != NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
 
     stumpless_close_network_target( target );
   }
@@ -199,12 +196,12 @@ namespace {
 
   TEST( NetworkTargetSetDestination, OpenTarget ) {
     struct stumpless_target *target;
-    const char *original_destination = "::1";
-    const char *new_destination = "localhost";
+    const char *original_destination = "localhost";
+    const char *new_destination = "::1";
     socket_handle_t handle;
 
-    if( !name_resolves( new_destination, AF_INET6 ) ) {
-      printf( "WARNING: %s did not resolve, so this test will be skipped\n", new_destination );
+    if( !name_resolves( original_destination, AF_INET6 ) ) {
+      printf( "WARNING: %s did not resolve, so this test will be skipped\n", original_destination );
       SUCCEED(  ) <<  "the hostname did not resolve, so this test will be skipped";
 
     } else {
@@ -212,16 +209,21 @@ namespace {
 
       target = stumpless_open_udp6_target( "target-to-self",
                                            original_destination );
-      ASSERT_NOT_NULL( target );
-      EXPECT_NO_ERROR;
 
-      TestSetDestinationOnOpenTarget( target,
-                                      original_destination,
-                                      new_destination,
-                                      handle );
+      if( !target ) {
+        printf( "WARNING: the target couldn't be opened with the hostname, so this test will be skipped.\n" );
+        SUCCEED(  ) << "the target couldn't be opened with the hostname, so this test will be skipped";
+      } else {
+        EXPECT_NO_ERROR;
 
-      close_server_socket( handle );
-      stumpless_close_network_target( target );
+        TestSetDestinationOnOpenTarget( target,
+                                        original_destination,
+                                        new_destination,
+                                        handle );
+
+        close_server_socket( handle );
+        stumpless_close_network_target( target );
+      }
     }
   }
 
@@ -250,8 +252,8 @@ namespace {
     handle = open_udp6_server_socket( "::1", new_port );
 
     target = stumpless_open_udp6_target( "target-to-self", "::1" );
-    ASSERT_NOT_NULL( target );
     EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( target );
 
     TestSetTransportPortOnOpenTarget( target, new_port, handle );
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ namespace {
     INIT_MEMORY_COUNTER( set_port );
 
     target = stumpless_open_udp6_target( "set-port-leak", "::1" );
+    EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "6514" );

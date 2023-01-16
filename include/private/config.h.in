@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,10 @@
 
 /* symbol checks */
 #cmakedefine HAVE_FOPEN_S 1
+#cmakedefine HAVE_GETADDRINFO 1
+#cmakedefine HAVE_GETHOSTBYNAME 1
+#cmakedefine HAVE_GETHOSTBYNAME2 1
+#cmakedefine HAVE_GMTIME 1
 #cmakedefine HAVE_GMTIME_R 1
 #cmakedefine HAVE_UNISTD_SC_PAGESIZE 1
 #cmakedefine HAVE_UNISTD_GETHOSTNAME 1
@@ -42,6 +46,7 @@
 
 /* function support checks */
 #cmakedefine SUPPORT_ABSTRACT_SOCKET_NAMES 1
+#cmakedefine SUPPORT_GETHOSTBYNAME 1
 #cmakedefine SUPPORT_UNISTD_SYSCONF_GETPAGESIZE 1
 #cmakedefine SUPPORT_WINDOWS_GET_NOW 1
 

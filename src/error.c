@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -288,6 +288,14 @@ void
 raise_param_not_found( void ) {
   raise_error( STUMPLESS_PARAM_NOT_FOUND,
                L10N_PARAM_NOT_FOUND_ERROR_MESSAGE,
+               0,
+               NULL );
+}
+
+void
+raise_resolve_hostname_failure( const char *message ) {
+  raise_error( STUMPLESS_ADDRESS_FAILURE,
+               message,
                0,
                NULL );
 }

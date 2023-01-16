@@ -61,6 +61,59 @@ jobs:
       - name: Build Documentation
         run: |
           make docs
+  linux-debug-ansi:
+    name: "linux, debug, ansi"
+    runs-on: "ubuntu-latest"
+    env:
+      CFLAGS: "-D_ANSI_SOURCE -pedantic -Wall -std=c99"
+    steps:
+      - name: Install Prereqs
+        run: |
+          sudo apt-get update
+          sudo apt-get install doxygen libsystemd-dev valgrind
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          gcov: true
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Valgrind Tests
+        run: |
+          (for f in $(ls function-test-*); do valgrind --error-exitcode=1 --leak-check=yes --suppressions=tools/valgrind/journald.supp ./$f || exit 1; done)
+          (for f in $(ls example-*); do valgrind --error-exitcode=1 --leak-check=yes --suppressions=tools/valgrind/journald.supp ./$f || exit 1; done)
+      - name: Install
+        run: |
+          sudo make install
+      - name: Build Documentation
+        run: |
+          make docs
   linux-release:
     name: "linux, release"
     runs-on: "ubuntu-latest"
@@ -111,6 +164,50 @@ jobs:
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF .
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-tcp4
+          sudo ./function-test-tcp4_leak
+          sudo ./function-test-tcp6
+          sudo ./function-test-tcp6_leak
+          sudo ./function-test-udp4
+          sudo ./function-test-udp4_leak
+          sudo ./function-test-udp6
+          sudo ./function-test-udp6_leak
+      - name: Thread Safety Tests
+        run: |
+          make check-thread-safety
+          sudo ./thread-safety-test-network
+      - name: Run Examples
+        run: |
+          make examples
+      - name: Run Benchmarks
+        run: |
+          make bench
+      - name: Install
+        run: |
+          sudo make install
+      - name: Test Install
+        run: |
+          gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
+          ./basic_example
+  linux-release-ansi:
+    name: "linux, release, ansi"
+    runs-on: "ubuntu-latest"
+    env:
+      CFLAGS: "-D_ANSI_SOURCE -pedantic -Wall -std=c99"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
       - name: Build
         run: |
           make all
@@ -237,6 +334,7 @@ jobs:
           bundle install
       - name: Install Packages
         run: |
+          sudo apt-get update
           sudo apt-get install doxygen
       - name: Configure
         run: |
