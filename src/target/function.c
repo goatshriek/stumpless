@@ -58,7 +58,7 @@ stumpless_open_function_target( const char *name,
    goto fail;
   }
 
-  function_target = alloc_mem( sizeof( *target ) );
+  function_target = alloc_mem( sizeof( *function_target ) );
   if( !target ) {
     goto fail_id;
   }

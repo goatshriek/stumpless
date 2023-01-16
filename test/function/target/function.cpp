@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,6 +143,25 @@ namespace {
     void * ( *set_malloc_result )( size_t );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    target = stumpless_open_function_target( "function-target-malloc-failure",
+                                             basic_log_function );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+    stumpless_free_all( );
+  }
+
+  TEST( FunctionTargetOpenTest, MallocFailureOnFuncPointerSize ) {
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    void * ( *set_malloc_result )( size_t );
+
+    set_malloc_result = stumpless_set_malloc(
+      MALLOC_FAIL_ON_SIZE( sizeof( set_malloc_result ) ) );
     ASSERT_NOT_NULL( set_malloc_result );
 
     target = stumpless_open_function_target( "function-target-malloc-failure",
