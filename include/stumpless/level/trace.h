@@ -70,7 +70,7 @@
  * safer alternative without the risks of format strings, use
  * \c stump_t_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -139,7 +139,7 @@ stumpless_trace_log( stumpless_get_current_target(  ),                         \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stumplog_t instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -204,7 +204,7 @@ stumpless_trace_log_str( stumpless_get_current_target(  ),                     \
  * intended to allow logging calls to be removed at compile time if the severity
  * is known ahead of time.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -262,7 +262,7 @@ stumpless_trace_entry( ( target ), ( entry ), __FILE__, __LINE__, __func__ )
  * safer alternative without the risks of format strings, use
  * \c stump_t_log_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -331,7 +331,7 @@ stumpless_trace_log( ( target ),                                               \
  * side effects you rely on will not cause problems if they are left out during
  * a build with debug level calls disabled.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -407,7 +407,7 @@ stumpless_trace_log_str( ( target ),                                           \
  * safer alternative without the risks of format strings, use
  * \c stump_t_message_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -477,7 +477,7 @@ stumpless_trace_log( ( target ),                                               \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stump_t_log instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -546,7 +546,7 @@ stumpless_trace_log_str( ( target ),                                           \
  * safer alternative without the risks of format strings, use
  * \c stumplog_t_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -602,7 +602,7 @@ stumplog_trace( ( priority ), __FILE__, __LINE__, __func__, __VA_ARGS__ )
  * side effects you rely on will not cause problems if they are left out during
  * a build with debug level calls disabled.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some

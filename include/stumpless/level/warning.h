@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@
  * safer alternative without the risks of format strings, use
  * \c stump_w_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -122,7 +122,7 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stumplog_w instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -179,7 +179,7 @@ stumpless_add_log_str( stumpless_get_current_target(  ),                       \
  * intended to allow logging calls to be removed at compile time if the severity
  * is known ahead of time.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -232,7 +232,7 @@ stumpless_add_entry( ( target ), ( entry ) )
  * safer alternative without the risks of format strings, use
  * \c stump_w_log_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -291,7 +291,7 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * side effects you rely on will not cause problems if they are left out during
  * a build with warning level calls disabled.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -358,7 +358,7 @@ stumpless_add_log_str( ( target ), ( priority ), ( message ) )
  * safer alternative without the risks of format strings, use
  * \c stump_w_message_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -421,7 +421,7 @@ stumpless_add_log( ( target ),                                                 \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stump_w_log instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -482,7 +482,7 @@ stumpless_add_log_str( ( target ),                                             \
  * safer alternative without the risks of format strings, use
  * \c stumplog_w_str instead.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -532,7 +532,7 @@ stumpless_add_log_str( ( target ),                                             \
  * side effects you rely on will not cause problems if they are left out during
  * a build with warning level calls disabled.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Safe env locale
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
