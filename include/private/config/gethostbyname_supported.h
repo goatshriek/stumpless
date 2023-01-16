@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+/** @file
+ * Functionality to perform name resolution for a given host and connecting
+ * to it, based on `gethostbyname` functions.
+ */
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_GETHOSTBYNAME_SUPPORTED_H
 #  define __STUMPLESS_PRIVATE_CONFIG_GETHOSTBYNAME_SUPPORTED_H
 

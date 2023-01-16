@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @file
+ * Functionality to get the current time, based on gmtime_r.
+ */
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GMTIME_R_H
 

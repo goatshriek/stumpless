@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+/** @file
+ * A wrapper for connecting to a host with specific connection characteristics.
+ * The functions return int connection handles.
+ */
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_INT_CONNECT_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_INT_CONNECT_H
 

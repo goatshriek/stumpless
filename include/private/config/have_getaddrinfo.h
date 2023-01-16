@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+/** @file
+ * Functionality to perform name resolution for a given host and connecting
+ * to it, based on getaddrinfo.
+ */
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H
 

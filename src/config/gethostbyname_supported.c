@@ -16,11 +16,6 @@
  * limitations under the License.
  */
 
-/** @file
- * Functionality to perform name resolution for a given host and connecting
- * to it, based on `gethostbyname` functions.
- */
-
 #include <arpa/inet.h>
 #include <errno.h>
 #include <limits.h>

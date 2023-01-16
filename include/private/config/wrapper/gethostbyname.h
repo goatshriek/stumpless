@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+/** @file
+ * A wrapper for either gethostbyname or gethostbyname2.
+ */
+
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GETHOSTBYNAME_H
 
