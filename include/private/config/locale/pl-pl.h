@@ -158,6 +158,10 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
 
+// todo translate
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "wybrany protokół sieciowy nie jest obsługiwany"
 

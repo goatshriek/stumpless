@@ -152,6 +152,10 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "消息太大，无法在单个数据报中发送"
 
+// todo translate
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "所选网络协议不受支持"
 

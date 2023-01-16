@@ -293,6 +293,14 @@ raise_param_not_found( void ) {
 }
 
 void
+raise_resolve_hostname_failure( const char *message ) {
+  raise_error( STUMPLESS_ADDRESS_FAILURE,
+               message,
+               0,
+               NULL );
+}
+
+void
 raise_socket_bind_failure( const char *message,
                            int code,
                            const char *code_type ) {

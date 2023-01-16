@@ -20,7 +20,34 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_GETADDRINFO_H
 
 /**
+ * Resolves the provided hostname, and attempts to connect to the resulting
+ * address on a newly-created socket.
  *
+ * **Thread Safety: MT-Safe race:destination race:port env locale**
+ * This function is thread safe, with some caveats. The destination and port
+ * must not be changed during execution. getaddrinfo also uses env and locale
+ * variables, which may cause issues for some usages.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as socket handles may not be cleaned up in this case.
+ *
+ * @since release v2.2.0
+ *
+ * @param destination The hostname or address to connect to.
+ *
+ * @param port The port to connect to on the given host.
+ *
+ * @param domain The socket domain to use for the connection.
+ *
+ * @param type The type of socket to create.
+ *
+ * @param protocol The protocol to use for the connection.
+ *
+ * @return The connected socket, or -1 if an error is encountered.
  */
 int
 getaddrinfo_int_connect( const char *destination,

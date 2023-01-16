@@ -150,6 +150,10 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "a mensagem é grande demais para ser enviada em um único datagrama"
 
+// todo translate
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "o protocolo de rede escolhido não é suportado"
 

@@ -170,6 +170,10 @@
 "meddelandet är för stort för att skickas i ett enda datagram"
 
 // todo translate
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
+// todo translate
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "chosen network protocol is unsupported"
 

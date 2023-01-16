@@ -148,6 +148,9 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "message is too large to be sent in a single datagram"
 
+#  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
+"gethostbyname[2] and inet_pton failed to resolve the name"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "chosen network protocol is unsupported"
 

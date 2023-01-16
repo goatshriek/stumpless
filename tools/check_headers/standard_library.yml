@@ -184,6 +184,8 @@
   - "string.h"
 "strncpy": "string.h"
 "strncpy_s": "string.h"
+"strtol": "stdlib.h"
+"strtoul": "stdlib.h"
 "struct addrinfo": "netdb.h"
 "struct hostent": "netdb.h"
 "struct iovec": "sys/uio.h"
