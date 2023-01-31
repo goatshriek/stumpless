@@ -28,6 +28,7 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
 option(COVERAGE "Include coverage information" OFF)
+option(FUZZ "Support fuzzing with libFuzzer" OFF)
 
 string(CONCAT enable_deprecation_warnings_help_string
   "Print warnings to the standard output when deprecated functionality is used."
