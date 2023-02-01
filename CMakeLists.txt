@@ -899,6 +899,11 @@ if(COVERAGE)
   target_link_libraries(stumpless PRIVATE --coverage)
 endif(COVERAGE)
 
+if(FUZZ)
+  target_compile_options(stumpless PRIVATE -fsanitize=fuzzer)
+  target_link_libraries(stumpless PRIVATE -fsanitize=fuzzer)
+endif(FUZZ)
+
 target_include_directories(stumpless
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
@@ -1336,6 +1341,14 @@ add_performance_test(version
 
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
+)
+
+add_fuzz_test(add_message_str
+  SOURCES ${PROJECT_SOURCE_DIR}/test/fuzz/add_message_str.cpp
+)
+
+add_custom_target(fuzz
+  DEPENDS ${STUMPLESS_FUZZ_TESTS}
 )
 
 

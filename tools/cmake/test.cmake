@@ -8,6 +8,7 @@ else()
   set(function_test_compile_flags "-std=gnu++14 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
   set(performance_test_compile_flags "-std=gnu++14")
 endif(MSVC)
+set(fuzz_test_compile_flags "-g -O1 -fsanitize=fuzzer")
 
 function(private_add_function_test)
   set(single_val_args NAME)
@@ -156,6 +157,46 @@ macro(add_performance_test name)
 
   private_add_performance_test(NAME ${name} ${ARGN})
 endmacro(add_performance_test)
+
+function(private_add_fuzz_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES)
+  cmake_parse_arguments(FUNCTION_FUZZ_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    EXCLUDE_FROM_ALL
+    ${FUNCTION_FUZZ_ARG_SOURCES}
+  )
+
+  target_link_libraries(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    stumpless
+    ${FUNCTION_FUZZ_ARG_LIBRARIES}
+  )
+
+  set_target_properties(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    COMPILE_FLAGS "${fuzz_test_compile_flags}"
+    OUTPUT_NAME fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+  )
+
+  target_include_directories(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+
+  add_custom_target(run-fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    DEPENDS fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+  )
+endfunction(private_add_fuzz_test)
+
+macro(add_fuzz_test name)
+  list(APPEND STUMPLESS_FUZZ_TESTS fuzz-test-${name})
+
+  private_add_fuzz_test(NAME ${name} ${ARGN})
+endmacro(add_fuzz_test)
 
 # helper libraries
 add_library(test_helper_fixture

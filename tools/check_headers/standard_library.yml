@@ -200,6 +200,7 @@
   - "private/windows_wrapper.h"
 "time": "time.h"
 "time_t": "time.h"
+"uint8_t": "stdint.h"
 "uintptr_t": "stdint.h"
 "va_end": "stdarg.h"
 "va_list": "stdarg.h"
