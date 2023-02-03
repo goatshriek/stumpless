@@ -368,4 +368,4 @@ jobs:
           make fuzz
       - name: Run Fuzzers
         run: |
-          (for f in $(ls fuzz-test-*); do timeout 1s make run-$f || if [ $? -eq 124 ]; then echo "$f ran"; else exit 1; fi; done)
+          (for f in $(ls fuzz-test-*); do timeout 1s make ruasfn-$f || if [ $? -eq 124 ]; then echo "$f ran"; else exit 1; fi; done)
