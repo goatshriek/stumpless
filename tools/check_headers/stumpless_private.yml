@@ -76,6 +76,7 @@
 "journald_init_journald_element": "private/config/journald_supported.h"
 "journald_init_journald_param": "private/config/journald_supported.h"
 "L10N_": "private/config/locale/wrapper.h"
+"load_corpus": "test/helper/fixture.hpp"
 "load_facility": "private/target/journald.h"
 "load_identifier": "private/target/journald.h"
 "load_message": "private/target/journald.h"

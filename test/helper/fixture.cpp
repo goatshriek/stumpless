@@ -48,3 +48,8 @@ create_entry( void ) {
 
   return entry;
 }
+
+const char *
+load_corpus( const std::string& name ) {
+  return NULL;
+}
