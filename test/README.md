@@ -44,7 +44,14 @@ the documentation at [`docs/benchmark.md`](../docs/benchmark.md)
 In order to catch one class of security issues, there are a number of fuzzing
 targets in the [`fuzz`](./fuzz) directory. These tests don't have a target to
 run all of them at once, but you can build all of them with the `fuzz` target.
-These are only supported when Clang is the compiler.
+To run one of them, use the `run-fuzz-test-<name>` target, which will build the
+fuzzer and run it with the proper corpus directories. The initial seed corpus is
+the appropriate subdirectory of [`corpora`](./corpora), and a matching folder is
+created in the build directory in a folder named `fuzz-corpora` to hold new
+corpus files generated during fuzzing.
+
+Fuzzers are only supported when Clang is the compiler, as they rely on
+libFuzzer.
 
 
 ## Test Helper Modules

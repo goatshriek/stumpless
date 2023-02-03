@@ -65,6 +65,7 @@ provided that take care of creating runner targets and adding tests to the
 appropriate aggregation targets like `check`. You'll find examples of each of
 these in the project already that you can use for specific examples. They are:
  * `add_function_test` to create a unit test and add it to the `check` target
+ * `add_fuzz_test` to create a fuzzer and add it to the `fuzz` target
  * `add_performance_test` to create a test and add it to the `bench` target
  * `add_thread_safety_test` to create a test and add it to the
    `check-thread-safety` target
@@ -97,6 +98,7 @@ option to the executable. For example, to run all `SetParam` tests, you could do
 There are special targets that group other types of tests as well.
  * `check-cpp` runs the C++ bindings test suite
  * `check-thread-safety` runs the thread safety test suite
+ * `run-fuzz-test-<name>` builds and runs the fuzzer with the given name
  * `run-thread-safety-test-<name>` builds and runs the thread safety test with
    the given name
  * `run-performance-test-<name>` builds and runs the benchmark with the given
