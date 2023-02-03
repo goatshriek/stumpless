@@ -159,7 +159,7 @@ macro(add_performance_test name)
 endmacro(add_performance_test)
 
 function(private_add_fuzz_test)
-  set(single_val_args NAME)
+  set(single_val_args NAME CORPUS_NAME)
   set(multi_val_args SOURCES LIBRARIES)
   cmake_parse_arguments(FUNCTION_FUZZ_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
@@ -186,8 +186,10 @@ function(private_add_fuzz_test)
     ${CMAKE_BINARY_DIR}/include
   )
 
+  set(generated_corpus_dir ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
+  file(MAKE_DIRECTORY ${generated_corpus_dir})
   add_custom_target(run-fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
+    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${PROJECT_SOURCE_DIR}/test/corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
     DEPENDS fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
   )
 endfunction(private_add_fuzz_test)

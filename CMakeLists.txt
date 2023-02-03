@@ -1343,13 +1343,18 @@ add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
 )
 
-add_fuzz_test(add_message_str
-  SOURCES ${PROJECT_SOURCE_DIR}/test/fuzz/add_message_str.cpp
-)
+if(FUZZ)
+  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora)
 
-add_custom_target(fuzz
-  DEPENDS ${STUMPLESS_FUZZ_TESTS}
-)
+  add_fuzz_test(add_message_str
+    SOURCES ${PROJECT_SOURCE_DIR}/test/fuzz/add_message_str.cpp
+    CORPUS_NAME message
+  )
+
+  add_custom_target(fuzz
+    DEPENDS ${STUMPLESS_FUZZ_TESTS}
+  )
+endif()
 
 
 # c++ support
