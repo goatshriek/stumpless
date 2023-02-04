@@ -2279,8 +2279,9 @@ namespace {
     EXPECT_NOT_NULL( new_message );
     EXPECT_NO_ERROR;
     EXPECT_STREQ( ascii_message, new_message );
-    free( ( void * ) new_message );
 
+    delete[] ascii_message;
+    free( ( void * ) new_message );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
