@@ -2341,6 +2341,33 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetMessageStrTest, Utf8Message ) {
+    struct stumpless_entry *entry;
+    const char *utf8_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    utf8_message = load_corpus( "message/zh-cn", NULL );
+    ASSERT_NOT_NULL( utf8_message );
+
+    result = stumpless_set_entry_message_str( entry, utf8_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( utf8_message, new_message );
+
+    delete[] utf8_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetParam, NullEntry ) {
     struct stumpless_param *param;
     const struct stumpless_entry *result;
