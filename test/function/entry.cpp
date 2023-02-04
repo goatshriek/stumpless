@@ -2286,6 +2286,33 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetMessageStrTest, LongAsciiMessage ) {
+    struct stumpless_entry *entry;
+    const char *long_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    long_message = load_corpus( "message/lorem" );
+    ASSERT_NOT_NULL( long_message );
+
+    result = stumpless_set_entry_message_str( entry, long_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( long_message, new_message );
+
+    delete[] long_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetMessageStrTest, MallocFailureOnMessage ) {
     void * (*set_malloc_result)(size_t);
     struct stumpless_entry *entry;
