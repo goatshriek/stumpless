@@ -16,7 +16,9 @@
 "clock": "time.h"
 "clock_t": "sys/types.h"
 "CLOCKS_PER_SEC": "time.h"
-"close": "unistd.h"
+"close":
+  - "fstream"
+  - "unistd.h"
 "DWORD":
   - "windows.h"
   - "private/windows_wrapper.h"

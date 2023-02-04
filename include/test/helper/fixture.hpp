@@ -59,6 +59,6 @@ struct stumpless_entry *
 create_entry( void );
 
 const char *
-load_corpus( const std::string& name );
+load_corpus( const std::string& name, int *length );
 
 #endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */

@@ -943,9 +943,10 @@ endif()
 
 
 # generating configuration files
+set(FUZZ_CORPORA_DIR ${PROJECT_SOURCE_DIR}/test/corpora)
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
-
+configure_file(${PROJECT_SOURCE_DIR}/include/test/config.hpp.in ${PROJECT_BINARY_DIR}/include/test/config.hpp)
 
 
 # installation of the library

@@ -189,7 +189,7 @@ function(private_add_fuzz_test)
   set(generated_corpus_dir ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
   file(MAKE_DIRECTORY ${generated_corpus_dir})
   add_custom_target(run-fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${PROJECT_SOURCE_DIR}/test/corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
+    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${FUZZ_CORPORA_DIR}/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
     DEPENDS fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
   )
 endfunction(private_add_fuzz_test)

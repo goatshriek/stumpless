@@ -54,6 +54,7 @@
 "create_empty_entry": "test/helper/fixture.hpp"
 "fallback_copy_wstring_to_cstring": "private/config/fallback.h"
 "FOR_EACH_PARAM_WITH_NAME": "private/element.h"
+"FUZZ_CORPORA_DIR": "test/config.hpp"
 "GENERATE_STRING": "private/strhelper.h"
 "get_category": "private/config/wel_supported.h"
 "get_event_id": "private/config/wel_supported.h"

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2256,6 +2256,32 @@ namespace {
 
     stumpless_destroy_entry_and_contents( entry );
 
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, AsciiMessage ) {
+    struct stumpless_entry *entry;
+    const char *ascii_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    ascii_message = load_corpus( "message/ascii", NULL );
+    ASSERT_NOT_NULL( ascii_message );
+
+    result = stumpless_set_entry_message_str( entry, ascii_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( ascii_message, new_message );
+    free( ( void * ) new_message );
+
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
 
