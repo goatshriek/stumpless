@@ -58,7 +58,20 @@ create_empty_entry( void );
 struct stumpless_entry *
 create_entry( void );
 
+/**
+ * Returns a buffer holding the contents of the fuzz corpus file at the named
+ * location in the test/corpora folder. For example, a name of "message/ascii"
+ * will return the contents of the test/corpora/message/ascii file.
+ *
+ * The returned buffer must be destroyed with the delete[] operator when it is
+ * no longer needed to avoid memory leaks.
+ *
+ * @param name The corpus file name.
+ *
+ * @return a buffer holding the contents of the file, or NULL if an error
+ * occurred.
+ */
 const char *
-load_corpus( const std::string& name, int *length );
+load_corpus( const std::string& name );
 
 #endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */

@@ -2268,7 +2268,7 @@ namespace {
     entry = create_empty_entry(  );
     ASSERT_NOT_NULL( entry );
 
-    ascii_message = load_corpus( "message/ascii", NULL );
+    ascii_message = load_corpus( "message/ascii" );
     ASSERT_NOT_NULL( ascii_message );
 
     result = stumpless_set_entry_message_str( entry, ascii_message );
@@ -2350,7 +2350,7 @@ namespace {
     entry = create_empty_entry(  );
     ASSERT_NOT_NULL( entry );
 
-    utf8_message = load_corpus( "message/zh-cn", NULL );
+    utf8_message = load_corpus( "message/zh-cn" );
     ASSERT_NOT_NULL( utf8_message );
 
     result = stumpless_set_entry_message_str( entry, utf8_message );

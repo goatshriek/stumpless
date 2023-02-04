@@ -3,6 +3,7 @@
 "cout": "iostream"
 "get_id": "thread"
 "mutex": "mutex"
+"string": "string"
 "thread": "thread"
 "uniform_int_distribution": "random"
 "unordered_set": "unordered_set"

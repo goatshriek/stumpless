@@ -55,7 +55,7 @@ create_entry( void ) {
 }
 
 const char *
-load_corpus( const std::string& name, int *length ) {
+load_corpus( const string& name ) {
   int file_length;
   string corpora_dir ( FUZZ_CORPORA_DIR );
   ifstream corpus_file( corpora_dir + "/" + name, ifstream::binary );
@@ -75,10 +75,6 @@ load_corpus( const std::string& name, int *length ) {
   }
 
   corpus_file.close(  );
-
-  if( length ) {
-    *length = file_length;
-  }
 
   return buffer;
 }

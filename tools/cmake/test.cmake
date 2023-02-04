@@ -8,7 +8,7 @@ else()
   set(function_test_compile_flags "-std=gnu++14 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
   set(performance_test_compile_flags "-std=gnu++14")
 endif(MSVC)
-set(fuzz_test_compile_flags "-g -O1 -fsanitize=fuzzer")
+set(fuzz_test_compile_flags "-g -O1 -fsanitize=fuzzer,address")
 
 function(private_add_function_test)
   set(single_val_args NAME)
@@ -170,6 +170,7 @@ function(private_add_fuzz_test)
 
   target_link_libraries(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
     stumpless
+    "-fsanitize=fuzzer,address"
     ${FUNCTION_FUZZ_ARG_LIBRARIES}
   )
 

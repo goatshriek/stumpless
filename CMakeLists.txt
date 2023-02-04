@@ -900,8 +900,8 @@ if(COVERAGE)
 endif(COVERAGE)
 
 if(FUZZ)
-  target_compile_options(stumpless PRIVATE -fsanitize=fuzzer)
-  target_link_libraries(stumpless PRIVATE -fsanitize=fuzzer)
+  target_compile_options(stumpless PRIVATE "-fsanitize=fuzzer,address")
+  target_link_libraries(stumpless PRIVATE "-fsanitize=fuzzer,address")
 endif(FUZZ)
 
 target_include_directories(stumpless
