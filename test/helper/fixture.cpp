@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,14 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <fstream>
+#include <string>
 #include <stumpless.h>
+#include "test/config.hpp"
 #include "test/helper/fixture.hpp"
+
+using namespace std;
 
 struct stumpless_entry *
 create_empty_entry( void ) {
@@ -47,4 +53,29 @@ create_entry( void ) {
                                     "fixture-value-2" );
 
   return entry;
+}
+
+const char *
+load_corpus( const string& name ) {
+  int file_length;
+  string corpora_dir ( FUZZ_CORPORA_DIR );
+  ifstream corpus_file( corpora_dir + "/" + name, ifstream::binary );
+  if( !corpus_file ) {
+    return NULL;
+  }
+
+  corpus_file.seekg( 0, corpus_file.end );
+  file_length = corpus_file.tellg(  );
+  corpus_file.seekg( 0, corpus_file.beg );
+
+  char *buffer = new char [file_length];
+  corpus_file.read( buffer, file_length );
+  if( !corpus_file ) {
+    delete[] buffer;
+    buffer = NULL;
+  }
+
+  corpus_file.close(  );
+
+  return buffer;
 }

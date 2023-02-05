@@ -28,6 +28,7 @@ option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
 option(COVERAGE "Include coverage information" OFF)
+option(FUZZ "Support fuzzing with libFuzzer" OFF)
 
 string(CONCAT enable_deprecation_warnings_help_string
   "Print warnings to the standard output when deprecated functionality is used."
@@ -898,6 +899,11 @@ if(COVERAGE)
   target_link_libraries(stumpless PRIVATE --coverage)
 endif(COVERAGE)
 
+if(FUZZ)
+  target_compile_options(stumpless PRIVATE "-fsanitize=fuzzer,address")
+  target_link_libraries(stumpless PRIVATE "-fsanitize=fuzzer,address")
+endif(FUZZ)
+
 target_include_directories(stumpless
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
@@ -937,9 +943,10 @@ endif()
 
 
 # generating configuration files
+set(FUZZ_CORPORA_DIR ${PROJECT_SOURCE_DIR}/test/corpora)
 configure_file(${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in ${PROJECT_BINARY_DIR}/include/stumpless/config.h)
 configure_file(${PROJECT_SOURCE_DIR}/include/private/config.h.in ${PROJECT_BINARY_DIR}/include/private/config.h)
-
+configure_file(${PROJECT_SOURCE_DIR}/include/test/config.hpp.in ${PROJECT_BINARY_DIR}/include/test/config.hpp)
 
 
 # installation of the library
@@ -1336,6 +1343,19 @@ add_performance_test(version
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
 )
+
+if(FUZZ)
+  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora)
+
+  add_fuzz_test(add_message_str
+    SOURCES ${PROJECT_SOURCE_DIR}/test/fuzz/add_message_str.cpp
+    CORPUS_NAME cstring
+  )
+
+  add_custom_target(fuzz
+    DEPENDS ${STUMPLESS_FUZZ_TESTS}
+  )
+endif()
 
 
 # c++ support

@@ -355,3 +355,17 @@ jobs:
       - name: Build Documentation
         run: |
           make docs-cpp
+  linux-fuzz-build:
+    name: "linux, fuzzer build"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DFUZZ=ON .
+      - name: Build Fuzzers
+        run: |
+          make fuzz
+      - name: Run Fuzzers
+        run: |
+          (for f in $(ls fuzz-test-*); do timeout 1s make run-$f || if [ $? -eq 124 ]; then echo "$f ran"; else exit 1; fi; done)

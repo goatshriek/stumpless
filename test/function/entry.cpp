@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2259,6 +2259,60 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( SetMessageStrTest, AsciiMessage ) {
+    struct stumpless_entry *entry;
+    const char *ascii_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    ascii_message = load_corpus( "cstring/ascii" );
+    ASSERT_NOT_NULL( ascii_message );
+
+    result = stumpless_set_entry_message_str( entry, ascii_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( ascii_message, new_message );
+
+    delete[] ascii_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, LongAsciiMessage ) {
+    struct stumpless_entry *entry;
+    const char *long_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    long_message = load_corpus( "cstring/lorem" );
+    ASSERT_NOT_NULL( long_message );
+
+    result = stumpless_set_entry_message_str( entry, long_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( long_message, new_message );
+
+    delete[] long_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetMessageStrTest, MallocFailureOnMessage ) {
     void * (*set_malloc_result)(size_t);
     struct stumpless_entry *entry;
@@ -2311,6 +2365,33 @@ namespace {
 
     stumpless_destroy_entry_and_contents( entry );
 
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageStrTest, Utf8Message ) {
+    struct stumpless_entry *entry;
+    const char *utf8_message;
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    utf8_message = load_corpus( "cstring/zh-cn" );
+    ASSERT_NOT_NULL( utf8_message );
+
+    result = stumpless_set_entry_message_str( entry, utf8_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( utf8_message, new_message );
+
+    delete[] utf8_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
 

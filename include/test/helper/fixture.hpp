@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2021 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 
 #  include <cstdlib>
 #  include <gtest/gtest.h>
+#  include <string>
 #  include <stumpless.h>
 
 #  define BUFFER_TARGET_FIXTURE_CLASS( CLASS_NAME )                            \
@@ -57,5 +58,21 @@ create_empty_entry( void );
 
 struct stumpless_entry *
 create_entry( void );
+
+/**
+ * Returns a buffer holding the contents of the fuzz corpus file at the named
+ * location in the test/corpora folder. For example, a name of "message/ascii"
+ * will return the contents of the test/corpora/message/ascii file.
+ *
+ * The returned buffer must be destroyed with the delete[] operator when it is
+ * no longer needed to avoid memory leaks.
+ *
+ * @param name The corpus file name.
+ *
+ * @return a buffer holding the contents of the file, or NULL if an error
+ * occurred.
+ */
+const char *
+load_corpus( const std::string& name );
 
 #endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */

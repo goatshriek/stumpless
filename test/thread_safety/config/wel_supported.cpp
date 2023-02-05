@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include <mutex>
 #include <sstream>
+#include <string>
 #include <stumpless.h>
 #include <thread>
 #include "test/function/windows/events.h"
