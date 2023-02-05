@@ -60,4 +60,3 @@ therefore should not be duplicated in each of them. A good example of this is
 the existence of a network server that can listen for messages when testing
 the network logging targets. These implementations are kept in the
 [`helper`](./helper) directory of the test suite.
-
