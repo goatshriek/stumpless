@@ -1349,7 +1349,7 @@ if(FUZZ)
 
   add_fuzz_test(add_message_str
     SOURCES ${PROJECT_SOURCE_DIR}/test/fuzz/add_message_str.cpp
-    CORPUS_NAME message
+    CORPUS_NAME cstring
   )
 
   add_custom_target(fuzz
