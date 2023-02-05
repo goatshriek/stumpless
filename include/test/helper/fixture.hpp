@@ -21,6 +21,7 @@
 
 #  include <cstdlib>
 #  include <gtest/gtest.h>
+#  include <string>
 #  include <stumpless.h>
 
 #  define BUFFER_TARGET_FIXTURE_CLASS( CLASS_NAME )                            \
