@@ -43,4 +43,24 @@ using the library.
 
 
 ### Understand `new` vs. `load` lifetimes
-?
+Stumpless provides a number of functions with similar functionality but
+different mechanics in an effort to give users the most efficient way to
+accomplish what they need. For example, in some cases, a structure like a log
+entry will only be needed within a short or well-defined scope, and therefore
+does not need to be allocated on the heap. The `load` functions allow the caller
+to provide a pointer to a structure, avoiding the heap allocation for the entry
+that would otherwise occur in a `new` function.
+
+However, this performance boost does come with a risk. Users need to make sure
+that they are using the matching `unload` functions with structures initialized
+this way. In particular, the recursive destructors need to be careful matched so
+that for example `stumpless_destroy_entry_and_contents` isn't called on an entry
+that had a param created with `stumpless_load_param`.
+
+Failure to adhere to these rules can result in issues ranging from memory leaks
+to serious security risks like
+[double free](https://cwe.mitre.org/data/definitions/415.html) and
+[attempting to free memory not on the heap](https://cwe.mitre.org/data/definitions/590.html).
+The best way to mitigate this is to follow a single convention in your project,
+and stick with that. Avoid mixing styles of allocation unless you absolutely
+must.
