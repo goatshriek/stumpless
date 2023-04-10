@@ -68,7 +68,7 @@
 "le gestionnaire de log pour une cible fonction à échoué"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
-"echec de getaddrinfo sur le hostname fourni"
+"échec de getaddrinfo sur le hostname fourni"
 
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "code de retour de l'échec d'appel getaddrinfo"
@@ -151,7 +151,7 @@
 
 // todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] and inet_pton failed to resolve the name"
+"gethostbyname[2] et inet_pton échec de résolvez le nom"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "le protocol réseaux choisi n'est pas supporté"
