@@ -148,7 +148,6 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "message trop grand pour être envoyé en un seul datagramme"
 
-// todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
 "gethostbyname[2] et inet_pton échec de résolvez le nom"
 
