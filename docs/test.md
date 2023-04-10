@@ -5,9 +5,9 @@ that changes have not caused unexpected breakage. Stumpless uses tests for
 exactly this purpose.
 
 Stumpless uses the [Google Test](https://github.com/google/googletest) library
-to create its unit tests. The rest of this document will walk through the
-specifics of writiting and running tests for Stumpless, but if you have
-questions about Google Test itself we recommend checking out the project's
+as the framework for most of its unit tests. The rest of this document will walk
+through the specifics of writing and running tests for Stumpless, but if you
+have questions about Google Test itself we recommend checking out the project's
 own [guides](https://google.github.io/googletest/).
 
 
@@ -22,8 +22,8 @@ source code for stumpless. For example, tests for a function implemented
 in `src/entry.c` will probably be located in `test/function/entry.cpp`. There
 are some exceptions to this. For example, memory leak testing is in the
 `test/function/leak` directory, and tests that must have a clean state are in
-in the `test/function/startup` directory. But when looking for a test, the best
-place to start is just `test/function`.
+in the `test/function/startup` directory. But when looking for a regular
+functionality test, the best place to start is just `test/function`.
 
 Individual tests should be focused on specific functionality of a single library
 feature. This focus is important to allow issues to be quickly identified when a
@@ -73,7 +73,7 @@ these in the project already that you can use for specific examples. They are:
    `check-cpp` target (examples in `tools/cmake/cpp.cmake`)
 
 
-## Running Tests
+## Building and Running Tests
 The easiest way to run all tests is to use the `check` target. You can run this
 target through whatever build system you're using, for example `make check` in a
 makefile-based build. You can also use cmake to run the target using your build
@@ -103,6 +103,32 @@ There are special targets that group other types of tests as well.
    the given name
  * `run-performance-test-<name>` builds and runs the benchmark with the given
    name
+
+
+### Fuzz Test Specifics
+You may have noticed that at the start of this document stated that Google Test
+was the framework for _most_ of the unit tests. The fuzz tests are a notable
+exception, using LLVM's [libFuzzer](https://llvm.org/docs/LibFuzzer.html)
+project instead. This difference means that there is some extra work required to
+get fuzzing tests to run.
+
+First of all you'll need to enable fuzzing tests, since they're disabled by
+default. This is straightforward: just add the `-DFUZZ=ON` argument to cmake
+during configuration.
+
+Next, be sure that you're using clang (version 6.0 or above) as the compiler to
+build the project. If you have multiple compilers installed, you can choose a
+specific one by providing the appropriate definitions during the cmake
+configuration step: `-DCMAKE_C_COMPILER=clang` and
+`-DCMAKE_CXX_COMPILER=clang++` should work in most cases where clang is
+installed normally.
+
+If you want to verify that the above portions are okay, you can look for the
+relevant fields in `CMakeCache.txt` in your build directory and make sure that
+everything is set up okay as described above.
+
+Once these conditions are met, you should be able to run fuzzing tests just as
+you would any others.
 
 
 ## Test Coverage
