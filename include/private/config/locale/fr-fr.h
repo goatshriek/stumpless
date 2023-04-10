@@ -114,9 +114,8 @@
 "les codes de sévérité doivent être définis conformément au RFC 5424:" \
 " valeurs entre 0 et 7 inclus"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"état invalide atteint pendant UTF-8 string parsing"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "le type de la cible est incompatible avec cette opération"
