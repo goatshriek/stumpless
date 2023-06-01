@@ -16,12 +16,8 @@
  * limitations under the License.
  */
 
-/** @file
- * United States English localization strings.
- */
-
-#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
-#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_DA_DK_H
+#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_DA_DK_H
 
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "kunne ikke binde til den lokale unix Socket"
