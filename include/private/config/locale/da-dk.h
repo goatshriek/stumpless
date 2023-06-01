@@ -99,7 +99,7 @@
 "den ugyldige facilitet"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"facilitets koder skal være defineret i Overensstemmelse med RFC 5424, efter" /
+"facilitets koder skal være defineret i Overensstemmelse med RFC 5424, efter" \
 "multiplikationen med 8"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
