@@ -16,6 +16,11 @@ INCLUDE_PATH           = @PROJECT_SOURCE_DIR@/include @PROJECT_BINARY_DIR@/inclu
 MACRO_EXPANSION        = YES
 ENABLE_PREPROCESSING   = YES
 EXPAND_ONLY_PREDEF     = YES
+GENERATE_HTML          = YES
+GENERATE_MAN           = YES
+MAN_OUTPUT             = man
+MAN_EXTENSION          = .3
+MAN_LINKS              = YES
 PREDEFINED             = __attribute__(x)=
 
 # default generated settings
@@ -97,7 +102,6 @@ USE_HTAGS              = NO
 VERBATIM_HEADERS       = YES
 ALPHABETICAL_INDEX     = YES
 COLS_IN_ALPHA_INDEX    = 5
-GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
 HTML_COLORSTYLE_HUE    = 220
@@ -147,10 +151,6 @@ GENERATE_RTF           = NO
 RTF_OUTPUT             = rtf
 COMPACT_RTF            = NO
 RTF_HYPERLINKS         = NO
-GENERATE_MAN           = NO
-MAN_OUTPUT             = man
-MAN_EXTENSION          = .3
-MAN_LINKS              = NO
 GENERATE_XML           = NO
 XML_OUTPUT             = xml
 XML_PROGRAMLISTING     = YES
