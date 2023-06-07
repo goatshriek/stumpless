@@ -26,21 +26,19 @@
 "el buffer es demasiado pequeño para el mensaje proporcionado"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"se ha intentado cerrar un tipo de objetvo no soportado"
+"se ha intentado cerrar un tipo de objeto no soportado"
 
-// todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CommitTransaction failed"
+"CommitTransaction ha fallado"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"se ha fallado al conectar socket sys/socket.h"
+"al conectar socket sys/socket.h ha fallado"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"se ha fallado al conectar socket winsock2"
+"al conectar socket winsock2 ha fallado"
 
-// todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CreateTransaction failed"
+"CreateTransaction ha fallado"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "el destino es válido sólo para objetivos de red"
@@ -84,13 +82,11 @@
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "el resultado de GetLastError despues de la llamada fallida"
 
-// todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"GetModuleFileNameW failed"
+"GetModuleFileNameW ha fallado"
 
-// todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"GetModuleHandleExW failed"
+"GetModuleHandleExW ha fallado"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "el índice no válido, o -1 por lo que es deamasiado largo para representarse" \
@@ -119,19 +115,17 @@
 "los códigos de gravedad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"se alcanzó un estado inválido durante el análisis de la cadena UTF-8"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"mensaje de error por tipo de objetivo no válido"
+"el tipo de destino es incompatible con esta operación"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "código de retorno de sd_journal_sendv"
 
-// todo translate
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"sd_journal_sendv failed"
+"sd_journal_sendv ha fallado"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "no se pudo crear un archivo con el nombre de socket local elegido usando" \
@@ -143,12 +137,12 @@
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
 "el resultado de GetLastError después de la llamada fallida"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided multibyte string to a wide char string"
+"no se ha podido convertir la cadena multibyte a una cadena de caracteres" \
+" anchos (wide char)"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"el alojamiento de memoria para una llamada ha fallado"
+"la reserva de memoria para una llamada ha fallado"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "el tamaño del mensaje que se ha intentado enviar"
@@ -156,9 +150,8 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "el mensaje es demasiado largo para ser enviado en un datagrama simple"
 
-// todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] and inet_pton failed to resolve the name"
+"gethostbyname[2] y inet_pton fallaron en resolver el nombre"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "protocolo de red elegido no soportado"
@@ -208,9 +201,8 @@ ARG_NAME " fue NULL"
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "se ha fallado al abrir el socket"
 
-// todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
-L"Stumpless registration of Windows Event Log Source"
+L"registro de Stumpless del Registro de Eventos de Windows"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "no se pudo escribir en el stream"
@@ -242,20 +234,18 @@ L"Stumpless registration of Windows Event Log Source"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "no se pudo abrir el log de eventos de Windows"
 
-// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided wide char string to a multibyte string"
+"no se ha podido convertir la cadena de caracteres anchos (wide char) a una" \
+" cadena multibyte"
 
-// todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"the Windows error code returned by the failed call"
+"el código de error de Windows devuelto por la llamada fallida"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "código de error de socket de Windows"
 
-// todo translate
 #  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"el resultado de GetLastError después de la llamada fallida"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "se ha fallado al abrir un socket winsock2"
