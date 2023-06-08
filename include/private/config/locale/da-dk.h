@@ -26,10 +26,10 @@
 "buffer er for lilel til den givne besked"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"prøvede at lukke en ikke støttet måltype"
+"prÃ¸vede at lukke en ikke stÃ¸ttet mÃ¥ltype"
 
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CommitTransaction(begå transaktion) fejlede"
+"CommitTransaction(begÃ¥ transaktion) fejlede"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "forbind fejlede med et sys/socket.h socket"
@@ -41,7 +41,7 @@
 "CreateTransaction(lav transaktion) fejlede"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
-"destination er kun gyldigt for netværk mål"
+"destination er kun gyldigt for netvÃ¦rk mÃ¥l"
 
 #  define L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE \
 "et element med det givne navn findes allerede i denne entry"
@@ -53,7 +53,7 @@
 "errno efter det fejlede kald"
 
 #  define L10N_FILE_OPEN_FAILURE_ERROR_MESSAGE \
-"kunne ikke åbne den speciferede fil"
+"kunne ikke Ã¥bne den speciferede fil"
 
 #  define L10N_FILE_WRITE_FAILURE_ERROR_MESSAGE \
 "kunne ikke skrive til files"
@@ -65,10 +65,10 @@
 "retuner koden af log handler funktionen"
 
 #  define L10N_FUNCTION_TARGET_FAILURE_ERROR_MESSAGE \
-"log handleren for et funtionsmål fejlede"
+"log handleren for et funtionsmÃ¥l fejlede"
 
 #  define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
-"getaddrinfo fejlede på det givne hostnavn"
+"getaddrinfo fejlede pÃ¥ det givne hostnavn"
 
 #  define L10N_GETADDRINFO_RETURN_ERROR_CODE_TYPE \
 "retuner koden af the fejlede getaddrinfo kald"
@@ -95,31 +95,31 @@
 "den ugyldige facilitet"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"facilitets koder skal være defineret i Overensstemmelse med RFC 5424, efter" \
+"facilitets koder skal vÃ¦re defineret i Overensstemmelse med RFC 5424, efter" \
 "multiplikationen med 8"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
-"ugyldigt mål id"
+"ugyldigt mÃ¥l id"
 
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "ugyldigt " INDEXED_THING " index"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"en MULTI_SZ registreringsdatabase værdi var hverken tom eller Afsluttet med to NULL's" \
-" characters"
+"en MULTI_SZ registreringsdatabase vÃ¦rdi var hverken tom eller Afsluttet " \
+" characters med to NULL's"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ugyldige alvorlighed"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"alvorligheds koder skal være defineret i Overensstemmelse med RFC 5424: værdier mellem 0" \
-" og 7 inklusivt"
+"alvorligheds koder skal vÃ¦re defineret i Overensstemmelse med RFC 5424:" \
+" vÃ¦rdier mellem 0 og 7 inklusivt"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"ugyldig stat nået under UTF-8 streng parsing"
+"ugyldig stat nÃ¥et under UTF-8 streng parsing"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"måltype er uforenelig med denne operation"
+"mÃ¥ltype er uforenelig med denne operation"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "retur kode af sd_journal_sendv"
@@ -131,7 +131,7 @@
 "kunne ikke lave en fejl med det valgte lokale socket navn ved brug af mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
-"max besked størrelse er kun gyldigt for UDP nætværk mål "
+"max besked stÃ¸rrelse er kun gyldigt for UDP nÃ¦tvÃ¦rk mÃ¥l "
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
 "resultatet af GetLastError efter det fejlede kald"
@@ -143,25 +143,25 @@
 "et memory allocation kald fejlede"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
-"størrelsen på beskeden der blev forsøgt at blive sendt"
+"stÃ¸rrelsen pÃ¥ beskeden der blev forsÃ¸gt at blive sendt"
 
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "beskeden er for stor til at blive sendt i et enkelt diagram"
 
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] og inet_pton fejlede i at løse navnet"
+"gethostbyname[2] og inet_pton fejlede i at lÃ¸se navnet"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"valgte nætværks protokol er ikke støttet"
+"valgte nÃ¦tvÃ¦rks protokol er ikke stÃ¸ttet"
 
 #  define L10N_NETWORK_TARGETS_UNSUPPORTED \
-"netværk mål er ikke støttet af dette build"
+"netvÃ¦rk mÃ¥l er ikke stÃ¸ttet af dette build"
 
 #  define L10N_NULL_ARG_ERROR_MESSAGE( ARG_NAME ) \
 ARG_NAME " var NULL"
 
 #  define L10N_OPEN_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"prøvede at åbne en ikke støttet måltype"
+"prÃ¸vede at Ã¥bne en ikke stÃ¸ttet mÃ¥ltype"
 
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "et parameter med de speciferede karakteristika kunne ikke blive fundet"
@@ -173,22 +173,22 @@ ARG_NAME " var NULL"
 "en registreringsdatabase kunne ikke blive slettet"
 
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"en registreringsdatabase subkey kunne ikke blive åbnet"
+"en registreringsdatabase subkey kunne ikke blive Ã¥bnet"
 
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"en registreringsdatabase værdi kunne ikke blive læst"
+"en registreringsdatabase vÃ¦rdi kunne ikke blive lÃ¦st"
 
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"en registreringsdatabase værdi kunne ikke blive sat"
+"en registreringsdatabase vÃ¦rdi kunne ikke blive sat"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "sendto fejlede med et unix socket"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"prøvede at sende en indtræden til en ikke støttet måltype"
+"prÃ¸vede at sende en indtrÃ¦den til en ikke stÃ¸ttet mÃ¥ltype"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"prøvede at sende en besked til en ikke støttet måltype"
+"prÃ¸vede at sende en besked til en ikke stÃ¸ttet mÃ¥ltype"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "send fejlede med et sys/socket.h socket"
@@ -197,40 +197,40 @@ ARG_NAME " var NULL"
 "send fejlede med et winsock2 socket"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
-"kunne ikke åbne et socket"
+"kunne ikke Ã¥bne et socket"
 
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 "Stumpless registration af Windows Event Log kilde"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"kunne ikke skrive til strømmen"
+"kunne ikke skrive til strÃ¸mmen"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
-"længden på den ulovlige streng"
+"lÃ¦ngden pÃ¥ den ulovlige streng"
 
 #  define L10N_STRING_TOO_LONG_ERROR_MESSAGE \
-"længde af streng overskrider den maksimale længde"
+"lÃ¦ngde af streng overskrider den maksimale lÃ¦ngde"
 
 #  define L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE \
-"denne måltype er altid åben"
+"denne mÃ¥ltype er altid Ã¥ben"
 
 #  define L10N_TRANSPORT_PORT_NETWORK_ONLY_ERROR_MESSAGE \
-"transport porte er kun gyldige for netværksmål"
+"transport porte er kun gyldige for netvÃ¦rksmÃ¥l"
 
 #  define L10N_TRANSPORT_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
-"valgte transport protokol er ikke understøttet"
+"valgte transport protokol er ikke understÃ¸ttet"
 
 #  define L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"kunne ikke åbne en unix socket med socket funktion"
+"kunne ikke Ã¥bne en unix socket med socket funktion"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
-"tjekkede for om en ikke støttet måltype var åben"
+"tjekkede for om en ikke stÃ¸ttet mÃ¥ltype var Ã¥ben"
 
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
 "kunne ikke lukke Windows Event Loggen"
 
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"kunne åbne lukke Windows Event Loggen"
+"kunne Ã¥bne lukke Windows Event Loggen"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
 "kunne ikke konvertere den givne brede char streng til en multibyte streng"
@@ -245,7 +245,7 @@ ARG_NAME " var NULL"
 "resultatet af GetLastError efter det fejlede kald"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"kunne ikke åbne et winsock2 socket"
+"kunne ikke Ã¥bne et winsock2 socket"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "resultatet af WSAGetLastError efter det fejlede"
