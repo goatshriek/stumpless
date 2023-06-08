@@ -62,6 +62,8 @@
 #cmakedefine USE_LOCALE_EN_US 1
 #cmakedefine USE_LOCALE_SK_SK 1
 #cmakedefine USE_LOCALE_BG_BG 1
+#cmakedefine USE_LOCALE_DA_DK 1
+
 
 
 /* optimizations */
