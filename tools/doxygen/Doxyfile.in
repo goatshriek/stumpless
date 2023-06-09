@@ -23,6 +23,10 @@ EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             = __attribute__(x)=
 SHOW_INCLUDE_FILES     = NO
 
+EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/docs/examples
+EXAMPLE_PATTERNS       = "*.c"
+EXAMPLE_RECURSIVE      = NO
+
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
@@ -37,6 +41,7 @@ GENERATE_MAN           = YES
 MAN_OUTPUT             = man
 MAN_EXTENSION          = .3
 MAN_LINKS              = YES
+
 
 # default generated settings
 BRIEF_MEMBER_DESC      = YES
@@ -101,7 +106,6 @@ INPUT_ENCODING         = UTF-8
 RECURSIVE              = YES
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = *scripts*
-EXAMPLE_RECURSIVE      = NO
 FILTER_SOURCE_FILES    = NO
 SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO

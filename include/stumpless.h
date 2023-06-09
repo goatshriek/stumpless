@@ -16,6 +16,17 @@
  * limitations under the License.
  */
 
+/** @mainpage Stumpless
+ *
+ * Stumpless is a logging library built for high performance and a rich feature
+ * set.
+ */
+
+/** @example basic_example.c
+ * Demonstrates usage of the basic logging calls (stump(), stump_str(),
+ * stumpless_add_message(), stumplog()).
+ */
+
 /** @file
  * The main header file for the stumpless logging library. Unless you are
  * specifically trying to include ONLY required headers, it is best to simply
@@ -30,12 +41,6 @@
 
 #ifndef __STUMPLESS_H
 #define __STUMPLESS_H
-
-/** @mainpage Stumpless
- *
- * Stumpless is a logging library built for high performance and a rich feature
- * set.
- */
 
 #include <stumpless/config.h>
 #include <stumpless/element.h>
