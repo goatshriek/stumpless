@@ -335,6 +335,129 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F(WelSupportedTest, InvalidUtf8InsertionString) {
+  struct stumpless_entry *entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "stumpless-wel-unit-test",
+    "invalid-utf8-entry",
+    "message with invalid UTF-8 insertion string"
+  );
+  
+  stumpless_set_wel_category(entry, CATEGORY_TEST);
+  stumpless_set_wel_event_id(entry, MSG_INVALID_UTF8);
+  stumpless_set_wel_type(entry, EVENTLOG_SUCCESS);
+  
+  // Set an invalid UTF-8 string as the insertion string
+  stumpless_set_wel_insertion_strings(entry, 1, "invalid utf-8 string");
+  
+  EXPECT_EQ(stumpless_get_error_id(), STUMPLESS_INVALID_UTF8);
+  
+  stumpless_destroy_entry_and_contents(entry);
+}
+
+TEST_F(WelSupportedTest, InsertionIndexNotModifiedWhenInvalidUtf8StringProvided) {
+  struct stumpless_entry *entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "stumpless-wel-unit-test",
+    "index-not-modified-entry",
+    "string 1: %1\r\nstring 2: %2"
+  );
+  
+  stumpless_set_wel_category(entry, CATEGORY_TEST);
+  stumpless_set_wel_event_id(entry, MSG_TWO_INSERTIONS);
+  stumpless_set_wel_type(entry, EVENTLOG_SUCCESS);
+  
+  const char *validString = "valid string";
+  const char *invalidUtf8String = "invalid utf-8 string";
+  
+  // Set valid insertion strings to index 0 and 1
+  stumpless_set_wel_insertion_strings(entry, 2, validString, validString);
+  
+  // Set an invalid UTF-8 string to index 0
+  stumpless_set_wel_insertion_string(entry, 0, invalidUtf8String);
+  
+  EXPECT_EQ(stumpless_get_wel_insertion_string(entry, 0), validString);
+  EXPECT_EQ(stumpless_get_error_id(), STUMPLESS_INVALID_UTF8);
+  
+  stumpless_destroy_entry_and_contents(entry);
+}
+
+TEST_F(WelSupportedTest, InvalidUtf8InsertionStringOutOfRange) {
+  struct stumpless_entry *entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "stumpless-wel-unit-test",
+    "out-of-range-entry",
+    "message with out-of-range insertion string"
+  );
+  
+  stumpless_set_wel_category(entry, CATEGORY_TEST);
+  stumpless_set_wel_event_id(entry, MSG_OUT_OF_RANGE);
+  stumpless_set_wel_type(entry, EVENTLOG_SUCCESS);
+  
+  // Set an invalid UTF-8 string to an out-of-range index
+  stumpless_set_wel_insertion_string(entry, 5, "invalid utf-8 string");
+  
+  EXPECT_EQ(stumpless_get_error_id(), STUMPLESS_INDEX_OUT_OF_BOUNDS);
+  
+  stumpless_destroy_entry_and_contents(entry);
+}
+
+TEST_F(WelSupportedTest, InsertionIndexNotModifiedWhenOutOfRangeIndexProvided) {
+  struct stumpless_entry *entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "stumpless-wel-unit-test",
+    "index-not-modified-entry",
+    "string 1: %1\r\nstring 2: %2"
+  );
+  
+  stumpless_set_wel_category(entry, CATEGORY_TEST);
+  stumpless_set_wel_event_id(entry, MSG_TWO_INSERTIONS);
+  stumpless_set_wel_type(entry, EVENTLOG_SUCCESS);
+  
+  const char *validString = "valid string";
+  
+  // Set valid insertion string to index 0
+  stumpless_set_wel_insertion_string(entry, 0, validString);
+  
+  // Set an invalid UTF-8 string to an out-of-range index
+  stumpless_set_wel_insertion_string(entry, 5, "invalid utf-8 string");
+  
+  EXPECT_EQ(stumpless_get_wel_insertion_string(entry, 0), validString);
+  EXPECT_EQ(stumpless_get_error_id(), STUMPLESS_INDEX_OUT_OF_BOUNDS);
+  
+  stumpless_destroy_entry_and_contents(entry);
+}
+
+TEST_F(WelSupportedTest, InsertionIndexNotModifiedWhenInRangeButNotAssigned) {
+  struct stumpless_entry *entry = stumpless_new_entry(
+    STUMPLESS_FACILITY_USER,
+    STUMPLESS_SEVERITY_INFO,
+    "stumpless-wel-unit-test",
+    "index-not-modified-entry",
+    "string 1: %1\r\nstring 2: %2"
+  );
+  
+  stumpless_set_wel_category(entry, CATEGORY_TEST);
+  stumpless_set_wel_event_id(entry, MSG_TWO_INSERTIONS);
+  stumpless_set_wel_type(entry, EVENTLOG_SUCCESS);
+  
+  const char *validString = "valid string";
+  
+  // Set valid insertion string to index 0
+  stumpless_set_wel_insertion_string(entry, 0, validString);
+  
+  // Attempt to get an unassigned insertion string at index 1
+  const char *insertionString = stumpless_get_wel_insertion_string(entry, 1);
+  
+  EXPECT_EQ(insertionString, nullptr);
+  
+  stumpless_destroy_entry_and_contents(entry);
+}
+
   /* non-fixture tests */
 
   TEST( GetDefaultTarget, WelSupported ) {
