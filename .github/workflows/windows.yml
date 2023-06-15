@@ -1,7 +1,10 @@
 name: "Windows"
 
-on: 
-  workflow_dispatch
+on:
+  push:
+  pull_request:
+    branches:
+      - latest
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
