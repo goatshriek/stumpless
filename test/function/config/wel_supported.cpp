@@ -335,24 +335,45 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
-  TEST_F(WelSupportedTest, InvalidUtf8InsertionString) {
-    stumpless_set_wel_insertion_strings(entry, 1, "valid_insertion");
-    const char* invalid_utf8_insertion = "invalid_ÙTF-8_1nserțiön";
+  TEST_F( WelSupportedTest, InvalidUtf8InsertionString ) {
+    const struct stumpless_entry *entry_result;
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
 
-    stumpless_set_wel_insertion_string(entry, 0, invalid_utf8_insertion);
+    entry_result = stumpless_set_wel_insertion_string( insertion_entry, 0, invalid_utf8_string );
+    EXPECT_NULL( entry_result );
+  }
 
-    const char* modified_insertion = stumpless_get_wel_insertion_string(entry, 0);
-    EXPECT_STREQ("valid_insertion", modified_insertion);
+  TEST_F( WelSupportedTest, InsertionStringNotModifiedWhenInvalidUtf8StringProvided ) {
+    LPCSTR valid_string = "valid string";
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+    const struct stumpless_entry *result;
 
-    stumpless_set_wel_insertion_string(entry, 2, invalid_utf8_insertion);
+    stumpless_set_wel_insertion_string( insertion_entry, 0, valid_string );
+    EXPECT_NO_ERROR;
 
-    modified_insertion = stumpless_get_wel_insertion_string(entry, 2);
-    EXPECT_EQ(nullptr, modified_insertion);
+    result = stumpless_set_wel_insertion_string( insertion_entry, 0, invalid_utf8_string );
+    EXPECT_NULL( result );
 
-    stumpless_set_wel_insertion_string(entry, 1, invalid_utf8_insertion);
+    LPCSTR actual_string = stumpless_get_wel_insertion_string( insertion_entry, 0 );
     
-    modified_insertion = stumpless_get_wel_insertion_string(entry, 1);
-    EXPECT_STREQ("valid_insertion", modified_insertion);
+    ASSERT_STREQ( actual_string, valid_string );
+  }
+
+  /* 
+    Add the test case for invalid utf8 insertion string when insertion string is out of range
+  */
+
+  TEST_F ( WelSupportedTest, InsertionIndexNotModifiedWhenInRangeButNotAssigned ) {
+    const struct stumpless_entry *result;
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+    LPCSTR valid_string = "valid string";
+
+    stumpless_set_wel_insertion_strings(insertion_entry, 2, invalid_utf8_string, NULL);
+
+    result = stumpless_set_wel_insertion_string( insertion_entry, 1, valid_string );
+    LPCSTR insertion_string = stumpless_get_wel_insertion_string( insertion_entry, 1 );
+
+    ASSERT_STREQ( insertion_string, valid_string );
   }
 
   /* non-fixture tests */
