@@ -1,7 +1,10 @@
 name: "Cygwin"
 
-on: 
-  workflow_dispatch
+on:
+  push:
+    branches: [ latest ]
+  pull_request:
+    branches: [ latest ]
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
