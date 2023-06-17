@@ -335,6 +335,76 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST_F( WelSupportedTest, InvalidUtf8InsertionString ) {
+    const struct stumpless_error *error;
+    const struct stumpless_entry *entry_result;
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+
+    entry_result = stumpless_set_wel_insertion_string( insertion_entry, 
+                                                        0, 
+                                                        invalid_utf8_string );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( entry_result );
+  }
+
+  TEST_F( WelSupportedTest, InsertionStringNotModifiedWhenInvalidUtf8StringProvided ) {
+    const struct stumpless_error *error;
+    const struct stumpless_entry *entry_result;
+    LPCSTR valid_string = "valid string";
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+
+    stumpless_set_wel_insertion_string( insertion_entry, 0, valid_string );
+    EXPECT_NO_ERROR;
+
+    entry_result = stumpless_set_wel_insertion_string( insertion_entry, 
+                                                        0, 
+                                                        invalid_utf8_string );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( entry_result );
+
+    LPCSTR actual_string = stumpless_get_wel_insertion_string( insertion_entry, 0 );
+    
+    ASSERT_STREQ( actual_string, valid_string );
+  }
+
+  TEST_F(WelSupportedTest, InsertionIndexNotModifiedWhenOutOfRange) {
+    const struct stumpless_error *error;
+    const struct stumpless_entry *entry_result;
+    LPCSTR valid_string = "valid string";
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+
+    stumpless_set_wel_insertion_strings( insertion_entry, 
+                                          4, 
+                                          NULL, 
+                                          NULL, 
+                                          NULL, 
+                                          valid_string );
+
+    entry_result = stumpless_set_wel_insertion_string( insertion_entry, 
+                                                        2, 
+                                                        invalid_utf8_string );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    EXPECT_NULL( entry_result );
+    
+    LPCSTR insertion_string = stumpless_get_wel_insertion_string( insertion_entry, 2 );
+
+    ASSERT_NULL( insertion_string );
+  }
+
+  TEST_F ( WelSupportedTest, InsertionIndexNotModifiedWhenInRangeButNotAssigned ) {
+    LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
+    LPCSTR valid_string = "valid string";
+
+    stumpless_set_wel_insertion_strings( insertion_entry, 2, invalid_utf8_string, NULL );
+
+    stumpless_set_wel_insertion_string( insertion_entry, 1, valid_string );
+    EXPECT_NO_ERROR;
+    
+    LPCSTR insertion_string = stumpless_get_wel_insertion_string( insertion_entry, 1 );
+
+    ASSERT_STREQ( insertion_string, valid_string );
+  }
+
   /* non-fixture tests */
 
   TEST( GetDefaultTarget, WelSupported ) {
