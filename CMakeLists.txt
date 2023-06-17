@@ -1038,7 +1038,7 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 
-# installation of manpages if enabled
+# installation of manpages if enabled and supported
 if(INCLUDE_MANPAGES_IN_INSTALL)
   # build the docs so that they are available for install
   install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target docs)")
