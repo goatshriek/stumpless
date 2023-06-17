@@ -10,7 +10,7 @@ string(CONCAT CPACK_PACKAGE_DESCRIPTION
   "https://goatshriek.github.io/stumpless/ for more info and documentation."
 )
 
-set(CPACK_PACKAGE_CONTACT "Joel Anderson <joelanderson333@gmail.com>")
+set(CPACK_PACKAGE_CONTACT "Joel Anderson <joel@goatshriek.com>")
 set(CPACK_PACKAGE_VENDOR "Goatshriek Software")
 set(CPACK_PACKAGE_RELOCATABLE ON)
 

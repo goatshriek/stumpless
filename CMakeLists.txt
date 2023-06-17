@@ -114,11 +114,12 @@ if(DOXYGEN_FOUND)
       ${EXAMPLE_SOURCES}
       ${PROJECT_SOURCE_DIR}/include/stumpless.h
       ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+    VERBATIM
   )
 
   add_custom_target(docs DEPENDS ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3)
 
-  set(INCLUDE_MANPAGES_IN_INSTALL INSTALL_MANPAGES)
+  set(INCLUDE_MANPAGES_IN_INSTALL ${INSTALL_MANPAGES})
 else()
   if(INSTALL_MANPAGES)
     message("doxygen is required to generate and install manpages")
@@ -1039,6 +1040,9 @@ endif()
 
 # installation of manpages if enabled
 if(INCLUDE_MANPAGES_IN_INSTALL)
+  # build the docs so that they are available for install
+  install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target docs)")
+
   install(FILES
     ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3
     RENAME stumpless_config.h.3
