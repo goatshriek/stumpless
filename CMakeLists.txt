@@ -94,27 +94,29 @@ set(LOCALE $ENV{LANG}
 
 
 # documentation and doxygen setup
-set(PROJECT_DOCS_DIR ${CMAKE_BINARY_DIR}/docs)
+set(PROJECT_DOCS_DIR ${PROJECT_BINARY_DIR}/docs)
 include(FindDoxygen QUIET)
 if(DOXYGEN_FOUND)
-  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile)
+  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${PROJECT_BINARY_DIR}/tools/doxygen/Doxyfile)
 
   file(GLOB_RECURSE DOXYGEN_PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/include/stumpless/*.h)
   set(EXAMPLE_SOURCES
     ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
   )
 
-  add_custom_target(docs
+  add_custom_command(
+    OUTPUT
+      ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
+    MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
     DEPENDS
-      ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
       ${DOXYGEN_PUBLIC_HEADERS}
       ${EXAMPLE_SOURCES}
       ${PROJECT_SOURCE_DIR}/include/stumpless.h
-      ${CMAKE_BINARY_DIR}/include/stumpless/config.h
-    BYPRODUCTS
-      ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3
+      ${PROJECT_BINARY_DIR}/include/stumpless/config.h
   )
+
+  add_custom_target(docs DEPENDS ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3)
 
   set(INCLUDE_MANPAGES_IN_INSTALL INSTALL_MANPAGES)
 else()
