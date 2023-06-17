@@ -27,6 +27,8 @@ option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
+option(INSTALL_MANPAGES "install generated manpages" ON)
+
 option(COVERAGE "Include coverage information" OFF)
 option(FUZZ "Support fuzzing with libFuzzer" OFF)
 
@@ -100,7 +102,15 @@ if(HAVE_DOXYGEN)
   add_custom_target(docs
     COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
   )
-endif(HAVE_DOXYGEN)
+
+  set(INCLUDE_MANPAGES_IN_INSTALL INSTALL_MANPAGES)
+else()
+  if(INSTALL_MANPAGES)
+    message("doxygen is required to generate and install manpages")
+  endif()
+
+  set(INCLUDE_MANPAGES_IN_INSTALL FALSE)
+endif()
 
 
 # load modules
@@ -1009,6 +1019,16 @@ if(PKG_CONFIG_FOUND)
   configure_file("${PROJECT_SOURCE_DIR}/tools/pkg-config/stumpless.pc.in" "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc" @ONLY)
   install(FILES "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc"
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+endif()
+
+
+# installation of manpages if enabled
+if(INCLUDE_MANPAGES_IN_INSTALL)
+  install(FILES
+    ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3
+    RENAME stumpless_config.h.3
+    DESTINATION "man/man3"
+  )
 endif()
 
 
