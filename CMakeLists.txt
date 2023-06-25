@@ -1040,14 +1040,7 @@ endif()
 
 # installation of manpages if enabled and supported
 if(INCLUDE_MANPAGES_IN_INSTALL)
-  # build the docs so that they are available for install
-  install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target docs)")
-
-  install(FILES
-    ${PROJECT_BINARY_DIR}/docs/man/man3/config.h.3
-    RENAME stumpless_config.h.3
-    DESTINATION "man/man3"
-  )
+  include(tools/cmake/install_manpages.cmake)
 endif()
 
 
