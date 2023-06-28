@@ -40,8 +40,8 @@ HTML_INDEX_NUM_ENTRIES = 100
 GENERATE_MAN           = YES
 MAN_OUTPUT             = man
 MAN_EXTENSION          = .3
-# because we update the manpage names to be unique, the generated link entries
-# don't work, so we turn them off
+# since the manpage names are renamed in the build script
+# so that they are unique, the generated link entries wouldn't work
 MAN_LINKS              = NO
 
 
