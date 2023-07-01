@@ -1,8 +1,3 @@
-# build the docs so that they are available for install
-install(CODE
-  "execute_process(COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target docs)"
-)
-
 set(MANPAGE_BUILD_DIR "${PROJECT_BINARY_DIR}/docs/man/man3")
 
 # install the generated manpages
