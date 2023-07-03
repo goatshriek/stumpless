@@ -12,7 +12,6 @@ install(FILES
   DESTINATION "include/stumpless/config"
 )
 
-
 list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/journald.h.3)
 list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/journald_supported.h.3)
 

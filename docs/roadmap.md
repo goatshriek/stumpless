@@ -43,6 +43,9 @@ or want to make a suggestion, please submit an issue on the project's
    pass along a more meaningful return value.
  * [CHANGE] **Entry app name and msgid no longer NULL-terminated.**
    Improve efficiency and memory safety by only using these as byte buffers.
+ * [CHANGE] **Rename `STUMPLESS_DEFAULT_TRANSPORT_PORT`**
+   This symbol will be renamed so that it is clear that it refers to a string
+   literal, likely by adding a `_STR` suffix.
 
 
 ## Unallocated to a release
