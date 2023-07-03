@@ -1,0 +1,45 @@
+list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
+list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
+
+list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/socket_target.yml)
+
+install(FILES
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
+  DESTINATION "include/stumpless/target"
+)
+
+list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/socket.h.3)
+
+if(INCLUDE_MANPAGES_IN_INSTALL)
+  install(FILES
+    ${PROJECT_BINARY_DIR}/docs/man/man3/socket.h.3
+    RENAME stumpless_target_socket.h.3
+    DESTINATION "man/man3"
+  )
+endif()
+
+add_function_test(socket
+  SOURCES
+    test/function/target/socket.cpp
+    $<TARGET_OBJECTS:test_helper_rfc5424>
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
+add_function_test(socket_add_malloc_failure
+  SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
+)
+
+add_function_test(socket_supported
+  SOURCES test/function/config/socket_supported.cpp
+)
+
+add_thread_safety_test(socket
+  SOURCES
+    test/thread_safety/target/socket.cpp
+    $<TARGET_OBJECTS:test_helper_usage>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
+)
+
+add_example(socket
+  ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
+)

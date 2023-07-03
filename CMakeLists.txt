@@ -358,6 +358,7 @@ if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
 endif()
 
+
 # thread safety support check
 if(NOT ENABLE_THREAD_SAFETY)
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
@@ -422,63 +423,24 @@ endif()
 # socket target support
 if(NOT ENABLE_SOCKET_TARGETS)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
-
-  add_function_test(socket_unsupported
-    SOURCES
-      ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
-      $<TARGET_OBJECTS:test_helper_fixture>
-    LIBRARIES ${network_libraries}
-  )
-
 elseif(NOT HAVE_SYS_SOCKET_H)
   message("socket targets are not supported without sys/socket.h")
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
+endif(NOT ENABLE_SOCKET_TARGETS)
 
+if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
+  include(tools/cmake/socket.cmake)
+else()
   add_function_test(socket_unsupported
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
+endif()
 
-else()
-  set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
 
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/socket.c)
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.c)
-
-  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/socket_target.yml)
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
-    DESTINATION "include/stumpless/target"
-  )
-
-  add_function_test(socket
-    SOURCES
-      test/function/target/socket.cpp
-      $<TARGET_OBJECTS:test_helper_rfc5424>
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
-
-  add_function_test(socket_add_malloc_failure
-    SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
-  )
-
-  add_function_test(socket_supported
-    SOURCES test/function/config/socket_supported.cpp
-  )
-
-  add_thread_safety_test(socket
-    SOURCES
-      test/thread_safety/target/socket.cpp
-      $<TARGET_OBJECTS:test_helper_usage>
-      $<TARGET_OBJECTS:test_helper_rfc5424>
-  )
-
-  add_example(socket
-    ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
-  )
-endif(NOT ENABLE_SOCKET_TARGETS)
 # windows event log target support
 if(NOT ENABLE_WINDOWS_EVENT_LOG_TARGETS)
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
@@ -489,7 +451,9 @@ else()
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED TRUE)
 endif()
 
-if(NOT STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
+  include(tools/cmake/wel.cmake)
+else()
   list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/no_wel_templates.yml)
 
   add_function_test(wel_unsupported
@@ -497,142 +461,8 @@ if(NOT STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
       ${PROJECT_SOURCE_DIR}/test/function/config/wel_unsupported.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
-else()
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
-  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
-
-  list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/have_wel_templates.yml)
-  list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml)
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
-    DESTINATION "include/stumpless/config"
-  )
-
-  install(FILES
-    ${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h
-    DESTINATION "include/stumpless/target"
-  )
-
-  find_program(MESSAGE_COMPILER_EXE
-    NAMES
-      mc
-      windmc
-  )
-  if(MESSAGE_COMPILER_EXE STREQUAL "MESSAGE_COMPILER_EXE-NOTFOUND")
-    set(MESSAGE_COMPILER_EXE mc)
-  endif()
-
-  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/stumpless/windows")
-  ADD_CUSTOM_COMMAND(
-     OUTPUT
-       "${PROJECT_BINARY_DIR}/include/stumpless/windows/default_events.h"
-       "${PROJECT_BINARY_DIR}/default_events.rc"
-     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
-       -r "${PROJECT_BINARY_DIR}"
-       -h "${PROJECT_BINARY_DIR}/include/stumpless/windows"
-       "${PROJECT_SOURCE_DIR}/src/windows/default_events.mc"
-     DEPENDS "${PROJECT_SOURCE_DIR}/src/windows/default_events.mc"
-     COMMENT "Generating default stumpless events"
-  )
-
-  add_library(default_events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/default_events.rc")
-  set_target_properties(default_events PROPERTIES LINKER_LANGUAGE "C" )
-  set_target_properties(default_events PROPERTIES VERSION ${PROJECT_VERSION})
-  set_target_properties(default_events PROPERTIES SOVERSION 0)
-  if(MSVC)
-    set_target_properties(default_events PROPERTIES LINK_FLAGS "/NOENTRY" )
-  endif()
-
-  list(APPEND STUMPLESS_SOURCES "${PROJECT_BINARY_DIR}/default_events.rc")
-
-  install(FILES
-    "${PROJECT_BINARY_DIR}/include/stumpless/windows/default_events.h"
-    DESTINATION "include/stumpless/windows"
-  )
-
-  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/test/function/windows")
-  ADD_CUSTOM_COMMAND(
-     OUTPUT
-       "${PROJECT_BINARY_DIR}/include/test/function/windows/events.h"
-       "${PROJECT_BINARY_DIR}/events.rc"
-     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
-       -r "${PROJECT_BINARY_DIR}"
-       -h "${PROJECT_BINARY_DIR}/include/test/function/windows"
-       "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-     DEPENDS "${PROJECT_SOURCE_DIR}/test/function/windows/events.mc"
-     COMMENT "Generating test events"
-  )
-
-  add_library(events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/events.rc")
-  set_target_properties(events PROPERTIES LINKER_LANGUAGE "CXX" )
-  set_target_properties(events PROPERTIES VERSION ${PROJECT_VERSION})
-  set_target_properties(events PROPERTIES SOVERSION 0)
-  if(MSVC)
-    set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
-  endif()
-
-  add_function_test(wel
-    SOURCES
-      ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
-      ${PROJECT_BINARY_DIR}/events.rc
-  )
-  add_dependencies(function-test-wel events)
-  target_compile_definitions(function-test-wel
-    PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
-  )
-
-  add_function_test(wel_supported
-    SOURCES
-      ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
-      ${PROJECT_BINARY_DIR}/events.rc
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
-
-  add_function_test(wel_supported_leak
-    SOURCES
-      ${PROJECT_SOURCE_DIR}/test/function/leak/wel_supported.cpp
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
-
-  add_thread_safety_test(wel
-    SOURCES
-      test/thread_safety/target/wel.cpp
-      $<TARGET_OBJECTS:test_helper_usage>
-  )
-
-  add_thread_safety_test(wel_supported
-    SOURCES
-      test/thread_safety/config/wel_supported.cpp
-      ${PROJECT_BINARY_DIR}/events.rc
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
-
-  add_performance_test(wel
-    SOURCES
-      ${PROJECT_SOURCE_DIR}/test/performance/target/wel.cpp
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
-
-  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
-  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
-  ADD_CUSTOM_COMMAND(
-     OUTPUT
-       "${PROJECT_BINARY_DIR}/include/docs/examples/wel/example_events.h"
-       "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
-     COMMAND ${MESSAGE_COMPILER_EXE} -U -b
-       -r "${PROJECT_BINARY_DIR}/docs/examples/wel"
-       -h "${PROJECT_BINARY_DIR}/include/docs/examples/wel"
-       "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
-     DEPENDS "${PROJECT_SOURCE_DIR}/docs/examples/wel/example_events.mc"
-     COMMENT "Generating wel example event resources"
-  )
-
-  add_example(wel
-    ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
-    ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
-  )
 endif()
+
 
 # thread safety support
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
