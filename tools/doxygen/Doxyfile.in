@@ -24,7 +24,7 @@ PREDEFINED             = __attribute__(x)=
 SHOW_INCLUDE_FILES     = NO
 
 EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/docs/examples
-EXAMPLE_PATTERNS       = "*.c"
+EXAMPLE_PATTERNS       = *.c *.cpp
 EXAMPLE_RECURSIVE      = NO
 
 GENERATE_HTML          = YES

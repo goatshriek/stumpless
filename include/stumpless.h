@@ -27,6 +27,35 @@
  * stumpless_add_message(), stumplog()).
  */
 
+/** @example cpp_example.cpp
+ * Demonstrates usage of Stumpless through the C++ bindings.
+ */
+
+/** @example entry_example.c
+ * Demonstrates different ways to work with stumpless_entry and related
+ * structures.
+ */
+
+/** @example file_example.c
+ * Demonstrates how to work with a file target.
+ */
+
+/** @example filter_example.c
+ * Demonstrates how to work with runtime filters on logging targets.
+ */
+
+/** @example function_example.c
+ * Demonstrates how to work with a function target.
+ */
+
+/** @example severity_level_example.c
+ * Demonstrates how to work with the severity levels of logged events.
+ */
+
+/** @example stream_example.c
+ * Demonstrates how to work with a stream target.
+ */
+
 /** @file
  * The main header file for the stumpless logging library. Unless you are
  * specifically trying to include ONLY required headers, it is best to simply
@@ -72,19 +101,39 @@
 #include <stumpless/version.h>
 
 #ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
+/** @example journald_example.c
+ * Demonstrates how to work with a journald target.
+ */
+
 #  include <stumpless/config/journald_supported.h>
 #  include <stumpless/target/journald.h>
 #endif
 
 #ifdef STUMPLESS_NETWORK_TARGETS_SUPPORTED
+/** @example tcp_example.c
+ * Demonstrates how to work with a network target with a TCP network endpoint.
+ */
+
+/** @example udp_example.c
+ * Demonstrates how to work with a network target with a UDP network endpoint.
+ */
+
 #  include <stumpless/target/network.h>
 #endif
 
 #ifdef STUMPLESS_SOCKET_TARGETS_SUPPORTED
+/** @example socket_example.c
+ * Demonstrates how to work with a socket target.
+ */
+
 #  include <stumpless/target/socket.h>
 #endif
 
 #ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
+/** @example wel_example.c
+ * Demonstrates how to work with a Windows Event Log target.
+ */
+
 #  include <stumpless/config/wel_supported.h>
 #  include <stumpless/target/wel.h>
 #  include <stumpless/windows/default_events.h>
