@@ -1,8 +1,7 @@
 # C++ Bindings
-
 While stumpless is written in C to keep it as lightweight and simple as
 possible, it has been extended to C++ so that it can be used from the higher
-level language with the same performance benefits.
+level language with nearly the same performance benefits.
 
 These bindings go beyond simply calling C code from C++, however; the entire
 library is exposed via an object-oriented API documented in full
@@ -13,8 +12,8 @@ some useful advantages over the simple functional capabilities of C.
 The C++ bindings are created using
 [Wrapture](https://goatshriek.github.io/wrapture/).
 
-## Stumpless Classes
 
+## Stumpless Classes
 Targets can be created and logged to using the various target classes that match
 target types from the C library. The constructors take the same parameters as
 the matching open target function in the C library. This example shows how to
@@ -33,25 +32,25 @@ depending on how much information you provide:
 
 ```cpp
 // logs the given message to the file
-file_logger.Log( "she just drank ANOTHER bloody mary" );
+file_logger.Log( "she just made ANOTHER u-turn" );
 // the entry will look like this:
-// <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just drank ANOTHER bloody mary
+// <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just made ANOTHER u-turn
 // 'Angus' is the name of the system this was logged on
-// the three '-' are the app name, the message id, and the structured data,
+// the three '-' characters are the app name, the message id, and the structured data,
 // which were all empty here
 // '4484' is PID of the process that logged this message
 
 // logs the given message to the file at the given priority
 file_logger.Log( Facility::NEWS, Severity::EMERGENCY,
-                 "Helen's drrunnk agaaaiiiin!!!" );
+                 "Helen's lost again!!!" );
 // the entry will look like this:
-// <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's drrunnk agaaaiiiin!!!
+// <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's lost again!!!
 
 // logs the given message and format strings to the file
 // you can use format strings with the previous forms as well if you want to
-file_logger.Log( "she has had %d drinks in the last %d days", 25, 3 );
+file_logger.Log( "she has gotten lost %d times in the last %d days", 25, 3 );
 // the entry will look like this:
-// <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she has had 25 drinks in the last 3 days
+// <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she has gotten lost 25 times in the last 3 days
 ```
 
 Entries, elements, and parameters are still created much the same way, again

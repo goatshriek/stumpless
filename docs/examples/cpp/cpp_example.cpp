@@ -14,25 +14,25 @@ main( int argc, char **argv ) {
   FileTarget file_logger( "cpp_example.log" );
 
   // logs the given message to the file
-  file_logger.Log( "she just drank ANOTHER bloody mary" );
+  file_logger.Log( "she just made ANOTHER u-turn" );
   // the entry will look like this:
-  // <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just drank ANOTHER bloody mary
+  // <14>1 2020-05-15T16:28:56.266031Z Angus - 4484 - - she just made ANOTHER u-turn
   // 'Angus' is the name of the system this was logged on
-  // the three '-' are the app name, the message id, and the structured data,
+  // the three '-' characters are the app name, the message id, and the structured data,
   // which were all empty here
   // '4484' is PID of the process that logged this message
 
   // logs the given message to the file at the given priority
   file_logger.Log( Facility::NEWS, Severity::EMERGENCY,
-                   "Helen's drrunnk agaaaiiiin!!!" );
+                   "Helen's lost again!!!" );
   // the entry will look like this:
-  // <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's drrunnk agaaaiiiin!!!
+  // <56>1 2020-05-15T16:28:56.267113Z Angus - 4484 - - Helen's lost again!!!
 
   // logs the given message and format strings to the file
   // you can use format strings with the previous forms as well if you want to
-  file_logger.Log( "she has had %d drinks in the last %d days", 25, 3 );
+  file_logger.Log( "she's gotten lost %d times in the last %d days", 25, 3 );
   // the entry will look like this:
-  // <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she has had 25 drinks in the last 3 days
+  // <14>1 2020-05-15T16:28:56.267128Z Angus - 4484 - - she's gotten lost 25 times in the last 3 days
 
   // creates an Entry for a common event
   Entry up_to_code( Facility::USER,
