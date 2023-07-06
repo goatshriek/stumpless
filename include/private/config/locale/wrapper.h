@@ -26,7 +26,7 @@
 #  elif defined USE_LOCALE_FR_FR
 #    include "private/config/locale/fr-fr.h"
 #  elif defined USE_LOCALE_DE_DE
-#	 include "private/config/locale/de-de.h"
+#    include "private/config/locale/de-de.h"
 #  elif defined USE_LOCALE_IT_IT
 #    include "private/config/locale/it-it.h"
 #  elif defined USE_LOCALE_SV_SE
@@ -37,20 +37,22 @@
 #    include "private/config/locale/bg-bg.h"
 #  elif defined USE_LOCALE_CZ_CZ
 #    include "private/config/locale/cz-cz.h"
-# elif defined USE_LOCALE_PL_PL
+#  elif defined USE_LOCALE_PL_PL
 #    include "private/config/locale/pl-pl.h"
-# elif defined USE_LOCALE_EL_GR
+#  elif defined USE_LOCALE_EL_GR
 #    include "private/config/locale/el-gr.h"
-# elif defined USE_LOCALE_PT_BR
+#  elif defined USE_LOCALE_PT_BR
 #    include "private/config/locale/pt-br.h"
-# elif defined USE_LOCALE_ZH_CN
+#  elif defined USE_LOCALE_ZH_CN
 #    include "private/config/locale/zh-cn.h"
-# elif defined USE_LOCALE_HI_IN
+#  elif defined USE_LOCALE_HI_IN
 #    include "private/config/locale/hi-in.h"
-# elif defined USE_LOCALE_BN_IN
+#  elif defined USE_LOCALE_BN_IN
 #    include "private/config/locale/bn-in.h"
-# elif defined USE_LOCALE_DA_DK
+#  elif defined USE_LOCALE_DA_DK
 #    include "private/config/locale/da-dk.h"
+#  elif defined USE_LOCALE_HE_IL
+#    include "private/config/locale/he-il.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
