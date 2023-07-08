@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,9 +110,8 @@
 "অসফল " INDEXED_THING " index"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"একটি MULTI_SZ রেজিস্ট্রি মান খালি ছিল না"\
-"বা দুটি NULL অক্ষর দিয়ে শেষ করা হয়নি" \
-
+"একটি MULTI_SZ রেজিস্ট্রি মান খালি ছিল না" \
+"বা দুটি NULL অক্ষর দিয়ে শেষ করা হয়নি"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "অসফল severity"

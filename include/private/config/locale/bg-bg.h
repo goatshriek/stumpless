@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,7 +113,8 @@
 
 // todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"a MULTI_SZ registry value was neither empty nor terminated with two NULL"
+"a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
+" characters"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "невалидната тежест"
