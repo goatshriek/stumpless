@@ -310,4 +310,24 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-he-il:
+    name: "linux, he-il"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "he_IL.UTF-8"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"he-IL\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
 
