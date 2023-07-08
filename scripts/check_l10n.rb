@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-# Copyright 2022 Joel E. Anderson
+# Copyright 2022-2023 Joel E. Anderson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,11 +45,11 @@ ARGV.each do |source_glob|
 
       todo = true if line.rstrip.end_with?('// todo translate')
 
-      str_match = line.match(/^L?"(.*)"/)
+      str_match = line.match(/^L?((("(.*)")|\w+| )+)( \\)?/)
       if current_l10n && str_match
         str << str_match[1]
 
-        unless line.end_with?('\\')
+        unless line.rstrip.end_with?('\\')
           if (last_l10n <=> current_l10n) > 0
             errors << "#{source_filename}: #{current_l10n} not defined in alphabetic order"
           end
@@ -64,7 +64,7 @@ ARGV.each do |source_glob|
         end
       end
 
-      define_match = line.match(/#\s*define\s*L10N_(\w*)(\s|\()/)
+      define_match = line.match(/#\s*define\s*L10N_(\w+)( |\()/)
       current_l10n = define_match[1] if define_match
     end
 
