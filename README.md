@@ -16,46 +16,48 @@
 [Basic Usage](#basic-usage) |
 [Contributing](#contributing)
 
-
 ## Key Features
+
 Stumpless offers a robust set of features to make logging in C faster and
 easier:
- * easy logging to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
-   journald, the Windows Event Log, and more!
- * structured and unstructured logging to suit your needs
- * interoperable with common log daemons and libraries
- * builds for Linux, Windows, Mac, MinGW, MSYS2, Cygwin, and more
- * completely thread safe
- * can be adjusted or removed during compilation for zero runtime impact
- * localized for multiple languages :brazil: :bulgaria: :cn: :czech_republic:
-   :de: :es: :fr: :greece: :india: :it: :poland: :slovakia: :sweden: :us: :denmark: :israel:
-   ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
- * easy-access
-   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
-   [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
-   and [support](https://gitter.im/stumpless/community).
 
+- easy logging to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
+  journald, the Windows Event Log, and more!
+- structured and unstructured logging to suit your needs
+- interoperable with common log daemons and libraries
+- builds for Linux, Windows, Mac, MinGW, MSYS2, Cygwin, and more
+- completely thread safe
+- can be adjusted or removed during compilation for zero runtime impact
+- localized for multiple languages :brazil: :bulgaria: :cn: :czech_republic:
+  :de: :es: :fr: :greece: :india: :it: :poland: :slovakia: :sweden: :us: :denmark: :israel: :kenya:
+  ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
+- easy-access
+  [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
+  [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
+  and [support](https://gitter.im/stumpless/community).
 
 ### What can it log to?
+
 A primary goal of this library is to provide a consistent logging interface to
 a wide variety of log targets. This means you can focus on defining events
 and where you want them to go, without finding other SDKs or adding daemons
 and plugins to get them where you want. Stumpless can write logs to:
- * Simple character buffers
- * Files and Streams
- * Unix sockets (such as a local syslog daemon)
- * Network Servers (IPv4 or IPv6, TCP or UDP)
- * Systemd Journald Service
- * Windows Event Log
- * Custom functions, for whatever else you may need!
+
+- Simple character buffers
+- Files and Streams
+- Unix sockets (such as a local syslog daemon)
+- Network Servers (IPv4 or IPv6, TCP or UDP)
+- Systemd Journald Service
+- Windows Event Log
+- Custom functions, for whatever else you may need!
 
 Don't see what you need? Create an
 [issue](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)
 with your request and we'll work it into our
 [roadmap](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)!
 
-
 ## Quick Build and Install
+
 Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
 or Visual Studio) to build. For a system using the standard GNU make toolchain,
 you can simply do:
@@ -82,12 +84,12 @@ Check out the [Installation Instructions](INSTALL.md) for more detail on
 building and installing stumpless in different environments and/or with other
 toolchains.
 
-
 ## Basic Usage
+
 The following code snippets show the most common ways to use stumpless.
 
-
 ### Basic Logging Functions
+
 The simplest way to get started is to use the `stumplog` function as a direct
 replacement for the standard library's `syslog` function:
 
@@ -156,8 +158,8 @@ stumpless_add_message( target,
                        username );
 ```
 
-
 ### Severity Shorthand
+
 It's common to specify severity levels directly in logging calls, so stumpless
 provides some macro functions to make this less verbose and more efficient. For
 example, to log messages with a severity of INFO, you can do this:
@@ -197,15 +199,15 @@ full list of severity shorthand functions, or the
 [severity level example](docs/examples/severity_level) to see a complete program
 in action.
 
-
 ### Even more examples
+
 For more detailed examples of the above scenarios, usage of specific target
 types, how to handle more complicated message structures, and more check out the
 [examples](docs/examples). These include annoted example code files to compile,
 run, and modify to get you started.
 
-
 ## Contributing
+
 Notice a problem or have a feature request? Just create an issue using one of
 the templates, and we will respond as quickly as we can. You can also look at
 the project's [Contribution Guidelines](docs/CONTRIBUTING.md) for more details
@@ -237,12 +239,11 @@ please feel free to do so on Twitter with
 [email](mailto:joelanderson333@gmail.com)! I'd love to see you share the project
 with others or just hear your thoughts on it.
 
-
 ## Further Documentation
+
 If you're curious about how something in stumpless works that isn't explained
 here, you can check the appropriate section of the documentation, stored in the
 docs folder of the repository. Folders in the repository contain their own
 README files that detail what they contain and any other relevant information.
 If you still can't find an answer, submit an issue or head over to
 [gitter](https://gitter.im/stumpless/community) and ask for some help.
-
