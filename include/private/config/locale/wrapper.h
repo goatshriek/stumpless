@@ -53,6 +53,8 @@
 #    include "private/config/locale/da-dk.h"
 #  elif defined USE_LOCALE_HE_IL
 #    include "private/config/locale/he-il.h"
+#  elif defined USE_LOCALE_SW_KE
+#    include "private/config/locale/sw-ke.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
