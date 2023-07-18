@@ -24,7 +24,7 @@
 #define __STUMPLESS_PRIVATE_CONFIG_LOCALE_SW_KE_H
 
 #define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"haikuweza kufunga soketi ya unix ya ndani"
+"haikuweza kushikamana na soketi ya unix ya ndani" 
 
 #define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "buffer ni ndogo sana kwa ujumbe uliotolewa"
@@ -33,10 +33,10 @@
 "kujaribu kufunga aina isiyoungwa mkono ya lengo"
 
 #define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"mshikamano umeshindwa na soketi ya sys/socket.h"
+"muunganisho umeshindwa na soketi ya sys/socket.h"
 
 #define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"mshikamano umeshindwa na soketi ya winsock2"
+"muunganisho umeshindwa na soketi ya winsock2"
 
 #define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "marudio ni sahihi tu kwa malengo ya mtandao"
