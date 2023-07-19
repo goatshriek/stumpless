@@ -63,7 +63,8 @@
 "mshughulikiaji logi kwa lengo la kazi umeshindwa"
 
 #define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"haikuweza kuunda faili yenye jina la soketi la ndani liliochaguliwa kwa kutumia mkstemp"
+"haikuweza kuunda faili yenye jina la soketi la ndani " \
+"liliochaguliwa kwa kutumia mkstemp"
 
 #define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo imeshindwa kwenye jina la mwenyeji lililotolewa"
@@ -87,7 +88,8 @@
 "kituo batili"
 
 #define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"nambari za vituo lazima zitajwe kulingana na RFC 5424, baada ya kuzidishwa na 8"
+"nambari za vituo lazima zitajwe kulingana na RFC 5424, baada ya kuzidishwa" \
+" na 8"
 
 #define L10N_INVALID_ID_ERROR_MESSAGE \
 "kitambulisho batili cha lengo"
@@ -99,7 +101,8 @@
 "ukali batili"
 
 #define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"nambari za ukali lazima zitajwe kulingana na RFC 5424: thamani kati ya 0 na 7 kwa pamoja"
+"nambari za ukali lazima zitajwe kulingana na RFC 5424: thamani kati ya" \
+" 0 na 7 kwa pamoja"
 
 #define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "kodi ya kurudi ya sd_journal_sendv"
