@@ -30,7 +30,7 @@
 "buffer ni ndogo sana kwa ujumbe uliotolewa"
 
 #define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"kujaribu kufunga aina isiyoungwa mkono ya lengo"
+"alijaribu kufunga aina ya lengo ambayo haisaidiwi"
 
 #define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "muunganisho umeshindwa na soketi ya sys/socket.h"
@@ -63,7 +63,7 @@
 "mshughulikiaji logi kwa lengo la kazi umeshindwa"
 
 #define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"haikuweza kuunda faili yenye jina la soketi ya ndani iliyochaguliwa kwa kutumia mkstemp"
+"haikuweza kuunda faili yenye jina la soketi la ndani liliochaguliwa kwa kutumia mkstemp"
 
 #define L10N_GETADDRINFO_FAILURE_ERROR_MESSAGE \
 "getaddrinfo imeshindwa kwenye jina la mwenyeji lililotolewa"
@@ -174,7 +174,7 @@ ARG_NAME " ilikuwa NULL"
 "haikuweza kufunga Windows Event Log"
 
 #define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-"haikuweza kufungua Windows Event Log"
+
 
 #define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "kodi ya hitilafu ya Soketi ya Windows"
@@ -192,7 +192,7 @@ ARG_NAME " ilikuwa NULL"
 "urefu wa herufi uliohusika"
 
 #define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"muundo usiofaa wa " ARG
+"muundo wa" ARG "haufai"
 
 #define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "UJUMBE WA HITILAFU YA AINA YA LENGWAO BATILI"
