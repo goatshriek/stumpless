@@ -177,7 +177,7 @@ ARG_NAME " ilikuwa NULL"
 "haikuweza kufunga Windows Event Log"
 
 #define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
-
+"haikuweza kufungua Windows Event Log"
 
 #define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "kodi ya hitilafu ya Soketi ya Windows"
