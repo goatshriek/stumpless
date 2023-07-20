@@ -198,6 +198,6 @@ ARG_NAME " ilikuwa NULL"
 "muundo wa" ARG "haufai"
 
 #define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"UJUMBE WA HITILAFU YA AINA YA LENGWAO BATILI"
+"ujumbe wa hitilafu ya aina ya lengwao batili"
 
 #endif //STUMPLESS_SW_KE_H
