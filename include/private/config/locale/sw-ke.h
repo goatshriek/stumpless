@@ -20,8 +20,8 @@
  * Swahili (Kenyan) localization strings
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
-#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_EN_US_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_LOCALE_SW_KE_H
+#  define __STUMPLESS_PRIVATE_CONFIG_LOCALE_SW_KE_H
 
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "haikuweza kushikamana na soketi ya unix ya ndani" 
