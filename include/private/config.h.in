@@ -64,8 +64,7 @@
 #cmakedefine USE_LOCALE_BG_BG 1
 #cmakedefine USE_LOCALE_DA_DK 1
 #cmakedefine USE_LOCALE_HE_IL 1
-
-
+#cmakedefine USE_LOCALE_SW_KE 1
 
 /* optimizations */
 #define unlikely( EXPRESSION )  @UNLIKELY_FUNCTION@
