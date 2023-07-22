@@ -91,8 +91,8 @@ struct stumpless_target *underlying = file_logger.equivalent;
 std::cout << "using target: " << underlying->name << std::endl;
 ```
 
-## Error Checking
 
+## Error Checking
 Error checking is not as cumbersome as in the C library; an exception is thrown
 whenever an error is detected in the underlying function. This allows code to
 use try/catch blocks rather than check each return value. You can also check the
@@ -109,8 +109,8 @@ try {
 }
 ```
 
-## Constants and Configuration
 
+## Constants and Configuration
 If you need to check information about the configuration of your build of the
 library, you can check the same constants as before for them, though you will
 need to include the C header to do so.
@@ -132,8 +132,8 @@ these constants into a namespace:
 #endif
 ```
 
-## Running this Example
 
+## Running this Example
 If you want to compile and run the example code here, then you'll need to
 compile it with the correct include paths and library load paths. Or you can
 simply compile it with the library specified if the C++ library has already

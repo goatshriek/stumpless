@@ -27,6 +27,7 @@ option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
+option(INSTALL_EXAMPLES "install examples" ON)
 option(INSTALL_MANPAGES "install generated manpages" ON)
 
 option(COVERAGE "Include coverage information" OFF)
@@ -97,6 +98,7 @@ set(LOCALE $ENV{LANG}
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
 include(ExternalProject)
+include(GNUInstallDirs)
 
 
 # load utilities
@@ -675,6 +677,15 @@ if(PKG_CONFIG_FOUND)
   configure_file("${PROJECT_SOURCE_DIR}/tools/pkg-config/stumpless.pc.in" "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc" @ONLY)
   install(FILES "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc"
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+endif()
+
+
+# installation of examples if enabled
+if(INSTALL_EXAMPLES)
+  install(DIRECTORY
+    ${PROJECT_SOURCE_DIR}/docs/examples
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+  )
 endif()
 
 
