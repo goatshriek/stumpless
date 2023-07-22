@@ -28,7 +28,7 @@ easier:
  * completely thread safe
  * can be adjusted or removed during compilation for zero runtime impact
  * localized for multiple languages :brazil: :bulgaria: :cn: :czech_republic:
-   :de: :es: :fr: :greece: :india: :it: :poland: :slovakia: :sweden: :us: :denmark: :israel:
+   :de: :es: :fr: :greece: :india: :it: :poland: :slovakia: :sweden: :us: :denmark: :israel: :kenya:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
@@ -245,4 +245,3 @@ docs folder of the repository. Folders in the repository contain their own
 README files that detail what they contain and any other relevant information.
 If you still can't find an answer, submit an issue or head over to
 [gitter](https://gitter.im/stumpless/community) and ask for some help.
-
