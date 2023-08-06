@@ -26,6 +26,8 @@ src_configure() {
     local mycmakeargs=(
         -DENABLE_NETWORK_TARGETS="$(usex sockets)"
         -DENABLE_THREAD_SAFETY="$(usex threads)"
+        -DINSTALL_EXAMPLES="$(usex examples)"
+        -DINSTALL_MANPAGES="$(usex doc)"
     )
     cmake_src_configure
 }
