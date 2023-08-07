@@ -29,7 +29,7 @@
 #include "test/helper/memory_allocation.hpp"
 
 #define FOR_JOURNALD_MATCH_BEGIN( MATCH )                   \
-for( int i = 0; i < 1024 && !msg_found && !abort; i++ ) {   \
+for( int i = 0; i < 4096 && !msg_found && !abort; i++ ) {   \
   result = sd_journal_open( &jrnl, SD_JOURNAL_LOCAL_ONLY ); \
   if( result < 0 ) {                                        \
     SUCCEED(  ) << "could not open the journal to verify "  \

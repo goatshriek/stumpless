@@ -436,7 +436,7 @@ elseif(NOT HAVE_SYS_SOCKET_H)
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED FALSE)
 else()
   set(STUMPLESS_SOCKET_TARGETS_SUPPORTED TRUE)
-endif(NOT ENABLE_SOCKET_TARGETS)
+endif()
 
 if(STUMPLESS_SOCKET_TARGETS_SUPPORTED)
   include(tools/cmake/socket.cmake)
@@ -955,6 +955,10 @@ add_function_test(target_leak
 
 add_function_test(version
   SOURCES test/function/version.cpp
+)
+
+add_custom_target(build-test
+  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
 add_custom_target(check

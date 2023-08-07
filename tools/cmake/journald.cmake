@@ -1,4 +1,4 @@
-list(APPEND STUMPLESS_SOURCES src/target/journald.c)
+list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/journald.c)
 list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/journald_supported.c)
 list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/journald_target.yml)
 

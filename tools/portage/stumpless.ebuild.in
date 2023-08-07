@@ -12,15 +12,17 @@ SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="doc examples sockets test threads"
+IUSE="doc examples sockets systemd test threads"
 
-DEPEND="test? ( dev-cpp/gtest )"
+DEPEND="test? ( dev-cpp/gtest )
+	systemd? ( sys-apps/systemd )"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_NETWORK_TARGETS="$(usex sockets)"
+		-DENABLE_JOURNALD_TARGETS="$(usex systemd)"
 		-DENABLE_THREAD_SAFETY="$(usex threads)"
 		-DINSTALL_EXAMPLES="$(usex examples)"
 		-DINSTALL_MANPAGES="$(usex doc)"
@@ -29,6 +31,6 @@ src_configure() {
 }
 
 src_test() {
-	cmake_build "check"
+	cmake_build "build-test"
 	cmake_src_test
 }

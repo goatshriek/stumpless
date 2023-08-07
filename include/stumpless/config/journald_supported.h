@@ -55,6 +55,7 @@ extern "C" {
  * error is encountered, NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_element_namer_func_t
 stumpless_get_element_journald_namer( const struct stumpless_element *element );
 
@@ -82,6 +83,7 @@ stumpless_get_element_journald_namer( const struct stumpless_element *element );
  * error is encountered, NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_param_namer_func_t
 stumpless_get_param_journald_namer( const struct stumpless_param *param );
 
@@ -110,6 +112,7 @@ stumpless_get_param_journald_namer( const struct stumpless_param *param );
  * @return The modified element if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_element_journald_namer( struct stumpless_element *element,
                                       stumpless_element_namer_func_t namer );
@@ -139,6 +142,7 @@ stumpless_set_element_journald_namer( struct stumpless_element *element,
  * @return The modified param if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_set_param_journald_namer( struct stumpless_param *param,
                                     stumpless_param_namer_func_t namer );
