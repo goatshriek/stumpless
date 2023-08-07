@@ -14,20 +14,21 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="doc examples sockets test threads"
 
-# TODO any dependencies that should be stated?
-#DEPEND=""
-#RDEPEND="${DEPEND}"
-#BDEPEND=""
+DEPEND="test? ( dev-cpp/gtest )"
+RDEPEND="${DEPEND}"
+BDEPEND=""
 
 src_configure() {
-    #local mycmakeargs=(
-    #    $(cmake_use_find_package foo LibFoo)
-    #)
-    local mycmakeargs=(
-        -DENABLE_NETWORK_TARGETS="$(usex sockets)"
-        -DENABLE_THREAD_SAFETY="$(usex threads)"
-        -DINSTALL_EXAMPLES="$(usex examples)"
-        -DINSTALL_MANPAGES="$(usex doc)"
-    )
-    cmake_src_configure
+	local mycmakeargs=(
+		-DENABLE_NETWORK_TARGETS="$(usex sockets)"
+		-DENABLE_THREAD_SAFETY="$(usex threads)"
+		-DINSTALL_EXAMPLES="$(usex examples)"
+		-DINSTALL_MANPAGES="$(usex doc)"
+	)
+	cmake_src_configure
+}
+
+src_test() {
+	cmake_build "check"
+	cmake_src_test
 }
