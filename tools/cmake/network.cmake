@@ -27,7 +27,7 @@ if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
     ${PROJECT_BINARY_DIR}/docs/man/man3/network.h.3
     RENAME stumpless_target_network.h.3
-    DESTINATION "man/man3"
+    DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
   )
 endif()
 
