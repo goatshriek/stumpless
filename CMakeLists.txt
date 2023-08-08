@@ -98,6 +98,7 @@ set(LOCALE $ENV{LANG}
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
 include(ExternalProject)
+include(FindDoxygen QUIET)
 include(GNUInstallDirs)
 
 
@@ -266,7 +267,6 @@ set(DOXYGEN_MANPAGES
 )
 
 set(PROJECT_DOCS_DIR ${PROJECT_BINARY_DIR}/docs)
-include(FindDoxygen QUIET)
 if(DOXYGEN_FOUND)
   set(INCLUDE_MANPAGES_IN_INSTALL ${INSTALL_MANPAGES})
 else()

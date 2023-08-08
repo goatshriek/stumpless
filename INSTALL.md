@@ -32,10 +32,11 @@ rpm -i stumpless-2.2.0-x86_64.rpm
 
 
 ## Gentoo ebuild
-A `.ebuild` package is generated during the configuration stage of the build
-by cmake. It will be in the `tools/portage` folder of the build directory.
+A `.ebuild` package is provided with each release version of the library, and
+is also generated during the configuration stage of the build by cmake. The
+generated ebuild is in the `tools/portage` folder of the build directory.
 
-The generated ebuild will be named as the version of stumpless you downloaded.
+The generated ebuild will be named after the version of stumpless you have.
 If you want the latest commit instead of a release, you'll need to rename this
 to version `stumpless-9999.ebuild` to perform what Gentoo refers to as a
 [live ebuild](https://wiki.gentoo.org/wiki/Ebuild#Live_ebuilds). If you have a
