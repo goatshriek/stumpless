@@ -19,6 +19,9 @@ DEPEND="test? ( dev-cpp/gtest )
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
+# disable test phase if the test USE flag is disabled
+RESTRICT="!test? ( test )"
+
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_NETWORK_TARGETS="$(usex sockets)"
@@ -32,5 +35,11 @@ src_configure() {
 
 src_test() {
 	cmake_build "build-test"
+
+	# journald tests are unable to detect if journald isn't present
+	# because of this they fail in a sandbox without journald access
+	# so we exclude them from the test suite in the ebuild
+	# running the test suite yourself (outside of the ebuild sandbox) should pass
+	local myctestargs=( -E journald )
 	cmake_src_test
 }

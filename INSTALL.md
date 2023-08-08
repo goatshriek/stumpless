@@ -31,6 +31,11 @@ rpm -i stumpless-2.2.0-x86_64.rpm
 ```
 
 
+## Gentoo Ebuild
+A `.ebuild` package is generated during the configuration stage of the build
+by cmake. It will be in the `tools/portage` folder of the build directory.
+
+
 ## Generic Shell Installer
 CMake generates a shell script that can be used to install the library on
 systems lacking a more traditional package manager, for example Cygwin. Simply
