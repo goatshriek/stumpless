@@ -40,6 +40,8 @@ src_configure() {
 }
 
 src_test() {
+	# the cmake eclass runs ctest directly
+	# so we need to build the tests ahead of this
 	cmake_build "build-test"
 
 	# journald tests are unable to detect if journald isn't present
