@@ -25,6 +25,7 @@
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
+#include "test/helper/test_strings.hpp"
 
 using::testing::HasSubstr;
 
@@ -764,52 +765,37 @@ namespace {
   TEST_F( EntryTest, HasElementInvalidName ) {
     bool result;
     const struct stumpless_error *error;
+    const char *invalid_names[] = {INVALID_NAMES};
 
-    result = stumpless_entry_has_element( basic_entry, "ele=ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_entry_has_element( basic_entry, "ele]ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_entry_has_element( basic_entry, "element\"" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    for(const char *invalid_name : invalid_names){
+      result = stumpless_entry_has_element( basic_entry, invalid_name );
+      EXPECT_FALSE( result );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    }
   }
 
   TEST_F( EntryTest, GetElementInvalidName ) {
     bool result;
     const struct stumpless_error *error;
+    const char *invalid_names[] = {INVALID_NAMES};
 
-    result = stumpless_get_element_by_name( basic_entry, "ele=ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_get_element_by_name( basic_entry, "ele]ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_get_element_by_name( basic_entry, "element\"" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    for(const char *invalid_name : invalid_names){
+      result = stumpless_get_element_by_name( basic_entry, invalid_name );
+      EXPECT_FALSE( result );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    }
   }
 
   TEST_F( EntryTest, GetElementIdxInvalidName ) {
     bool result;
     const struct stumpless_error *error;
+    const char *invalid_names[] = {INVALID_NAMES};
 
-    result = stumpless_get_element_index( basic_entry, "ele=ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_get_element_index( basic_entry, "ele]ment" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
-
-    result = stumpless_get_element_index( basic_entry, "element\"" );
-    EXPECT_FALSE( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    for(const char *invalid_name : invalid_names){
+      result = stumpless_get_element_index( basic_entry, invalid_name );
+      EXPECT_FALSE( result );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );
+    }
   }
 
   TEST_F( EntryTest, SetAppName ) {
