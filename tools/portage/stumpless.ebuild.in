@@ -23,7 +23,7 @@ IUSE="doc examples sockets systemd test threads"
 DEPEND="test? ( dev-cpp/gtest )
 	systemd? ( sys-apps/systemd )"
 RDEPEND="${DEPEND}"
-BDEPEND="doc? ( app-dox/doxygen )"
+BDEPEND="doc? ( app-doc/doxygen )"
 
 # disable test phase if the test USE flag is disabled
 RESTRICT="!test? ( test )"
