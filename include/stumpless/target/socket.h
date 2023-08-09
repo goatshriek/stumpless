@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@
 /** @file
  * Socket targets allow logs to be sent to a Unix domain socket.
  *
- * The most common use for socket targets is to send logs to the /dev/log socket
- * or the /var/run/syslog where the syslog daemon is listening.
+ * The most common use for socket targets is to send logs to /dev/log,
+ * /var/run/syslog, or whatever socket the syslog daemon is listening on.
  *
  * **Thread Safety: MT-Safe**
  * Logging to socket targets is thread safe by virtue of using the `sendto`
- * function which is thread safe itself.
+ * function, which is thread safe itself.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * Logging to socket targets is not signal safe, as a non-reentrant lock is used

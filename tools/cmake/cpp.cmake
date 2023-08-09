@@ -276,7 +276,7 @@ install(
 )
 
 #documentation generation
-if(HAVE_DOXYGEN)
+if(DOXYGEN_FOUND)
   file(MAKE_DIRECTORY ${PROJECT_DOCS_DIR})
 
   set(CPP_DOCS_DIR ${PROJECT_DOCS_DIR}/cpp)
@@ -285,6 +285,6 @@ if(HAVE_DOXYGEN)
 
   add_custom_target(docs-cpp
     DEPENDS ${GENERATED_CPP_LIB_HEADERS}
-    COMMAND doxygen ${CMAKE_BINARY_DIR}/tools/doxygen/CppDoxyfile
+    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/tools/doxygen/CppDoxyfile
   )
-endif(HAVE_DOXYGEN)
+endif()

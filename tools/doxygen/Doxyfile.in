@@ -2,21 +2,48 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "stumpless"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
-INPUT                  = @PROJECT_SOURCE_DIR@/README.md @PROJECT_SOURCE_DIR@/include/stumpless.h @PROJECT_SOURCE_DIR@/include/stumpless @PROJECT_BINARY_DIR@/include/stumpless
+INPUT                  = @PROJECT_SOURCE_DIR@/include/stumpless.h @PROJECT_SOURCE_DIR@/include/stumpless @PROJECT_BINARY_DIR@/include/stumpless
 OUTPUT_DIRECTORY       = @PROJECT_DOCS_DIR@
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 FILE_PATTERNS          = *.h
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/include/stumpless @PROJECT_BINARY_DIR@/include/stumpless
-USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/README.md
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/include @PROJECT_BINARY_DIR@/include
+
 OPTIMIZE_OUTPUT_FOR_C  = YES
+OPTIMIZE_OUTPUT_JAVA   = NO
+OPTIMIZE_FOR_FORTRAN   = NO
+OPTIMIZE_OUTPUT_VHDL   = NO
+
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = @PROJECT_SOURCE_DIR@/include @PROJECT_BINARY_DIR@/include
 MACRO_EXPANSION        = YES
 ENABLE_PREPROCESSING   = YES
 EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             = __attribute__(x)=
+SHOW_INCLUDE_FILES     = NO
+
+EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/docs/examples
+EXAMPLE_PATTERNS       = *.c *.cpp
+EXAMPLE_RECURSIVE      = NO
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 100
+HTML_COLORSTYLE_GAMMA  = 80
+HTML_TIMESTAMP         = YES
+HTML_DYNAMIC_SECTIONS  = NO
+HTML_INDEX_NUM_ENTRIES = 100
+
+GENERATE_MAN           = YES
+MAN_OUTPUT             = man
+MAN_EXTENSION          = .3
+# since the manpage names are renamed in the build script
+# so that they are unique, the generated link entries wouldn't work
+MAN_LINKS              = NO
+
 
 # default generated settings
 BRIEF_MEMBER_DESC      = YES
@@ -30,9 +57,6 @@ MULTILINE_CPP_IS_BRIEF = NO
 INHERIT_DOCS           = YES
 SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 2
-OPTIMIZE_OUTPUT_JAVA   = NO
-OPTIMIZE_FOR_FORTRAN   = NO
-OPTIMIZE_OUTPUT_VHDL   = NO
 MARKDOWN_SUPPORT       = YES
 BUILTIN_STL_SUPPORT    = NO
 CPP_CLI_SUPPORT        = NO
@@ -58,7 +82,6 @@ HIDE_IN_BODY_DOCS      = NO
 INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = YES
 HIDE_SCOPE_NAMES       = NO
-SHOW_INCLUDE_FILES     = YES
 FORCE_LOCAL_INCLUDES   = NO
 INLINE_INFO            = YES
 SORT_MEMBER_DOCS       = YES
@@ -85,7 +108,6 @@ INPUT_ENCODING         = UTF-8
 RECURSIVE              = YES
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = *scripts*
-EXAMPLE_RECURSIVE      = NO
 FILTER_SOURCE_FILES    = NO
 SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO
@@ -97,15 +119,6 @@ USE_HTAGS              = NO
 VERBATIM_HEADERS       = YES
 ALPHABETICAL_INDEX     = YES
 COLS_IN_ALPHA_INDEX    = 5
-GENERATE_HTML          = YES
-HTML_OUTPUT            = html
-HTML_FILE_EXTENSION    = .html
-HTML_COLORSTYLE_HUE    = 220
-HTML_COLORSTYLE_SAT    = 100
-HTML_COLORSTYLE_GAMMA  = 80
-HTML_TIMESTAMP         = YES
-HTML_DYNAMIC_SECTIONS  = NO
-HTML_INDEX_NUM_ENTRIES = 100
 GENERATE_DOCSET        = NO
 DOCSET_FEEDNAME        = "Doxygen generated docs"
 DOCSET_BUNDLE_ID       = org.doxygen.Project
@@ -147,10 +160,6 @@ GENERATE_RTF           = NO
 RTF_OUTPUT             = rtf
 COMPACT_RTF            = NO
 RTF_HYPERLINKS         = NO
-GENERATE_MAN           = NO
-MAN_OUTPUT             = man
-MAN_EXTENSION          = .3
-MAN_LINKS              = NO
 GENERATE_XML           = NO
 XML_OUTPUT             = xml
 XML_PROGRAMLISTING     = YES

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #ifndef __STUMPLESS_CONFIG_JOURNALD_SUPPORTED_H
 #  define __STUMPLESS_CONFIG_JOURNALD_SUPPORTED_H
 
+#  include <stumpless/config.h>
 #  include <stumpless/element.h>
 #  include <stumpless/param.h>
 
@@ -55,6 +56,7 @@ extern "C" {
  * error is encountered, NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_element_namer_func_t
 stumpless_get_element_journald_namer( const struct stumpless_element *element );
 
@@ -82,6 +84,7 @@ stumpless_get_element_journald_namer( const struct stumpless_element *element );
  * error is encountered, NULL is returned and an error code is set
  * appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 stumpless_param_namer_func_t
 stumpless_get_param_journald_namer( const struct stumpless_param *param );
 
@@ -110,6 +113,7 @@ stumpless_get_param_journald_namer( const struct stumpless_param *param );
  * @return The modified element if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_element *
 stumpless_set_element_journald_namer( struct stumpless_element *element,
                                       stumpless_element_namer_func_t namer );
@@ -139,6 +143,7 @@ stumpless_set_element_journald_namer( struct stumpless_element *element,
  * @return The modified param if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_param *
 stumpless_set_param_journald_namer( struct stumpless_param *param,
                                     stumpless_param_namer_func_t namer );
