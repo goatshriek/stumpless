@@ -20,6 +20,7 @@
 #include <fstream>
 #include <string>
 #include <stumpless.h>
+#include <dirent.h>
 #include "test/config.hpp"
 #include "test/helper/fixture.hpp"
 
@@ -78,4 +79,32 @@ load_corpus( const string& name ) {
   corpus_file.close(  );
 
   return buffer;
+}
+
+stumpless_test_data 
+load_corpus_folder( const string& name){
+
+  DIR *dir;
+  struct dirent *ent;
+  string corpora_dir ( FUZZ_CORPORA_DIR );
+  int fileIndex = 0;
+
+  char **test_strings;
+  if((dir = opendir((corpora_dir + "/" + name).c_str())) != NULL){
+    while((ent = readdir(dir)) != NULL){
+      const char *test_string = load_corpus(name + "/" + ent->d_name);
+      if(test_string != NULL){
+        if(fileIndex > 0){
+          test_strings = (char **) realloc(test_strings, sizeof(char *) * (fileIndex + 1));
+        }
+        else{
+          test_strings = (char **) malloc(sizeof(char *));
+        }
+        test_strings[fileIndex] = (char *)test_string;
+        ++fileIndex;
+      }
+    }
+    closedir(dir);
+  }
+  return {fileIndex, test_strings};
 }

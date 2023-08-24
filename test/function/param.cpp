@@ -23,7 +23,7 @@
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/memory_allocation.hpp"
-#include "test/helper/test_strings.hpp"
+#include "test/helper/fixture.hpp"
 
 namespace {
 
@@ -246,13 +246,15 @@ namespace {
     struct stumpless_param param;
     const struct stumpless_param *result;
     const struct stumpless_error *error;
-    const char *invalid_names[] = {INVALID_NAMES};
+    stumpless_test_data invalid_names = load_corpus_folder("invalid_param_name");
 
-    for(const char *invalid_name : invalid_names){
-      result = stumpless_load_param( &param, invalid_name, "test-value" );
+    for(int i = 0; i < invalid_names.length; ++i){
+      result = stumpless_load_param( &param, invalid_names.test_strings[i], "test-value" );
+      delete[] invalid_names.test_strings[i];
       EXPECT_NULL( result );
       EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );      
     }
+    free((void *) invalid_names.test_strings);
     stumpless_free_all(  );
   }
 
@@ -344,13 +346,15 @@ namespace {
   TEST( NewParamTest, InvalidName ) {
     struct stumpless_param *param;
     const struct stumpless_error *error;
-    const char *invalid_names[] = {INVALID_NAMES};
+    stumpless_test_data invalid_names = load_corpus_folder("invalid_param_name");
 
-    for(const char *invalid_name : invalid_names){
-      param = stumpless_new_param( invalid_name, "test-value" );
+    for(int i = 0; i < invalid_names.length; ++i){
+      param = stumpless_new_param( invalid_names.test_strings[i], "test-value" );
+      delete[] invalid_names.test_strings[i];
       EXPECT_NULL( param );
       EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );      
     }
+    free((void *) invalid_names.test_strings);
     stumpless_free_all(  );
   }
 
@@ -467,16 +471,18 @@ namespace {
     struct stumpless_param *param;
     struct stumpless_param *result;
     const struct stumpless_error *error;
-    const char *invalid_names[] = {INVALID_NAMES};
+    stumpless_test_data invalid_names = load_corpus_folder("invalid_param_name");
 
     param = stumpless_new_param( "param", "my-value" );
     ASSERT_NOT_NULL( param );
 
-    for(const char *invalid_name : invalid_names){
-      result = stumpless_set_param_name( param, invalid_name);
+    for(int i = 0; i < invalid_names.length; ++i){
+      result = stumpless_set_param_name( param, invalid_names.test_strings[i]);
+      delete[] invalid_names.test_strings[i];
       EXPECT_NULL( result );
       EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ENCODING );      
     }
+    free((void *) invalid_names.test_strings);
     stumpless_destroy_param( param );
     stumpless_free_all(  );
   }

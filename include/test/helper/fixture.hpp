@@ -75,4 +75,27 @@ create_entry( void );
 const char *
 load_corpus( const std::string& name );
 
+struct stumpless_test_data {
+  int length;
+  char **test_strings;
+};
+
+/**
+ * Returns stumpless_test_data holding the contents of all the files at the named
+ * location in the test/corpora folder. For example, a name of "invalid_param_name"
+ * will return the contents of all the files under test/corpora/invalid_param_name 
+ * directory in the form of an array.
+ *
+ * The allocated memory for test_strings must be safely freed up using free() 
+ * and the buffer content (returned from load_corpus method) should also be 
+ * destroyed using delete[] when no longer needed to avoid memory leaks.
+ *
+ * @param name The directory name.
+ *
+ * @return stumpless_test_data holding the test_strings pointing to contents of the 
+ * directory as an array and corresponding size stored as length.
+ */
+stumpless_test_data 
+load_corpus_folder( const std::string& name );
+
 #endif /* __STUMPLESS_TEST_HELPER_FIXTURE_HPP */
