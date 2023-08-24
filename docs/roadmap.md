@@ -5,11 +5,6 @@ or want to make a suggestion, please submit an issue on the project's
 
 
 ## 2.2.0
- * [ADD] **Target chaining**
-   In some cases a log message needs to be sent to multiple destinations, such
-   as to a local file as well as a network server. Target chains will allow this
-   stream to be defined as a logging target, and a logging call only made to
-   this instead of manually logging to each target.
  * [ADD] **Improved network target error detection**
    Network targets do not currently detect errors that they would be able to in
    some cases, such as with `select` or `poll`. This may lead to a connection
