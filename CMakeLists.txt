@@ -231,6 +231,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/strhelper.c
   ${PROJECT_SOURCE_DIR}/src/target.c
   ${PROJECT_SOURCE_DIR}/src/target/buffer.c
+  ${PROJECT_SOURCE_DIR}/src/target/chain.c
   ${PROJECT_SOURCE_DIR}/src/target/file.c
   ${PROJECT_SOURCE_DIR}/src/target/function.c
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
@@ -664,6 +665,7 @@ install(FILES
 
 install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h

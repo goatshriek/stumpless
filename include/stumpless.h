@@ -95,6 +95,7 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
+#include <stumpless/target/chain.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
