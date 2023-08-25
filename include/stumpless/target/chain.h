@@ -19,6 +19,8 @@
 /** @file
  * Chains allow logs to be sent to a group of targets.
  *
+ * @since release v2.2.0
+ *
  * **Thread Safety: MT-Safe**
  * Logging to chains is thread safe. A lock is used to prevent changes to the
  * chain during a logging operation. Note that the thread safety of each target
@@ -50,6 +52,8 @@ extern "C" {
  * This function closes each target in the chain, and then destroys all memory
  * allocated for the chain itself.
  *
+ * @since release v2.2.0
+ *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources that other threads
  * would use if they tried to reference this target.
@@ -72,6 +76,8 @@ stumpless_close_chain( struct stumpless_target *target );
 
 /**
  * Creates a new target chain.
+ *
+ * @since release v2.2.0
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
