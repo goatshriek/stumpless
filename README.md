@@ -113,7 +113,7 @@ stump( "My message #%d", count );
 ```
 
 And of course, you can use format specifiers in both functions just as you would
-with `printf`:
+with `printf`:50
 
 ```c
 stump( "Login attempt failure #%d for user %s", count, username );
