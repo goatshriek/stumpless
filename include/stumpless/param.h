@@ -411,7 +411,7 @@ stumpless_set_param_value( struct stumpless_param *param, const char *value );
  *
  * @param param The param to get the name and the value from.
  *
- * @return The formatted string of "param_name: param_value" if no error is
+ * @return The formatted string of "param_name=param_value" if no error is
  * encountered. If an error is  encountered, then NULL is returned and an
  * error code is set appropriately.
  */
