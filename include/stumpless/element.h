@@ -369,7 +369,7 @@ stumpless_element_has_param( const struct stumpless_element *element,
  *
  * @param element The element to get the name and params from.
  *
- * @return The formatted string of <name> or <name>:[param1,...] if no error is encountered.
+ * @return The formatted string of name or name=[param1,...] if no error is encountered.
  * If an error is  encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
