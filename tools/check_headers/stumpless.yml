@@ -18,7 +18,7 @@
 "CATEGORY_TREE": "docs/examples/wel/example_events.h"
 "clear_error": "private/error.h"
 "close_server_socket": "test/helper/server.hpp"
-"config_close_default_target": "private/config/wrapper.h"
+"config_close_default_target": "private/config/wrapper/config_open_default_target.h"
 "config_close_network_target": "private/config/network_support_wrapper.h"
 "config_close_tcp4_target": "private/config/network_support_wrapper.h"
 "config_close_udp4_target": "private/config/network_support_wrapper.h"
