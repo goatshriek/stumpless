@@ -238,8 +238,8 @@ stumpless_param_to_string( const struct stumpless_param *param ) {
 
     format[name_len ] = '=';
     format[name_len + 1] = '\"';
-    format[name_len + value_len + 2] = '"';
-    format[name_len + value_len + 3] = '\0'
+    format[name_len + value_len + 2] = '\"';
+    format[name_len + value_len + 3] = '\0';
 
 
     clear_error( );
