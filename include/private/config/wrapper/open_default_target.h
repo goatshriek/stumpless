@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_CONFIG_OPEN_DEFAULT_TARGET_H
 #  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_CONFIG_OPEN_DEFAULT_TARGET_H
 
+#  include <stumpless/config.h>
 
 /* definition of config_open_default_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
