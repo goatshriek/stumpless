@@ -229,10 +229,10 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
       goto fail;
     }
 
-    memcpy( format + 1, name, name_len );
+    memcpy( format, name, name_len );
 
     // build params list "param_1_to_string,param_2_to_string, ..."
-    size_t pos_offset = name_len + 4;
+    size_t pos_offset = name_len + 2;
     for( size_t i = 0; i < param_count; i++) {
       // replace '\0' with ',' at the end of each string
       memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
@@ -246,16 +246,13 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
 
     unlock_element( element );
 
-    format[0] = '<';
-    format[name_len + 1] = '>';
-
     if (param_count != 0 ) {
-      // <name>:[param_1_to_string,param_2_to_string,etc.] (with params)
-      format[name_len + 2] = ':';
-      format[name_len + 3] = '[';
+      // name=[param_1_to_string,param_2_to_string,etc.] (with params)
+      format[name_len ] = '=';
+      format[name_len + 1] = '[';
       format[pos_offset] = ']';
     } else {
-      // <name> (no params)
+      // name (no params)
       // pos_offset is name_len + 4 here
       pos_offset -= 3;
     }
