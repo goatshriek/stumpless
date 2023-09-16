@@ -39,7 +39,6 @@
 #include "private/config.h"
 #include "private/config/network_support_wrapper.h"
 #include "private/config/locale/wrapper.h"
-// #include "private/config/wrapper.h"
 #include "private/config/wrapper/open_default_target.h"
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"

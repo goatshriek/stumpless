@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_CONFIG_OPEN_DEFAULT_TARGET_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_CONFIG_OPEN_DEFAULT_TARGET_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_OPEN_DEFAULT_TARGET_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_OPEN_DEFAULT_TARGET_H
 
 #  include <stumpless/config.h>
 
@@ -39,4 +39,4 @@
 #    define config_open_default_target file_open_default_target
 #    define config_close_default_target stumpless_close_file_target
 #  endif
-#endif /* __STUMPLESS_PRIVATE_CONFIG_OPEN_DEFAULT_TARGET_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_OPEN_DEFAULT_TARGET_H */
