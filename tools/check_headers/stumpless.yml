@@ -32,7 +32,7 @@
 "config_init_udp4": "private/config/network_support_wrapper.h"
 "config_network_free_all": "private/config/network_support_wrapper.h"
 "config_network_target_is_open": "private/config/network_support_wrapper.h"
-"config_open_default_target": "private/config/wrapper.h"
+"config_open_default_target": "private/config/wrapper/config_open_default_target.h"
 "config_open_network_target": "private/config/network_support_wrapper.h"
 "config_open_tcp4_target": "private/config/network_support_wrapper.h"
 "config_open_udp4_target": "private/config/network_support_wrapper.h"
