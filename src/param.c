@@ -215,23 +215,22 @@ stumpless_param_to_string( const struct stumpless_param *param ) {
     name_len = param->name_length;
     value_len = param->value_length;
 
-    /* <name>:<value> */
-    format = alloc_mem( value_len + name_len + 6 );
+    /* name="value"*/
+    format = alloc_mem( value_len + name_len + 4 );
     if( !format ) {
       goto fail;
     }
 
-    memcpy(format + 1, name, name_len);
-    memcpy(format + name_len + 4, value, value_len);
+  
+    memcpy(format, name, name_len);
+    memcpy(format + name_len + 2, value, value_len);
 
     unlock_param( param );
 
-    format[0] = '<';
-    format[name_len + 1] = '>';
-    format[name_len + 2] = ':';
-    format[name_len + 3] = '<';
-    format[name_len + value_len + 4] = '>';
-    format[name_len + value_len + 5] = '\0';
+    format[name_len ] = '=';
+    format[name_len + 1] = '\"';
+    format[name_len + value_len + 2] = '\"';
+    format[name_len + value_len + 3] = '\0';
 
 
     clear_error( );

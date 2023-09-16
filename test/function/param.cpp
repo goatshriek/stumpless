@@ -174,7 +174,7 @@ namespace {
       format = stumpless_param_to_string( &basic_param );
       ASSERT_NOT_NULL( format );
 
-      EXPECT_STREQ( format, "<basic-name>:<basic-value>" );
+      EXPECT_STREQ( format, "basic-name=\"basic-value\"" );
       EXPECT_NO_ERROR;
 
       free( ( void * ) format );
