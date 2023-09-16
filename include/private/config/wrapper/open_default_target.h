@@ -21,6 +21,7 @@
 
 #  include <stumpless/config.h>
 
+
 /* definition of config_open_default_target */
 #  ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 #    include "private/config/wel_supported.h"

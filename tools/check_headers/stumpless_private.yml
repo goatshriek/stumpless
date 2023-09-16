@@ -21,7 +21,6 @@
 "config_format_string": "private/config/wrapper/format_string.h"
 "config_get_local_socket_name": "private/config/wrapper/socket.h"
 "config_get_now": "private/config/wrapper/get_now.h"
-"config_open_default_target": "private/config/wrapper/config_open_default_target.h"
 "config_gethostbyname": "private/config/wrapper/gethostbyname.h"
 "config_gethostname": "private/config/wrapper/gethostname.h"
 "config_getpagesize": "private/config/wrapper/getpagesize.h"
