@@ -122,6 +122,10 @@
 "a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
 " characters"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "neplatná služba"
 
@@ -284,4 +288,4 @@ L"Stumpless registration of Windows Event Log Source"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "výsledok WSAGetLastError po zlyhaní volania"
 
-#endif //STUMPLESS_SK_SK_H
+#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_SK_SK_H */

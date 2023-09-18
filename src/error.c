@@ -399,3 +399,11 @@ write_to_error_stream( const char *msg, size_t msg_size ) {
 
   config_write_bool( &error_stream_free, true );
 }
+
+void
+raise_invalid_param( void ) {
+  raise_error( STUMPLESS_INVALID_PARAM_STRING,
+               L10N_INVALID_PARAM_ERROR_MESSAGE,
+               0,
+               NULL );
+}

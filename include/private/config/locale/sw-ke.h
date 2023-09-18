@@ -112,6 +112,10 @@
 "thamani ya usajili wa MULTI_SZ haikuwa tupu wala haikumalizika na herufi" \
 " mbili za NULL"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "ukali batili"
 
