@@ -28,6 +28,8 @@
 
 /**
  * Internal representation of a chain target.
+ *
+ * @since release v2.2.0
  */
 struct chain_target {
 /** A static array of targets this chain contains.*/
@@ -48,13 +50,55 @@ struct chain_target {
 #endif
 };
 
+/**
+ * Destroys a chain target, but does not modify the targets it holds.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @param target The chain target to destroy.
+ *
+ * @since release v2.2.0
+ */
 void
 destroy_chain_target( const struct chain_target *target );
 
+/**
+ * Creates a new empty chain target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @return The new chain target if no errors are encountered. In the event of
+ * an error, NULL is returned and an error code is set appropriately.
+ */
 struct chain_target *
 new_chain_target( void );
 
 /**
+ * Sends an entry to every target in the chain.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. The chain_mutex is used to coordinate updates
  * to the chain.
@@ -66,6 +110,8 @@ new_chain_target( void );
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.2.0
  */
 int
 sendto_chain( struct chain_target *target,
