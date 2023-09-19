@@ -126,6 +126,9 @@ void *
 /**
  * Sets the function used by the library to free memory.
  *
+ * The provided free function must be able to handle a NULL pointer as the
+ * provided argument.
+ *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it changes the memory allocation
  * scheme, which could cause an operation to use the old function for some

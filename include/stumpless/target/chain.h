@@ -47,12 +47,26 @@ extern "C" {
 #endif
 
 /**
+ * Adds a target to an existing chain target.
+ *
+ * @since release v2.2.0
+ *
+ * @param chain The chain target to add the target to.
+ *
+ * @param target The new target to add to the chain.
+ *
+ * @return The chain target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+struct stumpless_target *
+stumpless_add_target_to_chain( struct stumpless_target *chain,
+                               struct stumpless_target *target );
+
+/**
  * Closes a chain of targets.
  *
  * This function closes each target in the chain, and then destroys all memory
  * allocated for the chain itself.
- *
- * @since release v2.2.0
  *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources that other threads
@@ -68,16 +82,44 @@ extern "C" {
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0
+ *
+ * @param target The chain of targets to close.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_close_chain_and_contents( struct stumpless_target *target );
+
+/**
+ * Closes a chain target.
+ *
+ * This function destroys all memory allocated for the chain itself. The targets
+ * in the chain are not closed or modified.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
  * @param target The chain to close.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_close_chain( struct stumpless_target *target );
+stumpless_close_chain_only( struct stumpless_target *target );
 
 /**
  * Creates a new target chain.
- *
- * @since release v2.2.0
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
@@ -90,12 +132,17 @@ stumpless_close_chain( struct stumpless_target *target );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0
+ *
+ * @param name The name of the logging target, as well as the name of the file
+ * to open.
+ *
  * @return The new chain if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
-stumpless_new_chain( void );
+stumpless_new_chain( const char *name );
 
 #ifdef __cplusplus
 }                               /* extern "C" */

@@ -71,7 +71,7 @@ extern "C" {
 #define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
 
 /**< write to a series of targets and filters **/
-#define STUMPLESS_CHAIN_VALUE 8
+#define STUMPLESS_CHAIN_TARGET_VALUE 8
 
 /**
  * A macro function that runs the provided action once for each target_type,
@@ -97,7 +97,7 @@ ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
 /**< add to the Windows Event Log */\
 ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\
 /**< write to a series of targets and filters **/\
-ACTION( STUMPLESS_CHAIN, STUMPLESS_CHAIN_VALUE )
+ACTION( STUMPLESS_CHAIN_TARGET, STUMPLESS_CHAIN_TARGET_VALUE )
 
 /** Types of targets that may be created. */
 enum stumpless_target_type {

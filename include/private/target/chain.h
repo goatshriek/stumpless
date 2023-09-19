@@ -20,8 +20,8 @@
 #define __STUMPLESS_PRIVATE_TARGET_CHAIN_H
 
 #include <stddef.h>
-#include <stdio.h>
 #include <stumpless/config.h>
+#include <stumpless/target.h>
 #include "private/config/wrapper/thread_safety.h"
 
 #define CHAIN_TARGET_ARRAY_SIZE 4
@@ -49,7 +49,7 @@ struct chain_target {
 };
 
 void
-destroy_chain_target( const struct stream_target *target );
+destroy_chain_target( const struct chain_target *target );
 
 struct chain_target *
 new_chain_target( void );
@@ -68,8 +68,7 @@ new_chain_target( void );
  * cancelled, due to the use of a lock that could be left locked.
  */
 int
-sendto_chain( struct stream_target *target,
-              const char *msg,
-              size_t msg_length );
+sendto_chain( struct chain_target *target,
+              struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_CHAIN_H */
