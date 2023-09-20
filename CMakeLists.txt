@@ -680,6 +680,21 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 
+# creation of single source install option
+set(ONE_SOURCE_CONTENTS "")
+foreach(source_file ${STUMPLESS_SOURCES})
+  file(STRINGS ${source_file} includes REGEX "#include \"private/.*\.h\"")
+  foreach(include_statement ${includes})
+    string(REGEX REPLACE "#include \"(private/.*\.h)\"" "\\1" include_filename "${include_statement}")
+    string(APPEND ONE_SOURCE_CONTENTS "${include_filename}\n")
+  endforeach()
+  file(READ ${source_file} file_contents)
+  string(REGEX REPLACE "#include \"private.*\"" "" filtered_file ${file_contents})
+  string(APPEND ONE_SOURCE_CONTENTS ${filtered_file})
+endforeach()
+file(WRITE "${PROJECT_BINARY_DIR}/stumpless_complete.c" ${ONE_SOURCE_CONTENTS})
+
+
 # installation of examples if enabled
 if(INSTALL_EXAMPLES)
   install(DIRECTORY
