@@ -689,8 +689,8 @@ function(include_file source_filename include_filenames already_included)
   #cmake_parse_arguments(INCLUDE_FILE_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
   foreach(include_filename ${include_filenames})
-    file(STRINGS "${include_filename}" file_lines)
-    foreach(line in ${file_lines})
+    file(STRINGS "${include_filename}" file_lines ENCODING UTF-8)
+    foreach(line ${file_lines})
       if("${line}" MATCHES ".*include \"(private/.+\.h)\"")
         if("${CMAKE_MATCH_1}" STREQUAL "private/config.h")
           set(extracted_full_path "${PROJECT_BINARY_DIR}/include/private/config.h")
@@ -699,11 +699,10 @@ function(include_file source_filename include_filenames already_included)
         endif()
         list(FIND ${already_included} "${extracted_full_path}" FOUND_INDEX)
         if(${FOUND_INDEX} GREATER -1)
-          message("skipping ${extracted_full_path}")
+          #message("skipping ${extracted_full_path}")
         else()
           message("adding ${extracted_full_path}")
           list(APPEND ${already_included} "${extracted_full_path}")
-          message("${${already_included}}")
           include_file(
             "${source_filename}"
             "${extracted_full_path}"
@@ -711,7 +710,9 @@ function(include_file source_filename include_filenames already_included)
           )
         endif()
       else()
-        file(APPEND "${source_filename}" "${line}\n")
+        foreach(subline ${line})
+          file(APPEND "${source_filename}" "${subline}\n")
+        endforeach()
       endif()
     endforeach()
   endforeach()
@@ -727,7 +728,7 @@ foreach(source_file ${STUMPLESS_SOURCES})
     "${source_file}"
     include_list
   )
-  message("include list: ${include_list}")
+  #message("include list: ${include_list}")
 endforeach()
 
 
