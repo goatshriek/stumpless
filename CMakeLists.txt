@@ -4,6 +4,8 @@ if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
 endif()
 
+cmake_policy(SET CMP0057 NEW)
+
 project(stumpless VERSION 2.2.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
@@ -296,52 +298,52 @@ else()
 endif()
 
 if(HAVE_FOPEN_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_fopen_s.c)
 endif(HAVE_FOPEN_S)
 
 if(HAVE_PTHREAD_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_pthread.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_pthread.c)
 endif()
 
 if(HAVE_STDATOMIC_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_stdatomic.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_stdatomic.c)
 endif()
 
 if(HAVE_UNISTD_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
 
 if(HAVE_VSNPRINTF_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_vsnprintf_s.c)
 else()
-  list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_vsnprintf_s.c)
 endif(HAVE_VSNPRINTF_S)
 
 if(NOT HAVE_WCSRTOMBS_S)
-  list(APPEND STUMPLESS_SOURCES src/config/no_wcsrtombs_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_wcsrtombs_s.c)
 endif()
 
 if(HAVE_WINDOWS_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
 if(WIN32)
-  list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/windows/stumpless.def)
 endif(WIN32)
 
 if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
   set(SUPPORT_WINDOWS_GET_NOW TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/windows_get_now_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/windows_get_now_supported.c)
 endif()
 
 if(HAVE_GMTIME_R)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime_r.c)
 elseif(NOT SUPPORT_WINDOWS_GET_NOW AND HAVE_GMTIME)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd_gethostname.c)
 elseif(NOT HAVE_WINSOCK2_H)
   # need the fallback gethostname definition in this case
   set(NEED_FALLBACK TRUE)
@@ -349,9 +351,9 @@ endif()
 
 if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
   set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/unistd_sysconf_getpagesize_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/unistd_sysconf_getpagesize_supported.c)
 elseif(HAVE_UNISTD_GETPAGESIZE)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd_getpagesize.c)
 elseif(NOT HAVE_WINDOWS_H)
   # need the fallback getpagesize definition in this case
   set(NEED_FALLBACK TRUE)
@@ -363,7 +365,7 @@ if(NOT HAVE_UNISTD_H AND NOT HAVE_WINDOWS_H)
 endif()
 
 if(NEED_FALLBACK)
-  list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/fallback.c)
 endif()
 
 
@@ -419,7 +421,7 @@ if(STUMPLESS_NETWORK_TARGETS_SUPPORTED)
   include(tools/cmake/network.cmake)
 else()
   if(WIN32)
-    list(APPEND STUMPLESS_SOURCES src/config/network_unsupported.c)
+    list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/network_unsupported.c)
   endif(WIN32)
 
   add_function_test(network_unsupported
@@ -474,9 +476,9 @@ endif()
 
 # thread safety support
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
-  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_unsupported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/thread_safety_unsupported.c)
 else()
-  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/thread_safety_supported.c)
 
   # thread safety tests
   add_thread_safety_test(buffer
@@ -681,41 +683,51 @@ endif()
 
 
 # creation of single source install option
-function(include_file)
-  set(single_val_args SOURCE_FILENAME)
-  set(multi_val_args INCLUDE_FILENAMES)
-  cmake_parse_arguments(INCLUDE_FILE_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+function(include_file source_filename include_filenames already_included)
+  #set(single_val_args SOURCE_FILENAME)
+  #set(multi_val_args INCLUDE_FILENAMES ALREADY_INCLUDED)
+  #cmake_parse_arguments(INCLUDE_FILE_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
-  foreach(include_filename ${INCLUDE_FILE_ARG_INCLUDE_FILENAMES})
-    list(FIND INCLUDED_FILES "${include_filename}" INCLUDE_INDEX)
-    if(INCLUDE_INDEX EQUAL "-1")
-      find_file(INCLUDE_FILE_FULL_PATH "${include_filename}"
-        HINTS "${PROJECT_BINARY_DIR}/include" "${PROJECT_SOURCE_DIR}/include")
-      file(STRINGS ${INCLUDE_FILE_FULL_PATH} includes REGEX "#include \"private/.*\.h\"")
-      foreach(include_statement ${includes})
-        string(REGEX REPLACE "#include \"(private/.*\.h)\"" "\\1" include_filename "${include_statement}")
-        include_file(
-          SOURCE_FILENAME ${INCLUDE_FILE_ARG_SOURCE_FILENAME}
-          INCLUDE_FILENAMES ${include_filename}
-        )
-        list(APPEND ONE_SOURCE_PRIVATE_HEADERS ${include_filename})
-      endforeach()
-      file(READ ${include_filename} file_contents)
-      string(REGEX REPLACE "#include \"private/.+\.h\"\n" "" no_private_file_contents ${file_contents})
-      string(REGEX REPLACE "#include <stumpless/.+\.h>\n" "" no_stumpless_includes_file_contents ${no_private_file_contents})
-      file(APPEND "${INCLUDE_FILE_ARG_SOURCE_FILENAME}" ${no_stumpless_includes_file_contents})
-      list(APPEND INCLUDED_FILES "${include_filename}")
-    endif()
+  foreach(include_filename ${include_filenames})
+    file(STRINGS "${include_filename}" file_lines)
+    foreach(line in ${file_lines})
+      if("${line}" MATCHES ".*include \"(private/.+\.h)\"")
+        if("${CMAKE_MATCH_1}" STREQUAL "private/config.h")
+          set(extracted_full_path "${PROJECT_BINARY_DIR}/include/private/config.h")
+        else()
+          set(extracted_full_path "${PROJECT_SOURCE_DIR}/include/${CMAKE_MATCH_1}")
+        endif()
+        list(FIND ${already_included} "${extracted_full_path}" FOUND_INDEX)
+        if(${FOUND_INDEX} GREATER -1)
+          message("skipping ${extracted_full_path}")
+        else()
+          message("adding ${extracted_full_path}")
+          list(APPEND ${already_included} "${extracted_full_path}")
+          message("${${already_included}}")
+          include_file(
+            "${source_filename}"
+            "${extracted_full_path}"
+            ${already_included}
+          )
+        endif()
+      else()
+        file(APPEND "${source_filename}" "${line}\n")
+      endif()
+    endforeach()
   endforeach()
+  set(${already_included} ${${already_included}} PARENT_SCOPE)
 endfunction()
 
 set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
 file(WRITE "${SINGLE_SOURCE_FILE}" "")
+set(include_list "")
 foreach(source_file ${STUMPLESS_SOURCES})
   include_file(
-    SOURCE_FILENAME "${SINGLE_SOURCE_FILE}"
-    INCLUDE_FILENAMES "${source_file}"
+    "${SINGLE_SOURCE_FILE}"
+    "${source_file}"
+    include_list
   )
+  message("include list: ${include_list}")
 endforeach()
 
 
