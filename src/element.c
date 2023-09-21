@@ -218,7 +218,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
 
     if( param_count != 0 ) {
       // extra param list chars and commas
-      format_len += 3 + param_count - 1;
+      format_len += 2 + param_count - 1;
     } else {
       // no params, just name
       format_len += 2;
