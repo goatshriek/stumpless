@@ -59,7 +59,7 @@ struct stumpless_entry;
  * This function must be safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry that the param is part of.
  *

@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 For a detailed look at the project's future, including planned features and bug
 fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
-
+### Added 
+ - @since format check enforcement in CI pipeline.
 
 ## [2.2.0] - 2023-08-08
 ### Fixed
