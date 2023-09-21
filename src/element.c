@@ -218,10 +218,10 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
 
     if( param_count != 0 ) {
       // extra param list chars and commas
-      format_len += 4 + param_count - 1;
+      format_len += 3 + param_count - 1;
     } else {
       // no params, just name
-      format_len += 1;
+      format_len += 2;
     }
 
     format = alloc_mem( format_len );
@@ -254,7 +254,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     } else {
       // name (no params)
       // pos_offset is name_len + 2 here
-      pos_offset -= 1;
+      pos_offset -= 2;
     }
 
     format[pos_offset + 1] = '\0';
