@@ -681,18 +681,42 @@ endif()
 
 
 # creation of single source install option
-set(ONE_SOURCE_CONTENTS "")
-foreach(source_file ${STUMPLESS_SOURCES})
-  file(STRINGS ${source_file} includes REGEX "#include \"private/.*\.h\"")
-  foreach(include_statement ${includes})
-    string(REGEX REPLACE "#include \"(private/.*\.h)\"" "\\1" include_filename "${include_statement}")
-    string(APPEND ONE_SOURCE_CONTENTS "${include_filename}\n")
+function(include_file)
+  set(single_val_args SOURCE_FILENAME)
+  set(multi_val_args INCLUDE_FILENAMES)
+  cmake_parse_arguments(INCLUDE_FILE_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  foreach(include_filename ${INCLUDE_FILE_ARG_INCLUDE_FILENAMES})
+    list(FIND INCLUDED_FILES "${include_filename}" INCLUDE_INDEX)
+    if(INCLUDE_INDEX EQUAL "-1")
+      find_file(INCLUDE_FILE_FULL_PATH "${include_filename}"
+        HINTS "${PROJECT_BINARY_DIR}/include" "${PROJECT_SOURCE_DIR}/include")
+      file(STRINGS ${INCLUDE_FILE_FULL_PATH} includes REGEX "#include \"private/.*\.h\"")
+      foreach(include_statement ${includes})
+        string(REGEX REPLACE "#include \"(private/.*\.h)\"" "\\1" include_filename "${include_statement}")
+        include_file(
+          SOURCE_FILENAME ${INCLUDE_FILE_ARG_SOURCE_FILENAME}
+          INCLUDE_FILENAMES ${include_filename}
+        )
+        list(APPEND ONE_SOURCE_PRIVATE_HEADERS ${include_filename})
+      endforeach()
+      file(READ ${include_filename} file_contents)
+      string(REGEX REPLACE "#include \"private/.+\.h\"\n" "" no_private_file_contents ${file_contents})
+      string(REGEX REPLACE "#include <stumpless/.+\.h>\n" "" no_stumpless_includes_file_contents ${no_private_file_contents})
+      file(APPEND "${INCLUDE_FILE_ARG_SOURCE_FILENAME}" ${no_stumpless_includes_file_contents})
+      list(APPEND INCLUDED_FILES "${include_filename}")
+    endif()
   endforeach()
-  file(READ ${source_file} file_contents)
-  string(REGEX REPLACE "#include \"private.*\"" "" filtered_file ${file_contents})
-  string(APPEND ONE_SOURCE_CONTENTS ${filtered_file})
+endfunction()
+
+set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
+file(WRITE "${SINGLE_SOURCE_FILE}" "")
+foreach(source_file ${STUMPLESS_SOURCES})
+  include_file(
+    SOURCE_FILENAME "${SINGLE_SOURCE_FILE}"
+    INCLUDE_FILENAMES "${source_file}"
+  )
 endforeach()
-file(WRITE "${PROJECT_BINARY_DIR}/stumpless_complete.c" ${ONE_SOURCE_CONTENTS})
 
 
 # installation of examples if enabled
