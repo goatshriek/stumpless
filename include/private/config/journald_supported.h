@@ -36,7 +36,7 @@
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param element The element to initialize.
  */
@@ -57,7 +57,7 @@ journald_init_journald_element( struct stumpless_element *element );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param param The param to initialize.
  */

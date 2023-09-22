@@ -69,7 +69,7 @@ extern "C" {
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param target The journald target to close.
  */
@@ -98,7 +98,7 @@ stumpless_close_journald_target( const struct stumpless_target *target );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry that the param is part of.
  *
@@ -144,7 +144,7 @@ stumpless_flatten_element_name( const struct stumpless_entry *entry,
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry that the param is part of.
  *
@@ -185,7 +185,7 @@ stumpless_flatten_param_name( const struct stumpless_entry *entry,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param name The name of the logging target.
  *
