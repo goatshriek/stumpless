@@ -143,6 +143,76 @@ stumpless_new_param( const char *name, const char *value ) {
 }
 
 struct stumpless_param *
+stumpless_new_param_from_string( const char *string ) {
+  
+  VALIDATE_ARG_NOT_NULL( string );
+
+  int i;
+  size_t name_len = 0;
+  size_t name_start = 0;
+  size_t value_len = 0;
+  size_t value_start = 0;
+  char *name;
+  char *value;
+  struct stumpless_param *result;
+
+  /* Check that the characters in 'name' are allowed. */
+  for (i = 0; string[i] != '='; i++) {
+    if (!((string[i] >= 'a' && string[i] <= 'z') ||
+	  (string[i] >= 'A' && string[i] <= 'Z') ||
+	  (string[i] >= '0' && string[i] <= '9') ||
+	  (string[i] == '-') ||
+	  (string[i] == '.') ||
+	  (string[i] == '_'))){
+      raise_invalid_param(  );
+      return NULL;
+    }
+  }
+  
+  /* Check if the character after the '=' is '"', else raise an error. */
+  if (string[i + 1] != '"'){
+    raise_invalid_param(  );
+    return NULL;
+  }
+
+  name_len = i;
+  /* We add 1 to the length for the '\0' character. */
+  name = alloc_mem( name_len + 1 );
+  /* We make this addition to skip '=' and '"' characters. */
+  i += 2;
+  value_start = i;
+
+  /* Iterate to the end of the 'value' string. */
+  //for (; string[i] != '\0'; i++){}
+  while (string[i] != '\0'){
+    i++;
+  }
+  /* If the final character isn't '"' we raise an error. */
+  if (string[i - 1] != '"') {
+    raise_invalid_param(  );
+    /* We need to free name here to avoid memory leaks */
+    free_mem( name );
+    return NULL;
+  } else {
+    /* We make this substraction for the 2 '"' characters and for the '=' character. */
+    value_len = i - name_len - 3;
+  }
+  
+  /* We add 1 to the length for the '\0' character. */
+  value = alloc_mem( value_len + 1 );
+  
+  memcpy(name, string + name_start, name_len);
+  name[name_len] = '\0';
+  memcpy(value, string + value_start, value_len);
+  value[value_len] = '\0';
+  result = stumpless_new_param(name, value);
+  free_mem( name );
+  free_mem( value );
+  
+  return result;
+}
+
+struct stumpless_param *
 stumpless_set_param_name( struct stumpless_param *param, const char *name ) {
   size_t new_size;
 

@@ -126,8 +126,13 @@ extern "C" {
  *
  * @since release v2.1.0
  */\
-  ERROR( STUMPLESS_WINDOWS_FAILURE, 28 )
-
+  ERROR( STUMPLESS_WINDOWS_FAILURE, 28 ) \
+/**
+ * The format of the given string is incorrect.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.

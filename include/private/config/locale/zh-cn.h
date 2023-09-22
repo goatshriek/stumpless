@@ -112,6 +112,10 @@
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
 "MULTI_SZ注册表值既不为空，也不以两个NULL字符结束"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "severity无效"
 

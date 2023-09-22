@@ -329,6 +329,34 @@ struct stumpless_param *
 stumpless_new_param( const char *name, const char *value );
 
 /**
+ * Creates a new param given a string by parsing the string and calling stumpless_new_param.
+ *
+ * **Thread Safety: MT-Safe
+ * This function is thread safe, assuming the the given string is not changed
+ * by other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers since it calls
+ * stumpless_new_param() which has usage of memory management functions.
+ *
+ * **Async Cancel Safety: AC_Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, since it calls stumpless_new_param() which has usage of
+ * memory management functions.
+ *
+ * @since release v2.2.0
+ *
+ * @param string The string to create the stumpless_param from.
+ *
+ * @return The created param, if no error is encountered. If an error is
+ * encountered, NULL is returned and an error code set appropriately.
+ */
+  
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_param *
+stumpless_new_param_from_string( const char *string );
+
+/**
  * Sets the name of the given param.
  *
  * **Thread Safety: MT-Safe**
