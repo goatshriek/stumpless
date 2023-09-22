@@ -70,3 +70,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
+  custom-anaysis:
+    name: Custom Analysis
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: "@since standardization"
+        run: |
+          # look for all instances of @since, then look for any that do not meet the required pattern. @since release x.x.x
+          if grep --include=\*.{c,h,cpp,hpp} -rnw . -e ".*@since .*" | grep -qv ".* @since release v[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]].*"; then
+            # at this point the check has failed, but we want to give some info to the user. i have found it difficult to get the status code
+            # and print out the offending lines without this duplication
+            # get all instances of @since, offending and not offending
+            grep --include=\*.{c,h,cpp,hpp} -rnw . -e "@since .*" | \
+            # find all instances that do not meet the required pattern
+            grep -v ".* @since release v[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]].*" | \
+            # print an error message, including line number with -n from grep. mention supported format. 
+            xargs -I{} echo "Static Analysis Failed:     \"{}\"      Supported format is \"@since release vX.X.X\""
+            exit 1
+          else
+            exit 0
+          fi
+

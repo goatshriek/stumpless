@@ -48,7 +48,7 @@ extern "C" {
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock which could be left locked.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param element The element to get the function of.
  *
@@ -76,7 +76,7 @@ stumpless_get_element_journald_namer( const struct stumpless_element *element );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock which could be left locked.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param param The param to get the function of.
  *
@@ -104,7 +104,7 @@ stumpless_get_param_journald_namer( const struct stumpless_param *param );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock which could be left locked.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param element The element to set the function of.
  *
@@ -134,7 +134,7 @@ stumpless_set_element_journald_namer( struct stumpless_element *element,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock which could be left locked.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param param The param to set the function of.
  *

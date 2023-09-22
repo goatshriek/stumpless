@@ -466,7 +466,7 @@ stumpless_close_target( struct stumpless_target *target );
  * This function is safe to call from threads that may be ansynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @return The current stream where messages are logged to on setting the
  * the CONS option.
@@ -811,7 +811,7 @@ stumpless_open_target( struct stumpless_target *target );
  * This function is safe to call from threads that may be ansynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param stream The stream to write logs to. If this is NULL then the messages
  *	intended for the console stream will be ignored.

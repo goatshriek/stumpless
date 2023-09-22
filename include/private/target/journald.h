@@ -37,7 +37,7 @@
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param flattened A buffer to write the flattened name to.
  *
@@ -65,7 +65,7 @@ get_journald_field_name( char *flattened, const char *raw, size_t size );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param field_count The number of fields the buffer must have.
  */
@@ -87,7 +87,7 @@ init_fields( size_t field_count );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  */
 void
 init_fixed_fields( void );
@@ -107,7 +107,7 @@ init_fixed_fields( void );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory deallocation function may not be AC-Safe itself.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  */
 void
 journald_free_thread( void );
@@ -127,7 +127,7 @@ journald_free_thread( void );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the facility from.
  */
@@ -149,7 +149,7 @@ load_facility( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the identifier from.
  */
@@ -171,7 +171,7 @@ load_identifier( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the message from.
  *
@@ -196,7 +196,7 @@ load_message( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the msgid from.
  */
@@ -215,7 +215,7 @@ load_msgid( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Safe**
  * Logging to journald targets is async cancellation safe.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @return The size of the loaded pid, including the field prefix.
  */
@@ -237,7 +237,7 @@ load_pid( void );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the priority from.
  */
@@ -260,7 +260,7 @@ load_priority( const struct stumpless_entry *entry );
  * Logging to journald targets is not async cancellation safe as it uses locks
  * that may not be released if a thread is cancelled.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param entry The entry to load the fields from.
  *
@@ -284,7 +284,7 @@ load_sd_fields( const struct stumpless_entry *entry );
  * **Async Cancel Safety: AC-Safe**
  * Logging to journald targets is async cancellation safe.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @return The size of the loaded timestamp, including the field prefix.
  */
@@ -305,7 +305,7 @@ load_timestamp( void );
  * Logging to journald targets is not async cancellation safe as it relies on
  * sd_journal_sendv which is not documented as such.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  *
  * @param target Where to send the entry.
  *
@@ -334,7 +334,7 @@ send_entry_to_journald_target( const struct stumpless_target *target,
  * This function is not async cancellation safe as it may leave the buffers in
  * an inconsistent state.
  *
- * @since v2.1.0
+ * @since release v2.1.0
  */
 void
 set_field_bases( void );
