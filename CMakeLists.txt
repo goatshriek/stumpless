@@ -684,11 +684,8 @@ endif()
 
 # creation of single source install option
 function(include_file source_filename include_filenames already_included)
-  #set(single_val_args SOURCE_FILENAME)
-  #set(multi_val_args INCLUDE_FILENAMES ALREADY_INCLUDED)
-  #cmake_parse_arguments(INCLUDE_FILE_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
-
   foreach(include_filename ${include_filenames})
+    file(APPEND "${source_filename}" "\n/** ${include_filename} */\n\n")
     file(STRINGS "${include_filename}" file_lines ENCODING UTF-8)
     foreach(line ${file_lines})
       if("${line}" MATCHES ".*include \"(private/.+\.h)\"")
@@ -698,10 +695,7 @@ function(include_file source_filename include_filenames already_included)
           set(extracted_full_path "${PROJECT_SOURCE_DIR}/include/${CMAKE_MATCH_1}")
         endif()
         list(FIND ${already_included} "${extracted_full_path}" FOUND_INDEX)
-        if(${FOUND_INDEX} GREATER -1)
-          #message("skipping ${extracted_full_path}")
-        else()
-          message("adding ${extracted_full_path}")
+        if(${FOUND_INDEX} EQUAL -1)
           list(APPEND ${already_included} "${extracted_full_path}")
           include_file(
             "${source_filename}"
@@ -728,7 +722,6 @@ foreach(source_file ${STUMPLESS_SOURCES})
     "${source_file}"
     include_list
   )
-  #message("include list: ${include_list}")
 endforeach()
 
 
