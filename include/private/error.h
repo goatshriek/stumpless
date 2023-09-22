@@ -147,6 +147,10 @@ raise_invalid_id( void );
 
 COLD_FUNCTION
 void
+raise_invalid_param( void );
+
+COLD_FUNCTION
+void
 raise_invalid_severity( int severity );
 
 COLD_FUNCTION

@@ -107,6 +107,10 @@
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
 "la valeur d'un registre MULTI_SZ n'était ni vide ni terminée par deux NULL"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la sévérité invalide"
 
