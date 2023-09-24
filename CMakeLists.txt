@@ -717,11 +717,13 @@ set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
 file(WRITE "${SINGLE_SOURCE_FILE}" "")
 set(include_list "")
 foreach(source_file ${STUMPLESS_SOURCES})
-  include_file(
-    "${SINGLE_SOURCE_FILE}"
-    "${source_file}"
-    include_list
-  )
+  if("${source_file}" MATCHES "\\.c$")
+    include_file(
+      "${SINGLE_SOURCE_FILE}"
+      "${source_file}"
+      include_list
+    )
+  endif()
 endforeach()
 
 
