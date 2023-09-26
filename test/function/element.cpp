@@ -808,7 +808,7 @@ namespace {
     format = stumpless_element_to_string( element_with_params );
     ASSERT_NOT_NULL( format );
 
-    EXPECT_STREQ( format, "<element-with-params>:[param-1=\"value-1\",param-2=\"value-2\"]" );
+    EXPECT_STREQ( format, "element-with-params=[param-1=\"value-1\",param-2=\"value-2\"]" );
     EXPECT_NO_ERROR;
 
     free( ( void * ) format );
@@ -820,7 +820,7 @@ namespace {
     format = stumpless_element_to_string( basic_element );
     ASSERT_NOT_NULL( format );
 
-    EXPECT_STREQ( format, "<basic-element>" );
+    EXPECT_STREQ( format, "basic-element" );
     EXPECT_NO_ERROR;
 
     free( ( void * ) format );
