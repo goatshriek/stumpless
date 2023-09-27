@@ -20,6 +20,7 @@ string(CONCAT enable_cpp_help_string
 )
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
+option(BUILD_SINGLE_FILE "create a single file version of library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
@@ -681,7 +682,7 @@ if(PKG_CONFIG_FOUND)
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 endif()
 
-
+if(BUILD_SINGLE_FILE)
 # creation of single source install option
 function(include_file source_filename include_filenames already_included)
   foreach(include_filename ${include_filenames})
@@ -739,7 +740,7 @@ foreach(source_file ${STUMPLESS_SOURCES})
     )
   endif()
 endforeach()
-
+endif()
 
 # installation of examples if enabled
 if(INSTALL_EXAMPLES)
