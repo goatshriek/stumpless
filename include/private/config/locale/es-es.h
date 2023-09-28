@@ -108,6 +108,10 @@
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
 "un valor de registro MULTI_SZ no estaba ni vacío ni terminado con dos NULL"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la gravedad inválida"
 
@@ -253,4 +257,4 @@ L"registro de Stumpless del Registro de Eventos de Windows"
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "el resultado de WSAGetLastError despues que la llamada fallara"
 
-#endif /* __STUMPLESS_PRIVATE_CONFIG_LOCALE_ES_ES_H */
+#endif /*  __STUMPLESS_PRIVATE_CONFIG_LOCALE_ES_ES_H */

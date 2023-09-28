@@ -116,6 +116,10 @@
 "a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
 " characters"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "невалидната тежест"
 

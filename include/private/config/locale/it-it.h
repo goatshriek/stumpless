@@ -108,6 +108,10 @@
 "un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due" \
 " caratteri nullo"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "gravità non valida"
 

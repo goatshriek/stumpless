@@ -109,6 +109,10 @@
 "एक MULTI_SZ रजिस्ट्री मान न तो खाली था और न ही दो NULL" \
 " अक्षर "
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "अमान्य गंभीरता"
 

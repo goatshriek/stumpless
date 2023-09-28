@@ -953,7 +953,7 @@ stumpless_load_entry( struct stumpless_entry *entry,
  * This function has the same behavior as stumpless_load_entry_str, except it
  * does not create a new entry, instead loading an existing struct.
  *
- * @since version v2.2.0
+ * @since release v2.2.0
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
@@ -1056,7 +1056,7 @@ stumpless_new_entry( enum stumpless_facility facility,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory management functions.
  *
- * @since version v2.1.0
+ * @since release v2.1.0
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.

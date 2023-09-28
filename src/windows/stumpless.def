@@ -212,10 +212,11 @@ EXPORTS
   stumpless_set_entry_hostname                  @197
 
 ; added in v2.2.0
-  stumpless_load_element                        @198
-  stumpless_load_entry                          @199
-  stumpless_load_entry_str                      @200
-  stumpless_load_param                          @201
+  stumpless_new_param_from_string               @198
+  stumpless_load_element                        @199
+  stumpless_load_entry                          @200
+  stumpless_load_entry_str                      @201
+  stumpless_load_param                          @202
   stumpless_unload_element_and_contents         @203
   stumpless_unload_element_only                 @204
   stumpless_unload_entry_and_contents           @205
