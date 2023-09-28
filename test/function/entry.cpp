@@ -2395,6 +2395,164 @@ namespace {
     stumpless_free_all(  );
   }
 
+
+
+
+
+
+
+
+  // TEST( SetMessageWideStrTest, AsciiMessage ) {
+  //   struct stumpless_entry *entry;
+  //   const char *ascii_message;
+  //   const struct stumpless_entry *result;
+  //   const char *new_message;
+
+  //   entry = create_empty_entry(  );
+  //   ASSERT_NOT_NULL( entry );
+
+  //   ascii_message = load_corpus( "cstring/ascii" );
+  //   ASSERT_NOT_NULL( ascii_message );
+
+  //   result = stumpless_set_entry_message_str_w( entry, ascii_message );
+  //   EXPECT_EQ( entry, result );
+  //   EXPECT_NO_ERROR;
+
+  //   new_message = stumpless_get_entry_message( entry );
+  //   EXPECT_NOT_NULL( new_message );
+  //   EXPECT_NO_ERROR;
+  //   EXPECT_STREQ( ascii_message, new_message );
+
+  //   delete[] ascii_message;
+  //   free( ( void * ) new_message );
+  //   stumpless_destroy_entry_and_contents( entry );
+  //   stumpless_free_all(  );
+  // }
+
+  // TEST( SetMessageWideStrTest, LongAsciiMessage ) {
+  //   struct stumpless_entry *entry;
+  //   const char *long_message;
+  //   const struct stumpless_entry *result;
+  //   const char *new_message;
+
+  //   entry = create_empty_entry(  );
+  //   ASSERT_NOT_NULL( entry );
+
+  //   long_message = load_corpus( "cstring/lorem" );
+  //   ASSERT_NOT_NULL( long_message );
+
+  //   result = stumpless_set_entry_message_str_w( entry, long_message );
+  //   EXPECT_EQ( entry, result );
+  //   EXPECT_NO_ERROR;
+
+  //   new_message = stumpless_get_entry_message( entry );
+  //   EXPECT_NOT_NULL( new_message );
+  //   EXPECT_NO_ERROR;
+  //   EXPECT_STREQ( long_message, new_message );
+
+  //   delete[] long_message;
+  //   free( ( void * ) new_message );
+  //   stumpless_destroy_entry_and_contents( entry );
+  //   stumpless_free_all(  );
+  // }
+
+  TEST( SetMessageWideStrTest, MallocFailureOnMessage ) {
+    void * (*set_malloc_result)(size_t);
+    struct stumpless_entry *entry;
+    const wchar_t *new_message = L"nice and long to make sure it beats the first";
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 46 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_set_entry_message_str_w( entry, new_message );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageWideStrTest, NullEntry ) {
+    const struct stumpless_entry *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_entry_message_str_w( NULL, L"test-message" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all(  );
+  }
+
+  TEST( SetMessageWideStrTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+
+    entry = create_empty_entry(  );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, result );
+
+    EXPECT_NULL( entry->message );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry_and_contents( entry );
+
+    stumpless_free_all(  );
+  }
+
+  // TEST( SetMessageWideStrTest, Utf16Message ) {
+  //   struct stumpless_entry *entry;
+  //   const char *utf16_message;
+  //   const struct stumpless_entry *result;
+  //   const char *new_message;
+
+  //   entry = create_empty_entry(  );
+  //   ASSERT_NOT_NULL( entry );
+
+  //   utf16_message = load_corpus( "cstring/zh-cn" );
+  //   ASSERT_NOT_NULL( utf16_message );
+
+  //   result = stumpless_set_entry_message_str_w( entry, utf16_message );
+  //   EXPECT_EQ( entry, result );
+  //   EXPECT_NO_ERROR;
+
+  //   new_message = stumpless_get_entry_message( entry );
+  //   EXPECT_NOT_NULL( new_message );
+  //   EXPECT_NO_ERROR;
+  //   EXPECT_STREQ( utf16_message, new_message );
+
+  //   delete[] utf16_message;
+  //   free( ( void * ) new_message );
+  //   stumpless_destroy_entry_and_contents( entry );
+  //   stumpless_free_all(  );
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   TEST( SetParam, NullEntry ) {
     struct stumpless_param *param;
     const struct stumpless_entry *result;
