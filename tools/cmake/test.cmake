@@ -46,10 +46,51 @@ function(private_add_function_test)
   )
 endfunction(private_add_function_test)
 
+function(private_add_single_file_function_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES COMPILE_DEFINITIONS)
+  cmake_parse_arguments(FUNCTION_TEST_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    EXCLUDE_FROM_ALL
+    ${SINGLE_SOURCE_FILE}
+    ${FUNCTION_TEST_ARG_SOURCES}
+  )
+
+  set_target_properties(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    PROPERTIES
+    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    OUTPUT_NAME function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    COMPILE_FLAGS "${function_test_compile_flags}"
+    COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
+  )
+
+  target_link_libraries(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    libgtest
+    libgtestmain
+    ${FUNCTION_TEST_ARG_LIBRARIES}
+  )
+
+  target_include_directories(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${CMAKE_BINARY_DIR}/include
+  )
+endfunction(private_add_single_file_function_test)
+
 macro(add_function_test name)
   list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
-
   private_add_function_test(NAME ${name} ${ARGN})
+
+  if(BUILD_SINGLE_FILE)
+    private_add_single_file_function_test(NAME ${name} ${ARGN})
+    list(APPEND STUMPLESS_SINGLE_FILE_TARGETS function-test-single-file-${name})
+    list(APPEND STUMPLESS_CHECK_SINGLE_FILE_RUNNERS run-function-test-single-file-${name})
+    add_custom_target(run-function-test-single-file-${name}
+      COMMAND "function-test-single-file-${name}"
+      DEPENDS function-test-single-file-${name}
+    )
+  endif()
 endmacro(add_function_test name)
 
 function(private_add_thread_safety_test)

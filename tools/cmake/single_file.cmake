@@ -55,9 +55,14 @@ endforeach()
 
 # this needs to happen after the stumpless library is set up
 get_target_property(STUMPLESS_LINK_LIBRARIES stumpless LINK_LIBRARIES)
-message("single file targets: ${STUMPLESS_SINGLE_FILE_TARGETS}")
-message("linked libraries: ${STUMPLESS_LINK_LIBRARIES}")
 foreach(example_target ${STUMPLESS_SINGLE_FILE_TARGETS})
-  message("  adding to target: ${example_target}")
   target_link_libraries(${example_target} ${STUMPLESS_LINK_LIBRARIES})
 endforeach()
+
+add_custom_target(check-single-file
+  DEPENDS ${STUMPLESS_CHECK_SINGLE_FILE_RUNNERS}
+)
+
+add_custom_target(examples-single-file
+  DEPENDS ${STUMPLESS_EXAMPLE_SINGLE_FILE_RUNNERS}
+)
