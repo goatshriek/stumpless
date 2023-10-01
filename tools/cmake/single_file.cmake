@@ -1,5 +1,4 @@
-set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
-message("creating single source library ${SINGLE_SOURCE_FILE}")
+message("creating single file library ${SINGLE_SOURCE_FILE}")
 
 function(include_file source_filename include_filenames already_included)
   foreach(include_filename ${include_filenames})
@@ -52,4 +51,13 @@ foreach(source_file ${STUMPLESS_SOURCES})
       include_list
     )
   endif()
+endforeach()
+
+# this needs to happen after the stumpless library is set up
+get_target_property(STUMPLESS_LINK_LIBRARIES stumpless LINK_LIBRARIES)
+message("single file targets: ${STUMPLESS_SINGLE_FILE_TARGETS}")
+message("linked libraries: ${STUMPLESS_LINK_LIBRARIES}")
+foreach(example_target ${STUMPLESS_SINGLE_FILE_TARGETS})
+  message("  adding to target: ${example_target}")
+  target_link_libraries(${example_target} ${STUMPLESS_LINK_LIBRARIES})
 endforeach()

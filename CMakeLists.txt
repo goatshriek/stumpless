@@ -20,6 +20,7 @@ string(CONCAT enable_cpp_help_string
 )
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
+set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
 option(BUILD_SINGLE_FILE "create a single file version of library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 
@@ -683,11 +684,6 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 
-# single source build
-if(BUILD_SINGLE_FILE)
-  include(tools/cmake/single_file.cmake)
-endif()
-
 # installation of examples if enabled
 if(INSTALL_EXAMPLES)
   install(DIRECTORY
@@ -1066,6 +1062,12 @@ if(FUZZ)
   add_custom_target(fuzz
     DEPENDS ${STUMPLESS_FUZZ_TESTS}
   )
+endif()
+
+
+# single source build
+if(BUILD_SINGLE_FILE)
+  include(tools/cmake/single_file.cmake)
 endif()
 
 
