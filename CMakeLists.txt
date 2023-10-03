@@ -240,6 +240,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
+  ${PROJECT_SOURCE_DIR}/src/priority.c
 )
 
 
@@ -649,6 +650,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/severity.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/priority.h
   DESTINATION "include/stumpless"
 )
 
@@ -959,6 +961,10 @@ add_function_test(target_leak
 
 add_function_test(version
   SOURCES test/function/version.cpp
+)
+
+add_function_test(priority
+  SOURCES test/function/priority.cpp
 )
 
 add_custom_target(build-test

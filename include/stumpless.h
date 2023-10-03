@@ -99,6 +99,7 @@
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
+#include <stumpless/priority.h>
 
 #ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 /** @example journald_example.c

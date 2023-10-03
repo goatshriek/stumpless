@@ -230,3 +230,5 @@
 "WSACleanup":
   - "winsock2.h"
   - "private/windows_wrapper.h"
+"isdigit": "ctype.h"
+"toupper": "ctype.h"
