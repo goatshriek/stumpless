@@ -59,6 +59,10 @@ foreach(example_target ${STUMPLESS_SINGLE_FILE_TARGETS})
   target_link_libraries(${example_target} ${STUMPLESS_LINK_LIBRARIES})
 endforeach()
 
+add_custom_target(bench-single-file
+  DEPENDS ${STUMPLESS_BENCH_SINGLE_FILE_RUNNERS}
+)
+
 add_custom_target(check-single-file
   DEPENDS ${STUMPLESS_CHECK_SINGLE_FILE_RUNNERS}
 )
