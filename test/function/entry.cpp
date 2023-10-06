@@ -2511,32 +2511,33 @@ namespace {
     stumpless_free_all(  );
   }
 
-  // TEST( SetMessageWideStrTest, Utf16Message ) {
-  //   struct stumpless_entry *entry;
-  //   const char *utf16_message;
-  //   const struct stumpless_entry *result;
-  //   const char *new_message;
+  TEST( SetMessageWideStrTest, Utf16Message ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+    const wchar_t *utf16_message= L"没有错误";
+    const char *utf8_message = "没有错误";
+    const char *new_message;
 
-  //   entry = create_empty_entry(  );
-  //   ASSERT_NOT_NULL( entry );
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
 
-  //   utf16_message = load_corpus( "cstring/zh-cn" );
-  //   ASSERT_NOT_NULL( utf16_message );
+    // utf16_message = load_corpus( "cstring/zh-cn" );
+    ASSERT_NOT_NULL( utf16_message );
 
-  //   result = stumpless_set_entry_message_str_w( entry, utf16_message );
-  //   EXPECT_EQ( entry, result );
-  //   EXPECT_NO_ERROR;
+    result = stumpless_set_entry_message_str_w( entry, utf16_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
 
-  //   new_message = stumpless_get_entry_message( entry );
-  //   EXPECT_NOT_NULL( new_message );
-  //   EXPECT_NO_ERROR;
-  //   EXPECT_STREQ( utf16_message, new_message );
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( utf8_message, new_message );
 
-  //   delete[] utf16_message;
-  //   free( ( void * ) new_message );
-  //   stumpless_destroy_entry_and_contents( entry );
-  //   stumpless_free_all(  );
-  // }
+    delete[] utf16_message;
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
 
 
 

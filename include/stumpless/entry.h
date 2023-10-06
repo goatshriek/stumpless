@@ -1357,7 +1357,7 @@ stumpless_set_entry_message_str( struct stumpless_entry *entry,
  * cancelled, due to the use of a lock that could be left locked as well as
  * memory management functions.
  *
- * @since release v2.1.0
+ * @since release v2.2.0
  *
  * @param entry The entry to modify.
  *

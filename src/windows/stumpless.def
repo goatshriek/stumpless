@@ -223,3 +223,4 @@ EXPORTS
   stumpless_unload_entry_only                   @206
   stumpless_unload_param                        @207
   vstumpless_load_entry                         @208
+  stumpless_set_entry_message_str_w             @209

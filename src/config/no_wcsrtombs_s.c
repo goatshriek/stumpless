@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <stddef.h>
 #include <wchar.h>
+#include <string.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/no_wcsrtombs_s.h"
 #include "private/error.h"
@@ -32,6 +33,7 @@ no_wcsrtombs_s_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   mbstate_t state;
   size_t conversion_result;
 
+  memset( &state, 0, sizeof( state ) );
   conversion_result = wcsrtombs( NULL, &str, 0, &state );
   if( conversion_result == -1 ) {
     raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
