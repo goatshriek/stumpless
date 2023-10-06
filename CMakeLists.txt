@@ -4,8 +4,6 @@ if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
 endif()
 
-cmake_policy(SET CMP0057 NEW)
-
 project(stumpless VERSION 2.2.0)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
