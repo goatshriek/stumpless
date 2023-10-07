@@ -19,6 +19,7 @@ string(CONCAT enable_cpp_help_string
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
 
 set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
+set(SINGLE_HEADER_FILE "${PROJECT_BINARY_DIR}/stumpless.h")
 option(BUILD_SINGLE_FILE "create a single file version of library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 

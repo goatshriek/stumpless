@@ -38,7 +38,7 @@ function(private_add_function_test)
   target_include_directories(function-test-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_test(NAME ${FUNCTION_TEST_ARG_NAME}
@@ -74,7 +74,7 @@ function(private_add_single_file_function_test)
   target_include_directories(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 endfunction(private_add_single_file_function_test)
 
@@ -127,7 +127,7 @@ function(private_add_thread_safety_test)
   target_include_directories(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_custom_target(run-thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
@@ -142,7 +142,7 @@ macro(add_thread_safety_test name)
   private_add_thread_safety_test(NAME ${name} ${ARGN})
 endmacro(add_thread_safety_test name)
 
-set(PERFORMANCE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/performance-output")
+set(PERFORMANCE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/performance-output")
 file(MAKE_DIRECTORY ${PERFORMANCE_OUTPUT_DIR})
 
 function(private_add_performance_test)
@@ -183,11 +183,11 @@ function(private_add_performance_test)
   target_include_directories(performance-test-${FUNCTION_PERF_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_custom_target(run-performance-test-${FUNCTION_PERF_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
+	  COMMAND ${PROJECT_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
     DEPENDS performance-test-${FUNCTION_PERF_ARG_NAME}
   )
 endfunction(private_add_performance_test)
@@ -229,11 +229,11 @@ function(private_add_single_file_performance_test)
   target_include_directories(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_custom_target(run-performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/performance-test-single-file-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
+    COMMAND ${PROJECT_BINARY_DIR}/performance-test-single-file-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
     DEPENDS performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
   )
 endfunction(private_add_single_file_performance_test)
@@ -275,13 +275,13 @@ function(private_add_fuzz_test)
   target_include_directories(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
-  set(generated_corpus_dir ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
+  set(generated_corpus_dir ${PROJECT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
   file(MAKE_DIRECTORY ${generated_corpus_dir})
   add_custom_target(run-fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${FUZZ_CORPORA_DIR}/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
+    COMMAND ${PROJECT_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${FUZZ_CORPORA_DIR}/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
     DEPENDS fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
   )
 endfunction(private_add_fuzz_test)
@@ -308,7 +308,7 @@ add_dependencies(test_helper_fixture libgtest)
 target_include_directories(test_helper_fixture
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_network
@@ -326,7 +326,7 @@ add_dependencies(test_helper_network libgtest)
 target_include_directories(test_helper_network
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_resolve
@@ -342,7 +342,7 @@ set_target_properties(test_helper_resolve
 target_include_directories(test_helper_resolve
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 add_library(test_helper_rfc5424
   EXCLUDE_FROM_ALL
@@ -359,7 +359,7 @@ add_dependencies(test_helper_rfc5424 libgtest)
 target_include_directories(test_helper_rfc5424
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_server
@@ -375,7 +375,7 @@ set_target_properties(test_helper_server
 target_include_directories(test_helper_server
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_usage
@@ -391,5 +391,5 @@ set_target_properties(test_helper_usage
 target_include_directories(test_helper_usage
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )

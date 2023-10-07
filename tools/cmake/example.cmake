@@ -23,7 +23,7 @@ function(add_no_run_example name)
   target_include_directories(example-${name}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 endfunction(add_no_run_example)
 
@@ -42,8 +42,9 @@ function(add_no_run_single_file_example name)
 
   target_include_directories(example-single-file-${name}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}
+    #${PROJECT_SOURCE_DIR}/include
+    #${CMAKE_BINARY_DIR}/include
   )
 endfunction(add_no_run_single_file_example)
 
