@@ -1,0 +1,33 @@
+version: "0.5.0"
+classes:
+  - name: "Priority"
+    doc: >
+      PRIVAL as priority value (as defined in RFC 5424) represents both the
+      Facility and Severity.
+      The Priority value consists of one, two, or three decimal integers.
+    namespace: "stumpless"
+    functions:
+      - name: "GetOption"
+        doc: >
+          Gets the given option for this target.
+
+          While the returned value is the option if it is set, callers can also
+          simply use the truth value of the return to see if the provided option
+          is set.
+        params:
+          - name: "option"
+            doc: "The option to check this target for."
+            type: "int"
+        return:
+          doc: >
+            The option if it is set on the target. If the option is not set,
+            then zero is returned.
+          type: "int"
+        wrapped-function:
+          name: "stumpless_get_option"
+          includes: "stumpless/target.h"
+          params:
+            - value: "equivalent-struct-pointer"
+            - value: "option"
+          return:
+            type: "int"

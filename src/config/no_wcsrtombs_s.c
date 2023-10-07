@@ -40,26 +40,26 @@ no_wcsrtombs_s_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
     goto fail;
   }
 
-  buffer_size = conversion_result + 1; // add NULL terminator
-  buffer = alloc_mem( buffer_size );
-  if( !buffer ) {
-    goto fail;
-  }
+  // buffer_size = conversion_result + 1; // add NULL terminator
+  // buffer = alloc_mem( buffer_size );
+  // if( !buffer ) {
+  //   goto fail;
+  // }
 
-  conversion_result = wcsrtombs( buffer, &str, buffer_size, &state );
-  if( conversion_result == -1 ) {
-    raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
-    goto cleanup_and_fail;
-  }
+  // conversion_result = wcsrtombs( buffer, &str, buffer_size, &state );
+  // if( conversion_result == -1 ) {
+  //   raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );
+  //   goto cleanup_and_fail;
+  // }
 
-  if( copy_size ) {
-    *copy_size = cap_size_t_to_int( buffer_size );
-  }
+  // if( copy_size ) {
+  //   *copy_size = cap_size_t_to_int( buffer_size );
+  // }
 
-  return buffer;
+  // return buffer;
 
-cleanup_and_fail:
-  free_mem( buffer );
+// cleanup_and_fail:
+//   free_mem( buffer );
 fail:
   return NULL;
 }

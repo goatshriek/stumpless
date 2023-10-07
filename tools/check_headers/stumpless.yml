@@ -628,4 +628,9 @@
 "stumpless_get_target_type_string" : "stumpless/target.h"
 "STUMPLESS_FOREACH_TARGET_TYPE" : "stumpless/target.h"
 "STUMPLESS_FOREACH_SEVERITY" : "stumpless/severity.h"
+<<<<<<< HEAD
+
+=======
+"stumpless_prival_from_string" : "stumpless/priority.h"
 "stumpless_set_entry_message_str_w" : "stumpless/entry.h"
+>>>>>>> c54a4983dc4a72f12029ef0c6004a947afbde6d7

@@ -57,3 +57,7 @@ Tests for general target functionality.
 
 ## `version.cpp`
 Tests for versioning of the library.
+
+
+## `priority.cpp`
+Tests for functions that deal with priority values (PRIVAL).

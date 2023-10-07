@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stumpless.h>
+#include <locale.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
@@ -2511,20 +2512,22 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( SetMessageWideStrTest, Utf16Message ) {
+  TEST( SetMessageWideStrTest, wide_message ) {
+    setlocale(LC_ALL, "");
     struct stumpless_entry *entry;
     const struct stumpless_entry *result;
-    const wchar_t *utf16_message= L"没有错误";
+    const wchar_t *wide_message= L"没有错误";
     const char *utf8_message = "没有错误";
     const char *new_message;
+    
 
     entry = create_empty_entry(  );
     ASSERT_NOT_NULL( entry );
+    
+    
+    ASSERT_NOT_NULL( wide_message );
 
-    // utf16_message = load_corpus( "cstring/zh-cn" );
-    ASSERT_NOT_NULL( utf16_message );
-
-    result = stumpless_set_entry_message_str_w( entry, utf16_message );
+    result = stumpless_set_entry_message_str_w( entry, wide_message );
     EXPECT_EQ( entry, result );
     EXPECT_NO_ERROR;
 
@@ -2533,8 +2536,6 @@ namespace {
     EXPECT_NO_ERROR;
     EXPECT_STREQ( utf8_message, new_message );
 
-    delete[] utf16_message;
-    free( ( void * ) new_message );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_free_all(  );
   }
