@@ -57,7 +57,7 @@ macro(add_example name)
     DEPENDS example-${name}
   )
 
-  if(BUILD_SINGLE_FILE)
+  if(ENABLE_SINGLE_FILE)
     add_no_run_single_file_example(${name} ${ARGN})
     list(APPEND STUMPLESS_SINGLE_FILE_TARGETS example-single-file-${name})
     list(APPEND STUMPLESS_EXAMPLE_SINGLE_FILE_RUNNERS run-example-single-file-${name})

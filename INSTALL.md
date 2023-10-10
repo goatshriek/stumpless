@@ -85,7 +85,7 @@ can use this one to install it at the same time as the base library.
 
 
 ## Single File Builds
-If the `BUILD_SINGLE_FILE` option is enabled during configuration, a single `.c`
+If the `ENABLE_SINGLE_FILE` option is enabled during configuration, a single `.c`
 file is generated. This file contains all of the source for the library, and can
 be compiled into other programs to provide stumpless functionality without
 needing to perform static linking or dynamic loading of the library.
