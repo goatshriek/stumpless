@@ -35,6 +35,20 @@ namespace {
     EXPECT_EQ( result, 119 );
   }
 
+  TEST( GetPriorityValue, NumTooHighPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "192" );
+    EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetPriorityValue, NumInvalidPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "119aa" );
+    EXPECT_EQ( result, -1 );
+  }
+
   TEST( GetPriorityValue, UpperValidPriority ) {
     int result;
 
