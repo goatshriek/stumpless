@@ -223,8 +223,6 @@ EXPORTS
   stumpless_unload_entry_only                   @206
   stumpless_unload_param                        @207
   vstumpless_load_entry                         @208
-<<<<<<< HEAD
-  stumpless_set_entry_message_str_w             @210
-=======
   stumpless_prival_from_string                  @209
->>>>>>> c54a4983dc4a72f12029ef0c6004a947afbde6d7
+  stumpless_set_entry_message_str_w             @210
+
