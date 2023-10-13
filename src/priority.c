@@ -26,6 +26,8 @@
 #include "private/validate.h"
 #include "private/config.h"
 #include "private/strhelper.h"
+#include "private/error.h"
+#include "private/config/locale/wrapper.h"
 
 int
 stumpless_prival_from_string( const char *string ) {
@@ -37,12 +39,11 @@ stumpless_prival_from_string( const char *string ) {
   char *sec_period;
   size_t len;
   size_t slen;
-  size_t pre_len;
-  const char pre_severity[] = "STUMPLESS_SEVERITY_";
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( string );
 
   if( unlikely( !string[0] ) ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "string" ) );
     return -1;
   }
 
@@ -57,12 +58,15 @@ stumpless_prival_from_string( const char *string ) {
 
   // find the first period character
   period = strchr( string, '.' );
-  if( !period )
+  if( !period ) {
+    raise_invalid_param(  );
     return -1;
+  }
 
   // check there is no another period character
   sec_period = strchr( period + 1, '.' );
   if( sec_period != NULL ) {
+    raise_invalid_param(  );
     return -1;
   }
 
@@ -79,29 +83,28 @@ stumpless_prival_from_string( const char *string ) {
 
   free_mem( param );
 
-  if( facility < 0 )
+  if( facility < 0 ) {
+    raise_invalid_param(  );
     return -1;
+  }
 
   // Calculate the severity length
   len = slen - ++len;
-  pre_len = sizeof(pre_severity) - 1;
 
-  param = alloc_mem( len + 1 + pre_len );
+  // Copy the severity substring to the param buffer
+  param = copy_cstring_length( ++period, len );
   if( !param ) {
     return -1;
   }
-  // Copy the severity substring to the param buffer
-  memcpy( param, pre_severity, pre_len );
-  memcpy( param + pre_len, ++period, len);
-  param[pre_len + len] = '\0';
 
-  to_upper_case(param);
   severity = stumpless_get_severity_enum( param );
 
   free_mem( param );
 
-  if( severity < 0 )
+  if( severity < 0 ) {
+    raise_invalid_param(  );
     return -1;
+  }
 
   return get_prival( facility, severity );
 }

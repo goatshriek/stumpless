@@ -67,34 +67,49 @@ namespace {
 
     result = stumpless_get_facility_enum( "user" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_USER );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "mail" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_MAIL );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "daemon" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_DAEMON );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "auth" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "security" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "syslog" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_SYSLOG );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "lpr" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_LPR );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "news" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_NEWS );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "uucp" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_UUCP );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "cron" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_CRON );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "authpriv" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH2 );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "ftp" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_FTP );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "ntp" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_NTP );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "audit" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_AUDIT );
+    EXPECT_NO_ERROR;
     result = stumpless_get_facility_enum( "alert" );
     EXPECT_EQ( result, STUMPLESS_FACILITY_ALERT );
+    EXPECT_NO_ERROR;
   }
 
   TEST( GetFacilityEnum, InvalidMemFacility ) {
