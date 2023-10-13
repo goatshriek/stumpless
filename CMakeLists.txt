@@ -17,10 +17,6 @@ string(CONCAT enable_cpp_help_string
   "the 'check-cpp' target to build and run the test suite for the C++ library."
 )
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
-
-set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
-set(SINGLE_HEADER_FILE "${PROJECT_BINARY_DIR}/stumpless.h")
-option(ENABLE_SINGLE_FILE "create a single file version of library" OFF)
 option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
@@ -95,6 +91,9 @@ string(CONCAT locale_help_string
 set(LOCALE $ENV{LANG}
   CACHE STRING ${locale_help_string}
 )
+
+set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
+set(SINGLE_HEADER_FILE "${PROJECT_BINARY_DIR}/stumpless.h")
 
 
 # load modules
@@ -1070,10 +1069,8 @@ if(FUZZ)
 endif()
 
 
-# single source build
-if(ENABLE_SINGLE_FILE)
-  include(tools/cmake/single_file.cmake)
-endif()
+# single file generation
+include(tools/cmake/single_file.cmake)
 
 
 # c++ support

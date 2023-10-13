@@ -91,6 +91,10 @@ add_dependencies(function-test-wel events)
 target_compile_definitions(function-test-wel
   PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
 )
+add_dependencies(function-test-single-file-wel events)
+target_compile_definitions(function-test-single-file-wel
+  PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
+)
 
 add_function_test(wel_supported
   SOURCES

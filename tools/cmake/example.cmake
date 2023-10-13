@@ -57,13 +57,11 @@ macro(add_example name)
     DEPENDS example-${name}
   )
 
-  if(ENABLE_SINGLE_FILE)
-    add_no_run_single_file_example(${name} ${ARGN})
-    list(APPEND STUMPLESS_SINGLE_FILE_TARGETS example-single-file-${name})
-    list(APPEND STUMPLESS_EXAMPLE_SINGLE_FILE_RUNNERS run-example-single-file-${name})
-    add_custom_target(run-example-single-file-${name}
-      COMMAND "example-single-file-${name}"
-      DEPENDS example-single-file-${name}
-    )
-  endif()
+  add_no_run_single_file_example(${name} ${ARGN})
+  list(APPEND STUMPLESS_SINGLE_FILE_TARGETS example-single-file-${name})
+  list(APPEND STUMPLESS_EXAMPLE_SINGLE_FILE_RUNNERS run-example-single-file-${name})
+  add_custom_target(run-example-single-file-${name}
+    COMMAND "example-single-file-${name}"
+    DEPENDS example-single-file-${name}
+  )
 endmacro(add_example)

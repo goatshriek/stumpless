@@ -82,15 +82,13 @@ macro(add_function_test name)
   list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
   private_add_function_test(NAME ${name} ${ARGN})
 
-  if(ENABLE_SINGLE_FILE)
-    private_add_single_file_function_test(NAME ${name} ${ARGN})
-    list(APPEND STUMPLESS_SINGLE_FILE_TARGETS function-test-single-file-${name})
-    list(APPEND STUMPLESS_CHECK_SINGLE_FILE_RUNNERS run-function-test-single-file-${name})
-    add_custom_target(run-function-test-single-file-${name}
-      COMMAND "function-test-single-file-${name}"
-      DEPENDS function-test-single-file-${name}
-    )
-  endif()
+  private_add_single_file_function_test(NAME ${name} ${ARGN})
+  list(APPEND STUMPLESS_SINGLE_FILE_TARGETS function-test-single-file-${name})
+  list(APPEND STUMPLESS_CHECK_SINGLE_FILE_RUNNERS run-function-test-single-file-${name})
+  add_custom_target(run-function-test-single-file-${name}
+    COMMAND "function-test-single-file-${name}"
+    DEPENDS function-test-single-file-${name}
+  )
 endmacro(add_function_test name)
 
 function(private_add_thread_safety_test)
@@ -242,11 +240,9 @@ macro(add_performance_test name)
   list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
   private_add_performance_test(NAME ${name} ${ARGN})
 
-  if(ENABLE_SINGLE_FILE)
-    private_add_single_file_performance_test(NAME ${name} ${ARGN})
-    list(APPEND STUMPLESS_SINGLE_FILE_TARGETS performance-test-single-file-${name})
-    list(APPEND STUMPLESS_BENCH_SINGLE_FILE_RUNNERS run-performance-test-single-file-${name})
-  endif()
+  private_add_single_file_performance_test(NAME ${name} ${ARGN})
+  list(APPEND STUMPLESS_SINGLE_FILE_TARGETS performance-test-single-file-${name})
+  list(APPEND STUMPLESS_BENCH_SINGLE_FILE_RUNNERS run-performance-test-single-file-${name})
 endmacro(add_performance_test)
 
 function(private_add_fuzz_test)

@@ -205,7 +205,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_SINGLE_FILE=ON .
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
       - name: Test
         run: |
           make check-single-file
@@ -220,10 +220,6 @@ jobs:
           sudo ./function-test-single-file-udp4_leak
           sudo ./function-test-single-file-udp6
           sudo ./function-test-single-file-udp6_leak
-      - name: Thread Safety Tests
-        run: |
-          make check-thread-safety
-          sudo ./thread-safety-test-network
       - name: Run Examples
         run: |
           make examples-single-file
