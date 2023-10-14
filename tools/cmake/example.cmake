@@ -1,7 +1,5 @@
 if(MSVC)
   set(example_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
-else()
-  set(function_test_compile_flags "")
 endif(MSVC)
 
 function(add_no_run_example name)
