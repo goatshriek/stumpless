@@ -179,13 +179,14 @@ jobs:
       - uses: ruby/setup-ruby@5cfe23c062c0aac352e765b1b7cc12ea5255ccc4 # v1.156.0
         with:
           ruby-version: '3.2'
-          bundler-cache: true
       - name: Install Packages
         run: |
           brew install doxygen
+      - name: Install Gems
+        run: |
+          gem install wrapture
       - name: Configure
         run: |
-          alias wrapture="bundle exec wrapture"
           cmake -DENABLE_CPP=ON .
       - name: Build
         run: |
