@@ -110,6 +110,10 @@
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
 "NULL לא היה ריק ולא הסתיים עם שני תווי MULTI_SZ ערך רישום של"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "שאינו חוקי Severity-ה"
 

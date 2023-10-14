@@ -17,7 +17,6 @@ string(CONCAT enable_cpp_help_string
   "the 'check-cpp' target to build and run the test suite for the C++ library."
 )
 option(ENABLE_CPP ${enable_cpp_help_string} OFF)
-
 option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
@@ -92,6 +91,12 @@ string(CONCAT locale_help_string
 set(LOCALE $ENV{LANG}
   CACHE STRING ${locale_help_string}
 )
+
+
+# single file build paths
+set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
+set(SINGLE_INCLUDE_DIR "${PROJECT_BINARY_DIR}/include/single_file")
+set(SINGLE_HEADER_FILE "${SINGLE_INCLUDE_DIR}/stumpless.h")
 
 
 # load modules
@@ -237,6 +242,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
+  ${PROJECT_SOURCE_DIR}/src/priority.c
 )
 
 
@@ -297,52 +303,52 @@ else()
 endif()
 
 if(HAVE_FOPEN_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_fopen_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_fopen_s.c)
 endif(HAVE_FOPEN_S)
 
 if(HAVE_PTHREAD_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_pthread.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_pthread.c)
 endif()
 
 if(HAVE_STDATOMIC_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_stdatomic.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_stdatomic.c)
 endif()
 
 if(HAVE_UNISTD_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd.c)
 endif(HAVE_UNISTD_H)
 
 if(HAVE_VSNPRINTF_S)
-  list(APPEND STUMPLESS_SOURCES src/config/have_vsnprintf_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_vsnprintf_s.c)
 else()
-  list(APPEND STUMPLESS_SOURCES src/config/no_vsnprintf_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_vsnprintf_s.c)
 endif(HAVE_VSNPRINTF_S)
 
 if(NOT HAVE_WCSRTOMBS_S)
-  list(APPEND STUMPLESS_SOURCES src/config/no_wcsrtombs_s.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_wcsrtombs_s.c)
 endif()
 
 if(HAVE_WINDOWS_H)
-  list(APPEND STUMPLESS_SOURCES src/config/have_windows.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_windows.c)
 endif(HAVE_WINDOWS_H)
 
 if(WIN32)
-  list(APPEND STUMPLESS_SOURCES src/windows/stumpless.def)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/windows/stumpless.def)
 endif(WIN32)
 
 if(HAVE_WINDOWS_H AND HAVE_SPRINTF_S)
   set(SUPPORT_WINDOWS_GET_NOW TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/windows_get_now_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/windows_get_now_supported.c)
 endif()
 
 if(HAVE_GMTIME_R)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime_r.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime_r.c)
 elseif(NOT SUPPORT_WINDOWS_GET_NOW AND HAVE_GMTIME)
-  list(APPEND STUMPLESS_SOURCES src/config/have_gmtime.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_gethostname.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd_gethostname.c)
 elseif(NOT HAVE_WINSOCK2_H)
   # need the fallback gethostname definition in this case
   set(NEED_FALLBACK TRUE)
@@ -350,9 +356,9 @@ endif()
 
 if(HAVE_UNISTD_SYSCONF AND HAVE_UNISTD_SC_PAGESIZE)
   set(SUPPORT_UNISTD_SYSCONF_GETPAGESIZE TRUE)
-  list(APPEND STUMPLESS_SOURCES src/config/unistd_sysconf_getpagesize_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/unistd_sysconf_getpagesize_supported.c)
 elseif(HAVE_UNISTD_GETPAGESIZE)
-  list(APPEND STUMPLESS_SOURCES src/config/have_unistd_getpagesize.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_unistd_getpagesize.c)
 elseif(NOT HAVE_WINDOWS_H)
   # need the fallback getpagesize definition in this case
   set(NEED_FALLBACK TRUE)
@@ -364,7 +370,7 @@ if(NOT HAVE_UNISTD_H AND NOT HAVE_WINDOWS_H)
 endif()
 
 if(NEED_FALLBACK)
-  list(APPEND STUMPLESS_SOURCES src/config/fallback.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/fallback.c)
 endif()
 
 
@@ -420,7 +426,7 @@ if(STUMPLESS_NETWORK_TARGETS_SUPPORTED)
   include(tools/cmake/network.cmake)
 else()
   if(WIN32)
-    list(APPEND STUMPLESS_SOURCES src/config/network_unsupported.c)
+    list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/network_unsupported.c)
   endif(WIN32)
 
   add_function_test(network_unsupported
@@ -475,9 +481,9 @@ endif()
 
 # thread safety support
 if(NOT STUMPLESS_THREAD_SAFETY_SUPPORTED)
-  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_unsupported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/thread_safety_unsupported.c)
 else()
-  list(APPEND STUMPLESS_SOURCES src/config/thread_safety_supported.c)
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/thread_safety_supported.c)
 
   # thread safety tests
   add_thread_safety_test(buffer
@@ -646,6 +652,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/severity.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/priority.h
   DESTINATION "include/stumpless"
 )
 
@@ -959,6 +966,10 @@ add_function_test(version
   SOURCES test/function/version.cpp
 )
 
+add_function_test(priority
+  SOURCES test/function/priority.cpp
+)
+
 add_custom_target(build-test
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
@@ -1061,6 +1072,10 @@ if(FUZZ)
     DEPENDS ${STUMPLESS_FUZZ_TESTS}
   )
 endif()
+
+
+# single file generation
+include(tools/cmake/single_file.cmake)
 
 
 # c++ support

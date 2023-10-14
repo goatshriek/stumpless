@@ -953,7 +953,7 @@ stumpless_load_entry( struct stumpless_entry *entry,
  * This function has the same behavior as stumpless_load_entry_str, except it
  * does not create a new entry, instead loading an existing struct.
  *
- * @since version v2.2.0
+ * @since release v2.2.0
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
@@ -1056,7 +1056,7 @@ stumpless_new_entry( enum stumpless_facility facility,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory management functions.
  *
- * @since version v2.1.0
+ * @since release v2.1.0
  *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
@@ -1489,20 +1489,20 @@ stumpless_set_entry_param_value_by_name( struct stumpless_entry *entry,
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
-*
-* @since release v1.6.0.
-*
-* @param entry The entry to set the priority values of.
-*
-* @param facility The new facility of the entry. This must be a valid value
-* according to RFC 5424, available as STUMPLESS_FACILITY constants.
-*
-* @param severity The new severity of the entry. This must be a valid value
-* according to RFC 5424, available as STUMPLESS_SEVERITY constants.
-*
-* @return The modified entry if no error is encountered. If an error is
-* encountered, then NULL is returned and an error code is set appropriately.
-*/
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry to set the priority values of.
+ *
+ * @param facility The new facility of the entry. This must be a valid value
+ * according to RFC 5424, available as STUMPLESS_FACILITY constants.
+ *
+ * @param severity The new severity of the entry. This must be a valid value
+ * according to RFC 5424, available as STUMPLESS_SEVERITY constants.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_priority( struct stumpless_entry *entry,

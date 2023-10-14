@@ -147,6 +147,10 @@ raise_invalid_id( void );
 
 COLD_FUNCTION
 void
+raise_invalid_param( void );
+
+COLD_FUNCTION
+void
 raise_invalid_severity( int severity );
 
 COLD_FUNCTION
@@ -313,7 +317,7 @@ raise_windows_failure( const char *message, int code, const char *code_type );
  * cancelled, as the lock used to control access to the error stream may not
  * be released after a cancellation.
  *
- * @since v2.1.0.
+ * @since release v2.1.0.
  *
  * @param msg The message to be written to the error stream.
  *

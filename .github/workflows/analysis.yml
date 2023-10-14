@@ -12,7 +12,7 @@ jobs:
     name: "custom analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Check Headers
         run: |
           tools/check_headers/check_headers.rb "include/**/*.h*" "include/**/**/*.h"
@@ -37,20 +37,20 @@ jobs:
         language: [ 'cpp' ]
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # v2.22.3
       with:
         languages: ${{ matrix.language }}
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      uses: github/codeql-action/autobuild@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # v2.22.3
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@0116bc2df50751f9724a2e35ef1f24d22f90e4e1 # v2.22.3
   sonarcloud-analysis:
     name: "sonarcloud analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
         with:
           fetch-depth: 0
       - name: Configure
@@ -70,3 +70,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
+  custom-anaysis:
+    name: Custom Analysis
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          fetch-depth: 0
+      - name: "@since standardization"
+        run: |
+          # look for all instances of @since, then look for any that do not meet the required pattern. @since release x.x.x
+          if grep --include=\*.{c,h,cpp,hpp} -rnw . -e ".*@since .*" | grep -qv ".* @since release v[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]].*"; then
+            # at this point the check has failed, but we want to give some info to the user. i have found it difficult to get the status code
+            # and print out the offending lines without this duplication
+            # get all instances of @since, offending and not offending
+            grep --include=\*.{c,h,cpp,hpp} -rnw . -e "@since .*" | \
+            # find all instances that do not meet the required pattern
+            grep -v ".* @since release v[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]].*" | \
+            # print an error message, including line number with -n from grep. mention supported format. 
+            xargs -I{} echo "Static Analysis Failed:     \"{}\"      Supported format is \"@since release vX.X.X\""
+            exit 1
+          else
+            exit 0
+          fi
+

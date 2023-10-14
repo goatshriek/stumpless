@@ -108,6 +108,10 @@
 "en MULTI_SZ registreringsdatabase værdi var hverken tom eller Afsluttet " \
 " characters med to NULL's"
 
+// todo translate
+#  define L10N_INVALID_PARAM_ERROR_MESSAGE \
+"the string is not of the name=\"value\" format"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ugyldige alvorlighed"
 

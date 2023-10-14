@@ -126,8 +126,13 @@ extern "C" {
  *
  * @since release v2.1.0
  */\
-  ERROR( STUMPLESS_WINDOWS_FAILURE, 28 )
-
+  ERROR( STUMPLESS_WINDOWS_FAILURE, 28 ) \
+/**
+ * The format of the given string is incorrect.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.
@@ -203,7 +208,7 @@ stumpless_get_error( void );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since Release v1.5.0
+ * @since release v1.5.0
  *
  * @param err The error to get the id from. This must not be NULL.
  *
@@ -228,7 +233,7 @@ stumpless_get_error_id( const struct stumpless_error *err );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since Release v1.6.0
+ * @since release v1.6.0
  *
  * @param id The error id to get the error string from.
  *
