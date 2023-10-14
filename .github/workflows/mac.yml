@@ -185,6 +185,7 @@ jobs:
           brew install doxygen
       - name: Configure
         run: |
+          alias wrapture="bundle exec wrapture"
           cmake -DENABLE_CPP=ON .
       - name: Build
         run: |
