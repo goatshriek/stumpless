@@ -145,9 +145,6 @@ jobs:
       - name: Run Benchmarks
         run: |
           make bench-single-file
-      - name: Install
-        run: |
-          sudo make install
   all-features-disabled:
     name: "all features disabled"
     runs-on: "macos-latest"
