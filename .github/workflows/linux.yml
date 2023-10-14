@@ -198,6 +198,34 @@ jobs:
         run: |
           gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
           ./basic_example
+  linux-release-single-file:
+    name: "linux, release, single file library"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
+      - name: Test
+        run: |
+          make check-single-file
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Privileged Tests
+        run: |
+          sudo ./function-test-single-file-tcp4
+          sudo ./function-test-single-file-tcp4_leak
+          sudo ./function-test-single-file-tcp6
+          sudo ./function-test-single-file-tcp6_leak
+          sudo ./function-test-single-file-udp4
+          sudo ./function-test-single-file-udp4_leak
+          sudo ./function-test-single-file-udp6
+          sudo ./function-test-single-file-udp6_leak
+      - name: Run Examples
+        run: |
+          make examples-single-file
+      - name: Run Benchmarks
+        run: |
+          make bench-single-file
   linux-release-ansi:
     name: "linux, release, ansi"
     runs-on: "ubuntu-latest"

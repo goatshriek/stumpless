@@ -22,7 +22,7 @@ function(private_add_function_test)
 
   set_target_properties(function-test-${FUNCTION_TEST_ARG_NAME}
     PROPERTIES
-    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
     OUTPUT_NAME function-test-${FUNCTION_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
     COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
@@ -38,7 +38,7 @@ function(private_add_function_test)
   target_include_directories(function-test-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_test(NAME ${FUNCTION_TEST_ARG_NAME}
@@ -46,10 +46,49 @@ function(private_add_function_test)
   )
 endfunction(private_add_function_test)
 
+function(private_add_single_file_function_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES COMPILE_DEFINITIONS)
+  cmake_parse_arguments(FUNCTION_TEST_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    EXCLUDE_FROM_ALL
+    $<TARGET_OBJECTS:single_file_object>
+    ${FUNCTION_TEST_ARG_SOURCES}
+  )
+
+  set_target_properties(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    PROPERTIES
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
+    OUTPUT_NAME function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    COMPILE_FLAGS "${function_test_compile_flags}"
+    COMPILE_DEFINITIONS "${FUNCTION_TEST_ARG_COMPILE_DEFINITIONS}"
+  )
+
+  target_link_libraries(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    libgtest
+    libgtestmain
+    ${FUNCTION_TEST_ARG_LIBRARIES}
+  )
+
+  target_include_directories(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    PRIVATE
+    "${SINGLE_INCLUDE_DIR}"
+    "${PROJECT_BINARY_DIR}/include"
+  )
+endfunction(private_add_single_file_function_test)
+
 macro(add_function_test name)
   list(APPEND STUMPLESS_FUNCTION_TESTS function-test-${name})
-
   private_add_function_test(NAME ${name} ${ARGN})
+
+  private_add_single_file_function_test(NAME ${name} ${ARGN})
+  list(APPEND STUMPLESS_SINGLE_FILE_TARGETS function-test-single-file-${name})
+  list(APPEND STUMPLESS_CHECK_SINGLE_FILE_RUNNERS run-function-test-single-file-${name})
+  add_custom_target(run-function-test-single-file-${name}
+    COMMAND "function-test-single-file-${name}"
+    DEPENDS function-test-single-file-${name}
+  )
 endmacro(add_function_test name)
 
 function(private_add_thread_safety_test)
@@ -64,7 +103,7 @@ function(private_add_thread_safety_test)
 
   set_target_properties(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     PROPERTIES
-    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
     OUTPUT_NAME thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     COMPILE_FLAGS "${function_test_compile_flags}"
     COMPILE_DEFINITIONS "${THREAD_SAFETY_TEST_ARG_COMPILE_DEFINITIONS}"
@@ -86,7 +125,7 @@ function(private_add_thread_safety_test)
   target_include_directories(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_custom_target(run-thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
@@ -101,7 +140,7 @@ macro(add_thread_safety_test name)
   private_add_thread_safety_test(NAME ${name} ${ARGN})
 endmacro(add_thread_safety_test name)
 
-set(PERFORMANCE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/performance-output")
+set(PERFORMANCE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/performance-output")
 file(MAKE_DIRECTORY ${PERFORMANCE_OUTPUT_DIR})
 
 function(private_add_performance_test)
@@ -134,7 +173,7 @@ function(private_add_performance_test)
 
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
-    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
     COMPILE_FLAGS "${performance_test_compile_flags}"
     OUTPUT_NAME performance-test-${FUNCTION_PERF_ARG_NAME}
   )
@@ -142,20 +181,68 @@ function(private_add_performance_test)
   target_include_directories(performance-test-${FUNCTION_PERF_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
   add_custom_target(run-performance-test-${FUNCTION_PERF_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
+	  COMMAND ${PROJECT_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
     DEPENDS performance-test-${FUNCTION_PERF_ARG_NAME}
   )
-
 endfunction(private_add_performance_test)
+
+function(private_add_single_file_performance_test)
+  set(single_val_args NAME)
+  set(multi_val_args SOURCES LIBRARIES)
+  cmake_parse_arguments(FUNCTION_PERF_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
+
+  add_executable(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+    EXCLUDE_FROM_ALL
+    $<TARGET_OBJECTS:single_file_object>
+    ${FUNCTION_PERF_ARG_SOURCES}
+  )
+
+  if(MSVC OR MINGW)
+    target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+      libbenchmark
+      libbenchmarkmain
+      Shlwapi.lib
+      ${FUNCTION_PERF_ARG_LIBRARIES}
+    )
+  else()
+    target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+      libbenchmark
+      libbenchmarkmain
+      pthread
+      ${FUNCTION_PERF_ARG_LIBRARIES}
+    )
+  endif()
+
+  set_target_properties(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+    PROPERTIES
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
+    COMPILE_FLAGS "${performance_test_compile_flags}"
+    OUTPUT_NAME performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+  )
+
+  target_include_directories(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+    PRIVATE
+    "${SINGLE_INCLUDE_DIR}"
+    "${PROJECT_BINARY_DIR}/include"
+  )
+
+  add_custom_target(run-performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+    COMMAND ${PROJECT_BINARY_DIR}/performance-test-single-file-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
+    DEPENDS performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+  )
+endfunction(private_add_single_file_performance_test)
 
 macro(add_performance_test name)
   list(APPEND STUMPLESS_PERFORMANCE_TEST_RUNNERS run-performance-test-${name})
-
   private_add_performance_test(NAME ${name} ${ARGN})
+
+  private_add_single_file_performance_test(NAME ${name} ${ARGN})
+  list(APPEND STUMPLESS_SINGLE_FILE_TARGETS performance-test-single-file-${name})
+  list(APPEND STUMPLESS_BENCH_SINGLE_FILE_RUNNERS run-performance-test-single-file-${name})
 endmacro(add_performance_test)
 
 function(private_add_fuzz_test)
@@ -176,7 +263,7 @@ function(private_add_fuzz_test)
 
   set_target_properties(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
     PROPERTIES
-    BUILD_RPATH "${CMAKE_CURRENT_BINARY_DIR}"
+    BUILD_RPATH "${PROJECT_BINARY_DIR}"
     COMPILE_FLAGS "${fuzz_test_compile_flags}"
     OUTPUT_NAME fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
   )
@@ -184,13 +271,13 @@ function(private_add_fuzz_test)
   target_include_directories(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
   )
 
-  set(generated_corpus_dir ${CMAKE_CURRENT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
+  set(generated_corpus_dir ${PROJECT_BINARY_DIR}/fuzz-corpora/${FUNCTION_FUZZ_ARG_CORPUS_NAME})
   file(MAKE_DIRECTORY ${generated_corpus_dir})
   add_custom_target(run-fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
-    COMMAND ${CMAKE_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${FUZZ_CORPORA_DIR}/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
+    COMMAND ${PROJECT_BINARY_DIR}/fuzz-test-${FUNCTION_FUZZ_ARG_NAME} ${generated_corpus_dir} "${FUZZ_CORPORA_DIR}/${FUNCTION_FUZZ_ARG_CORPUS_NAME}"
     DEPENDS fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
   )
 endfunction(private_add_fuzz_test)
@@ -217,7 +304,7 @@ add_dependencies(test_helper_fixture libgtest)
 target_include_directories(test_helper_fixture
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_network
@@ -235,7 +322,7 @@ add_dependencies(test_helper_network libgtest)
 target_include_directories(test_helper_network
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_resolve
@@ -251,7 +338,7 @@ set_target_properties(test_helper_resolve
 target_include_directories(test_helper_resolve
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 add_library(test_helper_rfc5424
   EXCLUDE_FROM_ALL
@@ -268,7 +355,7 @@ add_dependencies(test_helper_rfc5424 libgtest)
 target_include_directories(test_helper_rfc5424
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_server
@@ -284,7 +371,7 @@ set_target_properties(test_helper_server
 target_include_directories(test_helper_server
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 
 add_library(test_helper_usage
@@ -300,5 +387,5 @@ set_target_properties(test_helper_usage
 target_include_directories(test_helper_usage
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
