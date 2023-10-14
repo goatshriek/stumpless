@@ -128,7 +128,7 @@ jobs:
         run: |
           sudo make install
   release-single-file:
-    name: "release, single-file library"
+    name: "release, single file library"
     runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v3

@@ -71,7 +71,7 @@ jobs:
         run: |
           cmake --build . --config Release --target examples
   windows-release-single-file:
-    name: "windows, release, single-file library"
+    name: "windows, release, single file library"
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@v3

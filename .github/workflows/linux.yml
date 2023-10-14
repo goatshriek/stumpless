@@ -199,7 +199,7 @@ jobs:
           gcc docs/examples/basic/basic_example.c -lstumpless -o basic_example
           ./basic_example
   linux-release-single-file:
-    name: "linux, release, single-file library"
+    name: "linux, release, single file library"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
