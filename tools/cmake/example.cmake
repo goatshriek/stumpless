@@ -30,7 +30,7 @@ endfunction(add_no_run_example)
 function(add_no_run_single_file_example name)
   add_executable(example-single-file-${name}
     EXCLUDE_FROM_ALL
-    ${SINGLE_SOURCE_FILE}
+    $<TARGET_OBJECTS:single_file_object>
     ${ARGN}
   )
 
