@@ -53,7 +53,7 @@ function(private_add_single_file_function_test)
 
   add_executable(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
     EXCLUDE_FROM_ALL
-    ${SINGLE_SOURCE_FILE}
+    $<TARGET_OBJECTS:single_file_object>
     ${FUNCTION_TEST_ARG_SOURCES}
   )
 
@@ -73,8 +73,8 @@ function(private_add_single_file_function_test)
 
   target_include_directories(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_BINARY_DIR}/include
+    "${SINGLE_INCLUDE_DIR}"
+    "${PROJECT_BINARY_DIR}/include"
   )
 endfunction(private_add_single_file_function_test)
 
@@ -197,7 +197,7 @@ function(private_add_single_file_performance_test)
 
   add_executable(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
     EXCLUDE_FROM_ALL
-    ${SINGLE_SOURCE_FILE}
+    $<TARGET_OBJECTS:single_file_object>
     ${FUNCTION_PERF_ARG_SOURCES}
   )
 
@@ -226,8 +226,8 @@ function(private_add_single_file_performance_test)
 
   target_include_directories(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_BINARY_DIR}/include
+    "${SINGLE_INCLUDE_DIR}"
+    "${PROJECT_BINARY_DIR}/include"
   )
 
   add_custom_target(run-performance-test-single-file-${FUNCTION_PERF_ARG_NAME}

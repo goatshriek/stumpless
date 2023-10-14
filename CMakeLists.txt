@@ -92,8 +92,11 @@ set(LOCALE $ENV{LANG}
   CACHE STRING ${locale_help_string}
 )
 
+
+# single file build paths
 set(SINGLE_SOURCE_FILE "${PROJECT_BINARY_DIR}/stumpless.c")
-set(SINGLE_HEADER_FILE "${PROJECT_BINARY_DIR}/stumpless.h")
+set(SINGLE_INCLUDE_DIR "${PROJECT_BINARY_DIR}/include/single_file")
+set(SINGLE_HEADER_FILE "${SINGLE_INCLUDE_DIR}/stumpless.h")
 
 
 # load modules
