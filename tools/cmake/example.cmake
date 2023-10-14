@@ -1,6 +1,8 @@
 if(MSVC)
   set(example_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
-endif(MSVC)
+else()
+  set(example_compile_flags "")
+endif()
 
 function(add_no_run_example name)
   add_executable(example-${name}
