@@ -102,9 +102,6 @@ jobs:
           make all
       - name: Test
         run: |
-          make gtest
-          ls
-          ls gtest/src/gtest-build/lib
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Privileged Tests
@@ -130,6 +127,24 @@ jobs:
       - name: Install
         run: |
           sudo make install
+  release-single-file:
+    name: "release, single file library"
+    runs-on: "macos-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release .
+      - name: Test
+        run: |
+          make check-single-file
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Run Examples
+        run: |
+          make examples-single-file
+      - name: Run Benchmarks
+        run: |
+          make bench-single-file
   all-features-disabled:
     name: "all features disabled"
     runs-on: "macos-latest"

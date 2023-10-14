@@ -70,6 +70,23 @@ jobs:
       - name: Run Examples
         run: |
           cmake --build . --config Release --target examples
+  windows-release-single-file:
+    name: "windows, release, single file library"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check-single-file
+      - name: Run Examples
+        run: |
+          cmake --build . --config Release --target examples-single-file
   windows-all-disabled:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
