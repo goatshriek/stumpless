@@ -23,15 +23,18 @@
 NEW_MEMORY_COUNTER( prival_from_string )
 
 static void PrivalFromString(benchmark::State& state) {
-  const char *string = "user.info";
+  // Create a list of priorities.
+  std::vector<std::string> priority_list = {"191", "user.emerg", "uucp.err", "local7.debug"};
 
   INIT_MEMORY_COUNTER( prival_from_string );
 
   // Measure the time it takes to call the function.
   for (auto _ : state) {
-    int result = stumpless_prival_from_string(string);
-    if ( result< 0) {
-      state.SkipWithError("could not get the prival from the string");
+    for (const auto& priority : priority_list) {
+      int result = stumpless_prival_from_string(priority.c_str());
+      if ( result< 0) {
+        state.SkipWithError("could not get the prival from the string");
+      }
     }
   }
   SET_STATE_COUNTERS( state, prival_from_string );
