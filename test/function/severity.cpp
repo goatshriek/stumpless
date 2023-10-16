@@ -67,6 +67,21 @@ namespace {
     STUMPLESS_FOREACH_SEVERITY(CHECK_SEVERITY_ENUM)
   }
 
+  TEST( GetSeverityEnum, NoSuchSeverity ) {
+    int severity_count = 0;
+    int result;
+
+    result = stumpless_get_severity_enum( "an_invalid_severity" );
+    EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetSeverityEnumFromBuffer, NoSuchSeverity ) {
+    int result;
+
+    result = stumpless_get_severity_enum_from_buffer( "an_invalid_severity", 10 );
+    EXPECT_EQ( result, -1 );
+  }
+
 }
 
 
