@@ -1009,10 +1009,12 @@ add_custom_target(examples
 
 # performance tests
 add_performance_test(element
-  SOURCES test/performance/element.cpp
-  test/performance/priority.cpp
+SOURCES test/performance/element.cpp
 )
 
+add_performance_test(priority
+SOURCES test/performance/priority.cpp
+)
 
 add_performance_test(entry
   SOURCES
