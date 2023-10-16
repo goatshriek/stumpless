@@ -35,6 +35,24 @@ namespace {
     EXPECT_EQ( result, 119 );
   }
 
+  TEST( GetPriorityValue, NumTooHighPriority ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_prival_from_string( "192" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPriorityValue, NumInvalidPriority ) {
+    int result;
+    const struct stumpless_error *error;
+
+    result = stumpless_prival_from_string( "119aa" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
   TEST( GetPriorityValue, UpperValidPriority ) {
     int result;
 
@@ -51,44 +69,56 @@ namespace {
 
   TEST( GetPriorityValue, EmptyPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetPriorityValue, NullPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( NULL );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( GetPriorityValue, InvalidFacilityPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "umer.info" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
   }
 
   TEST( GetPriorityValue, InvalidSeverityPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "user.imfo" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
   }
 
   TEST( GetPriorityValue, InvalidNoPeriodPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "userinfo" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
   }
 
   TEST( GetPriorityValue, InvalidMorePeriodPriority ) {
     int result;
+    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "user.info." );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
   }
 
   TEST( GetPriorityValue, InvalidMemFacilityPriority ) {
@@ -108,7 +138,7 @@ namespace {
     int result;
     void * (*set_malloc_result)(size_t);
     const struct stumpless_error *error;
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 23 ) );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 4 ) );
     ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_prival_from_string( "syslog.err" );
