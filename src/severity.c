@@ -51,6 +51,24 @@ stumpless_get_severity_enum( const char *severity_string ) {
   return -1;
 }
 
+enum stumpless_severity
+stumpless_get_severity_enum_from_buffer(const char *buffer, size_t length) {
+  size_t severity_bound;
+  size_t i;
+
+  severity_bound = sizeof(severity_enum_to_string) /
+                     sizeof(severity_enum_to_string[0]);
+
+  for (i = 0; i < severity_bound; i++) {
+    if (strncmp(buffer, severity_enum_to_string[i], length) == 0 &&
+        severity_enum_to_string[i][length] == '\0') {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 /* private functions */
 
 int
