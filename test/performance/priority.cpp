@@ -19,6 +19,7 @@
 #include <benchmark/benchmark.h>
 #include <stumpless.h>
 #include "test/helper/memory_counter.hpp"
+#include <string>
 
 NEW_MEMORY_COUNTER( prival_from_string )
 
