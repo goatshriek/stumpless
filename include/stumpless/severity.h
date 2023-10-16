@@ -23,7 +23,6 @@
  * closely as possible to the RFC 5424 specification.
  */
 
-
 #ifndef __STUMPLESS_SEVERITY_H
 #  define __STUMPLESS_SEVERITY_H
 

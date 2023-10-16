@@ -59,7 +59,6 @@ namespace {
   }
 
   TEST(GetSeverityEnumFromBuffer, EachValidSeverity) {
-    int severity_count = 0;
     int result; 
 
     #define CHECK_SEVERITY_ENUM(STRING, ENUM) \
