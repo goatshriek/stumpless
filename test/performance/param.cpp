@@ -24,6 +24,25 @@ NEW_MEMORY_COUNTER( copy_param )
 NEW_MEMORY_COUNTER( load_param )
 NEW_MEMORY_COUNTER( new_param )
 NEW_MEMORY_COUNTER( set_param_name )
+NEW_MEMORY_COUNTER( from_string )
+
+static void FromString(benchmark::State& state) {
+  const char *param = "test-param-name=\"test-param-value\"";
+  struct stumpless_param *result;
+
+  INIT_MEMORY_COUNTER( from_string );
+
+  for (auto _ : state) {
+    result = stumpless_new_param_from_string(param);
+    if (!result) {
+      state.SkipWithError("could not create a new param from string");
+    }
+
+    stumpless_destroy_param(result);
+  }
+
+  SET_STATE_COUNTERS(state, from_string);
+}
 
 static void CopyParam(benchmark::State& state){
   struct stumpless_param *param;
@@ -115,3 +134,4 @@ BENCHMARK(CopyParam);
 BENCHMARK(LoadParam);
 BENCHMARK(NewParam);
 BENCHMARK(SetParamName);
+BENCHMARK(FromString);
