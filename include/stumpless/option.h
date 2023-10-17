@@ -76,7 +76,7 @@
 
 /** Log the message to the stderr as well as
  *  to the target
-*/
+ */
 # ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #   define STUMPLESS_OPTION_PERROR LOG_PERROR
 # else

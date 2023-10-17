@@ -34,5 +34,10 @@ copy_cstring( const char *str );
 char *
 copy_cstring_with_length( const char *str, size_t *length );
 
+char *
+copy_cstring_length( const char *str, size_t length );
+
+void
+to_upper_case( char *str );
 
 #endif /* __STUMPLESS_PRIVATE_STRHELPER_H */
