@@ -130,6 +130,14 @@
 #  include <stumpless/target/socket.h>
 #endif
 
+#ifdef STUMPLESS_SQLITE3_TARGETS_SUPPORTED
+/** @example sqlite3_example.c
+ * Demonstrates how to work with a sqlite3 target.
+ */
+
+#  include <stumpless/target/sqlite3.h>
+#endif
+
 #ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 /** @example wel_example.c
  * Demonstrates how to work with a Windows Event Log target.

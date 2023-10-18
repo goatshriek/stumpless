@@ -56,7 +56,7 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **Powershell language bindings**
  * [ADD] **Perl language bindings**
  * [ADD] **AWS/S3 logging target**
- * [ADD] **Database logging target**
+ * [ADD] **Other logging targets**
  * [ADD] **REST endpoint logging target**
  * [ADD] **Hyperledger/blockchain logging target**
  * [ADD] **Apache Kafka logging target**

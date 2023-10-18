@@ -25,50 +25,53 @@
  */
 
 #ifndef __STUMPLESS_TARGET_H
-#  define __STUMPLESS_TARGET_H
+#define __STUMPLESS_TARGET_H
 
-#  include <stdarg.h>
-#  include <stdbool.h>
-#  include <stddef.h>
-#  include <stdio.h>
-#  include <stumpless/config.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/id.h>
-#  include <stumpless/generator.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stumpless/config.h>
+#include <stumpless/entry.h>
+#include <stumpless/id.h>
+#include <stumpless/generator.h>
 
 /** The file opened if the default target is to a file. */
-#  define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
+#define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
 
 /** The name of the default target. */
-#  define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"
+#define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
 
 /**< write to a character buffer */
 # define STUMPLESS_BUFFER_TARGET_VALUE 0
 
 /**< write to a file */
-# define STUMPLESS_FILE_TARGET_VALUE 1
+#define STUMPLESS_FILE_TARGET_VALUE 1
 
 /**< call a custom function */
-# define STUMPLESS_FUNCTION_TARGET_VALUE 2
+#define STUMPLESS_FUNCTION_TARGET_VALUE 2
 
 /**< send to the systemd journald service */
-# define STUMPLESS_JOURNALD_TARGET_VALUE 3
+#define STUMPLESS_JOURNALD_TARGET_VALUE 3
 
 /**< send to a network endpoint */
-# define STUMPLESS_NETWORK_TARGET_VALUE 4
+#define STUMPLESS_NETWORK_TARGET_VALUE 4
 
 /**< write to a Unix socket */
-# define STUMPLESS_SOCKET_TARGET_VALUE 5
+#define STUMPLESS_SOCKET_TARGET_VALUE 5
 
 /**< write to a FILE stream */
-# define STUMPLESS_STREAM_TARGET_VALUE 6
+#define STUMPLESS_STREAM_TARGET_VALUE 6
 
 /**< add to the Windows Event Log */
-# define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
+#define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
+
+/**< add to a SQLite3 database */
+#define STUMPLESS_SQLITE3_TARGET_VALUE 8
 
 /**
  * A macro function that runs the provided action once for each target_type,
@@ -76,7 +79,7 @@ extern "C" {
  * first being the symbol name of the target_type, and the second the numeric
  * value of the target_type.
  */
-#  define STUMPLESS_FOREACH_TARGET_TYPE( ACTION )\
+#define STUMPLESS_FOREACH_TARGET_TYPE( ACTION )\
 /**< write to a character buffer */\
 ACTION( STUMPLESS_BUFFER_TARGET, STUMPLESS_BUFFER_TARGET_VALUE )\
 /**< write to a file */\
@@ -92,7 +95,9 @@ ACTION( STUMPLESS_SOCKET_TARGET, STUMPLESS_SOCKET_TARGET_VALUE )\
 /**< write to a FILE stream */\
 ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
 /**< add to the Windows Event Log */\
-ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )
+ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\
+/**< add to a SQLite3 database */\
+ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )
 
 /** Types of targets that may be created. */
 enum stumpless_target_type {
@@ -184,13 +189,13 @@ struct stumpless_target {
  * @since release v2.1.0
  */
   stumpless_filter_func_t filter;
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
  * this mutex depends on the build.
  */
   void *mutex;
-#  endif
+#endif
 };
 
 /**
@@ -1631,8 +1636,8 @@ const char *
 stumpless_get_target_type_string( enum stumpless_target_type target );
 
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 }                               /* extern "C" */
-#  endif
+#endif
 
 #endif                          /* __STUMPLESS_TARGET_H */

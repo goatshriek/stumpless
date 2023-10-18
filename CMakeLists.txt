@@ -24,6 +24,7 @@ option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
+option(ENABLE_SQLITE3_TARGETS "support sqlite3 targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
 option(INSTALL_EXAMPLES "install examples" ON)
@@ -122,6 +123,7 @@ include(tools/cmake/test.cmake)
 # building configuration
 check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
+check_include_files(sqlite3.h HAVE_SQLITE3_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
@@ -450,6 +452,33 @@ else()
   add_function_test(socket_unsupported
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/config/socket_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
+
+
+# sqlite3 target support
+if(NOT ENABLE_SQLITE3_TARGETS)
+  set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+elseif(NOT HAVE_SQLITE3_H)
+  message("sqlite3 targets are not supported without sqlite3.h")
+  set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+else()
+  find_library(LIBSQLITE3_FOUND sqlite3)
+  if(LIBSQLITE3_FOUND)
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED TRUE)
+  else()
+    message("sqlite3 targets are not supported without libsqlite3")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+  endif()
+endif()
+
+if(STUMPLESS_SQLITE3_TARGETS_SUPPORTED)
+  include(tools/cmake/sqlite3.cmake)
+else()
+  add_function_test(sqlite3_unsupported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/sqlite3_unsupported.cpp
       $<TARGET_OBJECTS:test_helper_fixture>
   )
 endif()
