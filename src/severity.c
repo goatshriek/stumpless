@@ -54,7 +54,6 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
     return -1;
   }
 
-
   to_upper_case( severity_name );
   for( i = 0; i < severity_bound; i++ ) {
     if( strcmp( severity_name, severity_enum_to_string[i] + str_offset ) == 0 ) {
@@ -62,7 +61,6 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
       return i;
     }
   }
-
 
   if( strcmp( severity_name, "PANIC" ) == 0 ) {
     free_mem( severity_name );
