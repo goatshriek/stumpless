@@ -35,20 +35,25 @@ stumpless_get_severity_string( enum stumpless_severity severity ) {
   return "NO_SUCH_SEVERITY";
 }
 
-enum stumpless_severity
-stumpless_get_severity_enum( const char *severity_string ) {
+enum stumpless_severity stumpless_get_severity_enum(const char *severity_string) {
+  return stumpless_get_severity_enum_from_buffer(severity_string, strlen(severity_string));
+}
+
+enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *severity_buffer, size_t severity_buffer_length) {
   size_t severity_bound;
   size_t i;
   char *severity_name;
   const int str_offset = 19; // to ommit "STUMPLESS_SEVERITY_"
+  size_t buf_length;
 
   severity_bound = sizeof( severity_enum_to_string ) /
                      sizeof( severity_enum_to_string[0] );
 
-  severity_name = copy_cstring( severity_string );
+  severity_name = copy_cstring_with_length( severity_buffer, &buf_length );
   if( !severity_name ) {
     return -1;
   }
+
 
   to_upper_case( severity_name );
   for( i = 0; i < severity_bound; i++ ) {
@@ -57,6 +62,7 @@ stumpless_get_severity_enum( const char *severity_string ) {
       return i;
     }
   }
+
 
   if( strcmp( severity_name, "PANIC" ) == 0 ) {
     free_mem( severity_name );
@@ -74,24 +80,6 @@ stumpless_get_severity_enum( const char *severity_string ) {
   }
 
   free_mem( severity_name );
-  return -1;
-}
-
-enum stumpless_severity
-stumpless_get_severity_enum_from_buffer(const char *buffer, size_t length) {
-  size_t severity_bound;
-  size_t i;
-
-  severity_bound = sizeof(severity_enum_to_string) /
-                     sizeof(severity_enum_to_string[0]);
-
-  for (i = 0; i < severity_bound; i++) {
-    if (strncmp(buffer, severity_enum_to_string[i], length) == 0 &&
-        severity_enum_to_string[i][length] == '\0') {
-      return i;
-    }
-  }
-
   return -1;
 }
 

@@ -62,15 +62,6 @@ namespace {
     STUMPLESS_FOREACH_SEVERITY( CHECK_SEVERITY_ENUM )
   }
 
-  TEST(GetSeverityEnumFromBuffer, EachValidSeverity) {
-    int result; 
-
-    #define CHECK_SEVERITY_ENUM(STRING, ENUM) \
-      result = stumpless_get_severity_enum_from_buffer(#STRING, sizeof(#STRING) - 1); \
-      EXPECT_EQ(result, ENUM);
-    STUMPLESS_FOREACH_SEVERITY(CHECK_SEVERITY_ENUM)
-  }
-
   TEST( GetSeverityEnum, LowercaseValidSeverity ) {
     int result;
 
@@ -136,6 +127,19 @@ namespace {
 
     result = stumpless_get_severity_enum_from_buffer( "an_invalid_severity", 10 );
     EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetSeverityEnumFromBuffer, InvalidMemSeverity ) {
+    int result;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_severity_enum_from_buffer( "info", sizeof("info") );
+    EXPECT_EQ( result, -1 );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
 }
