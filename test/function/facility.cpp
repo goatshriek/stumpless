@@ -139,7 +139,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
-    result = stumpless_get_facility_enum_from_buffer( "user", sizeof("user") );
+    result = stumpless_get_facility_enum_from_buffer( "user", sizeof( "user" ) );
     EXPECT_EQ( result, -1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
