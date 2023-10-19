@@ -125,11 +125,19 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
-  TEST( GetFacilityEnum, NoSuchFacility ) {
+  TEST( GetFacilityEnumFromBuffer, InvalidMemFacility ) {
     int result;
+    const struct stumpless_error *error;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
-    result = stumpless_get_facility_enum( "an_invalid_facility" );
+    result = stumpless_get_facility_enum_from_buffer( "user", sizeof("user") );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
 }

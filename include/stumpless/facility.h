@@ -414,14 +414,14 @@ stumpless_get_facility_enum( const char *facility_string );
  *
  * @param facility_string The facility name to get the enum from.
  * 
- * @param length The length of the buffer
+ * @param facility_buffer_length The length of the buffer
  *
  * @return The enum integer corresponding to the given facility or -1 if
  * the string is not a valid facility name.
  */
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_facility
-stumpless_get_facility_enum_from_buffer( const char *facility_string );
+stumpless_get_facility_enum_from_buffer( const char *facility_string, size_t facility_buffer_length );
 
 #  ifdef __cplusplus
 } /* extern "C" */
