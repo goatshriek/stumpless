@@ -125,6 +125,13 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
+  TEST( GetFacilityEnum, NoSuchFacility ) {
+    int result;
+
+    result = stumpless_get_facility_enum( "an_invalid_facility" );
+    EXPECT_EQ( result, -1 );
+  }
+
   TEST( GetFacilityEnumFromBuffer, InvalidMemFacility ) {
     int result;
     const struct stumpless_error *error;
