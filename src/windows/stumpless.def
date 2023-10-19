@@ -224,3 +224,4 @@ EXPORTS
   stumpless_unload_param                        @207
   vstumpless_load_entry                         @208
   stumpless_prival_from_string                  @209
+  stumpless_get_severity_enum_from_buffer       @210
