@@ -19,22 +19,26 @@
 #ifndef __STUMPLESS_PRIVATE_TARGET_SQLITE3_H
 #define __STUMPLESS_PRIVATE_TARGET_SQLITE3_H
 
-#include <stddef.h>
-#include <stdio.h>
+#include <sqlite3.h>
 #include <stumpless/config.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include "private/config/wrapper/thread_safety.h"
 
+//sqlite3_stmt **
+//prep_statments( target, entry, data, &size );
+
 /**
- * Internal representation of a file target.
+ * Internal representation of a sqlite3 target.
  */
 struct sqlite3_target {
-// TODO update
-/** A stream for the file this target writes to. */
-  FILE *stream;
+/** A connection to the database this target writes to. */
+  sqlite3 *db;
+/** The SQL command used to insert entries into the database. */
+  const char *insert_statement;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
- * Protects db. This mutex must be locked by a thread before it use the
+ * Protects db. This mutex must be locked by a thread before it uses the
  * database connection.
  */
   config_mutex_t db_mutex;
@@ -51,9 +55,11 @@ destroy_sqlite3_target( struct sqlite3_target *target );
  * TODO update
  */
 struct sqlite3_target *
-new_sqlite3_target( const char *filename );
+new_sqlite3_target( const char *db_filename );
 
 /**
+ * TODO update
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. The stream_mutex is used to coordinate updates
  * to the logged file.
@@ -67,8 +73,7 @@ new_sqlite3_target( const char *filename );
  * cancelled, due to the use of a lock that could be left locked.
  */
 int
-sendto_sqlite3_target( struct sqlite3_target *target,
-                       const char *msg,
-                       size_t msg_length );
+send_entry_to_sqlite3_target( const struct stumpless_target *target,
+                              const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_SQLITE3_H */

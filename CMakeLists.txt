@@ -572,17 +572,15 @@ endif()
 add_library(stumpless ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
+
+target_link_libraries(stumpless PRIVATE ${STUMPLESS_LINK_LIBRARIES})
+
 if(MINGW)
   target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
-if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
-  target_link_libraries(stumpless PRIVATE systemd)
-endif()
-
 if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
-  target_link_libraries(stumpless PRIVATE KtmW32)
   add_dependencies(stumpless default_events)
 endif()
 
@@ -610,7 +608,7 @@ endif(FUZZ)
 target_include_directories(stumpless
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
 )
 
 

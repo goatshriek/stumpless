@@ -65,6 +65,19 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
 }
 
 /**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns.
+ *
+ * This is nearly identical to VALIDATE_ARG_NOT_NULL, but is suitable for use in
+ * functions where the return type is void.
+ */
+#  define VALIDATE_ARG_NOT_NULL_VOID_RETURN( ARG_NAME )                        \
+if( unlikely( ARG_NAME == NULL ) ) {                                           \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return;                                                                      \
+}
+
+/**
  * Checks that the passed in app name is of the appropriate length and
  * contains only printable ASCII characters.
  *

@@ -37,6 +37,8 @@ add_function_test(journald
     systemd
 )
 
+list(APPEND STUMPLESS_LINK_LIBRARES "systemd")
+
 add_function_test(journald_supported
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/config/journald_supported.cpp

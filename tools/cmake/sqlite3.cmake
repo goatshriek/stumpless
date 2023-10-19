@@ -17,6 +17,8 @@ if(INCLUDE_MANPAGES_IN_INSTALL)
   )
 endif()
 
+list(APPEND STUMPLESS_LINK_LIBRARIES "sqlite3")
+
 add_function_test(sqlite3
   SOURCES
     test/function/target/sqlite3.cpp

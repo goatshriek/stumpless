@@ -43,6 +43,7 @@
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/socket.h"
+#include "private/config/wrapper/sqlite3.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -216,6 +217,12 @@ stumpless_add_entry( struct stumpless_target *target,
   // journald targets are not formatted
   if( target->type == STUMPLESS_JOURNALD_TARGET ) {
     result = config_send_entry_to_journald_target( target, entry );
+    goto finish;
+  }
+
+  // sqlite3 targets are not formatted
+  if( target->type == STUMPLESS_SQLITE3_TARGET ) {
+    result = config_send_entry_to_sqlite3_target( target, entry );
     goto finish;
   }
 
