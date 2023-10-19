@@ -37,42 +37,52 @@ stumpless_get_facility_string( enum stumpless_facility facility ) {
 
 enum stumpless_facility
 stumpless_get_facility_enum( const char *facility_string ) {
-  size_t facility_bound;
-  size_t i;
-  char *facility_name;
-  const int str_offset = 19; // to ommit "STUMPLESS_FACILITY_"
+return stumpless_get_facility_enum_from_buffer(facility_string, strlen(facility_string));
+}
 
-  facility_bound = sizeof( facility_enum_to_string ) /
-                     sizeof( facility_enum_to_string[0] );
+enum stumpless_facility
+stumpless_get_facility_enum_from_buffer(const char *facility_buffer, size_t facility_buffer_length) {
+ size_t facility_bound;
+ size_t i;
+ char *facility_name;
+ const int str_offset = 19; // to ommit "STUMPLESS_FACILITY_"
+ size_t buf_length;
 
-  facility_name = copy_cstring(facility_string);
-  if( !facility_name ) {
-    return -1;
-  }
+ facility_bound = sizeof( facility_enum_to_string ) /
+           sizeof( facility_enum_to_string[0] );
 
-  to_upper_case(facility_name);
-  for( i = 0; i < facility_bound; i++ ) {
-    if( strcmp( facility_name, facility_enum_to_string[i] + str_offset ) == 0 ) {
-      free_mem( facility_name );
-
-      return i << 3;
-    }
-  }
-
-  // exeption, for 'security' return 'auth' enum value
-  if( strcmp( facility_name, "SECURITY" ) == 0 ) {
-    free_mem( facility_name );
-    return STUMPLESS_FACILITY_AUTH_VALUE;
-  }
-
-  // exeption, for 'authpriv' not presented in enum list
-  if( strcmp( facility_name, "AUTHPRIV" ) == 0 ) {
-    free_mem( facility_name );
-    return STUMPLESS_FACILITY_AUTH2_VALUE;
-  }
-
-  free_mem( facility_name );
+ facility_name = copy_cstring_with_length(facility_buffer, &buf_length);
+ if( !facility_name ) {
   return -1;
+ }
+
+ if (buf_length != strlen(facility_buffer)) {
+  // buffer contains a null byte before the end
+  facility_name[buf_length] = '\0';
+ }
+
+ to_upper_case(facility_name);
+ for( i = 0; i < facility_bound; i++ ) {
+  if( strcmp( facility_name, facility_enum_to_string[i] + str_offset ) == 0 ) {
+   free_mem( facility_name );
+   return i << 3;
+  }
+ }
+
+ // exeption, for 'security' return 'auth' enum value
+  if( strcmp( facility_name, "SECURITY" ) == 0 ) {
+  free_mem( facility_name );
+  return STUMPLESS_FACILITY_AUTH_VALUE;
+ }
+
+ // exeption, for 'authpriv' not presented in enum list
+  if( strcmp( facility_name, "AUTHPRIV" ) == 0 ) {
+  free_mem( facility_name );
+  return STUMPLESS_FACILITY_AUTH2_VALUE;
+ }
+
+ free_mem( facility_name );
+ return -1;
 }
 
 /* private functions */

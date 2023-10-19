@@ -30,6 +30,7 @@
 
 #  include <stumpless/config.h>
 #  include <stumpless/generator.h>
+#  include <stddef.h>
 
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    include <syslog.h>
@@ -395,6 +396,32 @@ stumpless_get_facility_string( enum stumpless_facility facility );
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_facility
 stumpless_get_facility_enum( const char *facility_string );
+
+  /**
+ * Gets the enum value corresponding to the given facility string.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @since release v2.1.0.
+ *
+ * @param facility_string The facility name to get the enum from.
+ * 
+ * @param length The length of the buffer
+ *
+ * @return The enum integer corresponding to the given facility or -1 if
+ * the string is not a valid facility name.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+enum stumpless_facility
+stumpless_get_facility_enum_from_buffer( const char *facility_string );
 
 #  ifdef __cplusplus
 } /* extern "C" */
