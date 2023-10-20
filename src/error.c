@@ -327,6 +327,11 @@ raise_socket_send_failure( const char *message,
 }
 
 void
+raise_sqlite3_error( const char *message, int code ) {
+  raise_error( STUMPLESS_SQLITE3_FAILURE, message, code, "the sqlite3 result code" ); // TODO l10n
+}
+
+void
 raise_stream_write_failure( void ) {
   raise_error( STUMPLESS_STREAM_WRITE_FAILURE,
                L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE,

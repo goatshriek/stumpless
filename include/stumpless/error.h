@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
  */
 
 #ifndef __STUMPLESS_ERROR_H
-#  define __STUMPLESS_ERROR_H
+#define __STUMPLESS_ERROR_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -132,7 +132,13 @@ extern "C" {
  *
  * @since release v2.2.0
  */\
-  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 )
+  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 ) \
+/**
+ * Sqlite3 encountered a failure.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_SQLITE3_FAILURE, 30 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.

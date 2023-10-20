@@ -17,7 +17,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <stddef.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"

@@ -35,7 +35,7 @@ struct sqlite3_target {
 /** A connection to the database this target writes to. */
   sqlite3 *db;
 /** The SQL command used to insert entries into the database. */
-  const char *insert_statement;
+  const char *insert_sql;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects db. This mutex must be locked by a thread before it uses the

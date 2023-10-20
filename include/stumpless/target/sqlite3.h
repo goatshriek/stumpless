@@ -34,14 +34,14 @@
  */
 
 #ifndef __STUMPLESS_TARGET_SQLITE3_H
-#  define __STUMPLESS_TARGET_SQLITE3_H
+#define __STUMPLESS_TARGET_SQLITE3_H
 
-#  include <stumpless/config.h>
-#  include <stumpless/target.h>
+#include <stumpless/config.h>
+#include <stumpless/target.h>
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
 
 /**
  * TODO update
@@ -69,6 +69,13 @@ extern "C" {
 STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_sqlite3_target( struct stumpless_target *target );
+
+/**
+ * TODO update
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_target *
+stumpless_create_default_sqlite3_table( struct stumpless_target *target );
 
 /**
  * TODO update
@@ -101,7 +108,8 @@ STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *name );
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 }                               /* extern "C" */
-#  endif
+#endif
+
 #endif                          /* __STUMPLESS_TARGET_SQLITE3_H */

@@ -16,20 +16,17 @@
  * limitations under the License.
  */
 
-#include <fstream>
 #include <stddef.h>
 #include <stdlib.h>
-#include <string>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
-#include "test/helper/rfc5424.hpp"
 
 namespace {
   class Sqlite3TargetTest : public::testing::Test {
     protected:
-      const char *db_filename = "test_function.sqlite3";
+      const char *db_filename = "test_function_fixture.sqlite3";
       struct stumpless_target *target;
       struct stumpless_entry *basic_entry;
 
@@ -38,7 +35,10 @@ namespace {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
+      remove( db_filename );
       target = stumpless_open_sqlite3_target( db_filename );
+
+      stumpless_create_default_sqlite3_table( target );
 
       stumpless_set_target_default_app_name( target, "sqlite3-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
@@ -59,13 +59,13 @@ namespace {
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
+    EXPECT_NO_ERROR;
   }
 
   /* non-fixture tests */
 
   TEST( Sqlite3TargetCloseTest, Generic ) {
-    const char *db_filename = "generic_close_test.sqlite3";
+    const char *db_filename = "test_function_close.sqlite3";
     struct stumpless_target *target;
 
     remove( db_filename );
@@ -83,6 +83,7 @@ namespace {
                   db_filename );
 
     stumpless_free_all(  );
+    remove( db_filename );
   }
 
   TEST( Sqlite3TargetCloseTest, NullTarget ) {
@@ -104,17 +105,35 @@ namespace {
     stumpless_close_stream_target( target );
   }
 
+  TEST( Sqlite3TargetCreateDefaultTableTest, Normal ) {
+    const char *db_filename = "test_function_default_table.sqlite3";
+    struct stumpless_target *target;
+    struct stumpless_target *result;
+    
+    remove( db_filename );
+    target = stumpless_open_sqlite3_target( db_filename );
+    ASSERT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_create_default_sqlite3_table( target );
+    EXPECT_EQ( result, target );
+    EXPECT_NO_ERROR;
+
+    stumpless_close_sqlite3_target( target );
+    remove( db_filename );
+  }
+
   TEST( Sqlite3TargetOpenTest, Directory ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
    
-    target = stumpless_open_sqlite3_target( "/" );
+    target = stumpless_open_sqlite3_target( "./" );
     EXPECT_NULL( target );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_FILE_OPEN_FAILURE ); // TODO may need to change
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
   }
 
   TEST( Sqlite3TargetOpenTest, MallocFailure ) {
-    const char *db_filename = "open-malloc-fail.sqlite3";
+    const char *db_filename = "malloc_fail_on_open.sqlite3";
     struct stumpless_target *target;
     const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);

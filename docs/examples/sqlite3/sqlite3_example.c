@@ -29,6 +29,9 @@ main( int argc, char **argv ) {
     return EXIT_FAILURE;
   }
 
+  // TODO we're just ignore errors if this fails, assuming it already existed
+  stumpless_create_default_sqlite3_table( db_target );
+
   stumpless_add_message( db_target, "goes to the sqlite3 database" );
   stumpless_add_message( db_target, "this one too" );
 

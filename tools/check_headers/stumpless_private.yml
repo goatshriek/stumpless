@@ -121,6 +121,7 @@
 "raise_journald_failure": "private/error.h"
 "raise_mb_conversion_failure": "private/error.h"
 "raise_resolve_hostname_failure": "private/error.h"
+"raise_sqlite3_error": "private/error.h"
 "raise_wide_conversion_failure": "private/error.h"
 "raise_windows_failure": "private/error.h"
 "repeat_add_entry": "test/helper/usage.hpp"

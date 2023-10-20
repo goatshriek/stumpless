@@ -17,11 +17,11 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_ERROR_H
-#  define __STUMPLESS_PRIVATE_ERROR_H
+#define __STUMPLESS_PRIVATE_ERROR_H
 
-#  include <stddef.h>
-#  include <stumpless/error.h>
-#  include "private/config.h"
+#include <stddef.h>
+#include <stumpless/error.h>
+#include "private/config.h"
 
 void
 clear_error( void );
@@ -234,6 +234,13 @@ void
 raise_socket_send_failure( const char *message,
                            int code,
                            const char *code_type );
+
+/**
+ * TODO fill in
+ */
+COLD_FUNCTION
+void
+raise_sqlite3_error( const char *message, int code );
 
 COLD_FUNCTION
 void
