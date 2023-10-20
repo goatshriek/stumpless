@@ -56,11 +56,6 @@ stumpless_get_facility_enum_from_buffer(const char *facility_buffer, size_t faci
   return -1;
  }
 
- if (buf_length != facility_buffer_length) {
-  // buffer contains a null byte before the end
-  facility_name[buf_length] = '\0';
- }
-
  to_upper_case(facility_name);
  for( i = 0; i < facility_bound; i++ ) {
   if( strcmp( facility_name, facility_enum_to_string[i] + str_offset ) == 0 ) {
