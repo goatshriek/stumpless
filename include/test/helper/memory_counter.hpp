@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,9 @@ struct memory_counter {
   size_t realloc_count;
   size_t free_count;
   size_t free_total;
+  void * ( *previous_malloc )( size_t );
+  void * ( *previous_realloc )( void *, size_t );
+  void ( *previous_free )( void * );
 };
 
 #define INIT_MEMORY_COUNTER(PREFIX)                                            \
@@ -38,10 +41,17 @@ PREFIX##_memory_counter.alloc_total = 0;                                       \
 PREFIX##_memory_counter.realloc_count = 0;                                     \
 PREFIX##_memory_counter.free_count = 0;                                        \
 PREFIX##_memory_counter.free_total = 0;                                        \
+PREFIX##_memory_counter.previous_malloc = malloc;                              \
+PREFIX##_memory_counter.previous_realloc = realloc;                            \
+PREFIX##_memory_counter.previous_free = free;                                  \
 stumpless_set_malloc( PREFIX##_memory_counter_malloc );                        \
 stumpless_set_realloc( PREFIX##_memory_counter_realloc );                      \
 stumpless_set_free( PREFIX##_memory_counter_free );
 
+#define FINALIZE_MEMORY_COUNTER(PREFIX)                                        \
+stumpless_set_malloc( PREFIX##_memory_counter.previous_malloc );               \
+stumpless_set_realloc( PREFIX##_memory_counter.previous_realloc );             \
+stumpless_set_free( PREFIX##_memory_counter.previous_free );
 
 #define NEW_MEMORY_COUNTER(PREFIX)                                             \
 static struct memory_counter PREFIX##_memory_counter;                          \

@@ -25,6 +25,12 @@ add_function_test(sqlite3
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
+add_performance_test(sqlite3
+  SOURCES
+    test/performance/target/sqlite3.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_thread_safety_test(sqlite3
   SOURCES
     test/thread_safety/target/sqlite3.cpp
