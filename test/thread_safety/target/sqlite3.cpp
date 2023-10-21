@@ -48,7 +48,7 @@ namespace {
     }
 
     for( i = 0; i < THREAD_COUNT; i++ ) {
-      threads[i]->join(  );
+      threads[i]->join();
       delete threads[i];
     }
 

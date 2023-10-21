@@ -46,7 +46,6 @@ prepare_statments( const struct stumpless_entry *entry, void *data, size_t *coun
   
   target = data;
   if( !default_statement) {
-
     sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &default_statement, NULL );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
@@ -85,7 +84,7 @@ struct stumpless_target *
 stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
   struct sqlite3_target *db_target;
   const char *create_sql = "CREATE TABLE logs (log_id INTEGER PRIMARY KEY, prival INTEGER NOT NULL, version INTEGER NOT NULL, timestamp TEXT, hostname TEXT, app_name TEXT, procid TEXT, msgid TEXT, structured_data TEXT, message TEXT);";
-  struct sqlite3_stmt *create_statement;
+  sqlite3_stmt *create_statement = NULL;
   int sql_result;
   size_t try_count = 0;
   struct stumpless_target *return_result;
@@ -128,9 +127,9 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
     goto cleanup_and_finish;
   }
 
-  sqlite3_finalize( create_statement ); // todo capture errors
 
 cleanup_and_finish:
+  sqlite3_finalize( create_statement ); // todo capture errors
   config_unlock_mutex( &db_target->db_mutex );
   return return_result;
 }
@@ -168,7 +167,13 @@ destroy_sqlite3_target( struct sqlite3_target *target ) {
   sqlite3_finalize( default_statement );
   default_statement = NULL; // TODO can remove later
   // we use v2 here to allow a close to not be blocked by pending transactions
-  sqlite3_close_v2( target->db );
+  int sql_result = sqlite3_close_v2( target->db );
+  if( sql_result != SQLITE_OK ) {
+    // TODO raise an error
+    //printf("couldn't close the database\n");
+  } else {
+    //printf("closed the database\n");
+  }
   config_destroy_mutex( &target->db_mutex );
   free_mem( target );
 }
@@ -182,6 +187,7 @@ new_sqlite3_target( const char *db_filename ) {
   if( !target ) {
     goto fail;
   }
+  target->db = NULL;
 
   sql_result = sqlite3_open( db_filename, &target->db );
   if( sql_result != SQLITE_OK ) {
@@ -190,12 +196,12 @@ new_sqlite3_target( const char *db_filename ) {
   }
 
   target->insert_sql = default_insert_sql;
-
   config_init_mutex( &target->db_mutex );
 
   return target;
 
 fail_db:
+  sqlite3_close( target->db );
   free_mem( target );
 fail:
   return NULL;
@@ -210,6 +216,8 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   sqlite3_stmt **statements;
   int result = 1;
   int sql_result;
+
+  return 1;
 
   db_target = target->id;
 

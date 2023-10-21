@@ -50,6 +50,7 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_close_sqlite3_target( target );
+      stumpless_free_all();
       remove( db_filename );
     }
   };
@@ -91,6 +92,7 @@ namespace {
 
     stumpless_close_sqlite3_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all();
   }
 
   TEST( Sqlite3TargetCloseTest, WrongTargetType ) {
@@ -103,6 +105,7 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_stream_target( target );
+    stumpless_free_all();
   }
 
   TEST( Sqlite3TargetCreateDefaultTableTest, Normal ) {
@@ -120,6 +123,7 @@ namespace {
     EXPECT_NO_ERROR;
 
     stumpless_close_sqlite3_target( target );
+    stumpless_free_all();
     remove( db_filename );
   }
 
@@ -130,6 +134,8 @@ namespace {
     target = stumpless_open_sqlite3_target( "./" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
+
+    stumpless_free_all();
   }
 
   TEST( Sqlite3TargetOpenTest, MallocFailure ) {
@@ -147,6 +153,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     ASSERT_TRUE( set_malloc_result == malloc );
+    stumpless_free_all();
     remove( db_filename );
   }
 
@@ -157,5 +164,6 @@ namespace {
     target = stumpless_open_sqlite3_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all();
   }
 }
