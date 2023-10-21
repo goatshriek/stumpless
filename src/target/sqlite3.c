@@ -217,8 +217,6 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   int result = 1;
   int sql_result;
 
-  return 1;
-
   db_target = target->id;
 
   config_lock_mutex( &db_target->db_mutex );

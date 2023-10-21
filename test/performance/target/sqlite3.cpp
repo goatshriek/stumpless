@@ -17,12 +17,11 @@
  */
 
 #include <benchmark/benchmark.h>
-#include <cstdlib>
 #include <stumpless.h>
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( sqlite3 );
+NEW_MEMORY_COUNTER( sqlite3_add );
 
 class Sqlite3Fixture : public::benchmark::Fixture {
 protected:
@@ -37,11 +36,11 @@ public:
     target = stumpless_open_sqlite3_target( db_filename );
     stumpless_create_default_sqlite3_table( target );
     entry = create_entry();
-    INIT_MEMORY_COUNTER( sqlite3 );
+    INIT_MEMORY_COUNTER( sqlite3_add );
   }
 
   void TearDown( const ::benchmark::State &state ) {
-    FINALIZE_MEMORY_COUNTER( sqlite3 );
+    FINALIZE_MEMORY_COUNTER( sqlite3_add );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_close_sqlite3_target( target );
     remove( db_filename );
@@ -56,5 +55,5 @@ BENCHMARK_F( Sqlite3Fixture, AddEntry )( benchmark::State &state ) {
     }
   }
 
-  SET_STATE_COUNTERS( state, sqlite3 );
+  SET_STATE_COUNTERS( state, sqlite3_add );
 }

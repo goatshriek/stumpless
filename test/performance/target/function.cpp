@@ -17,7 +17,6 @@
  */
 
 #include <benchmark/benchmark.h>
-#include <cstdlib>
 #include <stumpless.h>
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
