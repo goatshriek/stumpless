@@ -25,6 +25,7 @@
 #include <stumpless/target/sqlite3.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
+#include "private/entry.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
@@ -34,7 +35,7 @@
 
 static sqlite3_stmt *default_statement = NULL; // TODO needs to be per-target (for multiple target support)
 static sqlite3_stmt *default_statements[1];
-static const char *default_insert_sql = "INSERT INTO logs (prival, version, timestamp, hostname, app_name, procid, msgid, structured_data, message) VALUES (3, 3, NULL, NULL, NULL, NULL, NULL, NULL, ?);";
+static const char *default_insert_sql = "INSERT INTO logs (prival, version, timestamp, hostname, app_name, procid, msgid, structured_data, message) VALUES (3, 3, NULL, NULL, NULL, NULL, NULL, NULL, $message);";
 
 // generic pointer here to prevent mandatory public API reliance on sqlite3.h
 // this is called while the db mutex is held, so thread safety is not a concern
@@ -43,6 +44,7 @@ void *
 prepare_statments( const struct stumpless_entry *entry, void *data, size_t *count ) {
   struct sqlite3_target *target;
   int sql_result;
+  int index;
   
   target = data;
   if( !default_statement) {
@@ -55,11 +57,18 @@ prepare_statments( const struct stumpless_entry *entry, void *data, size_t *coun
     sqlite3_reset( default_statement );
   }
 
-  sql_result = sqlite3_bind_text( default_statement, 1, entry->message, entry->message_length, SQLITE_STATIC );
-  if( sql_result != SQLITE_OK ) {
+  lock_entry( entry );
+
+  index = sqlite3_bind_parameter_index( default_statement, "$message" );
+  if( index != 0 ) {
+    sql_result = sqlite3_bind_text( default_statement, index, entry->message, entry->message_length, SQLITE_STATIC );
+    if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n
       return NULL;
+    }
   }
+
+  unlock_entry( entry );
 
   *count = 1;
   default_statements[0] = default_statement;
