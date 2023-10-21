@@ -40,6 +40,9 @@ namespace {
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
+    stumpless_create_default_sqlite3_table( target );
+    EXPECT_NO_ERROR;
+
     for( i = 0; i < THREAD_COUNT; i++ ) {
       threads[i] = new std::thread( add_messages, target, MESSAGE_COUNT );
     }
@@ -66,6 +69,6 @@ namespace {
     // }
     // EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
 
-    // remove( filename );
+    remove( filename );
   }
 }
