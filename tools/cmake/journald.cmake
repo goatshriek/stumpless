@@ -37,7 +37,7 @@ add_function_test(journald
     systemd
 )
 
-list(APPEND STUMPLESS_LINK_LIBRARES "systemd")
+list(APPEND STUMPLESS_LINK_LIBRARIES "systemd")
 
 add_function_test(journald_supported
   SOURCES

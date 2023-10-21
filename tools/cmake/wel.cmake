@@ -83,7 +83,7 @@ if(MSVC)
 endif()
 
 
-list(APPEND STUMPLESS_LINK_LIBRARES "KtmW32")
+list(APPEND STUMPLESS_LINK_LIBRARIES "KtmW32")
 
 add_function_test(wel
   SOURCES
