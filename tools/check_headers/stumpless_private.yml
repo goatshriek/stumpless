@@ -156,6 +156,7 @@
 "stdatomic_write_flag": "private/config/have_stdatomic.h"
 "stdatomic_write_ptr": "private/config/have_stdatomic.h"
 "strbuilder_append_positive_int": "private/strbuilder.h"
+"strbuilder_reset": "private/strbuilder.h"
 "struct function_target": "private/target/function.h"
 "struct sqlite3_target": "private/target/sqlite3.h"
 "SUPPORT_ABSTRACT_SOCKET_NAMES": "private/config.h"

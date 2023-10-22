@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
-#  define __STUMPLESS_PRIVATE_ENTRY_H
+#define __STUMPLESS_PRIVATE_ENTRY_H
 
-#  include <stdbool.h>
-#  include <stddef.h>
-#  include <stumpless/element.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/facility.h>
-#  include <stumpless/severity.h>
-#  include "private/strbuilder.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stumpless/element.h>
+#include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/severity.h>
+#include "private/strbuilder.h"
 
 void
 entry_free_all( void );
@@ -80,6 +80,21 @@ strbuilder_append_message( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder );
 
+/**
+ * Adds the structured data of an entry to the given strbuilder, in the format
+ * specified in RFC 5424.
+ *
+ * Assumes that the entry has already been locked.
+ *
+ * TODO add posix safety attributes
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param entry The entry to extract the structured data from.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );

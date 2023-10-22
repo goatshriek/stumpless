@@ -54,7 +54,6 @@ additional tools:
  * `ruby` for some of the development scripts. If you have bundler, you can use
    the Gemfile (run `bundle install` from the project root) to install all the
    gems you might need at once.
- * `indent` to format sources according to the project standard
 
 ## Simplified Wrapper Interface Generator (SWIG)
 The SWIG project is used to expose the functionality of Stumpless to languages
