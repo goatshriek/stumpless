@@ -33,9 +33,8 @@
 #include "private/target/sqlite3.h"
 #include "private/validate.h"
 
-static sqlite3_stmt *default_statement = NULL; // TODO needs to be per-target (for multiple target support)
 static sqlite3_stmt *default_statements[1];
-static const char *default_insert_sql = "INSERT INTO logs (prival, version, timestamp, hostname, app_name, procid, msgid, structured_data, message) VALUES (3, 3, NULL, NULL, NULL, NULL, NULL, NULL, $message);";
+static const char *default_insert_sql = "INSERT INTO logs (prival, version, timestamp, hostname, app_name, procid, msgid, structured_data, message) VALUES ($prival, 3, NULL, NULL, NULL, NULL, NULL, NULL, $message);";
 
 // generic pointer here to prevent mandatory public API reliance on sqlite3.h
 // this is called while the db mutex is held, so thread safety is not a concern
@@ -44,24 +43,36 @@ void *
 prepare_statments( const struct stumpless_entry *entry, void *data, size_t *count ) {
   struct sqlite3_target *target;
   int sql_result;
-  int index;
+  int prival_index;
+  int message_index;
   
   target = data;
-  if( !default_statement) {
-    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &default_statement, NULL );
+  if( !target->insert_stmt) {
+    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmt, NULL );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
       return NULL;
     }
   } else {
-    sqlite3_reset( default_statement );
+    sqlite3_reset( target->insert_stmt );
   }
+
+  // we can gather the indexes before we need to lock the entry
+  prival_index = sqlite3_bind_parameter_index( target->insert_stmt, "$prival" );
+  message_index = sqlite3_bind_parameter_index( target->insert_stmt, "$message" );
 
   lock_entry( entry );
 
-  index = sqlite3_bind_parameter_index( default_statement, "$message" );
-  if( index != 0 ) {
-    sql_result = sqlite3_bind_text( default_statement, index, entry->message, entry->message_length, SQLITE_STATIC );
+  if( prival_index != 0 ) {
+    sql_result = sqlite3_bind_int( target->insert_stmt, prival_index, entry->prival );
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the prival to the statement", sql_result ); // TODO l10n
+      return NULL;
+    }
+  }
+
+  if( message_index != 0 ) {
+    sql_result = sqlite3_bind_text( target->insert_stmt, message_index, entry->message, entry->message_length, SQLITE_STATIC );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n
       return NULL;
@@ -71,7 +82,7 @@ prepare_statments( const struct stumpless_entry *entry, void *data, size_t *coun
   unlock_entry( entry );
 
   *count = 1;
-  default_statements[0] = default_statement;
+  default_statements[0] = target->insert_stmt;
   return default_statements;
 }
 
@@ -173,8 +184,7 @@ fail:
 
 void
 destroy_sqlite3_target( struct sqlite3_target *target ) {
-  sqlite3_finalize( default_statement );
-  default_statement = NULL; // TODO can remove later
+  sqlite3_finalize( target->insert_stmt );
   // we use v2 here to allow a close to not be blocked by pending transactions
   int sql_result = sqlite3_close_v2( target->db );
   if( sql_result != SQLITE_OK ) {
@@ -205,6 +215,7 @@ new_sqlite3_target( const char *db_filename ) {
   }
 
   target->insert_sql = default_insert_sql;
+  target->insert_stmt = NULL;
   config_init_mutex( &target->db_mutex );
 
   return target;

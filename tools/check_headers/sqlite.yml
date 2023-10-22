@@ -2,6 +2,7 @@
 "SQLITE_DONE": "sqlite3.h"
 "SQLITE_OK": "sqlite3.h"
 "sqlite3": "sqlite3.h"
+"sqlite3_bind_int": "sqlite3.h"
 "sqlite3_bind_parameter_index": "sqlite3.h"
 "sqlite3_bind_text": "sqlite3.h"
 "sqlite3_close_v2": "sqlite3.h"
