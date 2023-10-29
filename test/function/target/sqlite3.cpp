@@ -16,12 +16,14 @@
  * limitations under the License.
  */
 
+#include <cstdlib>
+#include <sqlite3.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/rfc5424.hpp"
 
 namespace {
   class Sqlite3TargetTest : public::testing::Test {
@@ -56,11 +58,67 @@ namespace {
   };
 
   TEST_F( Sqlite3TargetTest, AddEntry ) {
-    int result;
+    int add_result;
+    sqlite3 *db;
+    const char *result_query = "SELECT prival, version, timestamp, hostname, "
+                               "app_name, procid, msgid, structured_data, "
+                               "message FROM logs WHERE message = ?";
+    sqlite3_stmt *result_stmt;
+    int sql_result;
+    const char *expected_message;
+    int expected_prival;
+    int actual_prival;
+    int actual_version;
+    const unsigned char *timestamp;
 
-    result = stumpless_add_entry( target, basic_entry );
-    EXPECT_GE( result, 0 );
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( add_result, 0 );
     EXPECT_NO_ERROR;
+
+    db = ( sqlite3 * ) stumpless_get_sqlite3_db( target );
+    ASSERT_NOT_NULL( db );
+    EXPECT_NO_ERROR;
+
+    sql_result = sqlite3_prepare_v2( db, result_query, -1, &result_stmt, NULL );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    expected_message = stumpless_get_entry_message( basic_entry );
+    ASSERT_NOT_NULL( expected_message );
+    sql_result = sqlite3_bind_text( result_stmt,
+                                    1,
+                                    expected_message,
+                                    -1,
+                                    SQLITE_STATIC );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( result_stmt );
+    EXPECT_EQ( sql_result, SQLITE_ROW );
+
+    actual_prival = sqlite3_column_int( result_stmt, 0 );
+    expected_prival = stumpless_get_entry_prival( basic_entry );
+    EXPECT_EQ( actual_prival, expected_prival );
+
+    actual_version = sqlite3_column_int( result_stmt, 1 );
+    EXPECT_EQ( actual_version, 1 );
+
+    timestamp = sqlite3_column_text( result_stmt, 2 );
+    EXPECT_NOT_NULL( timestamp );
+    TestRFC5424Timestamp( reinterpret_cast<char const *>( timestamp ) );
+
+    // hostname
+
+    // app_name
+
+    // procid
+
+    // msgid
+
+    // structured data
+
+    // message
+
+    sqlite3_finalize( result_stmt );
+    free( ( void * ) expected_message );
   }
 
   /* non-fixture tests */

@@ -23,6 +23,9 @@ add_function_test(sqlite3
   SOURCES
     test/function/target/sqlite3.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
+  LIBRARIES
+    "sqlite3"
 )
 
 add_performance_test(sqlite3

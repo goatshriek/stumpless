@@ -79,6 +79,22 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target );
 
 /**
  * TODO update
+ *
+ * The database handle is used by stumpless sqlite3 routines, and serialized
+ * using an internal mutex. When you use this handle outside of the library, you
+ * must ensure that your operations are also thread safe without this mutex, for
+ * example by using the SQLITE_OPEN_NOMUTEX or SQLITE_OPEN_FULLMUTEX options.
+ *
+ * @return The sqlite3 database handle for this target, a sqlite3 *. The return
+ * type is void * so that all users of stumpless do not have to have sqlite3
+ * types defined in order to include the headers.
+ */
+void *
+stumpless_get_sqlite3_db( const struct stumpless_target *target );
+
+
+/**
+ * TODO update
  * Opens a file target.
  *
  * File targets send logs to a file on the system. Note that this will open the

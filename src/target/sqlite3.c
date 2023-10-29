@@ -61,7 +61,7 @@ prepare_statments( const struct stumpless_entry *entry, void *data, size_t *coun
   size_t buffer_size;
 
   buffer_size = config_get_now( timestamp );
-  
+
   target = data;
   if( !target->insert_stmt) {
     sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmt, NULL );
@@ -87,7 +87,6 @@ prepare_statments( const struct stumpless_entry *entry, void *data, size_t *coun
   msgid_index = sqlite3_bind_parameter_index( target->insert_stmt, "$msgid" );
   structured_data_index = sqlite3_bind_parameter_index( target->insert_stmt, "$structured_data" );
   message_index = sqlite3_bind_parameter_index( target->insert_stmt, "$message" );
-
 
   lock_entry( entry );
 
@@ -287,6 +286,21 @@ cleanup_and_finish:
   sqlite3_finalize( create_statement ); // todo capture errors
   config_unlock_mutex( &db_target->db_mutex );
   return return_result;
+}
+
+void *
+stumpless_get_sqlite3_db( const struct stumpless_target *target ) {
+  struct sqlite3_target *db_target;
+
+  VALIDATE_ARG_NOT_NULL( target );
+
+  if( target->type != STUMPLESS_SQLITE3_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return NULL;
+  }
+
+  db_target = target->id;
+  return db_target->db;
 }
 
 struct stumpless_target *
