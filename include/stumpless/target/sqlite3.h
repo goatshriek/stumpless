@@ -89,6 +89,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target );
  * type is void * so that all users of stumpless do not have to have sqlite3
  * types defined in order to include the headers.
  */
+STUMPLESS_PUBLIC_FUNCTION
 void *
 stumpless_get_sqlite3_db( const struct stumpless_target *target );
 
