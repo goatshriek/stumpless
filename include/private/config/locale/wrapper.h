@@ -55,6 +55,8 @@
 #    include "private/config/locale/he-il.h"
 #  elif defined USE_LOCALE_SW_KE
 #    include "private/config/locale/sw-ke.h"
+#  elif defined USE_LOCALE_TR_TR
+#    include "private/config/locale/tr-tr.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
