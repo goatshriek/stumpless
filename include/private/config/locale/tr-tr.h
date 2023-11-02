@@ -144,7 +144,8 @@
 "başarısız çağrıdan sonraki GetLastError'ün sonucu"
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"sağlanan çok baytlı string geniş karakter dizisine(wide char string) dönüştürülemedi."
+"sağlanan çok baytlı string geniş karakter dizisine(wide char string)" \
+"dönüştürülemedi."
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "bir bellek ayırma çağrısı başarısız oldu"
