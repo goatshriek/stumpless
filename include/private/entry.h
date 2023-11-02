@@ -27,23 +27,137 @@
 #  include <stumpless/severity.h>
 #  include "private/strbuilder.h"
 
+/**
+ * Frees entry cache
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources(entry cache) that other 
+ * threads can use.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to destroying resources
+ * (entry cache) that might be used within a function.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to leaving memory in an undefined state.
+ *
+ * @since release v1.6.0
+ *
+ */
 void
 entry_free_all( void );
 
+/**
+ * Gets the priority value from facility and severity parameters.
+ * 
+ * Priority value is calculated by left shifting the facility value by 3 
+ * and adding it to the severity value which is according to the 
+ * RFC 5424 Section 6.2.1. The shift operation is done prior to get_prival()
+ * function with macros in "facility.h"
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe **
+ * This function must be safe to call from signal handlers
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function must be safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @since release v2.0.0
+ *
+ * @param facility Facility value. This should be a \c STUMPLESS_FACILITY value.
+ * 
+ * @param severity Severity value. This should be a \c STUMPLESS_SEVERITY value
+ *
+ * @return Priority value
+ */
 int
 get_prival( enum stumpless_facility facility,
             enum stumpless_severity severity );
 
+/**
+ * Locks the mutex within the entry so that no other thread can acces specified entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe **
+ * This function is not safe to call from signal handlers due to the use of
+ * function 'pthread_mutex_lock()' from <pthread.h> that is not guarenteed to 
+ * be async signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of lock that could be left in undefined state. 
+ *
+ * @since release v2.0.0
+ *
+ * @param entry The entry to be locked.
+ *
+ */
 void
 lock_entry( const struct stumpless_entry *entry );
 
+/**<<WORK IN PROGRESS>
+ * Adds the element to the entry.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization or locking
+ * mechanisms while accessing shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the new param.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to add the new element to.
+ *
+ * @param element The new element to add to entry.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered NULL is returned.
+ */
 struct stumpless_entry *
 locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
+/**<<WORK IN PROGRESS>
+ * Returns the element located at index within the entry.
+ *
+ * **Thread Safety: MT-Safe race:param_name race:param_value**
+ * <<WORK IN PROGRESS>
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * <<WORK IN PROGRESS>m.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * <<WORK IN PROGRESS>
+ *
+ * @since release v1.6.0
+ *
+ * @param element The element to add the new param to.
+ *
+ * @param param_name The name of the new param.
+ *
+ * @param param_value The value of the new param.
+ *
+ * @return The modified element if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
                              size_t index );
+
 
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
