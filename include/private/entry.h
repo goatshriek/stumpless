@@ -31,12 +31,12 @@
  * Frees entry cache
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it destroys resources(entry cache) that other 
- * threads can use.
+ * This function is not thread safe as it destroys resources(entry cache)
+ * that other threads can use.
  *
  * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from signal handlers due to destroying resources
- * (entry cache) that might be used within a function.
+ * This function is not safe to call from signal handlers due to destroying
+ * resources(entry cache) that might be used within a function.
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
@@ -79,7 +79,7 @@ get_prival( enum stumpless_facility facility,
             enum stumpless_severity severity );
 
 /**
- * Locks the mutex within the entry so that no other thread can acces specified entry.
+ * Locks the mutex within the entry.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
@@ -101,26 +101,25 @@ get_prival( enum stumpless_facility facility,
 void
 lock_entry( const struct stumpless_entry *entry );
 
-/**<<WORK IN PROGRESS>
+/**
  * Adds the element to the entry.
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it doesn't use any synchronization or locking
- * mechanisms while accessing shared resources.
+ * This function is not thread safe as it doesn't use any synchronization 
+ * or locking mechanisms while accessing shared resources.
  *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate access and the use of memory management
- * functions to create the new param.
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory functions.
  *
- * **Async Cancel Safety: AC-Unsafe lock heap**
+ * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
+ * cancelled, due to the use of memory functions that could leave the 
+ * memory in undefined state.
  *
- * @since release v1.6.0
+ * @since release v2.6.0
  *
- * @param entry The entry to add the new element to.
+ * @param entry The entry to add the new element.
  *
  * @param element The new element to add to entry.
  *
@@ -131,27 +130,27 @@ struct stumpless_entry *
 locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
-/**<<WORK IN PROGRESS>
+/**
  * Returns the element located at index within the entry.
  *
- * **Thread Safety: MT-Safe race:param_name race:param_value**
- * <<WORK IN PROGRESS>
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization 
+ * or locking mechanisms while accessing shared resources.
  *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * <<WORK IN PROGRESS>m.
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
  *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * <<WORK IN PROGRESS>
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously 
+ * canceled.
  *
- * @since release v1.6.0
+ * @since release v2.0.0
  *
- * @param element The element to add the new param to.
+ * @param entry The entry to get the element from.
  *
- * @param param_name The name of the new param.
+ * @param index The index of element within the entry.
  *
- * @param param_value The value of the new param.
- *
- * @return The modified element if no error is encountered. If an error is
+ * @return The element if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 struct stumpless_element *
