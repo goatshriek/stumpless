@@ -60,9 +60,10 @@ namespace {
   TEST_F( Sqlite3TargetTest, AddEntry ) {
     int add_result;
     sqlite3 *db;
-    const char *result_query = "SELECT prival, version, timestamp, hostname, "
-                               "app_name, procid, msgid, structured_data, "
-                               "message FROM logs WHERE message = ?";
+    const char *result_query = "SELECT prival, version, timestamp, hostname,"
+                               "  app_name, procid, msgid, structured_data,"
+                               "  message "
+                               "FROM logs WHERE message = ?";
     sqlite3_stmt *result_stmt;
     int sql_result;
     const char *expected_message;
@@ -145,6 +146,110 @@ namespace {
     structured_data = sqlite3_column_text( result_stmt, 7 );
     EXPECT_NOT_NULL( structured_data );
     TestRFC5424StructuredData( reinterpret_cast<const char *>( structured_data ) );
+
+    sqlite3_finalize( result_stmt );
+    free( ( void * ) expected_message );
+  }
+
+  TEST_F( Sqlite3TargetTest, CustomInsert ) {
+    const char *insert_sql = "INSERT INTO logs (prival, version,"
+                             "  timestamp, hostname, app_name,"
+                             "  procid, msgid, structured_data,"
+                             "  message) "
+                             "VALUES (0, 1, $timestamp,"
+                             "  $hostname, $app_name, $procid,"
+                             "  $msgid, '-',"
+                             "  $message);";
+    const struct stumpless_target *result;
+    int add_result;
+    sqlite3 *db;
+    const char *result_query = "SELECT prival, version, timestamp, hostname,"
+                               "  app_name, procid, msgid, structured_data,"
+                               "  message "
+                               "FROM logs WHERE message = ?";
+    sqlite3_stmt *result_stmt;
+    int sql_result;
+    const char *expected_message;
+    int prival;
+    int actual_version;
+    const unsigned char *timestamp;
+    const unsigned char *hostname;
+    const char *actual_hostname;
+    const unsigned char *app_name;
+    const char *actual_app_name;
+    const unsigned char *procid;
+    const char *actual_procid;
+    const unsigned char *msgid;
+    const char *actual_msgid;
+    const unsigned char *structured_data;
+
+    result = stumpless_set_sqlite3_insert_sql( target, insert_sql );
+    ASSERT_EQ( result, target );
+
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( add_result, 0 );
+    EXPECT_NO_ERROR;
+
+    db = ( sqlite3 * ) stumpless_get_sqlite3_db( target );
+    ASSERT_NOT_NULL( db );
+    EXPECT_NO_ERROR;
+
+    sql_result = sqlite3_prepare_v2( db, result_query, -1, &result_stmt, NULL );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    expected_message = stumpless_get_entry_message( basic_entry );
+    ASSERT_NOT_NULL( expected_message );
+    sql_result = sqlite3_bind_text( result_stmt,
+                                    1,
+                                    expected_message,
+                                    -1,
+                                    SQLITE_STATIC );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( result_stmt );
+    EXPECT_EQ( sql_result, SQLITE_ROW );
+
+    prival = sqlite3_column_int( result_stmt, 0 );
+    EXPECT_EQ( prival, 0 );
+
+    actual_version = sqlite3_column_int( result_stmt, 1 );
+    EXPECT_EQ( actual_version, 1 );
+
+    timestamp = sqlite3_column_text( result_stmt, 2 );
+    EXPECT_NOT_NULL( timestamp );
+    TestRFC5424Timestamp( reinterpret_cast<const char *>( timestamp ) );
+
+    hostname = sqlite3_column_text( result_stmt, 3 );
+    EXPECT_NOT_NULL( hostname );
+    actual_hostname = stumpless_get_entry_hostname( basic_entry );
+    EXPECT_NOT_NULL( actual_hostname );
+    EXPECT_STREQ( ( const char * ) hostname, actual_hostname );
+    free( ( void * ) actual_hostname );
+
+    app_name = sqlite3_column_text( result_stmt, 4 );
+    EXPECT_NOT_NULL( app_name );
+    actual_app_name = stumpless_get_entry_app_name( basic_entry );
+    EXPECT_NOT_NULL( actual_app_name );
+    EXPECT_STREQ( ( const char * ) app_name, actual_app_name );
+    free( ( void * ) actual_app_name );
+
+    procid = sqlite3_column_text( result_stmt, 5 );
+    EXPECT_NOT_NULL( procid );
+    actual_procid = stumpless_get_entry_procid( basic_entry );
+    EXPECT_NOT_NULL( actual_procid );
+    EXPECT_STREQ( ( const char * ) procid, actual_procid );
+    free( ( void * ) actual_procid );
+
+    msgid = sqlite3_column_text( result_stmt, 6 );
+    EXPECT_NOT_NULL( msgid );
+    actual_msgid = stumpless_get_entry_msgid( basic_entry );
+    EXPECT_NOT_NULL( actual_msgid );
+    EXPECT_STREQ( ( const char * ) msgid, actual_msgid );
+    free( ( void * ) actual_msgid );
+
+    structured_data = sqlite3_column_text( result_stmt, 7 );
+    EXPECT_NOT_NULL( structured_data );
+    EXPECT_STREQ( ( const char * ) structured_data, "-" );
 
     sqlite3_finalize( result_stmt );
     free( ( void * ) expected_message );

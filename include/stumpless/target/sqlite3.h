@@ -39,6 +39,15 @@
 #include <stumpless/config.h>
 #include <stumpless/target.h>
 
+/**
+ * The default SQL statement used to insert entries into a SQLite3 database.
+ */
+#define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL \
+"INSERT INTO logs ( prival, version, timestamp, hostname, app_name, procid,"   \
+"                   msgid, structured_data, message ) "                        \
+"VALUES ( $prival, 1, $timestamp, $hostname, $app_name, $procid, $msgid,"      \
+"         $structured_data, $message);"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -124,6 +133,14 @@ stumpless_get_sqlite3_db( const struct stumpless_target *target );
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *name );
+
+/**
+ * TODO update
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_target *
+stumpless_set_sqlite3_insert_sql( struct stumpless_target *target,
+                                  const char *sql );
 
 #ifdef __cplusplus
 }                               /* extern "C" */

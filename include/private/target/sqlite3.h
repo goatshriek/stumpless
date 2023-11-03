@@ -36,8 +36,12 @@ struct sqlite3_target {
   sqlite3 *db;
 /** The SQL statement used to insert entries into the database. */
   const char *insert_sql;
-/** The prepared statement used for the default insertion statement. */
-  sqlite3_stmt *insert_stmt;
+/** The function used to create prepared statements for database insertion. */
+  void * ( *prepare_func )( const struct stumpless_entry *entry, void *data, size_t * );
+/** The data pointer used for custom prepare functions. */
+  void *prepare_data;
+/** The prepared statement for the default prepare function. */
+  sqlite3_stmt *insert_stmts[1];
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects db. This mutex must be locked by a thread before it uses the
@@ -75,6 +79,7 @@ new_sqlite3_target( const char *db_filename );
  * cancelled, due to the use of a lock that could be left locked.
  */
 int
+
 send_entry_to_sqlite3_target( const struct stumpless_target *target,
                               const struct stumpless_entry *entry );
 
