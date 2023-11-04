@@ -20,6 +20,7 @@
 #define __STUMPLESS_PRIVATE_TARGET_SQLITE3_H
 
 #include <sqlite3.h>
+#include <stddef.h>
 #include <stumpless/config.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
