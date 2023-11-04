@@ -62,7 +62,7 @@ prepare_statements( const struct stumpless_entry *entry, void *data, size_t *cou
 
   target = data;
   if( !target->insert_stmts[0] ) {
-    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &(target->insert_stmts[0]), NULL );
+    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmts[0], NULL );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
       return NULL;
