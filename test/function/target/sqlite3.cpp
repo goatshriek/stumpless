@@ -161,6 +161,7 @@ namespace {
                              "  $msgid, '-',"
                              "  $message);";
     const struct stumpless_target *result;
+    const char *current_sql;
     int add_result;
     sqlite3 *db;
     const char *result_query = "SELECT prival, version, timestamp, hostname,"
@@ -185,6 +186,9 @@ namespace {
 
     result = stumpless_set_sqlite3_insert_sql( target, insert_sql );
     ASSERT_EQ( result, target );
+
+    current_sql = stumpless_get_sqlite3_insert_sql( target );
+    ASSERT_EQ( current_sql, insert_sql );
 
     add_result = stumpless_add_entry( target, basic_entry );
     EXPECT_GE( add_result, 0 );
@@ -253,6 +257,23 @@ namespace {
 
     sqlite3_finalize( result_stmt );
     free( ( void * ) expected_message );
+  }
+
+  TEST_F( Sqlite3TargetTest, DefaultInsertSql ) {
+    const char *insert_sql;
+
+    insert_sql = stumpless_get_sqlite3_insert_sql( target );
+    EXPECT_NO_ERROR;
+    ASSERT_STREQ( insert_sql, STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL );
+  }
+
+  TEST_F( Sqlite3TargetTest, NullPreparer ) {
+    const struct stumpless_target *result;
+    const struct stumpless_error *error;
+
+    result = stumpless_set_sqlite3_prepare( target, NULL, NULL );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   /* non-fixture tests */

@@ -302,6 +302,22 @@ stumpless_get_sqlite3_db( const struct stumpless_target *target ) {
   return db_target->db;
 }
 
+const char *
+stumpless_get_sqlite3_insert_sql( const struct stumpless_target *target ) {
+  struct sqlite3_target *db_target;
+  const char *result;
+
+  VALIDATE_ARG_NOT_NULL( target );
+
+  db_target = target->id;
+
+  config_lock_mutex( &db_target->db_mutex );
+  result = db_target->insert_sql;
+  config_unlock_mutex( &db_target->db_mutex );
+
+  return result;
+}
+
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *db_filename ) {
   struct stumpless_target *target;
@@ -336,9 +352,31 @@ stumpless_set_sqlite3_insert_sql( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL( target );
 
   db_target = target->id;
+
+  config_lock_mutex( &db_target->db_mutex );
   db_target->insert_sql = sql;
   sqlite3_finalize( db_target->insert_stmts[0] );
   db_target->insert_stmts[0] = NULL;
+  config_unlock_mutex( &db_target->db_mutex );
+
+  return target;
+}
+
+struct stumpless_target *
+stumpless_set_sqlite3_prepare( struct stumpless_target *target,
+                               stumpless_sqlite3_prepare_func_t preparer,
+                               void *data ) {
+  struct sqlite3_target *db_target;
+
+  VALIDATE_ARG_NOT_NULL( target );
+  VALIDATE_ARG_NOT_NULL( preparer );
+
+  db_target = target->id;
+
+  config_lock_mutex( &db_target->db_mutex );
+  db_target->prepare_func = preparer;
+  db_target->prepare_data = NULL;
+  config_unlock_mutex( &db_target->db_mutex );
 
   return target;
 }
