@@ -42,8 +42,6 @@
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to leaving memory in an undefined state.
  *
- * @since release v1.6.0
- *
  */
 void
 entry_free_all( void );
@@ -86,8 +84,7 @@ get_prival( enum stumpless_facility facility,
  *
  * **Async Signal Safety: AS-Unsafe **
  * This function is not safe to call from signal handlers due to the use of
- * function 'pthread_mutex_lock()' from <pthread.h> that is not guarenteed to 
- * be async signal safe.
+ * mutexes that are not guarenteed to be async signal safe.
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
@@ -137,12 +134,14 @@ locked_add_element( struct stumpless_entry *entry,
  * This function is not thread safe as it doesn't use any synchronization 
  * or locking mechanisms while accessing shared resources.
  *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to use of
+ * thread global structrues.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously 
- * canceled.
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously 
+ * canceled due to use of thread-global structure that may left in a
+ * undefined state when cancelled
  *
  * @since release v2.0.0
  *
@@ -156,7 +155,6 @@ locked_add_element( struct stumpless_entry *entry,
 struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
                              size_t index );
-
 
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
