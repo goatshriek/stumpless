@@ -64,8 +64,6 @@ entry_free_all( void );
  * This function must be safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since release v2.0.0
- *
  * @param facility Facility value. This should be a \c STUMPLESS_FACILITY value.
  * 
  * @param severity Severity value. This should be a \c STUMPLESS_SEVERITY value
@@ -90,8 +88,6 @@ get_prival( enum stumpless_facility facility,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of lock that could be left in undefined state. 
  *
- * @since release v2.0.0
- *
  * @param entry The entry to be locked.
  *
  */
@@ -113,8 +109,6 @@ lock_entry( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of memory functions that could leave the 
  * memory in undefined state.
- *
- * @since release v2.6.0
  *
  * @param entry The entry to add the new element.
  *
@@ -141,9 +135,7 @@ locked_add_element( struct stumpless_entry *entry,
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously 
  * canceled due to use of thread-global structure that may left in a
- * undefined state when cancelled
- *
- * @since release v2.0.0
+ * undefined state when cancelled.
  *
  * @param entry The entry to get the element from.
  *
