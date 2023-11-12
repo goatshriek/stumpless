@@ -25,6 +25,52 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/rfc5424.hpp"
 
+struct test_prepare_data {
+  struct stumpless_target *target;
+  sqlite3_stmt *insert_stmts[2];
+};
+
+static
+void *
+test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
+  const char *insert_sql = "INSERT INTO logs (prival, version, message) "
+                           "VALUES (0, 1, ?);";
+  int sql_result;
+  struct test_prepare_data *test_data = ( struct test_prepare_data * ) data;
+  sqlite3 *db = ( sqlite3 * ) stumpless_get_sqlite3_db( test_data->target );
+
+  if( !test_data->insert_stmts[0] ) {
+    sql_result = sqlite3_prepare_v2( db, insert_sql, -1, &test_data->insert_stmts[0], NULL );
+    if( sql_result != SQLITE_OK ) {
+      return NULL;
+    }
+  } else {
+    sqlite3_reset( test_data->insert_stmts[0] );
+  }
+
+  if( !test_data->insert_stmts[1] ) {
+    sql_result = sqlite3_prepare_v2( db, insert_sql, -1, &test_data->insert_stmts[1], NULL );
+    if( sql_result != SQLITE_OK ) {
+      return NULL;
+    }
+  } else {
+    sqlite3_reset( test_data->insert_stmts[1] );
+  }
+
+  sql_result = sqlite3_bind_text( test_data->insert_stmts[0], 1, "test-prepare-1", -1, SQLITE_STATIC );
+  if( sql_result != SQLITE_OK ) {
+    return NULL;
+  }
+
+  sql_result = sqlite3_bind_text( test_data->insert_stmts[1], 1, "test-prepare-2", -1, SQLITE_STATIC );
+  if( sql_result != SQLITE_OK ) {
+    return NULL;
+  }
+
+  *count = 2;
+  return &test_data->insert_stmts;
+}
+
 namespace {
   class Sqlite3TargetTest : public::testing::Test {
     protected:
@@ -257,6 +303,84 @@ namespace {
 
     sqlite3_finalize( result_stmt );
     free( ( void * ) expected_message );
+  }
+
+  TEST_F( Sqlite3TargetTest, CustomPrepare ) {
+    sqlite3 *db;
+    struct test_prepare_data data;
+    const struct stumpless_target *target_result;
+    int add_result;
+    int sql_result;
+    const char *result_query = "SELECT prival, version, message FROM logs "
+                               "WHERE message = ?;";
+    sqlite3_stmt *result_stmt;
+    int prival;
+    int version;
+    const unsigned char *message;
+
+    db = ( sqlite3 * ) stumpless_get_sqlite3_db( target );
+    ASSERT_NOT_NULL( db );
+    EXPECT_NO_ERROR;
+
+    data.target = target;
+    data.insert_stmts[0] = NULL;
+    data.insert_stmts[1] = NULL;
+    target_result = stumpless_set_sqlite3_prepare( target, test_prepare, &data );
+    ASSERT_EQ( target_result, target );
+    EXPECT_NO_ERROR;
+
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( add_result, 0 );
+    EXPECT_NO_ERROR;
+
+    sql_result = sqlite3_prepare_v2( db, result_query, -1, &result_stmt, NULL );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_bind_text( result_stmt,
+                                    1,
+                                    "test-prepare-1",
+                                    -1,
+                                    SQLITE_STATIC );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( result_stmt );
+    EXPECT_EQ( sql_result, SQLITE_ROW );
+
+    prival = sqlite3_column_int( result_stmt, 0 );
+    EXPECT_EQ( prival, 0 );
+
+    version = sqlite3_column_int( result_stmt, 1 );
+    EXPECT_EQ( version, 1 );
+
+    message = sqlite3_column_text( result_stmt, 2 );
+    EXPECT_NOT_NULL( message );
+    EXPECT_STREQ( ( const char * ) message, "test-prepare-1" );
+
+    sqlite3_reset( result_stmt );
+
+    sql_result = sqlite3_bind_text( result_stmt,
+                                    1,
+                                    "test-prepare-2",
+                                    -1,
+                                    SQLITE_STATIC );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( result_stmt );
+    EXPECT_EQ( sql_result, SQLITE_ROW );
+
+    prival = sqlite3_column_int( result_stmt, 0 );
+    EXPECT_EQ( prival, 0 );
+
+    version = sqlite3_column_int( result_stmt, 1 );
+    EXPECT_EQ( version, 1 );
+
+    message = sqlite3_column_text( result_stmt, 2 );
+    EXPECT_NOT_NULL( message );
+    EXPECT_STREQ( ( const char * ) message, "test-prepare-2" );
+
+    sqlite3_finalize( data.insert_stmts[0] );
+    sqlite3_finalize( data.insert_stmts[1] );
+    sqlite3_finalize( result_stmt );
   }
 
   TEST_F( Sqlite3TargetTest, DefaultInsertSql ) {
