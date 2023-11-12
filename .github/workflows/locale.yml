@@ -130,6 +130,26 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-tr-tr:
+    name: "linux, tr-tr"
+    runs-on: "ubuntu-20.04"
+    env:
+      LANG: "tr_TR.UTF-8"
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"tr-TR\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-pl-pl:
     name: "linux, pl-pl"
     runs-on: "ubuntu-20.04"
