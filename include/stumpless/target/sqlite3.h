@@ -122,6 +122,14 @@ stumpless_get_sqlite3_insert_sql( const struct stumpless_target *target );
 
 /**
  * TODO update
+ */
+STUMPLESS_PUBLIC_FUNCTION
+stumpless_sqlite3_prepare_func_t
+stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
+                               void **data );
+
+/**
+ * TODO update
  * Opens a file target.
  *
  * File targets send logs to a file on the system. Note that this will open the
@@ -167,6 +175,15 @@ struct stumpless_target *
 stumpless_set_sqlite3_prepare( struct stumpless_target *target,
                                stumpless_sqlite3_prepare_func_t preparer,
                                void *data );
+
+/**
+ * TODO update
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void *
+stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
+                           void *data,
+                           size_t *count );
 
 #ifdef __cplusplus
 }                               /* extern "C" */

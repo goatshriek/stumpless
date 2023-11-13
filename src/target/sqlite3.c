@@ -38,9 +38,10 @@
 
 // generic pointer here to prevent mandatory public API reliance on sqlite3.h
 // this is called while the db mutex is held, so thread safety is not a concern
-static
 void *
-prepare_statements( const struct stumpless_entry *entry, void *data, size_t *count ) {
+stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
+                           void *data,
+                           size_t *count ) {
   struct sqlite3_target *target;
   int sql_result;
   sqlite3_stmt *insert_stmt;
@@ -327,6 +328,23 @@ stumpless_get_sqlite3_insert_sql( const struct stumpless_target *target ) {
   return result;
 }
 
+stumpless_sqlite3_prepare_func_t
+stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
+                               void **data ) {
+  struct sqlite3_target *db_target;
+
+  VALIDATE_ARG_NOT_NULL( target );
+
+  db_target = target->id;
+
+  if( data ) {
+    *data = db_target->prepare_data;
+  }
+
+  clear_error();
+  return db_target->prepare_func;
+}
+
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *db_filename ) {
   struct stumpless_target *target;
@@ -425,7 +443,7 @@ new_sqlite3_target( const char *db_filename ) {
   }
 
   target->insert_sql = STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL;
-  target->prepare_func = prepare_statements;
+  target->prepare_func = stumpless_sqlite3_prepare;
   target->prepare_data = target;
   target->insert_stmts[0] = NULL;
   config_init_mutex( &target->db_mutex );
@@ -456,7 +474,7 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   statements = db_target->prepare_func( entry, db_target->prepare_data, &stmt_count );
   if( !statements ) {
     result = -1;
-    if( db_target->prepare_func != prepare_statements ) {
+    if( db_target->prepare_func != stumpless_sqlite3_prepare ) {
       // TODO create an error for sqlite3 callback failure
       raise_sqlite3_error ( "the prepare statements callback failed", 0 ); // TODO make more specific
     }

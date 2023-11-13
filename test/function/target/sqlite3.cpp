@@ -271,8 +271,8 @@ namespace {
 
     hostname = sqlite3_column_text( result_stmt, 3 );
     // hostname might be NULL if it couldn't be retrieved
-    if( !hostname  {
-      hostname = "-";
+    if( !hostname ) {
+      hostname = ( const unsigned char * ) "-";
     }
     actual_hostname = stumpless_get_entry_hostname( basic_entry );
     EXPECT_NOT_NULL( actual_hostname );
@@ -392,6 +392,24 @@ namespace {
     insert_sql = stumpless_get_sqlite3_insert_sql( target );
     EXPECT_NO_ERROR;
     ASSERT_STREQ( insert_sql, STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL );
+  }
+
+  TEST_F( Sqlite3TargetTest, GetPrepare ) {
+    stumpless_sqlite3_prepare_func_t result;
+    void *data;
+
+    result = stumpless_get_sqlite3_prepare( target , &data );
+    EXPECT_EQ( result, stumpless_sqlite3_prepare );
+    EXPECT_EQ( data, target->id );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST_F( Sqlite3TargetTest, GetPrepareNullData ) {
+    stumpless_sqlite3_prepare_func_t result;
+
+    result = stumpless_get_sqlite3_prepare( target , NULL );
+    EXPECT_EQ( result, stumpless_sqlite3_prepare );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( Sqlite3TargetTest, NullPreparer ) {
