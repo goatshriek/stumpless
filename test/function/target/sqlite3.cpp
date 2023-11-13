@@ -270,7 +270,10 @@ namespace {
     TestRFC5424Timestamp( reinterpret_cast<const char *>( timestamp ) );
 
     hostname = sqlite3_column_text( result_stmt, 3 );
-    EXPECT_NOT_NULL( hostname );
+    // hostname might be NULL if it couldn't be retrieved
+    if( !hostname  {
+      hostname = "-";
+    }
     actual_hostname = stumpless_get_entry_hostname( basic_entry );
     EXPECT_NOT_NULL( actual_hostname );
     EXPECT_STREQ( ( const char * ) hostname, actual_hostname );

@@ -36,7 +36,9 @@
 #ifndef __STUMPLESS_TARGET_SQLITE3_H
 #define __STUMPLESS_TARGET_SQLITE3_H
 
+#include <stddef.h>
 #include <stumpless/config.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 
 /**
