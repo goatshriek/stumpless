@@ -36,190 +36,6 @@
 #include "private/target/sqlite3.h"
 #include "private/validate.h"
 
-// generic pointer here to prevent mandatory public API reliance on sqlite3.h
-// this is called while the db mutex is held, so thread safety is not a concern
-void *
-stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
-                           void *data,
-                           size_t *count ) {
-  struct sqlite3_target *target;
-  int sql_result;
-  sqlite3_stmt *insert_stmt;
-  int prival_index;
-  int timestamp_index;
-  int hostname_index;
-  int app_name_index;
-  int procid_index;
-  int msgid_index;
-  int structured_data_index;
-  int message_index;
-  char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
-  struct strbuilder *builder;
-  const struct strbuilder *strbuilder_result;
-  char *buffer;
-  size_t buffer_size;
-
-  buffer_size = config_get_now( timestamp );
-
-  target = data;
-  if( !target->insert_stmts[0] ) {
-    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmts[0], NULL );
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
-      return NULL;
-    }
-  } else {
-    sqlite3_reset( target->insert_stmts[0] );
-  }
-
-  builder = strbuilder_new();
-  if( !builder ) {
-    return NULL;
-  }
-
-  insert_stmt = target->insert_stmts[0];
-
-  // we can gather the indexes before we need to lock the entry
-  prival_index = sqlite3_bind_parameter_index( insert_stmt, "$prival" );
-  timestamp_index = sqlite3_bind_parameter_index( insert_stmt, "$timestamp" );
-  hostname_index = sqlite3_bind_parameter_index( insert_stmt, "$hostname" );
-  app_name_index = sqlite3_bind_parameter_index( insert_stmt, "$app_name" );
-  procid_index = sqlite3_bind_parameter_index( insert_stmt, "$procid" );
-  msgid_index = sqlite3_bind_parameter_index( insert_stmt, "$msgid" );
-  structured_data_index = sqlite3_bind_parameter_index( insert_stmt, "$structured_data" );
-  message_index = sqlite3_bind_parameter_index( insert_stmt, "$message" );
-
-  lock_entry( entry );
-
-  if( prival_index != 0 ) {
-    sql_result = sqlite3_bind_int( insert_stmt, prival_index, entry->prival );
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the prival to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( timestamp_index != 0 ) {
-    if( buffer_size == 1 && timestamp[0] == '-'  ) {
-      sql_result = sqlite3_bind_null( insert_stmt, timestamp_index );
-    } else {
-      // transient since it lives on the stack for this function, which will
-      // disappear before the step occurs
-      sql_result = sqlite3_bind_text( insert_stmt, timestamp_index, timestamp, buffer_size, SQLITE_TRANSIENT );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( hostname_index != 0 ) {
-    strbuilder_result = strbuilder_append_hostname( builder );
-    if( !strbuilder_result ) {
-      goto fail_bind;
-    }
-    buffer = strbuilder_get_buffer( builder, &buffer_size );
-    if( buffer_size == 1 && buffer[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, hostname_index );
-    } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, hostname_index, buffer, buffer_size, SQLITE_TRANSIENT );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the hostname to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( app_name_index != 0 ) {
-    if( entry->app_name_length == 1 && entry->app_name[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, app_name_index );
-    } else {
-      sql_result = sqlite3_bind_text( insert_stmt, app_name_index, entry->app_name, entry->app_name_length, SQLITE_STATIC );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the app_name to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( procid_index != 0 ) {
-    strbuilder_reset( builder );
-    strbuilder_result = strbuilder_append_procid( builder );
-    if( !strbuilder_result ) {
-      goto fail_bind;
-    }
-    buffer = strbuilder_get_buffer( builder, &buffer_size );
-    if( buffer_size == 1 && buffer[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, procid_index );
-    } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, procid_index, buffer, buffer_size, SQLITE_TRANSIENT );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the procid to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( msgid_index != 0 ) {
-    if( entry->msgid_length == 1 && entry->msgid[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, msgid_index );
-    } else {
-      sql_result = sqlite3_bind_text( insert_stmt, msgid_index, entry->msgid, entry->msgid_length, SQLITE_STATIC );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the msgid to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( structured_data_index != 0 ) {
-    strbuilder_reset( builder );
-    strbuilder_result = strbuilder_append_structured_data( builder, entry );
-    if( !strbuilder_result ) {
-      goto fail_bind;
-    }
-    buffer = strbuilder_get_buffer( builder, &buffer_size );
-    if( buffer_size == 1 && buffer[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, structured_data_index );
-    } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, structured_data_index, buffer, buffer_size, SQLITE_TRANSIENT );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the structured data to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  if( message_index != 0 ) {
-    if( entry->message_length == 1 && entry->message[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, message_index );
-    } else {
-      sql_result = sqlite3_bind_text( insert_stmt, message_index, entry->message, entry->message_length, SQLITE_STATIC );
-    }
-    if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n
-      goto fail_bind;
-    }
-  }
-
-  unlock_entry( entry );
-  strbuilder_destroy( builder );
-
-  *count = 1;
-  return &target->insert_stmts;
-
-fail_bind:
-  unlock_entry( entry );
-  strbuilder_destroy( builder );
-  return NULL;
-}
-
 void
 stumpless_close_sqlite3_target( struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
@@ -406,6 +222,190 @@ stumpless_set_sqlite3_prepare( struct stumpless_target *target,
   config_unlock_mutex( &db_target->db_mutex );
 
   return target;
+}
+
+// generic pointer here to prevent mandatory public API reliance on sqlite3.h
+// this is called while the db mutex is held, so thread safety is not a concern
+void *
+stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
+                           void *data,
+                           size_t *count ) {
+  struct sqlite3_target *target;
+  int sql_result;
+  sqlite3_stmt *insert_stmt;
+  int prival_index;
+  int timestamp_index;
+  int hostname_index;
+  int app_name_index;
+  int procid_index;
+  int msgid_index;
+  int structured_data_index;
+  int message_index;
+  char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
+  struct strbuilder *builder;
+  const struct strbuilder *strbuilder_result;
+  char *buffer;
+  size_t buffer_size;
+
+  buffer_size = config_get_now( timestamp );
+
+  target = data;
+  if( !target->insert_stmts[0] ) {
+    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmts[0], NULL );
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
+      return NULL;
+    }
+  } else {
+    sqlite3_reset( target->insert_stmts[0] );
+  }
+
+  builder = strbuilder_new();
+  if( !builder ) {
+    return NULL;
+  }
+
+  insert_stmt = target->insert_stmts[0];
+
+  // we can gather the indexes before we need to lock the entry
+  prival_index = sqlite3_bind_parameter_index( insert_stmt, "$prival" );
+  timestamp_index = sqlite3_bind_parameter_index( insert_stmt, "$timestamp" );
+  hostname_index = sqlite3_bind_parameter_index( insert_stmt, "$hostname" );
+  app_name_index = sqlite3_bind_parameter_index( insert_stmt, "$app_name" );
+  procid_index = sqlite3_bind_parameter_index( insert_stmt, "$procid" );
+  msgid_index = sqlite3_bind_parameter_index( insert_stmt, "$msgid" );
+  structured_data_index = sqlite3_bind_parameter_index( insert_stmt, "$structured_data" );
+  message_index = sqlite3_bind_parameter_index( insert_stmt, "$message" );
+
+  lock_entry( entry );
+
+  if( prival_index != 0 ) {
+    sql_result = sqlite3_bind_int( insert_stmt, prival_index, entry->prival );
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the prival to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( timestamp_index != 0 ) {
+    if( buffer_size == 1 && timestamp[0] == '-'  ) {
+      sql_result = sqlite3_bind_null( insert_stmt, timestamp_index );
+    } else {
+      // transient since it lives on the stack for this function, which will
+      // disappear before the step occurs
+      sql_result = sqlite3_bind_text( insert_stmt, timestamp_index, timestamp, buffer_size, SQLITE_TRANSIENT );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( hostname_index != 0 ) {
+    strbuilder_result = strbuilder_append_hostname( builder );
+    if( !strbuilder_result ) {
+      goto fail_bind;
+    }
+    buffer = strbuilder_get_buffer( builder, &buffer_size );
+    if( buffer_size == 1 && buffer[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, hostname_index );
+    } else {
+      // transient since we reuse and destroy this strbuilder before the statement
+      // is executed
+      sql_result = sqlite3_bind_text( insert_stmt, hostname_index, buffer, buffer_size, SQLITE_TRANSIENT );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the hostname to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( app_name_index != 0 ) {
+    if( entry->app_name_length == 1 && entry->app_name[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, app_name_index );
+    } else {
+      sql_result = sqlite3_bind_text( insert_stmt, app_name_index, entry->app_name, entry->app_name_length, SQLITE_STATIC );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the app_name to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( procid_index != 0 ) {
+    strbuilder_reset( builder );
+    strbuilder_result = strbuilder_append_procid( builder );
+    if( !strbuilder_result ) {
+      goto fail_bind;
+    }
+    buffer = strbuilder_get_buffer( builder, &buffer_size );
+    if( buffer_size == 1 && buffer[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, procid_index );
+    } else {
+      // transient since we reuse and destroy this strbuilder before the statement
+      // is executed
+      sql_result = sqlite3_bind_text( insert_stmt, procid_index, buffer, buffer_size, SQLITE_TRANSIENT );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the procid to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( msgid_index != 0 ) {
+    if( entry->msgid_length == 1 && entry->msgid[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, msgid_index );
+    } else {
+      sql_result = sqlite3_bind_text( insert_stmt, msgid_index, entry->msgid, entry->msgid_length, SQLITE_STATIC );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the msgid to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( structured_data_index != 0 ) {
+    strbuilder_reset( builder );
+    strbuilder_result = strbuilder_append_structured_data( builder, entry );
+    if( !strbuilder_result ) {
+      goto fail_bind;
+    }
+    buffer = strbuilder_get_buffer( builder, &buffer_size );
+    if( buffer_size == 1 && buffer[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, structured_data_index );
+    } else {
+      // transient since we reuse and destroy this strbuilder before the statement
+      // is executed
+      sql_result = sqlite3_bind_text( insert_stmt, structured_data_index, buffer, buffer_size, SQLITE_TRANSIENT );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the structured data to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( message_index != 0 ) {
+    if( entry->message_length == 1 && entry->message[0] == '-' ) {
+      sql_result = sqlite3_bind_null( insert_stmt, message_index );
+    } else {
+      sql_result = sqlite3_bind_text( insert_stmt, message_index, entry->message, entry->message_length, SQLITE_STATIC );
+    }
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  unlock_entry( entry );
+  strbuilder_destroy( builder );
+
+  *count = 1;
+  return &target->insert_stmts;
+
+fail_bind:
+  unlock_entry( entry );
+  strbuilder_destroy( builder );
+  return NULL;
 }
 
 /* private definitions */
