@@ -66,6 +66,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
   sqlite3_stmt *create_statement = NULL;
   int sql_result;
   size_t try_count = 0;
+  bool busy;
   struct stumpless_target *return_result;
 
   VALIDATE_ARG_NOT_NULL( target );
@@ -84,30 +85,23 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
     goto cleanup_and_finish;
   }
 
-  while( true ) {
+  do {
     try_count++;
     sql_result = sqlite3_step( create_statement );
 
-    if( sql_result == SQLITE_BUSY ) {
-      if( try_count > 3 ) { // TODO arbitrary retry count ceiling
-        // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
-        raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
-        return_result = NULL;
-        goto cleanup_and_finish;
-      } else {
-        continue;
-      }
-    }
-
-    if( sql_result == SQLITE_DONE ) {
+    busy = sql_result == SQLITE_BUSY;
+    if( busy && try_count > 3 ) {// TODO arbitrary retry count ceiling
+      // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
+      raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
+      return_result = NULL;
       goto cleanup_and_finish;
     }
+  } while( busy );
 
+  if( sql_result != SQLITE_DONE ) {
     raise_sqlite3_error( "sqlite3_step failed on the table creation statement", sql_result );  // TODO l10n
     return_result = NULL;
-    goto cleanup_and_finish;
   }
-
 
 cleanup_and_finish:
   sqlite3_finalize( create_statement ); // todo capture errors
