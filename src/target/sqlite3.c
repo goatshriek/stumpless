@@ -94,6 +94,8 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
         raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
         return_result = NULL;
         goto cleanup_and_finish;
+      } else {
+        continue;
       }
     }
 
