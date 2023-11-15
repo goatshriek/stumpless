@@ -415,6 +415,24 @@ namespace {
     EXPECT_NO_ERROR;
   }
 
+  TEST_F( Sqlite3TargetTest, InvalidInsertSql ) {
+    const struct stumpless_target *set_result;
+    const char *bad_sql = "this isn't valid sql";
+    const char *current_sql;
+    int add_result;
+    const struct stumpless_error *error;
+
+    set_result = stumpless_set_sqlite3_insert_sql( target, bad_sql );
+    ASSERT_EQ( set_result, target );
+
+    current_sql = stumpless_get_sqlite3_insert_sql( target );
+    ASSERT_EQ( current_sql, bad_sql );
+
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_LT( add_result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
+  }
+
   TEST_F( Sqlite3TargetTest, NullPreparer ) {
     const struct stumpless_target *result;
     const struct stumpless_error *error;
