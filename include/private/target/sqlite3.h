@@ -27,6 +27,11 @@
 #include "private/config/wrapper/thread_safety.h"
 
 /**
+ * TODO this is an arbitrary limit
+ */
+#define SQLITE3_RETRY_MAX 3
+
+/**
  * Internal representation of a sqlite3 target.
  */
 struct sqlite3_target {

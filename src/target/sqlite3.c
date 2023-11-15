@@ -36,6 +36,7 @@
 #include "private/target/sqlite3.h"
 #include "private/validate.h"
 
+
 void
 stumpless_close_sqlite3_target( struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
@@ -90,7 +91,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
     sql_result = sqlite3_step( create_statement );
 
     busy = sql_result == SQLITE_BUSY;
-    if( busy && try_count > 3 ) {// TODO arbitrary retry count ceiling
+    if( busy && try_count > SQLITE3_RETRY_MAX ) {
       // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
       raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
       return_result = NULL;
@@ -462,6 +463,8 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   sqlite3_stmt **statements;
   int result = 1;
   int sql_result;
+  size_t try_count = 0;
+  bool busy;
 
   db_target = target->id;
 
@@ -478,7 +481,18 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   }
 
   for( i = 0; i < stmt_count; i++ ) {
-    sql_result = sqlite3_step( statements[i] );
+    do {
+      try_count++;
+      sql_result = sqlite3_step( statements[i] );
+
+      busy = sql_result == SQLITE_BUSY;
+      if( busy && try_count > SQLITE3_RETRY_MAX ) {
+        // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
+        raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
+        goto cleanup_and_finish;
+      }
+    } while( busy );
+
     if( sql_result != SQLITE_DONE ) {
       result = -1;
       raise_sqlite3_error( "sqlite3_step failed", sql_result );  // TODO l10n
