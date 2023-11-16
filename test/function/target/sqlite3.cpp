@@ -16,11 +16,13 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <cstdlib>
-#include <sqlite3.h>
-#include <stddef.h>
-#include <stumpless.h>
 #include <gtest/gtest.h>
+#include <sqlite3.h>
+#include <sstream>
+#include <string>
+#include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/rfc5424.hpp"
@@ -39,7 +41,8 @@ failing_prepare( const struct stumpless_entry *entry, void *data, size_t *count 
 static
 void *
 test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
-  const char *insert_sql = "INSERT INTO logs (prival, version, message) "
+  const char *insert_sql = "INSERT INTO "
+                              STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " (prival, version, message) "
                            "VALUES (0, 1, ?);";
   int sql_result;
   struct test_prepare_data *test_data = ( struct test_prepare_data * ) data;

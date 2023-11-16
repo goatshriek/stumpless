@@ -54,16 +54,18 @@ stumpless_close_sqlite3_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
   struct sqlite3_target *db_target;
-  const char *create_sql = "CREATE TABLE logs (log_id INTEGER PRIMARY KEY, "
-                                              "prival INTEGER NOT NULL, "
-                                              "version INTEGER NOT NULL, "
-                                              "timestamp TEXT, "
-                                              "hostname TEXT, "
-                                              "app_name TEXT, "
-                                              "procid TEXT, "
-                                              "msgid TEXT, "
-                                              "structured_data TEXT, "
-                                              "message TEXT);";
+  const char* create_sql = "CREATE TABLE "
+                              STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " "
+                           "( log_id INTEGER PRIMARY KEY,"
+                           "  prival INTEGER NOT NULL,"
+                           "  version INTEGER NOT NULL,"
+                           "  timestamp TEXT,"
+                           "  hostname TEXT,"
+                           "  app_name TEXT,"
+                           "  procid TEXT,"
+                           "  msgid TEXT,"
+                           "  structured_data TEXT,"
+                           "  message TEXT )";
   sqlite3_stmt *create_statement = NULL;
   int sql_result;
   size_t try_count = 0;

@@ -42,13 +42,20 @@
 #include <stumpless/target.h>
 
 /**
+ * A string literal with the name of the table used by default for SQLite3
+ * targets.
+ */
+#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING "logs"
+
+/**
  * The default SQL statement used to insert entries into a SQLite3 database.
  */
 #define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL \
-"INSERT INTO logs ( prival, version, timestamp, hostname, app_name, procid, "  \
-                   "msgid, structured_data, message ) "                        \
+"INSERT INTO " STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " "                 \
+"( prival, version, timestamp, hostname, app_name, procid, msgid,"             \
+"  structured_data, message ) "                                                \
 "VALUES ( $prival, 1, $timestamp, $hostname, $app_name, $procid, $msgid, "     \
-         "$structured_data, $message);"
+         "$structured_data, $message )"
 
 #ifdef __cplusplus
 extern "C" {
