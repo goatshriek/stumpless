@@ -127,7 +127,7 @@ stumpless_get_sqlite3_db( const struct stumpless_target *target ) {
 
 const char *
 stumpless_get_sqlite3_insert_sql( const struct stumpless_target *target ) {
-  struct sqlite3_target *db_target;
+  const struct sqlite3_target *db_target;
   const char *result;
 
   VALIDATE_ARG_NOT_NULL( target );
@@ -241,7 +241,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   char timestamp[RFC_5424_TIMESTAMP_BUFFER_SIZE];
   struct strbuilder *builder;
   const struct strbuilder *strbuilder_result;
-  char *buffer;
+  const char *buffer;
   size_t buffer_size;
 
   buffer_size = config_get_now( timestamp );
@@ -473,7 +473,7 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
   statements = db_target->prepare_func( entry, db_target->prepare_data, &stmt_count );
   if( !statements ) {
     result = -1;
-    if( db_target->prepare_func != stumpless_sqlite3_prepare ) {
+    if( db_target->prepare_func != &stumpless_sqlite3_prepare ) {
       // TODO create an error for sqlite3 callback failure
       raise_sqlite3_error ( "the prepare statements callback failed", 0 ); // TODO make more specific
     }
