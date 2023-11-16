@@ -221,7 +221,7 @@ fail:
 struct strbuilder *
 strbuilder_reset( struct strbuilder *builder ) {
   if( builder ) {
-    builder->position = builder->buffer; 
+    builder->position = builder->buffer;
   }
 
   return builder;
