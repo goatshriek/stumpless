@@ -32,6 +32,12 @@ struct test_prepare_data {
 
 static
 void *
+failing_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
+  return NULL;
+}
+
+static
+void *
 test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
   const char *insert_sql = "INSERT INTO logs (prival, version, message) "
                            "VALUES (0, 1, ?);";
@@ -231,6 +237,20 @@ namespace {
 
     TestEntryInDatabase( db, "logs", basic_entry );
     TestEntryInDatabase( db, "logs", empty_entry );
+  }
+
+  TEST_F( Sqlite3TargetTest, FailedPrepare ) {
+    const struct stumpless_target *set_result;
+    int add_result;
+    const struct stumpless_error *error;
+
+    set_result = stumpless_set_sqlite3_prepare( target, failing_prepare, NULL );
+    ASSERT_EQ( set_result, target );
+    EXPECT_NO_ERROR;
+
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_LT( add_result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
   }
 
   TEST_F( Sqlite3TargetTest, CustomHardcodedInsert ) {
