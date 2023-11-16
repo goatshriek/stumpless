@@ -54,6 +54,7 @@
 "copy_param_value_to_lpwstr": "private/config/wel_supported.h"
 "copy_wel_data": "private/config/wel_supported.h"
 "create_empty_entry": "test/helper/fixture.hpp"
+"create_nil_entry": "test/helper/fixture.hpp"
 "destroy_sqlite3_target": "private/target/sqlite3.h"
 "fallback_copy_wstring_to_cstring": "private/config/fallback.h"
 "FINALIZE_MEMORY_COUNTER": "test/helper/memory_counter.hpp"
