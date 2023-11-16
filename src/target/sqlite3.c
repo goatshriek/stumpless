@@ -382,10 +382,10 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   }
 
   if( message_index != 0 ) {
-    if( entry->message_length == 1 && entry->message[0] == '-' ) {
-      sql_result = sqlite3_bind_null( insert_stmt, message_index );
-    } else {
+    if( entry->message ) {
       sql_result = sqlite3_bind_text( insert_stmt, message_index, entry->message, entry->message_length, SQLITE_STATIC );
+    } else {
+      sql_result = sqlite3_bind_null( insert_stmt, message_index );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n

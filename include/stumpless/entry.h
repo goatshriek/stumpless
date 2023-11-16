@@ -592,6 +592,10 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry );
  * Note that if this message was originally set using format specifiers, the
  * result will have them substituted, instead of the original placeholders.
  *
+ * It is also important to note that the message may be NULL if the entry
+ * does not have one. This differs from other fields like the app id or msgid,
+ * which will be an RFC 5424 NILVALUE '-' if they have not been set.
+ *
  * In versions prior to v2.0.0, the returned pointer was to the internal buffer
  * used to store the name and was not to be modified by the caller. This
  * behavior changed in v2.0.0 in order to avoid thread safety issues.
@@ -614,9 +618,8 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry );
  *
  * @param entry The entry to get the message of.
  *
- * @return The message of the entry if no error is encountered. If an error
- * was encountered, then NULL is returned and an error code is set
- * appropriately.
+ * @return The message of the entry (which may be NULL). If an error was
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *

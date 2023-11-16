@@ -412,13 +412,8 @@ stumpless_get_entry_message( const struct stumpless_entry *entry ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   lock_entry( entry );
-  if( entry->message_length == 0 ) {
-    message_copy = alloc_mem( 2 );
-    if( !message_copy ) {
-      goto cleanup_and_return;
-    }
-    message_copy[0] = '-';
-    message_copy[1] = '\0';
+  if( !entry->message ) {
+    message_copy = NULL;
   } else {
     message_copy = alloc_mem( entry->message_length + 1 );
     if( !message_copy ) {

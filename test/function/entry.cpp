@@ -554,11 +554,8 @@ namespace {
     const char *message;
 
     message = stumpless_get_entry_message( nil_entry );
-    EXPECT_NOT_NULL( message );
+    EXPECT_NULL( message );
     EXPECT_NO_ERROR;
-
-    EXPECT_STREQ( message, "-" );
-    free( ( void * ) message );
   }
 
   TEST_F( EntryTest, GetParamByIndex ) {

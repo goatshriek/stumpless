@@ -104,18 +104,17 @@ TestEntryInDatabase( sqlite3 *db, std::string const &table_name, const struct st
                   "FROM " << table_name;
 
   expected_message = stumpless_get_entry_message( entry );
-  EXPECT_NOT_NULL( expected_message );
-  if( strcmp( expected_message, "-" ) == 0 ) {
-    query_stream << " WHERE message IS NULL";
-  } else {
+  if( expected_message ) {
     query_stream << " WHERE message = ?";
+  } else {
+    query_stream << " WHERE message IS NULL";
   }
   std::string result_query = query_stream.str();
 
   sql_result = sqlite3_prepare_v2( db, result_query.c_str(), -1, &result_stmt, NULL );
   EXPECT_EQ( sql_result, SQLITE_OK );
 
-  if( strcmp( expected_message, "-" ) != 0 ) {
+  if( expected_message ) {
     sql_result = sqlite3_bind_text( result_stmt,
                                     1,
                                     expected_message,
