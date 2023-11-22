@@ -23,19 +23,32 @@ int
 main( int argc, char **argv ) {
   struct stumpless_target *db_target;
 
+  // create the new database (or open the existing one)
   db_target = stumpless_open_sqlite3_target( "stumpless_example.sqlite3" );
   if( !db_target ) {
     stumpless_perror( "couldn't open sqlite3 target" );
     return EXIT_FAILURE;
   }
 
-  // TODO we're just ignoring errors if this fails, assuming it already existed
+  // create the default logs table (if it doesn't exist)
   stumpless_create_default_sqlite3_table( db_target );
+  if( stumpless_has_error() ) {
+    // for simplicity, if this fails we simply print a warning and continue
+    puts( "could not create default table, perhaps it already exists?\n" );
+  }
 
-  stumpless_add_message( db_target, "goes to the sqlite3 database" );
-  stumpless_add_message( db_target, "this one too" );
+  // send a simple message to our new logs table
+  stumpless_add_message( db_target, "cards are on the table" );
 
+  // after this, an initially empty database would look like this:
+  // sqlite> SELECT * FROM logs;
+  // log_id      prival      version     timestamp                    hostname    app_name    procid      msgid       structured_data  message
+  // ----------  ----------  ----------  ---------------------------  ----------  ----------  ----------  ----------  ---------------  ----------------------
+  // 1           14          1           2023-11-22T04:35:02.909888Z  Angus                   3090                                     cards are on the table
+
+  // clean up on the way out
   stumpless_close_sqlite3_target( db_target );
+  stumpless_free_all();
 
   return EXIT_SUCCESS;
 }

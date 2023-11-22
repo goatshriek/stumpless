@@ -31,8 +31,8 @@ Each variable is bound to the effective value held in the entry at the time that
 it's logged.
 
 If you don't want to bother creating the logs table, you can ask Stumpless to do
-this for you using `stumpless_create_default_sqlite3_table`. This will make a
-table with the following schema:
+it for you by invoking `stumpless_create_default_sqlite3_table`. This will
+create a table with the following schema:
 
 ```sql
 CREATE TABLE logs (
@@ -69,5 +69,48 @@ If we peeked into the database at this point, we would see an entry like
 this for the message we added:
 
 ```
-$ sqlite3 stumpless_example.sqlite3
+$ sqlite3 -header -column stumpless_example.sqlite3
+SQLite version 3.22.0 2018-01-22 18:45:57
+Enter ".help" for usage hints.
+sqlite> SELECT * FROM logs;
+log_id      prival      version     timestamp                    hostname    app_name    procid      msgid       structured_data  message
+----------  ----------  ----------  ---------------------------  ----------  ----------  ----------  ----------  ---------------  ----------------------
+1           14          1           2023-11-22T04:35:02.909888Z  Angus                   3090                                     cards are on the table
 ```
+
+If you simply need to get entries into a database, then this usage might be all
+that you need. Notice that you don't even need to use any SQLite3 functions or
+headers: you can rely on Stumpless for that! But, if you need to customize this
+a bit more, then you'll need to do a little more work.
+
+
+# Custom `INSERT` Statements
+If you only need to adjust the default behavior a little bit, you might be able
+to accomplish this without much extra effort. The
+`stumpless_set_sqlite3_insert_sql` function allows you to provide an alternate
+SQL statement to run each time a log entry needs to be made. This allows you to
+make changes like adjust the table name, fields included, or hard-code certain
+values.
+
+You might have noticed that the default SQL statement uses several named SQL
+parameters for the entry values. You can use these in your custom SQL as well!
+They are resolved by name (position is ignored) and if a name is not present
+in the SQL then it is simply left out. In addition to the parameters listed in
+the default statement, there are a few more available if you need them:
+
+ * `$facility` is the facility portion of the entry as an integer. This is
+   equivalent to the integer value of `stumpless_get_entry_facility` of the
+   entry.
+ * `$severity` is the severity portion of the entry as an integer. This is
+   equivalent to the integer value of `stumpless_get_entry_severity` of the
+   entry.
+
+For this example, lets say that you have your own log table with the following
+schema, and you want entries to go into it instead.
+
+```sql
+
+```
+
+# Custom Prepared SQL Statements
+TODO fill in
