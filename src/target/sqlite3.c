@@ -28,9 +28,11 @@
 #include "private/config/wrapper/thread_safety.h"
 #include "private/entry.h"
 #include "private/error.h"
+#include "private/facility.h"
 #include "private/formatter.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
+#include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/target.h"
 #include "private/target/sqlite3.h"
@@ -233,6 +235,8 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   int sql_result;
   sqlite3_stmt *insert_stmt;
   int prival_index;
+  int facility_index;
+  int severity_index;
   int timestamp_index;
   int hostname_index;
   int app_name_index;
@@ -268,12 +272,15 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
 
   // we can gather the indexes before we need to lock the entry
   prival_index = sqlite3_bind_parameter_index( insert_stmt, "$prival" );
+  facility_index = sqlite3_bind_parameter_index( insert_stmt, "$facility" );
+  severity_index = sqlite3_bind_parameter_index( insert_stmt, "$severity" );
   timestamp_index = sqlite3_bind_parameter_index( insert_stmt, "$timestamp" );
   hostname_index = sqlite3_bind_parameter_index( insert_stmt, "$hostname" );
   app_name_index = sqlite3_bind_parameter_index( insert_stmt, "$app_name" );
   procid_index = sqlite3_bind_parameter_index( insert_stmt, "$procid" );
   msgid_index = sqlite3_bind_parameter_index( insert_stmt, "$msgid" );
-  structured_data_index = sqlite3_bind_parameter_index( insert_stmt, "$structured_data" );
+  structured_data_index = sqlite3_bind_parameter_index( insert_stmt,
+                                                        "$structured_data" );
   message_index = sqlite3_bind_parameter_index( insert_stmt, "$message" );
 
   lock_entry( entry );
@@ -282,6 +289,22 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     sql_result = sqlite3_bind_int( insert_stmt, prival_index, entry->prival );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_error( "could not bind the prival to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( facility_index != 0 ) {
+    sql_result = sqlite3_bind_int( insert_stmt, facility_index, get_facility( entry->prival ) );
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the facility to the statement", sql_result ); // TODO l10n
+      goto fail_bind;
+    }
+  }
+
+  if( severity_index != 0 ) {
+    sql_result = sqlite3_bind_int( insert_stmt, severity_index, get_severity( entry->prival ) );
+    if( sql_result != SQLITE_OK ) {
+      raise_sqlite3_error( "could not bind the severity to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }

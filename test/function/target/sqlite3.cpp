@@ -322,7 +322,7 @@ namespace {
     int add_result;
     int sql_result;
     const char *result_query = "SELECT prival, version, message FROM logs "
-                               "WHERE message = ?;";
+                               "WHERE message = ?";
     sqlite3_stmt *result_stmt;
     int prival;
     int version;
@@ -399,7 +399,7 @@ namespace {
                                              "procid TEXT, "
                                              "msgid TEXT, "
                                              "structured_data TEXT, "
-                                             "message TEXT);";
+                                             "message TEXT)";
     sqlite3_stmt *create_statement = NULL;
     int sql_result;
     const char *insert_sql = "INSERT INTO l (prival, version,"
@@ -409,7 +409,7 @@ namespace {
                              "VALUES ($prival, 1, $timestamp,"
                              "  $hostname, $app_name, $procid,"
                              "  $msgid, '-',"
-                             "  $message);";
+                             "  $message)";
     const struct stumpless_target *result;
     const char *current_sql;
     int add_result;
@@ -448,6 +448,64 @@ namespace {
     result = stumpless_create_default_sqlite3_table( target );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
+  }
+
+  TEST_F( Sqlite3TargetTest, FacilityAndSeverityParameters ) {
+    const char *create_sql = "CREATE TABLE priorities"
+                             "( log_id INTEGER PRIMARY KEY,"
+                             "  prival INTEGER NOT NULL,"
+                             "  facility INTEGER NOT NULL,"
+                             "  severity INTEGER NOT NULL,"
+                             "  message TEXT )";
+    sqlite3_stmt *create_stmt = NULL;
+    int sql_result;
+    const char *insert_sql = "INSERT INTO priorities (prival, facility,"
+                             "  severity, message) "
+                             "VALUES ($prival, $facility, $severity,"
+                             "  'hardcoded')";
+    const struct stumpless_target *result;
+    const char *current_sql;
+    int add_result;
+    const char *result_query = "SELECT prival, facility, severity "
+                               "FROM priorities WHERE message = 'hardcoded'";
+    sqlite3_stmt *result_stmt = NULL;
+    int prival;
+    int facility;
+    int severity;
+
+    sql_result = sqlite3_prepare_v2( db, create_sql, -1, &create_stmt, NULL );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( create_stmt );
+    EXPECT_EQ( sql_result, SQLITE_DONE );
+
+    result = stumpless_set_sqlite3_insert_sql( target, insert_sql );
+    ASSERT_EQ( result, target );
+
+    current_sql = stumpless_get_sqlite3_insert_sql( target );
+    ASSERT_EQ( current_sql, insert_sql );
+
+    add_result = stumpless_add_entry( target, basic_entry );
+    EXPECT_GE( add_result, 0 );
+    EXPECT_NO_ERROR;
+
+    sql_result = sqlite3_prepare_v2( db, result_query, -1, &result_stmt, NULL );
+    EXPECT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_step( result_stmt );
+    EXPECT_EQ( sql_result, SQLITE_ROW );
+
+    prival = sqlite3_column_int( result_stmt, 0 );
+    EXPECT_EQ( prival, stumpless_get_entry_prival( basic_entry ) );
+
+    facility = sqlite3_column_int( result_stmt, 1 );
+    EXPECT_EQ( facility, stumpless_get_entry_facility( basic_entry ) );
+
+    severity = sqlite3_column_int( result_stmt, 2 );
+    EXPECT_EQ( severity, stumpless_get_entry_severity( basic_entry ) );
+
+    sqlite3_finalize( create_stmt );
+    sqlite3_finalize( result_stmt );
   }
 
   TEST_F( Sqlite3TargetTest, GetPrepare ) {
