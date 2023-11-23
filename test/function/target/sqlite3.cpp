@@ -402,14 +402,13 @@ namespace {
                                              "message TEXT)";
     sqlite3_stmt *create_stmt = NULL;
     int sql_result;
-    const char *insert_sql = "INSERT INTO l (prival, version,"
-                             "  timestamp, hostname, app_name,"
-                             "  procid, msgid, structured_data,"
-                             "  message) "
-                             "VALUES ($prival, 1, $timestamp,"
-                             "  $hostname, $app_name, $procid,"
-                             "  $msgid, '-',"
-                             "  $message)";
+    const char *insert_sql = "INSERT INTO l ( prival, version, timestamp,"
+                             "                hostname, app_name, procid,"
+                             "                msgid, structured_data,"
+                             "                message ) "
+                             "VALUES ( $prival, 1, $timestamp, $hostname,"
+                             "         $app_name, $procid, $msgid, '-',"
+                             "         $message )";
     const struct stumpless_target *result;
     const char *current_sql;
     int add_result;

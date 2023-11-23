@@ -95,7 +95,7 @@ values.
 You might have noticed that the default SQL statement uses several named SQL
 parameters for the entry values. You can use these in your custom SQL as well!
 They are resolved by name (position is ignored) and if a name is not present
-in the SQL then it is simply left out. In addition to the parameters listed in
+in the SQL then it is simply left out. In addition to the parameters used in
 the default statement, there are a few more available if you need them:
 
  * `$facility` is the facility portion of the entry as an integer. This is
@@ -109,8 +109,39 @@ For this example, lets say that you have your own log table with the following
 schema, and you want entries to go into it instead.
 
 ```sql
+CREATE TABLE card_logs (
+  log_id INTEGER PRIMARY KEY,
+  facility INTEGER NOT NULL,
+  severity INTEGER NOT NULL,
+  timestamp TEXT,
+  structured_data TEXT,
+  message TEXT
+);
+```
+
+We've made a few adjustments to the default schema here. Of course, there is a
+different table name to be more descriptive about the type of logs that are in
+the table. We've also broken the prival into it's separate parts, so that it is
+easier to filter entries using SQL without needing to parse the prival first.
+Finally, we've cut the columns down to specific things that our application
+cares about.
+
+The default insert statement won't work here of course, so we'll need to write
+a new one to fit. This is pretty straightforward:
+
+```sql
+INSERT INTO card_logs ( facility, severity, timestamp, structured_data,
+                        message )
+VALUES ( $facility, $severity, $timestamp, $structured_data, $message )
+```
+
+Now we can start putting logs into our new table! This time, we'll include some
+structured data in our entry as well.
+
+```c
 
 ```
+
 
 # Custom Prepared SQL Statements
 TODO fill in
