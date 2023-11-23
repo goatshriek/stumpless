@@ -400,7 +400,7 @@ namespace {
                                              "msgid TEXT, "
                                              "structured_data TEXT, "
                                              "message TEXT)";
-    sqlite3_stmt *create_statement = NULL;
+    sqlite3_stmt *create_stmt = NULL;
     int sql_result;
     const char *insert_sql = "INSERT INTO l (prival, version,"
                              "  timestamp, hostname, app_name,"
@@ -414,10 +414,10 @@ namespace {
     const char *current_sql;
     int add_result;
 
-    sql_result = sqlite3_prepare_v2( db, create_sql, -1, &create_statement, NULL );
+    sql_result = sqlite3_prepare_v2( db, create_sql, -1, &create_stmt, NULL );
     EXPECT_EQ( sql_result, SQLITE_OK );
 
-    sql_result = sqlite3_step( create_statement );
+    sql_result = sqlite3_step( create_stmt );
     EXPECT_EQ( sql_result, SQLITE_DONE );
 
     result = stumpless_set_sqlite3_insert_sql( target, insert_sql );
@@ -431,6 +431,8 @@ namespace {
     EXPECT_NO_ERROR;
 
     TestEntryInDatabase( db, "l", basic_entry );
+
+    sqlite3_finalize( create_stmt );
   }
 
   TEST_F( Sqlite3TargetTest, DefaultInsertSql ) {
