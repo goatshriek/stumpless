@@ -135,13 +135,151 @@ INSERT INTO card_logs ( facility, severity, timestamp, structured_data,
 VALUES ( $facility, $severity, $timestamp, $structured_data, $message )
 ```
 
+Assuming this SQL is in a variable named `card_logs_insert`, all we need to do
+is set this as our target's insert SQL:
+
+```c
+stumpless_set_sqlite3_insert_sql( db_target, card_logs_insert );
+```
+
 Now we can start putting logs into our new table! This time, we'll include some
 structured data in our entry as well.
+
+```c
+entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                             STUMPLESS_SEVERITY_INFO,
+                             "card-counter",
+                             "card-played",
+                             "a card was played" );
+
+stumpless_add_new_param_to_entry( entry, "card", "suit", "hearts" );
+stumpless_add_new_param_to_entry( entry, "card", "rank", "5" );
+stumpless_add_new_param_to_entry( entry, "player", "name", "bill" );
+
+stumpless_add_entry( db_target, entry );
+```
+
+Let's take a look in the database and see this looks like.
+
+```
+$ sqlite3 -header -column stumpless_example.sqlite3
+SQLite version 3.22.0 2018-01-22 18:45:57
+Enter ".help" for usage hints.
+sqlite> SELECT * FROM card_logs;
+log_id      facility    severity    timestamp                    structured_data                                    message
+----------  ----------  ----------  ---------------------------  -------------------------------------------------  -----------------
+1           8           6           2023-11-23T19:05:33.234523Z  [card suit="hearts" rank="5"][player name="bill"]  a card was played
+```
+
+Great! We got our logs into our own table with the fields we needed. But what
+if we need even MORE control over the insertion? There's one more level of
+customization that you can use to 
+
+
+# Custom Prepared SQL Statements
+There are some scenarios where just adjusting the insert SQL statement isn't
+enough. If you need to execute multiple statements or perform your own logic on
+the entry's data before making the insertion, you'll need more control over what
+happens to make the insertion.
+
+`stumpless_set_sqlite3_prepare` gives you a way to do this within a SQLite3
+target. You provide a function that take the entry and returns a number of
+prepared statements to execute. When setting up, you can also provide a pointer
+to anything you'd like, since you might need some extra information to create
+the statements.
+
+For this example, we'll break our relational database into a couple of tables.
+When new entries come in, we'll pull out the structured data and put it into the
+appropriate columns, so that it's easier to work with using standard SQL
+methods. We'll also add a table that maintains some game state, and update this
+whenever a card is played.
+
+Our two new tables look like this:
+
+```sql
+CREATE TABLE played_cards (
+  played_card_id INTEGER PRIMARY KEY,
+  suit TEXT,
+  rank TEXT
+);
+
+CREATE TABLE taken_turns (
+  taken_turn_id INTEGER PRIMARY KEY,
+  player_name TEXT
+);
+```
+
+Custom prepare functions take three parameters: the entry to log, a pointer to
+a data structure supplied when the function is set, and a pointer to a counter
+where the number of prepared statements is written. The function returns a
+pointer to an array of prepared statement pointers, or NULL if something went
+wrong.
+
+Our custom function will prepare two insert statements, one for each of our
+tables. An abbreviated version looks like this (see `sqlite3_example.c` for
+the full version).
+
+```c
+static sqlite3_stmt *card_stmts[2] = { NULL, NULL };
+
+void *
+card_played_prepare( const struct stumpless_entry *entry,
+                     void *data,
+                     size_t *count ) {
+  sqlite3 *db = data;
+  const char *card_insert_sql = "INSERT INTO played_cards ( suit, rank ) "
+                                "VALUES ( $suite, $rank )";
+  const char *player_insert_sql = "INSERT INTO taken_turns ( player_name ) "
+                                  "VALUES ( $name )";
+  const char *suit;
+  const char *rank;
+  const char *name;
+
+  sqlite3_prepare_v2( db, card_insert_sql, -1, &card_stmts[0], NULL );
+  sqlite3_prepare_v2( db, player_insert_sql, -1, &card_stmts[1], NULL );
+
+  suit = stumpless_get_entry_param_value_by_name( entry, "card", "suit" );
+  rank = stumpless_get_entry_param_value_by_name( entry, "card", "rank" );
+  name = stumpless_get_entry_param_value_by_name( entry, "player", "name" );
+
+  sqlite3_bind_text( card_stmts[0], 1, suit, -1, SQLITE_TRANSIENT );
+  sqlite3_bind_text( card_stmts[0], 2, rank, -1, SQLITE_TRANSIENT );
+  sqlite3_bind_text( card_stmts[1], 1, name, -1, SQLITE_TRANSIENT );
+
+  free( ( char * ) suit );
+  free( ( char * ) rank );
+  free( ( char * ) name );
+
+  *count = 2;
+  return &card_stmts;
+}
+```
+
+Setting this function to be used is almost trivial. Let's also send the same
+entry as before so that we can see the new behavior.
 
 ```c
 
 ```
 
+And finally, a peek into the database to make sure everything is as we expect.
 
-# Custom Prepared SQL Statements
-TODO fill in
+```
+$ sqlite3 -header -column stumpless_example.sqlite3
+SQLite version 3.22.0 2018-01-22 18:45:57
+Enter ".help" for usage hints.
+sqlite> SELECT * FROM played_cards;
+played_card_id  suit        rank
+--------------  ----------  ----------
+1               hearts      5
+sqlite> SELECT * FROM taken_turns;
+taken_turn_id  player_name
+-------------  -----------
+1              bill
+```
+
+If you need more control than this, you're probably better off writing your own
+SQLite code to do insertions, and handing this to a function target to invoke it
+when entries are added. Check out the [function target](../function/README.md)
+example if you want to see what setting up a custom function target is like
+(spoiler: it's easy).

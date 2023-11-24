@@ -43,3 +43,7 @@ add_thread_safety_test(sqlite3
 add_example(sqlite3
   ${PROJECT_SOURCE_DIR}/docs/examples/sqlite3/sqlite3_example.c
 )
+
+target_link_libraries(example-sqlite3
+  sqlite3
+)
