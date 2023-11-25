@@ -409,7 +409,7 @@ stumpless_close_target( struct stumpless_target *target ) {
       break;
 
     case STUMPLESS_SQLITE3_TARGET:
-      config_close_sqlite3_target( target );
+      config_close_sqlite3_target_and_db( target );
       break;
 
     case STUMPLESS_STREAM_TARGET:

@@ -17,6 +17,8 @@
  */
 
 #include <sqlite3.h>
+#include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stumpless.h>
 

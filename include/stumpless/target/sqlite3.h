@@ -17,7 +17,7 @@
  */
 
 /** @file
- * Sqlite3 targets allow logs to be sent to a SQLite3 database. The database,
+ * SQLite3 targets allow logs to be sent to a SQLite3 database. The database,
  * tables, and fields can be left up to the defaults, or customized as needed.
  *
  * **Thread Safety: MT-Safe**
@@ -71,11 +71,7 @@ void *
                                        size_t *count );
 
 /**
- * TODO update
- * Closes a file target.
- *
- * This function closes the file target, as well as the stream opened to the
- * file.
+ * Closes a SQLite3 target and its database handle.
  *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources that other threads
@@ -91,11 +87,18 @@ void *
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
- * @param target The file target to close.
+ * @param target The SQLite3 target to close.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_close_sqlite3_target( struct stumpless_target *target );
+stumpless_close_sqlite3_target_and_db( struct stumpless_target *target );
+
+/**
+ * TODO
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_close_sqlite3_target_only( struct stumpless_target *target );
 
 /**
  * TODO update
@@ -136,13 +139,7 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
                                void **data );
 
 /**
- * TODO update
- * Opens a file target.
- *
- * File targets send logs to a file on the system. Note that this will open the
- * specified file, and it will remain open while the file target is open. If you
- * need to control the file stream yourself, then you should consider using a
- * stream target instead.
+ * Opens a SQLite3 target.
  *
  * **Thread Safety: MT-Safe race:name**
  * This function is thread safe, of course assuming that name is not modified by
@@ -156,8 +153,7 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
- * @param name The name of the logging target, as well as the name of the file
- * to open.
+ * @param name The filename of the database to open.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
@@ -165,6 +161,39 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *name );
+
+/**
+ * Opens a SQLite3 target with an already-open database handle.
+ *
+ * This function allows a specialized database to be opened, or an existing
+ * handle to be used. For example, if an in-memory database is needed, it
+ * can be opened and then passed to this function for logging.
+ *
+ * Note that there are two close functions for SQLite3 targets:
+ * stumpless_close_sqlite_target_and_db and stumpless_close_sqlite3_target_only.
+ * Be sure to call the appropriate one depending on whether you want this handle
+ * to be closed when the target is closed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @param db The database handle to use. This should be a sqlite3 *, though it
+ * is not declared as such so that sqlite3 headers are not required.
+ *
+ * @return The opened target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_target *
+stumpless_open_sqlite3_target_from_db( void *db );
 
 /**
  * TODO update

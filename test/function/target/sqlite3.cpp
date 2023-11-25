@@ -219,7 +219,7 @@ namespace {
     TearDown( void ) {
       stumpless_destroy_entry_and_contents( basic_entry );
       stumpless_destroy_entry_only( empty_entry );
-      stumpless_close_sqlite3_target( target );
+      stumpless_close_sqlite3_target_and_db( target );
       stumpless_free_all();
       remove( db_filename );
     }
@@ -581,7 +581,7 @@ namespace {
   TEST( Sqlite3TargetCloseTest, NullTarget ) {
     const struct stumpless_error *error;
 
-    stumpless_close_sqlite3_target( NULL );
+    stumpless_close_sqlite3_target_and_db( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all();
   }
@@ -592,7 +592,7 @@ namespace {
 
     target = stumpless_open_stdout_target( "not-a-file-target" );
 
-    stumpless_close_sqlite3_target( target );
+    stumpless_close_sqlite3_target_and_db( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_stream_target( target );
@@ -613,7 +613,7 @@ namespace {
     EXPECT_EQ( result, target );
     EXPECT_NO_ERROR;
 
-    stumpless_close_sqlite3_target( target );
+    stumpless_close_sqlite3_target_and_db( target );
     stumpless_free_all();
     remove( db_filename );
   }

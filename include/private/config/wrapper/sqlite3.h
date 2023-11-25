@@ -24,11 +24,13 @@
 #  ifdef STUMPLESS_SQLITE3_TARGETS_SUPPORTED
 #    include <stumpless/target/sqlite3.h>
 #    include "private/target/sqlite3.h"
-#    define config_close_sqlite3_target stumpless_close_sqlite3_target
+#    define config_close_sqlite3_target_and_db stumpless_close_sqlite3_target_and_db
+#    define config_close_sqlite3_target_only stumpless_close_sqlite3_target_only
 #    define config_send_entry_to_sqlite3_target send_entry_to_sqlite3_target
 #  else
 #    include "private/target.h"
-#    define config_close_sqlite3_target close_unsupported_target
+#    define config_close_sqlite3_target_and_db close_unsupported_target
+#    define config_close_sqlite3_target_only close_unsupported_target
 #    define config_send_entry_to_sqlite3_target send_entry_to_unsupported_target
 #  endif
 

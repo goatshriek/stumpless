@@ -42,7 +42,7 @@ public:
   void TearDown( const ::benchmark::State &state ) {
     FINALIZE_MEMORY_COUNTER( sqlite3_add );
     stumpless_destroy_entry_and_contents( entry );
-    stumpless_close_sqlite3_target( target );
+    stumpless_close_sqlite3_target_and_db( target );
     remove( db_filename );
     stumpless_free_all();
   }

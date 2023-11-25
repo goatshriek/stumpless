@@ -64,7 +64,7 @@ destroy_sqlite3_target( struct sqlite3_target *target );
  * TODO update
  */
 struct sqlite3_target *
-new_sqlite3_target( const char *db_filename );
+new_sqlite3_target( sqlite3 *db );
 
 /**
  * TODO update

@@ -259,7 +259,8 @@ Setting this function to be used is almost trivial. Let's also send the same
 entry as before so that we can see the new behavior.
 
 ```c
-
+stumpless_set_sqlite3_prepare( db_target, &card_played_prepare, db );
+stumpless_add_entry( db_target, entry );
 ```
 
 And finally, a peek into the database to make sure everything is as we expect.

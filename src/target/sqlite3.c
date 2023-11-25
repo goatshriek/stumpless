@@ -40,7 +40,32 @@
 
 
 void
-stumpless_close_sqlite3_target( struct stumpless_target *target ) {
+stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
+  struct sqlite3_target *db_target;
+  VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
+
+  if( target->type != STUMPLESS_SQLITE3_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return;
+  }
+
+  // we use v2 here to allow a close to not be blocked by pending transactions
+  db_target = target->id;
+  int sql_result = sqlite3_close_v2( db_target->db );
+  if( sql_result != SQLITE_OK ) {
+    // TODO raise an error
+    //printf("couldn't close the database\n");
+  } else {
+    //printf("closed the database\n");
+  }
+
+  destroy_sqlite3_target( db_target );
+  destroy_target( target );
+  clear_error(  );
+}
+
+void
+stumpless_close_sqlite3_target_only( struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
 
   if( target->type != STUMPLESS_SQLITE3_TARGET ) {
@@ -165,6 +190,8 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
 struct stumpless_target *
 stumpless_open_sqlite3_target( const char *db_filename ) {
   struct stumpless_target *target;
+  sqlite3 *db;
+  int sql_result;
 
   VALIDATE_ARG_NOT_NULL( db_filename );
 
@@ -174,7 +201,41 @@ stumpless_open_sqlite3_target( const char *db_filename ) {
     goto fail;
   }
 
-  target->id = new_sqlite3_target( db_filename );
+  db = NULL;
+  sql_result = sqlite3_open( db_filename, &db );
+  if( sql_result != SQLITE_OK ) {
+    raise_sqlite3_error( "could not open the provided database name", sql_result ); // TODO l10n
+    goto fail_db;
+  }
+
+  target->id = new_sqlite3_target( db );
+  if( !target->id ) {
+    goto fail_db;
+  }
+
+  stumpless_set_current_target( target );
+  return target;
+
+fail_db:
+  sqlite3_close( db );
+  destroy_target( target );
+fail:
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_open_sqlite3_target_from_db( void *db ) {
+  struct stumpless_target *target;
+
+  VALIDATE_ARG_NOT_NULL( db );
+
+  target = new_target( STUMPLESS_SQLITE3_TARGET, "" );
+
+  if( !target ) {
+    goto fail;
+  }
+
+  target->id = new_sqlite3_target( db );
   if( !target->id ) {
     goto fail_id;
   }
@@ -435,35 +496,20 @@ fail_bind:
 void
 destroy_sqlite3_target( struct sqlite3_target *target ) {
   sqlite3_finalize( target->insert_stmts[0] );
-  // we use v2 here to allow a close to not be blocked by pending transactions
-  int sql_result = sqlite3_close_v2( target->db );
-  if( sql_result != SQLITE_OK ) {
-    // TODO raise an error
-    //printf("couldn't close the database\n");
-  } else {
-    //printf("closed the database\n");
-  }
   config_destroy_mutex( &target->db_mutex );
   free_mem( target );
 }
 
 struct sqlite3_target *
-new_sqlite3_target( const char *db_filename ) {
+new_sqlite3_target( sqlite3 *db ) {
   struct sqlite3_target *target;
-  int sql_result;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
-    goto fail;
+    return NULL;
   }
 
-  target->db = NULL;
-  sql_result = sqlite3_open( db_filename, &target->db );
-  if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_error( "could not open the provided database name", sql_result ); // TODO l10n
-    goto fail_db;
-  }
-
+  target->db = db;
   target->insert_sql = STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL;
   target->prepare_func = stumpless_sqlite3_prepare;
   target->prepare_data = target;
@@ -471,12 +517,6 @@ new_sqlite3_target( const char *db_filename ) {
   config_init_mutex( &target->db_mutex );
 
   return target;
-
-fail_db:
-  sqlite3_close( target->db );
-  free_mem( target );
-fail:
-  return NULL;
 }
 
 int
