@@ -32,6 +32,8 @@ add_performance_test(sqlite3
   SOURCES
     test/performance/target/sqlite3.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
+  LIBRARIES
+    "sqlite3"
 )
 
 add_thread_safety_test(sqlite3

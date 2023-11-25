@@ -190,19 +190,22 @@ TestEntryInDatabase( sqlite3 *db, std::string const &table_name, const struct st
 namespace {
   class Sqlite3TargetTest : public::testing::Test {
     protected:
+      sqlite3 *db = NULL;
       const char *db_filename = "test_function_fixture.sqlite3";
       struct stumpless_target *target = NULL;
       struct stumpless_entry *basic_entry = NULL;
       struct stumpless_entry *empty_entry = NULL;
-      sqlite3 *db = NULL;
 
     virtual void
     SetUp( void ) {
       struct stumpless_element *element;
       struct stumpless_param *param;
 
-      remove( db_filename );
-      target = stumpless_open_sqlite3_target( db_filename );
+      sqlite3_open_v2( db_filename,
+                       &db,
+                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
+                       NULL );
+      target = stumpless_open_sqlite3_target_from_db( db );
 
       stumpless_create_default_sqlite3_table( target );
 
@@ -221,7 +224,6 @@ namespace {
       stumpless_destroy_entry_only( empty_entry );
       stumpless_close_sqlite3_target_and_db( target );
       stumpless_free_all();
-      remove( db_filename );
     }
   };
 
@@ -578,7 +580,7 @@ namespace {
     remove( db_filename );
   }
 
-  TEST( Sqlite3TargetCloseTest, NullTarget ) {
+  TEST( Sqlite3TargetCloseDbTest, NullTarget ) {
     const struct stumpless_error *error;
 
     stumpless_close_sqlite3_target_and_db( NULL );
@@ -586,13 +588,34 @@ namespace {
     stumpless_free_all();
   }
 
-  TEST( Sqlite3TargetCloseTest, WrongTargetType ) {
+  TEST( Sqlite3TargetCloseDbTest, WrongTargetType ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-file-target" );
 
     stumpless_close_sqlite3_target_and_db( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+
+    stumpless_close_stream_target( target );
+    stumpless_free_all();
+  }
+
+  TEST( Sqlite3TargetCloseTargetOnlyTest, NullTarget ) {
+    const struct stumpless_error *error;
+
+    stumpless_close_sqlite3_target_only( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all();
+  }
+
+  TEST( Sqlite3TargetCloseTargetOnlyTest, WrongTargetType ) {
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_stdout_target( "not-a-file-target" );
+
+    stumpless_close_sqlite3_target_only( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_stream_target( target );
@@ -668,6 +691,16 @@ namespace {
     const struct stumpless_error *error;
 
     target = stumpless_open_sqlite3_target( NULL );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    stumpless_free_all();
+  }
+
+  TEST( Sqlite3TargetOpenDbTest, NullName ) {
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+
+    target = stumpless_open_sqlite3_target_from_db( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all();
