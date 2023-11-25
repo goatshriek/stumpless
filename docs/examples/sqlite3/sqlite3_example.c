@@ -244,6 +244,14 @@ main( int argc, char **argv ) {
   // add the same entry again to see it in our new tables
   stumpless_add_entry( db_target, entry );
 
+  // sqlite> SELECT * FROM played_cards;
+  // played_card_id  suit        rank
+  // --------------  ----------  ----------
+  // 1               hearts      5
+  // sqlite> SELECT * FROM taken_turns;
+  // taken_turn_id  player_name
+  // -------------  -----------
+  // 1              bill
 
 cleanup_and_finish:
   sqlite3_finalize( card_logs_create_stmt );

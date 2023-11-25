@@ -278,6 +278,13 @@ taken_turn_id  player_name
 1              bill
 ```
 
+That's it!
+
+One important thing to note about this last style of insertion is that it
+requires you to have the SQLite headers and library linked against your own
+executable. You'll want to make sure that you have the same version of SQLite
+that Stumpless is configured with, or you could run into strange issues!
+
 If you need more control than this, you're probably better off writing your own
 SQLite code to do insertions, and handing this to a function target to invoke it
 when entries are added. Check out the [function target](../function/README.md)
