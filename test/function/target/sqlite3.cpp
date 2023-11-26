@@ -601,6 +601,28 @@ namespace {
     stumpless_free_all();
   }
 
+  TEST( Sqlite3TargetCloseTargetOnlyTest, General ) {
+    sqlite3 *db;
+    int sql_result;
+    struct stumpless_target *target;
+
+    sql_result = sqlite3_open_v2( "close_target_only_test.sqlite3",
+                                  &db,
+                                  SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
+                                  NULL );
+    ASSERT_EQ( sql_result, SQLITE_OK );
+
+    target = stumpless_open_sqlite3_target_from_db( db );
+    EXPECT_NOT_NULL( target );
+    EXPECT_NO_ERROR;
+
+    stumpless_close_sqlite3_target_only( target );
+    EXPECT_NO_ERROR;
+
+    sqlite3_close( db );
+    stumpless_free_all();
+  }
+
   TEST( Sqlite3TargetCloseTargetOnlyTest, NullTarget ) {
     const struct stumpless_error *error;
 
