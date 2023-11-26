@@ -67,19 +67,29 @@ struct sqlite3_target *
 new_sqlite3_target( sqlite3 *db );
 
 /**
- * TODO update
+ * Sends an entry to a database target.
  *
  * **Thread Safety: MT-Safe**
- * This function is thread safe. The stream_mutex is used to coordinate updates
- * to the logged file.
+ * This function is thread safe. The db_mutex is used to coordinate requests
+ * to the database.
  *
  * **Async Signal Safety: AS-Unsafe lock**
  * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate file writes.
+ * non-reentrant lock to coordinate database access.
  *
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The SQLite3 target to send the entry to.
+ *
+ * @param entry The entry to send to the database.
+ *
+ * @return A value greater than or equal to zero if no errors were encountered.
+ * If an error was encountered then a negative value is returned an an error
+ * code is set appropriately.
  */
 int
 
