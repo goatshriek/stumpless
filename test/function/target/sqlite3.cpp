@@ -696,6 +696,33 @@ namespace {
     stumpless_free_all();
   }
 
+  TEST( Sqlite3TargetOpenDbTest, MallocFailure ) {
+    const char *db_filename = "malloc_fail_on_open.sqlite3";
+    sqlite3 *db = NULL;
+    int sql_result;
+    struct stumpless_target *target;
+    const struct stumpless_error *error;
+    void *(*set_malloc_result)(size_t);
+
+    sql_result = sqlite3_open_v2( db_filename,
+                                  &db,
+                                  SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
+                                  NULL );
+    ASSERT_EQ( sql_result, SQLITE_OK );
+
+    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    target = stumpless_open_sqlite3_target_from_db( db );
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    ASSERT_TRUE( set_malloc_result == malloc );
+    stumpless_free_all();
+    sqlite3_close( db );
+  }
+
   TEST( Sqlite3TargetOpenDbTest, NullName ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
