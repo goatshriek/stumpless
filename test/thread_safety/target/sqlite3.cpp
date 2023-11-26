@@ -18,6 +18,7 @@
 
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <sqlite3.h>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
@@ -29,14 +30,17 @@ namespace {
 
   TEST( Sqlite3WriteConsistency, SimultaneousWrites ) {
     const char *filename = "test_thread_safety.sqlite3";
+    sqlite3 *db;
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT];
 
-    remove( filename );
-
     // set up the target to log to
-    target = stumpless_open_sqlite3_target( filename );
+    sqlite3_open_v2( filename,
+                     &db,
+                     SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
+                     NULL );
+    target = stumpless_open_sqlite3_target_from_db( db );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -53,7 +57,7 @@ namespace {
     }
 
     // cleanup after the test
-    stumpless_close_sqlite3_target( target );
+    stumpless_close_sqlite3_target_and_db( target );
     EXPECT_NO_ERROR;
 
     stumpless_free_all(  );

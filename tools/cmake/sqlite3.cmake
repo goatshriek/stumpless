@@ -40,6 +40,8 @@ add_thread_safety_test(sqlite3
   SOURCES
     test/thread_safety/target/sqlite3.cpp
     $<TARGET_OBJECTS:test_helper_usage>
+  LIBRARIES
+    "sqlite3"
 )
 
 add_example(sqlite3
