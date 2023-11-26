@@ -494,7 +494,7 @@ fail_bind:
 /* private definitions */
 
 void
-destroy_sqlite3_target( struct sqlite3_target *target ) {
+destroy_sqlite3_target( const struct sqlite3_target *target ) {
   sqlite3_finalize( target->insert_stmts[0] );
   config_destroy_mutex( &target->db_mutex );
   free_mem( target );

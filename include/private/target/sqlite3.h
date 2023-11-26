@@ -58,7 +58,7 @@ struct sqlite3_target {
  * TODO update
  */
 void
-destroy_sqlite3_target( struct sqlite3_target *target );
+destroy_sqlite3_target( const struct sqlite3_target *target );
 
 /**
  * TODO update
