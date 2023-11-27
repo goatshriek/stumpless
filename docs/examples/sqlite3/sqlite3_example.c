@@ -262,7 +262,7 @@ cleanup_and_finish:
   sqlite3_finalize( card_stmts[0] );
   sqlite3_finalize( card_stmts[1] );
   stumpless_destroy_entry_and_contents( entry );
-  stumpless_close_sqlite3_target( db_target );
+  stumpless_close_sqlite3_target_and_db( db_target );
   stumpless_free_all();
 
   return result;
