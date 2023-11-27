@@ -56,6 +56,10 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+set(SQLITE3_RETRY_MAX 3
+  CACHE STRING "the maximum number of retries on SQLite3 operations"
+)
+
 string(CONCAT benchmark_path_help_string
   "A directory with a build of google benchmark that can be used instead of "
   "downloading and building the library during build. "

@@ -39,29 +39,31 @@
 #include "private/validate.h"
 
 
-void
+bool
 stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
   struct sqlite3_target *db_target;
-  VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
+  if( unlikely( target == NULL ) ) {
+    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
+    return false;
+  }
 
   if( target->type != STUMPLESS_SQLITE3_TARGET ) {
     raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
-    return;
+    return false;
   }
 
-  // we use v2 here to allow a close to not be blocked by pending transactions
+  // we use v2 here to prevent close from being blocked by pending transactions
   db_target = target->id;
   int sql_result = sqlite3_close_v2( db_target->db );
   if( sql_result != SQLITE_OK ) {
-    // TODO raise an error
-    //printf("couldn't close the database\n");
-  } else {
-    //printf("closed the database\n");
+    raise_sqlite3_error( "could not close the sqlite3 database", sql_result );  // TODO l10n
+    return false;
   }
 
   destroy_sqlite3_target( db_target );
   destroy_target( target );
   clear_error(  );
+  return true;
 }
 
 void
@@ -120,7 +122,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
     sql_result = sqlite3_step( create_statement );
 
     busy = sql_result == SQLITE_BUSY;
-    if( busy && try_count > SQLITE3_RETRY_MAX ) {
+    if( busy && try_count > STUMPLESS_SQLITE3_RETRY_MAX ) {
       // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
       raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
       return_result = NULL;
@@ -551,7 +553,7 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
       sql_result = sqlite3_step( statements[i] );
 
       busy = sql_result == SQLITE_BUSY;
-      if( busy && try_count > SQLITE3_RETRY_MAX ) {
+      if( busy && try_count > STUMPLESS_SQLITE3_RETRY_MAX ) {
         // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
         raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
         goto cleanup_and_finish;

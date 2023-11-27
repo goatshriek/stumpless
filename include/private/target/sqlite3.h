@@ -27,11 +27,6 @@
 #include "private/config/wrapper/thread_safety.h"
 
 /**
- * TODO this is an arbitrary limit
- */
-#define SQLITE3_RETRY_MAX 3
-
-/**
  * Internal representation of a sqlite3 target.
  */
 struct sqlite3_target {
@@ -92,7 +87,6 @@ new_sqlite3_target( sqlite3 *db );
  * code is set appropriately.
  */
 int
-
 send_entry_to_sqlite3_target( const struct stumpless_target *target,
                               const struct stumpless_entry *entry );
 

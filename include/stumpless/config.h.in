@@ -54,6 +54,9 @@
 /** Defined if socket targets are supported by this build. */
 #cmakedefine STUMPLESS_SOCKET_TARGETS_SUPPORTED 1
 
+/** The maximum number of retries for SQLite operations. */
+#define STUMPLESS_SQLITE3_RETRY_MAX @SQLITE3_RETRY_MAX@
+
 /** Defined if sqlite3 targets are supported by this build. */
 #cmakedefine STUMPLESS_SQLITE3_TARGETS_SUPPORTED 1
 

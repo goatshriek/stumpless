@@ -87,10 +87,14 @@ void *
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0.
+ *
  * @param target The SQLite3 target to close.
+ *
+ * @return
  */
 STUMPLESS_PUBLIC_FUNCTION
-void
+bool
 stumpless_close_sqlite3_target_and_db( struct stumpless_target *target );
 
 /**
