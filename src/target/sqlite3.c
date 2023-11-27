@@ -19,10 +19,12 @@
 #include <sqlite3.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stumpless/config.h>
 #include <stumpless/entry.h>
 #include <stumpless/error.h>
 #include <stumpless/target.h>
 #include <stumpless/target/sqlite3.h>
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/get_now.h"
 #include "private/config/wrapper/thread_safety.h"
