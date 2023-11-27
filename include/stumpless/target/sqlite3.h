@@ -31,6 +31,8 @@
  * **Async Cancel Safety: AC-Unsafe lock**
  * Logging to sqlite3 targets is not safe to call from threads that may be
  * asynchronously cancelled, as the cleanup of the lock may not be completed.
+ *
+ * @since release v2.2.0
  */
 
 #ifndef __STUMPLESS_TARGET_SQLITE3_H
@@ -43,13 +45,9 @@
 #include <stumpless/target.h>
 
 /**
- * A string literal with the name of the table used by default for SQLite3
- * targets.
- */
-#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING "logs"
-
-/**
  * The default SQL statement used to insert entries into a SQLite3 database.
+ *
+ * @since release v2.2.0
  */
 #define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL \
 "INSERT INTO " STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " "                 \
@@ -63,7 +61,11 @@ extern "C" {
 #endif
 
 /**
- * TODO update
+ * A function for generating SQLite3 prepared statements for a given entry. See
+ * \ref stumpless_set_sqlite3_prepare for the semantics of writing and using a
+ * prepare function with SQLite3 targets.
+ *
+ * @since release v2.2.0
  */
 typedef
 void *
@@ -73,6 +75,9 @@ void *
 
 /**
  * Closes a SQLite3 target and its database handle.
+ *
+ * This function can fail if the database handle cannot be closed. In this case,
+ * the target is not closed, and no resources are released.
  *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources that other threads
@@ -88,37 +93,109 @@ void *
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
- * @since release v2.2.0.
+ * @since release v2.2.0
  *
  * @param target The SQLite3 target to close.
  *
- * @return
+ * @return true if the target was closed, and false if not. An error code is
+ * set appropriately if the target could not be closed.
  */
 STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_close_sqlite3_target_and_db( struct stumpless_target *target );
 
 /**
- * TODO
+ * Closes a SQLite3 target, but does not touch the database handle.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The SQLite3 target to close.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_sqlite3_target_only( struct stumpless_target *target );
 
 /**
- * TODO update
+ * Creates a table in the target's database for use with the default SQLite3
+ * insertion behavior. The schema of this table is described below. Note that
+ * the value of \c STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING is configurable
+ * and set at build time for the library.
+ *
+ * /code{.sql}
+ * CREATE TABLE STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING (
+ *   log_id INTEGER PRIMARY KEY,
+ *   prival INTEGER NOT NULL,
+ *   version INTEGER NOT NULL,
+ *   timestamp TEXT,
+ *   hostname TEXT,
+ *   app_name TEXT,
+ *   procid TEXT,
+ *   msgid TEXT,
+ *   structured_data TEXT,
+ *   message TEXT
+ * );
+ * /endcode
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate the table
+ * creation with other target modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The target to create the default table in.
+ *
+ * @return The modified target if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_create_default_sqlite3_table( struct stumpless_target *target );
 
 /**
- * TODO update
+ * Gets the SQLite3 database handle used by the target.
  *
  * The database handle is used by stumpless sqlite3 routines, and serialized
  * using an internal mutex. When you use this handle outside of the library, you
  * must ensure that your operations are also thread safe without this mutex, for
  * example by using the SQLITE_OPEN_NOMUTEX or SQLITE_OPEN_FULLMUTEX options.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate the retrieval
+ * of the handle with other target modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
  *
  * @return The sqlite3 database handle for this target, a sqlite3 *. The return
  * type is void * so that all users of stumpless do not have to have sqlite3
@@ -158,6 +235,8 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0
+ *
  * @param name The filename of the database to open.
  *
  * @return The opened target if no error is encountered. In the event of an
@@ -175,9 +254,10 @@ stumpless_open_sqlite3_target( const char *name );
  * can be opened and then passed to this function for logging.
  *
  * Note that there are two close functions for SQLite3 targets:
- * stumpless_close_sqlite_target_and_db and stumpless_close_sqlite3_target_only.
- * Be sure to call the appropriate one depending on whether you want this handle
- * to be closed when the target is closed.
+ * \ref stumpless_close_sqlite_target_and_db and
+ * \ref stumpless_close_sqlite3_target_only. Be sure to call the appropriate
+ * one depending on whether you want this handle to be closed when the target
+ * is closed.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
@@ -218,7 +298,36 @@ stumpless_set_sqlite3_prepare( struct stumpless_target *target,
                                void *data );
 
 /**
- * TODO update
+ * The default prepare function used for SQLite3 targets.
+ *
+ * This function will generate a single prepared statement based on the target's
+ * current insert SQL statement. See \ref stumpless_set_sqlite3_insert_sql for
+ * how to set the SQL used by this function.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate accesses of the
+ * entry and target structures.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param entry The entry to prepare the statement based on.
+ *
+ * @param data The internal SQLite3 target structure.
+ *
+ * @param count A pointer to an output variable where the number of valid
+ * prepared statements will be written to.
+ *
+ * @return A pointer to an array of sqlite3_stmt pointers on success, or NULL
+ * on failure. In the event of failure an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void *

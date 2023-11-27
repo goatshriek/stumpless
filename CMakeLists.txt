@@ -56,6 +56,10 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+set(SQLITE3_DEFAULT_TABLE_NAME "logs"
+  CACHE STRING "the name of the table used by default for SQLite3 targets"
+)
+
 set(SQLITE3_RETRY_MAX 3
   CACHE STRING "the maximum number of retries on SQLite3 operations"
 )
