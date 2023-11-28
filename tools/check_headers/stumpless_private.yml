@@ -152,7 +152,6 @@
 "set_field_bases": "private/target/journald.h"
 "SET_STATE_COUNTERS": "test/helper/memory_counter.hpp"
 "socket_handle_t": "test/helper/server.hpp"
-"SQLITE3_RETRY_MAX": "private/target/sqlite3.h"
 "stdatomic_compare_exchange_bool": "private/config/have_stdatomic.h"
 "stdatomic_compare_exchange_ptr": "private/config/have_stdatomic.h"
 "stdatomic_read_flag": "private/config/have_stdatomic.h"

@@ -387,7 +387,6 @@
 "STUMPLESS_SOCKET_SEND_FAILURE": "stumpless/error.h"
 "STUMPLESS_SOCKET_TARGETS_SUPPORTED": "stumpless/config.h"
 "STUMPLESS_SOCKET_TARGET": "stumpless/target.h"
-"STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING": "stumpless/target/sqlite3.h"
 "STUMPLESS_SQLITE3_FAILURE": "stumpless/error.h"
 "stumpless_sqlite3_prepare": "stumpless/target/sqlite3.h"
 "stumpless_sqlite3_prepare_func_t": "stumpless/target/sqlite3.h"

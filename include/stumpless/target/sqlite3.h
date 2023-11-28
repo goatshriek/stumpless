@@ -206,14 +206,61 @@ void *
 stumpless_get_sqlite3_db( const struct stumpless_target *target );
 
 /**
- * TODO update
+ * Gets the SQL statement used to insert entries into the database. See
+ * \ref stumpless_set_sqlite3_insert_sql to change this statement.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate the retrieval
+ * of the SQL statement with other target modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The target to get the insert SQL from.
+ *
+ * @return The current SQL used to insert entries into the database, as a UTF-8
+ * encoded string. If an error occurs then NULL is returned and an error is set
+ * appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_sqlite3_insert_sql( const struct stumpless_target *target );
 
 /**
- * TODO update
+ * Gets the preparation function and data pointer used to prepare statements
+ * for insertion into the database. See \ref stumpless_set_sqlite3_prepare
+ * to change this function.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate the retrieval
+ * of the function with other target modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The target to get the prepare function from.
+ *
+ * @param data A pointer to a variable where the data pointer should be written
+ * to. If this is NULL, then it is ignored.
+ *
+ * @return The current prepare function for the target. If an error occurs
+ * then NULL is returned and an error is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 stumpless_sqlite3_prepare_func_t
@@ -270,6 +317,8 @@ stumpless_open_sqlite3_target( const char *name );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
  *
+ * @since release v2.2.0
+ *
  * @param db The database handle to use. This should be a sqlite3 *, though it
  * is not declared as such so that sqlite3 headers are not required.
  *
@@ -281,7 +330,31 @@ struct stumpless_target *
 stumpless_open_sqlite3_target_from_db( void *db );
 
 /**
- * TODO update
+ * Sets the SQL statement used to insert entries into the database.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate the changes
+ * with other target modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The target to set the insert SQL for.
+ *
+ * @param sql The new SQL insertion statement to use for the target. This string
+ * must be valid for the duration of its use in the target, as a pointer to it
+ * is kept internally.
+ *
+ * @return The modified target on success, or NULL on failure. In the event
+ * of failure an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
@@ -289,7 +362,43 @@ stumpless_set_sqlite3_insert_sql( struct stumpless_target *target,
                                   const char *sql );
 
 /**
- * TODO update
+ * Set the function used to prepare statements for entries to this target.
+ *
+ * Preparation functions take three arguments: the entry that is being sent to
+ * the database target, a pointer provided when the function is set, and an
+ * output parameter where the number of prepared statements to use is written.
+ * The function should return a pointer to an array of prepared statements that
+ * should be committed to the database for the entry, or NULL if an error
+ * occurs. The default prepare function is \ref stumpless_sqlite3_prepare, which
+ * is a good place to look for an example.
+ *
+ * Note that the return type is a void * instead of the actual type of
+ * sqlite3_stmt **. This is so that the SQLite3 headers are not needed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe as a mutex is used to coordinate accesses of the
+ * target structures.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Thisi function is not signal safe, as a non-reentrant lock is used
+ * to coordinate the read of the target with other potential accesses.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock used for the target may not be
+ * completed.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The target to set the function for.
+ *
+ * @param preparer The new prepare function to use in the target.
+ *
+ * @param data A pointer that will be passed to the prepare function on each
+ * invocation.
+ *
+ * @return The modified target on success, or NULL on failure. In the event
+ * of failure an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
