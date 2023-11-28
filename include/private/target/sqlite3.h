@@ -50,13 +50,51 @@ struct sqlite3_target {
 };
 
 /**
- * TODO update
+ * Destroys an internal SQLite3 target structure. The database handle is not
+ * modified: if it is needed after this, it must be saved elsewhere.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this target.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param target The SQLite3 target to close.
  */
 void
 destroy_sqlite3_target( const struct sqlite3_target *target );
 
 /**
- * TODO update
+ * Creates a new SQLite3 internal target structure with the given database
+ * handle.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param db The database handle to use for the new target.
+ *
+ * @return The new target. If an error occurs then NULL is returned and an error
+ * code is set appropriately.
  */
 struct sqlite3_target *
 new_sqlite3_target( sqlite3 *db );
