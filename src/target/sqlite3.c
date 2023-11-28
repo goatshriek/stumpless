@@ -138,7 +138,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
   }
 
 cleanup_and_finish:
-  sqlite3_finalize( create_statement ); // todo capture errors
+  sqlite3_finalize( create_statement );
   config_unlock_mutex( &db_target->db_mutex );
   return return_result;
 }
