@@ -22,7 +22,7 @@ classes:
         Closes this target and releases all memory and other resources held by
         it.
       wrapped-function:
-        name: "stumpless_close_sqlite3_target"
+        name: "stumpless_close_sqlite3_target_and_db"
         includes: "stumpless/target/sqlite3.h"
         params:
           - name: "equivalent-struct-pointer"
