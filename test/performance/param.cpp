@@ -25,6 +25,7 @@ NEW_MEMORY_COUNTER( load_param )
 NEW_MEMORY_COUNTER( new_param )
 NEW_MEMORY_COUNTER( set_param_name )
 NEW_MEMORY_COUNTER( from_string )
+NEW_MEMORY_COUNTER( param_to_string )
 
 static void FromString(benchmark::State& state) {
   const char *param = "test-param-name=\"test-param-value\"";
@@ -130,8 +131,30 @@ static void SetParamName(benchmark::State& state){
   SET_STATE_COUNTERS( state, set_param_name );
 }
 
+static void ParamToString(benchmark::State& state){
+  struct stumpless_param *param;
+  const char *result;
+
+  INIT_MEMORY_COUNTER( param_to_string );
+
+  param = stumpless_new_param( "new-param-name", "new-param-value" );
+
+  for(auto _ : state){
+    result = stumpless_param_to_string( param );
+    if( !result ) {
+      state.SkipWithError( "could not convert the param to string" );
+    }
+  }
+
+  stumpless_destroy_param( param );
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, param_to_string );
+}
+
 BENCHMARK(CopyParam);
 BENCHMARK(LoadParam);
 BENCHMARK(NewParam);
 BENCHMARK(SetParamName);
 BENCHMARK(FromString);
+BENCHMARK(ParamToString);
