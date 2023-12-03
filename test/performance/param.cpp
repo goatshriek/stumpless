@@ -144,6 +144,9 @@ static void ParamToString(benchmark::State& state){
     if( !result ) {
       state.SkipWithError( "could not convert the param to string" );
     }
+    else {
+      param_to_string_memory_counter_free( ( void * ) result );
+    }
   }
 
   stumpless_destroy_param( param );
