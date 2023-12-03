@@ -58,7 +58,8 @@ stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
   db_target = target->id;
   int sql_result = sqlite3_close_v2( db_target->db );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_failure( "could not close the sqlite3 database", sql_result );  // TODO l10n
+    raise_sqlite3_failure( L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE,
+                           sql_result );
     return false;
   }
 
@@ -111,9 +112,14 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
 
   config_lock_mutex( &db_target->db_mutex );
 
-  sql_result = sqlite3_prepare_v2( db_target->db, create_sql, -1, &create_statement, NULL );
+  sql_result = sqlite3_prepare_v2( db_target->db,
+                                   create_sql,
+                                   -1,
+                                   &create_statement,
+                                   NULL );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_failure( "sqlite3_prepare_v2 failed on the table creation statement", sql_result );  // TODO l10n
+    raise_sqlite3_failure( L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE,
+                           sql_result );
     return_result = NULL;
     goto cleanup_and_finish;
   }
@@ -131,7 +137,8 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
   } while( busy );
 
   if( sql_result != SQLITE_DONE ) {
-    raise_sqlite3_failure( "sqlite3_step failed on the table creation statement", sql_result );  // TODO l10n
+    raise_sqlite3_failure( L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE,
+                           sql_result ); 
     return_result = NULL;
   }
 
@@ -206,7 +213,7 @@ stumpless_open_sqlite3_target( const char *db_filename ) {
   db = NULL;
   sql_result = sqlite3_open( db_filename, &db );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_failure( "could not open the provided database name", sql_result ); // TODO l10n
+    raise_sqlite3_failure( L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE, sql_result );
     goto fail_db;
   }
 
@@ -288,8 +295,6 @@ stumpless_set_sqlite3_prepare( struct stumpless_target *target,
   return target;
 }
 
-// generic pointer here to prevent mandatory public API reliance on sqlite3.h
-// this is called while the db mutex is held, so thread safety is not a concern
 void *
 stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                            void *data,
@@ -317,9 +322,14 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
 
   target = data;
   if( !target->insert_stmts[0] ) {
-    sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmts[0], NULL );
+    sql_result = sqlite3_prepare_v2( target->db,
+                                     target->insert_sql,
+                                     -1,
+                                     &target->insert_stmts[0],
+                                     NULL );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not prepare the insert statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE,
+                             sql_result );
       return NULL;
     }
   } else {
@@ -357,7 +367,9 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   }
 
   if( facility_index != 0 ) {
-    sql_result = sqlite3_bind_int( insert_stmt, facility_index, get_facility( entry->prival ) );
+    sql_result = sqlite3_bind_int( insert_stmt,
+                                   facility_index,
+                                   get_facility( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the facility to the statement", sql_result ); // TODO l10n
       goto fail_bind;
@@ -365,7 +377,9 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   }
 
   if( severity_index != 0 ) {
-    sql_result = sqlite3_bind_int( insert_stmt, severity_index, get_severity( entry->prival ) );
+    sql_result = sqlite3_bind_int( insert_stmt,
+                                   severity_index,
+                                   get_severity( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the severity to the statement", sql_result ); // TODO l10n
       goto fail_bind;
@@ -378,7 +392,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     } else {
       // transient since it lives on the stack for this function, which will
       // disappear before the step occurs
-      sql_result = sqlite3_bind_text( insert_stmt, timestamp_index, timestamp, buffer_size, SQLITE_TRANSIENT );
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      timestamp_index,
+                                      timestamp,
+                                      buffer_size,
+                                      SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
@@ -395,9 +413,13 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( buffer_size == 1 && buffer[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, hostname_index );
     } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, hostname_index, buffer, buffer_size, SQLITE_TRANSIENT );
+      // transient since we reuse and destroy this strbuilder before the
+      // statement is executed
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      hostname_index,
+                                      buffer,
+                                      buffer_size,
+                                      SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the hostname to the statement", sql_result ); // TODO l10n
@@ -409,7 +431,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( entry->app_name_length == 1 && entry->app_name[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, app_name_index );
     } else {
-      sql_result = sqlite3_bind_text( insert_stmt, app_name_index, entry->app_name, entry->app_name_length, SQLITE_STATIC );
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      app_name_index,
+                                      entry->app_name,
+                                      entry->app_name_length,
+                                      SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the app_name to the statement", sql_result ); // TODO l10n
@@ -429,7 +455,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     } else {
       // transient since we reuse and destroy this strbuilder before the statement
       // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, procid_index, buffer, buffer_size, SQLITE_TRANSIENT );
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      procid_index,
+                                      buffer,
+                                      buffer_size,
+                                      SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the procid to the statement", sql_result ); // TODO l10n
@@ -441,7 +471,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( entry->msgid_length == 1 && entry->msgid[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, msgid_index );
     } else {
-      sql_result = sqlite3_bind_text( insert_stmt, msgid_index, entry->msgid, entry->msgid_length, SQLITE_STATIC );
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      msgid_index,
+                                      entry->msgid,
+                                      entry->msgid_length,
+                                      SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the msgid to the statement", sql_result ); // TODO l10n
@@ -459,9 +493,13 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( buffer_size == 1 && buffer[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, structured_data_index );
     } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
-      sql_result = sqlite3_bind_text( insert_stmt, structured_data_index, buffer, buffer_size, SQLITE_TRANSIENT );
+      // transient since we reuse and destroy this strbuilder before the
+      // statement is executed
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      structured_data_index,
+                                      buffer,
+                                      buffer_size,
+                                      SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
       raise_sqlite3_failure( "could not bind the structured data to the statement", sql_result ); // TODO l10n
@@ -471,7 +509,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
 
   if( message_index != 0 ) {
     if( entry->message ) {
-      sql_result = sqlite3_bind_text( insert_stmt, message_index, entry->message, entry->message_length, SQLITE_STATIC );
+      sql_result = sqlite3_bind_text( insert_stmt,
+                                      message_index,
+                                      entry->message,
+                                      entry->message_length,
+                                      SQLITE_STATIC );
     } else {
       sql_result = sqlite3_bind_null( insert_stmt, message_index );
     }
