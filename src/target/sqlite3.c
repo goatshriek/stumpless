@@ -58,7 +58,7 @@ stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
   db_target = target->id;
   int sql_result = sqlite3_close_v2( db_target->db );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_error( "could not close the sqlite3 database", sql_result );  // TODO l10n
+    raise_sqlite3_failure( "could not close the sqlite3 database", sql_result );  // TODO l10n
     return false;
   }
 
@@ -111,10 +111,9 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
 
   config_lock_mutex( &db_target->db_mutex );
 
-  // TODO assuming that the target is open already
   sql_result = sqlite3_prepare_v2( db_target->db, create_sql, -1, &create_statement, NULL );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_error( "sqlite3_prepare_v2 failed on the table creation statement", sql_result );  // TODO l10n
+    raise_sqlite3_failure( "sqlite3_prepare_v2 failed on the table creation statement", sql_result );  // TODO l10n
     return_result = NULL;
     goto cleanup_and_finish;
   }
@@ -124,16 +123,15 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
     sql_result = sqlite3_step( create_statement );
 
     busy = sql_result == SQLITE_BUSY;
-    if( busy && try_count > STUMPLESS_SQLITE3_RETRY_MAX ) {
-      // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
-      raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
+    if( busy && try_count >= STUMPLESS_SQLITE3_RETRY_MAX ) {
+      raise_sqlite3_busy();
       return_result = NULL;
       goto cleanup_and_finish;
     }
   } while( busy );
 
   if( sql_result != SQLITE_DONE ) {
-    raise_sqlite3_error( "sqlite3_step failed on the table creation statement", sql_result );  // TODO l10n
+    raise_sqlite3_failure( "sqlite3_step failed on the table creation statement", sql_result );  // TODO l10n
     return_result = NULL;
   }
 
@@ -208,7 +206,7 @@ stumpless_open_sqlite3_target( const char *db_filename ) {
   db = NULL;
   sql_result = sqlite3_open( db_filename, &db );
   if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_error( "could not open the provided database name", sql_result ); // TODO l10n
+    raise_sqlite3_failure( "could not open the provided database name", sql_result ); // TODO l10n
     goto fail_db;
   }
 
@@ -321,7 +319,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( !target->insert_stmts[0] ) {
     sql_result = sqlite3_prepare_v2( target->db, target->insert_sql, -1, &target->insert_stmts[0], NULL );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not prepare the insert statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not prepare the insert statement", sql_result ); // TODO l10n
       return NULL;
     }
   } else {
@@ -353,7 +351,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( prival_index != 0 ) {
     sql_result = sqlite3_bind_int( insert_stmt, prival_index, entry->prival );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the prival to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the prival to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -361,7 +359,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( facility_index != 0 ) {
     sql_result = sqlite3_bind_int( insert_stmt, facility_index, get_facility( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the facility to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the facility to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -369,7 +367,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( severity_index != 0 ) {
     sql_result = sqlite3_bind_int( insert_stmt, severity_index, get_severity( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the severity to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the severity to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -383,7 +381,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, timestamp_index, timestamp, buffer_size, SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -402,7 +400,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, hostname_index, buffer, buffer_size, SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the hostname to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the hostname to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -414,7 +412,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, app_name_index, entry->app_name, entry->app_name_length, SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the app_name to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the app_name to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -434,7 +432,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, procid_index, buffer, buffer_size, SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the procid to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the procid to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -446,7 +444,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, msgid_index, entry->msgid, entry->msgid_length, SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the msgid to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the msgid to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -466,7 +464,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt, structured_data_index, buffer, buffer_size, SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the structured data to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the structured data to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -478,7 +476,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_null( insert_stmt, message_index );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_error( "could not bind the message to the statement", sql_result ); // TODO l10n
+      raise_sqlite3_failure( "could not bind the message to the statement", sql_result ); // TODO l10n
       goto fail_bind;
     }
   }
@@ -544,7 +542,7 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
     result = -1;
     if( db_target->prepare_func != &stumpless_sqlite3_prepare ) {
       // TODO create an error for sqlite3 callback failure
-      raise_sqlite3_error ( "the prepare statements callback failed", 0 ); // TODO make more specific
+      raise_sqlite3_failure ( "the prepare statements callback failed", 0 ); // TODO make more specific
     }
     goto cleanup_and_finish;
   }
@@ -555,16 +553,15 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
       sql_result = sqlite3_step( statements[i] );
 
       busy = sql_result == SQLITE_BUSY;
-      if( busy && try_count > STUMPLESS_SQLITE3_RETRY_MAX ) {
-        // TODO make code more specific, STUMPLESS_SQLITE3_BUSY
-        raise_error(STUMPLESS_SQLITE3_FAILURE, "the database was busy and could not complete the transaction", cap_size_t_to_int(try_count), "the number of attempts made" );
+      if( busy && try_count >= STUMPLESS_SQLITE3_RETRY_MAX ) {
+        raise_sqlite3_busy();
         goto cleanup_and_finish;
       }
     } while( busy );
 
     if( sql_result != SQLITE_DONE ) {
       result = -1;
-      raise_sqlite3_error( "sqlite3_step failed", sql_result );  // TODO l10n
+      raise_sqlite3_failure( "sqlite3_step failed", sql_result );  // TODO l10n
       goto cleanup_and_finish;
     }
   }

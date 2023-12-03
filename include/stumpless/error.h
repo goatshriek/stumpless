@@ -134,11 +134,17 @@ extern "C" {
  */\
   ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 ) \
 /**
+ * Sqlite3 was busy and could not complete the request.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_SQLITE3_BUSY, 30 ) \
+/**
  * Sqlite3 encountered a failure.
  *
  * @since release v2.2.0
  */\
-  ERROR( STUMPLESS_SQLITE3_FAILURE, 30 )
+  ERROR( STUMPLESS_SQLITE3_FAILURE, 31 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.
