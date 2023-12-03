@@ -211,6 +211,10 @@ ARG_NAME " NULL था"
 L"विंडोज इवेंट लॉग सोर्स का स्टंपलेस पंजीकरण"
 
 // todo translate
+#  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
+"could not bind " PARAM " to the statement"
+
+// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
 "the database was busy and could not complete the transaction"
 

@@ -317,6 +317,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   const struct strbuilder *strbuilder_result;
   const char *buffer;
   size_t buffer_size;
+  const char *msg;
 
   buffer_size = config_get_now( timestamp );
 
@@ -361,7 +362,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( prival_index != 0 ) {
     sql_result = sqlite3_bind_int( insert_stmt, prival_index, entry->prival );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the prival to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$prival" );
       goto fail_bind;
     }
   }
@@ -371,7 +372,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                    facility_index,
                                    get_facility( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the facility to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$facility" );
       goto fail_bind;
     }
   }
@@ -381,7 +382,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                    severity_index,
                                    get_severity( entry->prival ) );
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the severity to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$severity" );
       goto fail_bind;
     }
   }
@@ -399,7 +400,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the timestamp to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$timestamp" );
       goto fail_bind;
     }
   }
@@ -422,7 +423,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the hostname to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$hostname" );
       goto fail_bind;
     }
   }
@@ -438,7 +439,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the app_name to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$app_name" );
       goto fail_bind;
     }
   }
@@ -462,7 +463,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the procid to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$procid" );
       goto fail_bind;
     }
   }
@@ -478,7 +479,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the msgid to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$msgid" );
       goto fail_bind;
     }
   }
@@ -502,7 +503,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the structured data to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$structured_data" );
       goto fail_bind;
     }
   }
@@ -518,7 +519,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_null( insert_stmt, message_index );
     }
     if( sql_result != SQLITE_OK ) {
-      raise_sqlite3_failure( "could not bind the message to the statement", sql_result ); // TODO l10n
+      msg = L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( "$message" );
       goto fail_bind;
     }
   }
@@ -532,6 +533,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
 fail_bind:
   unlock_entry( entry );
   strbuilder_destroy( builder );
+  raise_sqlite3_failure( msg, sql_result );
   return NULL;
 }
 
@@ -579,12 +581,16 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
 
   config_lock_mutex( &db_target->db_mutex );
 
-  statements = db_target->prepare_func( entry, db_target->prepare_data, &stmt_count );
+  statements = db_target->prepare_func( entry,
+                                        db_target->prepare_data,
+                                        &stmt_count );
   if( !statements ) {
     result = -1;
     if( db_target->prepare_func != &stumpless_sqlite3_prepare ) {
-      // TODO create an error for sqlite3 callback failure
-      raise_sqlite3_failure ( "the prepare statements callback failed", 0 ); // TODO make more specific
+      raise_error( STUMPLESS_SQLITE3_CALLBACK_FAILURE,
+                   L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE,
+                   0,
+                   NULL );
     }
     goto cleanup_and_finish;
   }
@@ -603,7 +609,8 @@ send_entry_to_sqlite3_target( const struct stumpless_target *target,
 
     if( sql_result != SQLITE_DONE ) {
       result = -1;
-      raise_sqlite3_failure( "sqlite3_step failed", sql_result );  // TODO l10n
+      raise_sqlite3_failure( L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE,
+                             sql_result );
       goto cleanup_and_finish;
     }
   }

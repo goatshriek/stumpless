@@ -209,6 +209,10 @@ ARG_NAME " era NULL"
 L"la registrazione per Stumpless di Windows Event Log Source"
 
 // todo translate
+#  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
+"could not bind " PARAM " to the statement"
+
+// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
 "the database was busy and could not complete the transaction"
 

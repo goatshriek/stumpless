@@ -209,6 +209,9 @@ ARG_NAME " was NULL"
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Stumpless registration of Windows Event Log Source"
 
+#  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
+"could not bind " PARAM " to the statement"
+
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
 "the database was busy and could not complete the transaction"
 

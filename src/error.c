@@ -328,12 +328,18 @@ raise_socket_send_failure( const char *message,
 
 void
 raise_sqlite3_busy( void ) {
-  raise_error( STUMPLESS_SQLITE3_BUSY, "", STUMPLESS_SQLITE3_RETRY_MAX, "" ); // TODO fill in l10n strings
+  raise_error( STUMPLESS_SQLITE3_BUSY,
+               L10N_SQLITE3_BUSY_ERROR_MESSAGE,
+               STUMPLESS_SQLITE3_RETRY_MAX,
+               L10N_SQLITE3_RETRY_COUNT_CODE_TYPE );
 }
 
 void
 raise_sqlite3_failure( const char *message, int code ) {
-  raise_error( STUMPLESS_SQLITE3_FAILURE, message, code, "the sqlite3 result code" ); // TODO l10n
+  raise_error( STUMPLESS_SQLITE3_FAILURE,
+               message,
+               code,
+               L10N_SQLITE3_RESULT_CODE_TYPE );
 }
 
 void

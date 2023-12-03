@@ -388,6 +388,7 @@
 "STUMPLESS_SOCKET_TARGETS_SUPPORTED": "stumpless/config.h"
 "STUMPLESS_SOCKET_TARGET": "stumpless/target.h"
 "STUMPLESS_SQLITE3_BUSY": "stumpless/error.h"
+"STUMPLESS_SQLITE3_CALLBACK_FAILURE": "stumpless/error.h"
 "STUMPLESS_SQLITE3_FAILURE": "stumpless/error.h"
 "stumpless_sqlite3_prepare": "stumpless/target/sqlite3.h"
 "stumpless_sqlite3_prepare_func_t": "stumpless/target/sqlite3.h"
