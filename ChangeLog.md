@@ -13,6 +13,7 @@ fixes, check out the
 ### Added 
  - @since format check enforcement in CI pipeline.
  - `single-file` target for rollup `.c` and `.h` files.
+ - SQLite3 logging targets.
 ### Fixed
  - Deadlock potential in `stumpless_set_entry_hostname` and
    `stumpless_set_entry_procid` when validation fails.

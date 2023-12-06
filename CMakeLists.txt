@@ -56,6 +56,24 @@ set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
 )
 
+string(CONCAT sqlite3_src_path_help_string
+  "The path to a SQLite3 source file, referred to as an 'amalgamation' in "
+  "SQLite documentation. If this variable is set, it is used to link SQLite3 "
+  "statically with Stumpless, instead of the default dynamic linking."
+)
+set(SQLITE3_SRC_PATH ""
+  CACHE PATH ${sqlite3_src_path_help_string}
+)
+
+string(CONCAT sqlite3_include_path_help_string
+  "A directory with the sqlite3.h header matching the source files provided in "
+  "SQLITE3_SRC_PATH. If the header is already in the include directores, this "
+  "does not need to be specified."
+)
+set(SQLITE3_INCLUDE_PATH ""
+  CACHE PATH ${sqlite3_include_path_help_string}
+)
+
 set(SQLITE3_DEFAULT_TABLE_NAME "logs"
   CACHE STRING "the name of the table used by default for SQLite3 targets"
 )
@@ -131,7 +149,7 @@ include(tools/cmake/test.cmake)
 # building configuration
 check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
-check_include_files(sqlite3.h HAVE_SQLITE3_H)
+check_include_files("sqlite3.h" HAVE_SQLITE3_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
@@ -468,9 +486,20 @@ else()
 endif()
 
 
+if(NOT HAVE_SQLITE3_H AND EXISTS "${SQLITE3_INCLUDE_PATH}/sqlite3.h")
+  set(HAVE_SQLITE3_H 1)
+endif()
 # sqlite3 target support
 if(NOT ENABLE_SQLITE3_TARGETS)
   set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+elseif(SQLITE3_SRC_PATH)
+  if(NOT EXISTS "${SQLITE3_SRC_PATH}")
+    message("the specified sqlite3 source file does not exist")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+  else()
+    list(APPEND STUMPLESS_SOURCES "${SQLITE3_SRC_PATH}")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED TRUE)
+  endif()
 elseif(NOT HAVE_SQLITE3_H)
   message("sqlite3 targets are not supported without sqlite3.h")
   set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
