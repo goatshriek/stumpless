@@ -277,7 +277,7 @@ namespace {
 
     add_result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( add_result, 0 );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_CALLBACK_FAILURE );
   }
 
   TEST_F( Sqlite3TargetTest, CustomHardcodedInsert ) {

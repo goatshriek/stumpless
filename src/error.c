@@ -19,6 +19,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stumpless/config.h>
 #include <stumpless/error.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
