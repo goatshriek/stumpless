@@ -137,7 +137,7 @@ stumpless_create_default_sqlite3_table( struct stumpless_target *target ) {
 
   if( sql_result != SQLITE_DONE ) {
     raise_sqlite3_failure( L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE,
-                           sql_result ); 
+                           sql_result );
     return_result = NULL;
   }
 
@@ -454,8 +454,8 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( buffer_size == 1 && buffer[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, procid_index );
     } else {
-      // transient since we reuse and destroy this strbuilder before the statement
-      // is executed
+      // transient since we reuse and destroy this strbuilder before the
+      // statement is executed
       sql_result = sqlite3_bind_text( insert_stmt,
                                       procid_index,
                                       buffer,
