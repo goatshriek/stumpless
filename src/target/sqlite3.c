@@ -407,6 +407,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( hostname_index != 0 ) {
     strbuilder_result = strbuilder_append_hostname( builder );
     if( !strbuilder_result ) {
+
       goto fail_bind;
     }
     buffer = strbuilder_get_buffer( builder, &buffer_size );
@@ -447,7 +448,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     strbuilder_reset( builder );
     strbuilder_result = strbuilder_append_procid( builder );
     if( !strbuilder_result ) {
-      goto fail_bind;
+      goto fail;
     }
     buffer = strbuilder_get_buffer( builder, &buffer_size );
     if( buffer_size == 1 && buffer[0] == '-' ) {
@@ -487,7 +488,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     strbuilder_reset( builder );
     strbuilder_result = strbuilder_append_structured_data( builder, entry );
     if( !strbuilder_result ) {
-      goto fail_bind;
+      goto fail;
     }
     buffer = strbuilder_get_buffer( builder, &buffer_size );
     if( buffer_size == 1 && buffer[0] == '-' ) {
@@ -530,9 +531,10 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   return &target->insert_stmts;
 
 fail_bind:
+  raise_sqlite3_failure( msg, sql_result );
+fail:
   unlock_entry( entry );
   strbuilder_destroy( builder );
-  raise_sqlite3_failure( msg, sql_result );
   return NULL;
 }
 
