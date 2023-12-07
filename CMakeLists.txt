@@ -66,7 +66,7 @@ set(SQLITE3_SRC_PATH ""
 )
 
 string(CONCAT sqlite3_include_path_help_string
-  "A directory with the sqlite3.h header matching the source files provided in "
+  "The path to the sqlite3.h header matching the source file provided in "
   "SQLITE3_SRC_PATH. If the header is already in the include directores, this "
   "does not need to be specified."
 )
@@ -147,6 +147,13 @@ include(tools/cmake/test.cmake)
 
 
 # building configuration
+if(EXISTS ${SQLITE3_INCLUDE_PATH})
+  file(COPY
+    "${SQLITE3_INCLUDE_PATH}"
+    DESTINATION "${PROJECT_BINARY_DIR}/include"
+  )
+endif()
+
 check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
 check_include_files("sqlite3.h" HAVE_SQLITE3_H)
@@ -486,9 +493,6 @@ else()
 endif()
 
 
-if(NOT HAVE_SQLITE3_H AND EXISTS "${SQLITE3_INCLUDE_PATH}/sqlite3.h")
-  set(HAVE_SQLITE3_H 1)
-endif()
 # sqlite3 target support
 if(NOT ENABLE_SQLITE3_TARGETS)
   set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)

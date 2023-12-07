@@ -16,51 +16,45 @@ if(INCLUDE_MANPAGES_IN_INSTALL)
   )
 endif()
 
+if(SQLITE3_SRC_PATH)
+  add_library(sqlite3-src SHARED EXCLUDE_FROM_ALL "${SQLITE3_SRC_PATH}")
+  target_compile_definitions(sqlite3-src PUBLIC "SQLITE_OMIT_LOAD_EXTENSION")
+  set(SQLITE3_LINK_NAME "sqlite3-src")
+else()
+  list(APPEND STUMPLESS_LINK_LIBRARIES "sqlite3")
+  set(SQLITE3_LINK_NAME "sqlite3")
+endif()
+
 add_function_test(sqlite3
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/function/target/sqlite3.cpp"
-    "${SQLITE3_SRC_PATH}"
     $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:test_helper_rfc5424>
+  LIBRARIES
+    "${SQLITE3_LINK_NAME}"
 )
 
 add_performance_test(sqlite3
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/performance/target/sqlite3.cpp"
-    "${SQLITE3_SRC_PATH}"
     $<TARGET_OBJECTS:test_helper_fixture>
+  LIBRARIES
+    "${SQLITE3_LINK_NAME}"
 )
 
 add_thread_safety_test(sqlite3
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/thread_safety/target/sqlite3.cpp"
-    "${SQLITE3_SRC_PATH}"
     $<TARGET_OBJECTS:test_helper_usage>
+  LIBRARIES
+    "${SQLITE3_LINK_NAME}"
 )
 
 add_example(sqlite3
   "${PROJECT_SOURCE_DIR}/docs/examples/sqlite3/sqlite3_example.c"
-    "${SQLITE3_SRC_PATH}"
+  "${SQLITE3_SRC_PATH}"
 )
 
-if(${SQLITE3_SRC_PATH})
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(Threads REQUIRED)
-  list(APPEND STUMPLESS_LINK_LIBRARIES Threads::Threads)
-  target_link_libraries(function-test-sqlite3 PRIVATE Threads::Threads)
-else()
-  list(APPEND STUMPLESS_LINK_LIBRARIES "sqlite3")
-
-  target_link_libraries(function-test-sqlite3
-    "sqlite3"
-  )
-  target_link_libraries(performance-test-sqlite3
-    "sqlite3"
-  )
-  target_link_libraries(thread-safety-test-sqlite3
-    "sqlite3"
-  )
-  target_link_libraries(example-sqlite3
-    "sqlite3"
-  )
-endif()
+target_link_libraries(example-sqlite3
+  "${SQLITE3_LINK_NAME}"
+)

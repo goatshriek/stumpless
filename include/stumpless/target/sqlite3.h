@@ -270,6 +270,10 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
 /**
  * Opens a SQLite3 target.
  *
+ * This is equivalent to calling \ref stumpless_open_sqlite3_target_with_options
+ * with SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE as the flags and NULL as the
+ * VFS module name.
+ *
  * **Thread Safety: MT-Safe race:name**
  * This function is thread safe, of course assuming that name is not modified by
  * any other threads during execution.
@@ -284,7 +288,7 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
  *
  * @since release v2.2.0
  *
- * @param name The filename of the database to open.
+ * @param name The name of the database to open.
  *
  * @return The opened target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
@@ -328,6 +332,39 @@ stumpless_open_sqlite3_target( const char *name );
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_open_sqlite3_target_from_db( void *db );
+
+/**
+ * Opens a SQLite3 target with the provided options. The three parameters are
+ * passed directly to sqlite3_open_v2.
+ *
+ * **Thread Safety: MT-Safe race:name race:vfs**
+ * This function is thread safe, of course assuming that name and vfs are not
+ * modified by any other threads during execution.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory allocation functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe itself.
+ *
+ * @since release v2.2.0
+ *
+ * @param name The name of the database to open.
+ *
+ * @param flags Flags as defined for sqlite3_open_v2.
+ *
+ * @param vfs The name of the VFS module to use as defined by sqlite3_open_v2.
+ *
+ * @return The opened target if no error is encountered. In the event of an
+ * error, NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_target *
+stumpless_open_sqlite3_target_with_options( const char *name,
+                                            int flags,
+                                            const char *vfs );
 
 /**
  * Sets the SQL statement used to insert entries into the database.

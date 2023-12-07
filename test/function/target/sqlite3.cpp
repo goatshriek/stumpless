@@ -82,7 +82,10 @@ test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
 
 static
 void
-TestEntryInDatabase( sqlite3 *db, std::string const &table_name, const struct stumpless_entry *entry ) {
+TestEntryInDatabase( std::string const &db_name,
+                     std::string const &table_name,
+                     const struct stumpless_entry *entry ) {
+  sqlite3 *db;
   sqlite3_stmt *result_stmt;
   int sql_result;
   const char *expected_message;
@@ -113,6 +116,9 @@ TestEntryInDatabase( sqlite3 *db, std::string const &table_name, const struct st
     query_stream << " WHERE message IS NULL";
   }
   std::string result_query = query_stream.str();
+
+  sql_result = sqlite3_open_v2( db_name.c_str(), &db, SQLITE_OPEN_READONLY, NULL );
+  ASSERT_EQ( sql_result, SQLITE_OK );
 
   sql_result = sqlite3_prepare_v2( db, result_query.c_str(), -1, &result_stmt, NULL );
   EXPECT_EQ( sql_result, SQLITE_OK );
@@ -185,6 +191,8 @@ TestEntryInDatabase( sqlite3 *db, std::string const &table_name, const struct st
 
   sqlite3_finalize( result_stmt );
   free( ( void * ) expected_message );
+  sql_result = sqlite3_close_v2( db );
+  EXPECT_EQ( sql_result, SQLITE_OK );
 }
 
 namespace {
@@ -198,14 +206,7 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      struct stumpless_element *element;
-      struct stumpless_param *param;
-
-      sqlite3_open_v2( db_filename,
-                       &db,
-                       SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
-                       NULL );
-      target = stumpless_open_sqlite3_target_from_db( db );
+      target = stumpless_open_sqlite3_target( db_filename );
 
       stumpless_create_default_sqlite3_table( target );
 
@@ -224,6 +225,7 @@ namespace {
       stumpless_destroy_entry_only( empty_entry );
       stumpless_close_sqlite3_target_and_db( target );
       stumpless_free_all();
+      remove( db_filename );
     }
   };
 
@@ -234,7 +236,7 @@ namespace {
     EXPECT_GE( add_result, 0 );
     EXPECT_NO_ERROR;
 
-    TestEntryInDatabase( db, "logs", basic_entry );
+    TestEntryInDatabase( std::string( db_filename ), "logs", basic_entry );
   }
 
   TEST_F( Sqlite3TargetTest, AddNullFieldEntry ) {
@@ -247,7 +249,7 @@ namespace {
     EXPECT_GE( add_result, 0 );
     EXPECT_NO_ERROR;
 
-    TestEntryInDatabase( db, "logs", entry );
+    TestEntryInDatabase( std::string( db_filename ), "logs", entry );
     stumpless_destroy_entry_only( entry );
   }
 
@@ -262,8 +264,8 @@ namespace {
     EXPECT_GE( add_result, 0 );
     EXPECT_NO_ERROR;
 
-    TestEntryInDatabase( db, "logs", basic_entry );
-    TestEntryInDatabase( db, "logs", empty_entry );
+    TestEntryInDatabase( std::string( db_filename ), "logs", basic_entry );
+    TestEntryInDatabase( std::string( db_filename ), "logs", empty_entry );
   }
 
   TEST_F( Sqlite3TargetTest, FailedPrepare ) {
@@ -431,7 +433,7 @@ namespace {
     EXPECT_GE( add_result, 0 );
     EXPECT_NO_ERROR;
 
-    TestEntryInDatabase( db, "l", basic_entry );
+    TestEntryInDatabase( std::string( db_filename ), "l", basic_entry );
 
     sqlite3_finalize( create_stmt );
   }

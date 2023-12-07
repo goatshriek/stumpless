@@ -196,39 +196,9 @@ stumpless_get_sqlite3_prepare( const struct stumpless_target *target,
 }
 
 struct stumpless_target *
-stumpless_open_sqlite3_target( const char *db_filename ) {
-  struct stumpless_target *target;
-  sqlite3 *db;
-  int sql_result;
-
-  VALIDATE_ARG_NOT_NULL( db_filename );
-
-  target = new_target( STUMPLESS_SQLITE3_TARGET, db_filename );
-
-  if( !target ) {
-    goto fail;
-  }
-
-  db = NULL;
-  sql_result = sqlite3_open( db_filename, &db );
-  if( sql_result != SQLITE_OK ) {
-    raise_sqlite3_failure( L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE, sql_result );
-    goto fail_db;
-  }
-
-  target->id = new_sqlite3_target( db );
-  if( !target->id ) {
-    goto fail_db;
-  }
-
-  stumpless_set_current_target( target );
-  return target;
-
-fail_db:
-  sqlite3_close( db );
-  destroy_target( target );
-fail:
-  return NULL;
+stumpless_open_sqlite3_target( const char *name ) {
+  int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
+  return stumpless_open_sqlite3_target_with_options( name, flags, NULL );
 }
 
 struct stumpless_target *
@@ -252,6 +222,44 @@ stumpless_open_sqlite3_target_from_db( void *db ) {
   return target;
 
 fail_id:
+  destroy_target( target );
+fail:
+  return NULL;
+}
+
+struct stumpless_target *
+stumpless_open_sqlite3_target_with_options( const char *name,
+                                            int flags,
+                                            const char *vfs ) {
+  struct stumpless_target *target;
+  sqlite3 *db;
+  int sql_result;
+
+  VALIDATE_ARG_NOT_NULL( name );
+
+  target = new_target( STUMPLESS_SQLITE3_TARGET, name );
+
+  if( !target ) {
+    goto fail;
+  }
+
+  db = NULL;
+  sql_result = sqlite3_open_v2( name, &db, flags, vfs );
+  if( sql_result != SQLITE_OK ) {
+    raise_sqlite3_failure( L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE, sql_result );
+    goto fail_db;
+  }
+
+  target->id = new_sqlite3_target( db );
+  if( !target->id ) {
+    goto fail_db;
+  }
+
+  stumpless_set_current_target( target );
+  return target;
+
+fail_db:
+  sqlite3_close( db );
   destroy_target( target );
 fail:
   return NULL;

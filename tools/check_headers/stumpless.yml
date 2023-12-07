@@ -321,6 +321,7 @@
 "stumpless_open_socket_target": "stumpless/target/socket.h"
 "stumpless_open_sqlite3_target": "stumpless/target/sqlite3.h"
 "stumpless_open_sqlite3_target_from_db": "stumpless/target/sqlite3.h"
+"stumpless_open_sqlite3_target_with_options": "stumpless/target/sqlite3.h"
 "stumpless_open_stream_target": "stumpless/target/stream.h"
 "stumpless_open_target": "stumpless/target.h"
 "stumpless_open_tcp4_target": "stumpless/target/network.h"
