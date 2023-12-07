@@ -31,15 +31,8 @@ protected:
   struct stumpless_entry *entry;
 
 public:
-  const char *db_filename = "test_performance.sqlite3";
-
   void SetUp( const ::benchmark::State &state ) {
-    sqlite3 *db;
-    sqlite3_open_v2( db_filename,
-                     &db,
-                     SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
-                     NULL );
-    target = stumpless_open_sqlite3_target_from_db( db );
+    target = stumpless_open_sqlite3_target( ":memory:" );
     stumpless_create_default_sqlite3_table( target );
     entry = create_entry();
     INIT_MEMORY_COUNTER( sqlite3_add );
