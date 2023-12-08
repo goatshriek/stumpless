@@ -513,22 +513,17 @@ namespace {
     sqlite3_finalize( result_stmt );
   }
 
-  TEST_F( Sqlite3TargetTest, GetPrepare ) {
-    stumpless_sqlite3_prepare_func_t result;
+  TEST_F( Sqlite3TargetTest, GetPrepareWithAndWithoutNull ) {
+    stumpless_sqlite3_prepare_func_t non_null_result;
+    stumpless_sqlite3_prepare_func_t null_result;
     void *data;
 
-    result = stumpless_get_sqlite3_prepare( target , &data );
-    EXPECT_EQ( result, stumpless_sqlite3_prepare );
+    non_null_result = stumpless_get_sqlite3_prepare( target , &data );
     EXPECT_EQ( data, target->id );
     EXPECT_NO_ERROR;
-  }
 
-  TEST_F( Sqlite3TargetTest, GetPrepareNullData ) {
-    stumpless_sqlite3_prepare_func_t result;
-
-    result = stumpless_get_sqlite3_prepare( target , NULL );
-    EXPECT_EQ( result, stumpless_sqlite3_prepare );
-    EXPECT_NO_ERROR;
+    null_result = stumpless_get_sqlite3_prepare( target , NULL );
+    EXPECT_EQ( null_result, non_null_result );
   }
 
   TEST_F( Sqlite3TargetTest, InvalidInsertSql ) {

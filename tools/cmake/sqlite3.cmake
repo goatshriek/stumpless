@@ -18,6 +18,7 @@ endif()
 
 if(SQLITE3_SRC_PATH)
   add_library(sqlite3-src SHARED EXCLUDE_FROM_ALL "${SQLITE3_SRC_PATH}")
+  set_target_properties(sqlite3-src PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
   target_compile_definitions(sqlite3-src PUBLIC "SQLITE_OMIT_LOAD_EXTENSION")
   set(SQLITE3_LINK_NAME "sqlite3-src")
 else()

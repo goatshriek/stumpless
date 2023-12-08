@@ -62,7 +62,7 @@ string(CONCAT sqlite3_src_path_help_string
   "statically with Stumpless, instead of the default dynamic linking."
 )
 set(SQLITE3_SRC_PATH ""
-  CACHE PATH ${sqlite3_src_path_help_string}
+  CACHE FILEPATH ${sqlite3_src_path_help_string}
 )
 
 string(CONCAT sqlite3_include_path_help_string
@@ -71,7 +71,7 @@ string(CONCAT sqlite3_include_path_help_string
   "does not need to be specified."
 )
 set(SQLITE3_INCLUDE_PATH ""
-  CACHE PATH ${sqlite3_include_path_help_string}
+  CACHE FILEPATH ${sqlite3_include_path_help_string}
 )
 
 set(SQLITE3_DEFAULT_TABLE_NAME "logs"
