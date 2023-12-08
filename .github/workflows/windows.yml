@@ -22,7 +22,7 @@ jobs:
         shell: pwsh
       - name: Configure
         run: |
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug -DSQLITE3_SRC_PATH=sqlite\sqlite-amalgamation-3440200\sqlite3.c -DSQLITE3_INCLUDE_PATH=sqlite\sqlite-amalgamation-344-0200\sqlite3.h .
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug -DSQLITE3_SRC_PATH=sqlite\sqlite-amalgamation-3440200\sqlite3.c -DSQLITE3_INCLUDE_PATH=sqlite\sqlite-amalgamation-3440200\sqlite3.h .
       - name: Build
         run: |
           cmake --build . --config Debug
