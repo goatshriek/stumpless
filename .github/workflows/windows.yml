@@ -15,18 +15,9 @@ jobs:
     runs-on: "windows-2019"
     steps:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-      - name: Download SQLite3 Amalgamation
-        run: |
-          Invoke-WebRequest -Uri https://sqlite.org/2023/sqlite-amalgamation-3440200.zip -OutFile sqlite.zip
-          Expand-Archive -Path sqlite.zip
-        shell: pwsh
       - name: Configure
         run: |
-          dir
-          dir sqlite
-          dir sqlite\sqlite-amalgamation-3440200
-          dir D:\a\stumpless\stumpless\sqlite\sqlite-amalgamation-3440200
-          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug -DSQLITE3_SRC_PATH=D:\a\stumpless\stumpless\sqlite\sqlite-amalgamation-3440200\sqlite3.c -DSQLITE3_INCLUDE_PATH=D:\a\stumpless\stumpless\sqlite\sqlite-amalgamation-3440200\sqlite3.h .
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug .
       - name: Build
         run: |
           cmake --build . --config Debug
@@ -96,6 +87,28 @@ jobs:
       - name: Run Examples
         run: |
           cmake --build . --config Release --target examples-single-file
+  windows-sqlite3:
+    name: "windows, release, sqlite3 source"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Download SQLite3 Amalgamation
+        run: |
+          Invoke-WebRequest -Uri https://sqlite.org/2023/sqlite-amalgamation-3440200.zip -OutFile sqlite.zip
+          Expand-Archive -Path sqlite.zip
+        shell: pwsh
+      - name: Configure
+        run: |
+          cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Release -DSQLITE3_SRC_PATH=D:\a\stumpless\stumpless\sqlite\sqlite-amalgamation-3440200\sqlite3.c -DSQLITE3_INCLUDE_PATH=D:\a\stumpless\stumpless\sqlite\sqlite-amalgamation-3440200\sqlite3.h .
+      - name: Build
+        run: |
+          cmake --build . --config Release
+      - name: Test
+        run: |
+          cmake --build . --config Release --target check
+      - name: Thread Safety Tests
+        run: |
+          cmake --build . --config Release --target check-thread-safety
   windows-all-disabled:
     name: "windows, all features disabled"
     runs-on: "windows-2019"
