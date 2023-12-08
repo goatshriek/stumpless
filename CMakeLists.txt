@@ -520,6 +520,8 @@ endif()
 if(STUMPLESS_SQLITE3_TARGETS_SUPPORTED)
   include(tools/cmake/sqlite3.cmake)
 else()
+  list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/config/sqlite3_unsupported.c")
+
   add_function_test(sqlite3_unsupported
     SOURCES
       ${PROJECT_SOURCE_DIR}/test/function/config/sqlite3_unsupported.cpp

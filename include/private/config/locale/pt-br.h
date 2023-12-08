@@ -245,6 +245,10 @@ L"Registro do Stumpless no Windows Event Log Source"
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
 "sqlite3_step failed"
 
+// todo translate
+#  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
+"sqlite3 targets are not supported by this build"
+
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "não foi possível escrever na stream"
 
