@@ -17,8 +17,6 @@
  */
 
 #include <benchmark/benchmark.h>
-#include <cstddef>
-#include <sqlite3.h>
 #include <stumpless.h>
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
