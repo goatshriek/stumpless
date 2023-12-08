@@ -35,12 +35,7 @@ namespace {
     size_t i;
     std::thread *threads[THREAD_COUNT];
 
-    // set up the target to log to
-    sqlite3_open_v2( filename,
-                     &db,
-                     SQLITE_OPEN_READWRITE | SQLITE_OPEN_MEMORY,
-                     NULL );
-    target = stumpless_open_sqlite3_target_from_db( db );
+    target = stumpless_open_sqlite3_target( filename );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
