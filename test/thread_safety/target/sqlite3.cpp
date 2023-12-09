@@ -30,10 +30,13 @@ namespace {
 
   TEST( Sqlite3WriteConsistency, SimultaneousWrites ) {
     const char *filename = "test_thread_safety.sqlite3";
-    sqlite3 *db;
     struct stumpless_target *target;
     size_t i;
     std::thread *threads[THREAD_COUNT];
+    sqlite3 *db;
+    int sql_result;
+    sqlite3_stmt *stmt;
+    const char *result_query = "SELECT * FROM logs";
 
     target = stumpless_open_sqlite3_target( filename );
     EXPECT_NO_ERROR;
@@ -57,16 +60,23 @@ namespace {
 
     stumpless_free_all(  );
 
-    // check for consistency in the log file
-    // TODO complete
-    // std::ifstream log_file( filename );
-    // std::string line;
-    // i = 0;
-    // while( std::getline( log_file, line ) ) {
-    //   TestRFC5424Compliance( line.c_str() );
-    //   i++;
-    // }
-    // EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
+    // check for consistency in the database
+    sql_result = sqlite3_open( filename, &db );
+    ASSERT_EQ( sql_result, SQLITE_OK );
+
+    sql_result = sqlite3_prepare_v2( db, result_query, -1, &stmt, NULL );
+    ASSERT_EQ( sql_result, SQLITE_OK );
+
+    for( i = 0; i < THREAD_COUNT * MESSAGE_COUNT; i++ ) {
+      sql_result = sqlite3_step( stmt );
+      EXPECT_EQ( sql_result, SQLITE_ROW );
+    }
+
+    sql_result = sqlite3_step( stmt );
+    EXPECT_EQ( sql_result, SQLITE_DONE );
+
+    sql_result = sqlite3_close_v2( db );
+    EXPECT_EQ( sql_result, SQLITE_OK );
 
     remove( filename );
   }
