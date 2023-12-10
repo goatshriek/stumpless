@@ -675,7 +675,7 @@ namespace {
     const char *db_filename = "test_function_default_table.sqlite3";
     struct stumpless_target *target;
     struct stumpless_target *result;
-    
+
     remove( db_filename );
     target = stumpless_open_sqlite3_target( db_filename );
     ASSERT_NOT_NULL( target );
@@ -708,7 +708,7 @@ namespace {
   TEST( Sqlite3TargetOpenTest, Directory ) {
     struct stumpless_target *target;
     const struct stumpless_error *error;
-   
+
     target = stumpless_open_sqlite3_target( "./" );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_SQLITE3_FAILURE );
@@ -724,7 +724,7 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
-   
+
     target = stumpless_open_sqlite3_target( db_filename );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
