@@ -189,7 +189,17 @@ strbuilder_append_procid( struct strbuilder *builder );
  *
  * Assumes that the entry has already been locked.
  *
- * TODO add posix safety attributes
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it accesses the entry's element list
+ * without any coordination.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * strbuilder functions which may allocate memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe.
  *
  * @param builder The strbuilder to append the characters to.
  *
