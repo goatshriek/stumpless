@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,6 +216,15 @@ fail_buffer:
   cache_free( strbuilder_cache, builder );
 fail:
   return NULL;
+}
+
+struct strbuilder *
+strbuilder_reset( struct strbuilder *builder ) {
+  if( builder ) {
+    builder->position = builder->buffer;
+  }
+
+  return builder;
 }
 
 char *

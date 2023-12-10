@@ -82,6 +82,9 @@ if(MSVC)
   set_target_properties(events PROPERTIES LINK_FLAGS "/NOENTRY" )
 endif()
 
+
+list(APPEND STUMPLESS_LINK_LIBRARIES "KtmW32")
+
 add_function_test(wel
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp

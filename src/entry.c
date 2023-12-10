@@ -412,11 +412,15 @@ stumpless_get_entry_message( const struct stumpless_entry *entry ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   lock_entry( entry );
-  message_copy = alloc_mem( entry->message_length + 1 );
-  if( !message_copy ) {
-    goto cleanup_and_return;
+  if( !entry->message ) {
+    message_copy = NULL;
+  } else {
+    message_copy = alloc_mem( entry->message_length + 1 );
+    if( !message_copy ) {
+      goto cleanup_and_return;
+    }
+    memcpy( message_copy, entry->message, entry->message_length + 1 );
   }
-  memcpy( message_copy, entry->message, entry->message_length + 1 );
   clear_error(  );
 
 cleanup_and_return:

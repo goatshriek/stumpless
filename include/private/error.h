@@ -17,11 +17,11 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_ERROR_H
-#  define __STUMPLESS_PRIVATE_ERROR_H
+#define __STUMPLESS_PRIVATE_ERROR_H
 
-#  include <stddef.h>
-#  include <stumpless/error.h>
-#  include "private/config.h"
+#include <stddef.h>
+#include <stumpless/error.h>
+#include "private/config.h"
 
 void
 clear_error( void );
@@ -234,6 +234,50 @@ void
 raise_socket_send_failure( const char *message,
                            int code,
                            const char *code_type );
+
+/**
+ * Raises a STUMPESS_SQLITE3_BUSY error.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store the error.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store the error.
+ *
+ * @since release v2.2.0
+ */
+COLD_FUNCTION
+void
+raise_sqlite3_busy( void );
+
+/**
+ * Raises a STUMPESS_SQLITE3_FAILURE error.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store the error.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store the error.
+ *
+ * @since release v2.2.0
+ *
+ * @param message A localized description of the failure.
+ *
+ * @param code The error code from the failed SQLite3 call.
+ */
+COLD_FUNCTION
+void
+raise_sqlite3_failure( const char *message, int code );
 
 COLD_FUNCTION
 void

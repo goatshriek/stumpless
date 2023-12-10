@@ -9,10 +9,11 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
-## [2.2.0] - 2023-10-14
+## [2.2.0] - 2023-12-10
 ### Added 
  - @since format check enforcement in CI pipeline.
  - `single-file` target for rollup `.c` and `.h` files.
+ - SQLite3 logging targets.
 ### Fixed
  - Deadlock potential in `stumpless_set_entry_hostname` and
    `stumpless_set_entry_procid` when validation fails.

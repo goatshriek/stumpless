@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
  */
 
 #ifndef __STUMPLESS_ERROR_H
-#  define __STUMPLESS_ERROR_H
+#define __STUMPLESS_ERROR_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -132,7 +132,25 @@ extern "C" {
  *
  * @since release v2.2.0
  */\
-  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 )
+  ERROR( STUMPLESS_INVALID_PARAM_STRING, 29 ) \
+/**
+ * SQLite3 was busy and could not complete the request.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_SQLITE3_BUSY, 30 ) \
+/**
+ * A custom callback to a SQLite3 target failed.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_SQLITE3_CALLBACK_FAILURE, 31 ) \
+/**
+ * SQLite3 encountered a failure.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_SQLITE3_FAILURE, 32 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.

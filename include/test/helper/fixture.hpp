@@ -60,6 +60,16 @@ struct stumpless_entry *
 create_entry( void );
 
 /**
+ * Creates an entry with all nullable fields set to NULL.
+ *
+ * @since release v2.2.0
+ *
+ * @return The newly-created entry, or NULL if an error occurred.
+ */
+struct stumpless_entry *
+create_nil_entry( void );
+
+/**
  * Returns a buffer holding the contents of the fuzz corpus file at the named
  * location in the test/corpora folder. For example, a name of "message/ascii"
  * will return the contents of the test/corpora/message/ascii file.

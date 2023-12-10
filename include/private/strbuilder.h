@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_STRBUILDER_H
-#  define __STUMPLESS_PRIVATE_STRBUILDER_H
+#define __STUMPLESS_PRIVATE_STRBUILDER_H
 
-#  include <stddef.h>
+#include <stddef.h>
 
 struct strbuilder {
   char *buffer;
@@ -75,6 +75,19 @@ strbuilder_destroy( const struct strbuilder *builder );
 
 struct strbuilder *
 strbuilder_new( void );
+
+/**
+ * Resets the strbuilder to be empty, without giving up memory resources.
+ *
+ * @since release v2.2.0
+ *
+ * @param builder The strbuilder to reset. If this is NULL, then this function
+ * does nothing.
+ *
+ * @return The reset builder.
+ */
+struct strbuilder *
+strbuilder_reset( struct strbuilder *builder );
 
 char *
 strbuilder_to_string( const struct strbuilder *builder );
