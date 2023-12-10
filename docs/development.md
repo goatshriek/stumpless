@@ -204,6 +204,11 @@ add it to the `.def` file so that the DLL will include it. Failing to do so
 will result in tests failing on Windows builds with a note that your new
 function is not defined. The Windows CI builds typically catch this issue.
 
+Finally, be sure that you've added your new function to the appropriate header
+check tool YAML file. To find out what that is, see the next section below!
+
+
+## Header Checks
 Stumpless uses a custom tool to make sure that all required headers are included
 in a source file without any extras. The tool is called `check_headers` and is
 stored in the `tools/check_headers` folder. You can run this manually if you
@@ -349,8 +354,24 @@ make bench
 ```
 
 
-## Other development notes
-For a detailed discussion of the performance testing framework used to gauge
-the speed and efficiency of various calls, check out the
-[benchmark](benchmark.md) documentation for the basic strategy and a full
-walkthrough of an example.
+## Common Mistakes
+The project team sees a few types of issues happen more commonly than others.
+Here are a few tips that will help you get your contribution accepted faster by
+avoiding some back-and-forth change requests.
+ * **Forgetting to run header checks**
+   By far, missing headers are the most common cause of CI failure in new
+   contributions. Taking the extra time to run the
+   [header checks](#header-checks) locally before you open a pull request can
+   make the difference between a pull request being accepted and changes being
+   requested.
+ * **Force Pushing**
+   It's common (and expected) for changes to be requested on contributions. When
+   this happens, the best thing you can do is address these in a single commit
+   and push the new commit to your pull request branch. This makes it easy to
+   follow what changes were made, and speeds up the review process. While it
+   might seem cleaner to amend or squash your changes into a single new commit
+   and force-push it, please don't do this! It means that the entire
+   contribution must be reviewed again, and can make it harder to track comments
+   on individual lines of the commit. Most contributions are squashed into a
+   single commit when they are accepted, so never fear: the project team will
+   make sure that the end result of your hard work will be clean and neat!

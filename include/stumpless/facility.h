@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -410,7 +410,7 @@ stumpless_get_facility_enum( const char *facility_string );
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
- * @since release v2.1.0.
+ * @since release v2.2.0.
  *
  * @param facility_string The facility name to get the enum from.
  * 
