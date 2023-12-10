@@ -286,6 +286,15 @@ requires you to have the SQLite headers and library linked against your own
 executable. You'll want to make sure that you have the same version of SQLite
 that Stumpless is configured with, or you could run into strange issues!
 
+This is especially relevant if you've compiled Stumpless by directly embedding
+SQLite into it via the `SQLITE3_SRC_PATH` CMake variable. Doing this and then
+writing a separate prepare function in your own code will mean that SQLite will
+be built in two separate places: in Stumpless itself and in your code. This
+means that there will also be different static variable locations, and could
+cause serious problems if a single database handle is shared between these two
+SQLite instances. A good rule of thumb to avoid these issues is to dynamically
+link SQLite to Stumpless and your own code if you're going this route.
+
 If you need more control than this, you're probably better off writing your own
 SQLite code to do insertions, and handing this to a function target to invoke it
 when entries are added. Check out the [function target](../function/README.md)

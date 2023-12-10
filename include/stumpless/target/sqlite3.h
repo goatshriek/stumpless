@@ -412,6 +412,14 @@ stumpless_set_sqlite3_insert_sql( struct stumpless_target *target,
  * Note that the return type is a void * instead of the actual type of
  * sqlite3_stmt **. This is so that the SQLite3 headers are not needed.
  *
+ * Be careful when using a custom prepare function in builds where SQLite was
+ * directly embedded into Stumpless instead of dynamically linked. If this is
+ * the case, using a single databse handle in both SQLite functions compiled
+ * into Stumpless and SQLite functions compiled in a separate module may cause
+ * serious issues, for example due to static data structures. The example
+ * \ref sqlite3_example.c does this, and is a good way to check if you are in
+ * this situation as it will fail in this scenario.
+ *
  * **Thread Safety: MT-Safe**
  * This function is thread safe as a mutex is used to coordinate accesses of the
  * target structures.
