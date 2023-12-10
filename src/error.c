@@ -19,6 +19,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stumpless/config.h>
 #include <stumpless/error.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/thread_safety.h"
@@ -324,6 +325,22 @@ raise_socket_send_failure( const char *message,
                            int code,
                            const char *code_type ) {
   raise_error( STUMPLESS_SOCKET_SEND_FAILURE, message, code, code_type );
+}
+
+void
+raise_sqlite3_busy( void ) {
+  raise_error( STUMPLESS_SQLITE3_BUSY,
+               L10N_SQLITE3_BUSY_ERROR_MESSAGE,
+               STUMPLESS_SQLITE3_RETRY_MAX,
+               L10N_SQLITE3_RETRY_COUNT_CODE_TYPE );
+}
+
+void
+raise_sqlite3_failure( const char *message, int code ) {
+  raise_error( STUMPLESS_SQLITE3_FAILURE,
+               message,
+               code,
+               L10N_SQLITE3_RESULT_CODE_TYPE );
 }
 
 void

@@ -1,0 +1,30 @@
+version: "0.5.0"
+classes:
+  - name: "Sqlite3Target"
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: "Creates a new target for the given database."
+        wrapped-function:
+          name: "stumpless_open_sqlite3_target"
+          includes: "stumpless/target/sqlite3.h"
+          params:
+            - name: "name"
+              doc: "The filename of the database."
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: >
+        Closes this target and releases all memory and other resources held by
+        it.
+      wrapped-function:
+        name: "stumpless_close_sqlite3_target_and_db"
+        includes: "stumpless/target/sqlite3.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"

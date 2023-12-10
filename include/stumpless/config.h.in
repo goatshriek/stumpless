@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,25 @@
 
 /** Defined if socket targets are supported by this build. */
 #cmakedefine STUMPLESS_SOCKET_TARGETS_SUPPORTED 1
+
+/**
+ * A string literal with the name of the table used by default for SQLite3
+ * targets.
+ *
+ * @since release v2.2.0
+ */
+#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING                             \
+"@SQLITE3_DEFAULT_TABLE_NAME@"
+
+/**
+ * The maximum number of retries for SQLite operations.
+ *
+ * @since release v2.2.0
+ */
+#define STUMPLESS_SQLITE3_RETRY_MAX @SQLITE3_RETRY_MAX@
+
+/** Defined if sqlite3 targets are supported by this build. */
+#cmakedefine STUMPLESS_SQLITE3_TARGETS_SUPPORTED 1
 
 /** Defined if this build can directly replace syslog.h usage. */
 #cmakedefine STUMPLESS_SYSLOG_H_COMPATIBLE 1

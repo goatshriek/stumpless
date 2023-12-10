@@ -1,15 +1,9 @@
 # Stumpless Coding Style
 Stumpless follows a fairly straightforward style, although it is not a
 well-known one such as the K&R standard. Because the formatting in the code base
-is admittedly not common, there will be some leniency in changes that do not
-follow it perfectly. This is up to the pull request reviewer's discretion.
-
-If you are not sure about a formatting choice, you can simply run the GNU indent
-wrapper available in `scripts/indent.sh` to format your changes. Note that you
-will need to make sure that this does not introduce changes to parts of the
-source file that you did not change. `indent` will save the original file as the
-original with a `~` character at the end if you need to go back, or you can use
-the git history.
+is admittedly not common and even inconsistent in some places, there will be
+some leniency in changes that do not follow it perfectly. This is up to the pull
+request reviewer's discretion.
 
 Here are a few other style points to follow in the code base:
 

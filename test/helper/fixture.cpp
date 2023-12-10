@@ -55,6 +55,15 @@ create_entry( void ) {
   return entry;
 }
 
+struct stumpless_entry *
+create_nil_entry( void ) {
+  return stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                  STUMPLESS_SEVERITY_INFO,
+                                  NULL,
+                                  NULL,
+                                  NULL );
+}
+
 const char *
 load_corpus( const string& name ) {
   int file_length;

@@ -111,6 +111,7 @@ namespace {
                   filename );
 
     stumpless_free_all(  );
+    remove( filename );
   }
 
   TEST( StreamTargetCloseTest, NullTarget ) {

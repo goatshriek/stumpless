@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021-2023 Joel E. Anderson
+ * Copyright 2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,43 +21,35 @@
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
 
-NEW_MEMORY_COUNTER( function );
+NEW_MEMORY_COUNTER( sqlite3_add );
 
-const int EXPECTED_RETURN_VALUE = 1;
-
-int
-stub_log_function( const struct stumpless_target *target,
-                   const struct stumpless_entry *entry ) {
-  return EXPECTED_RETURN_VALUE;
-}
-
-class FunctionFixture : public::benchmark::Fixture {
+class Sqlite3Fixture : public::benchmark::Fixture {
 protected:
   struct stumpless_target *target;
   struct stumpless_entry *entry;
 
 public:
   void SetUp( const ::benchmark::State &state ) {
-    target = stumpless_open_function_target( "function-perf",
-                                             stub_log_function );
-    entry = create_entry(  );
-    INIT_MEMORY_COUNTER( function );
+    target = stumpless_open_sqlite3_target( ":memory:" );
+    stumpless_create_default_sqlite3_table( target );
+    entry = create_entry();
+    INIT_MEMORY_COUNTER( sqlite3_add );
   }
 
   void TearDown( const ::benchmark::State &state ) {
-    FINALIZE_MEMORY_COUNTER( function );
+    FINALIZE_MEMORY_COUNTER( sqlite3_add );
     stumpless_destroy_entry_and_contents( entry );
-    stumpless_close_function_target( target );
-    stumpless_free_all(  );
+    stumpless_close_sqlite3_target_and_db( target );
+    stumpless_free_all();
   }
 };
 
-BENCHMARK_F( FunctionFixture, AddEntry )( benchmark::State &state ) {
+BENCHMARK_F( Sqlite3Fixture, AddEntry )( benchmark::State &state ) {
   for( auto _ : state ) {
-    if( stumpless_add_entry( target, entry ) != EXPECTED_RETURN_VALUE ) {
+    if( stumpless_add_entry( target, entry ) < 0 ) {
       state.SkipWithError( "could not send an entry" );
     }
   }
 
-  SET_STATE_COUNTERS( state, function );
+  SET_STATE_COUNTERS( state, sqlite3_add );
 }

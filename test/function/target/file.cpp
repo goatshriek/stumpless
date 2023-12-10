@@ -94,6 +94,7 @@ namespace {
                   filename );
 
     stumpless_free_all(  );
+    remove( filename );
   }
 
   TEST( FileTargetCloseTest, NullTarget ) {
