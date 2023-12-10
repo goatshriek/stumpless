@@ -25,13 +25,13 @@
 #include "private/error.h"
 
 bool
-stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
+stumpless_close_sqlite3_target_and_db( const struct stumpless_target *target ) {
   raise_target_unsupported( L10N_SQLITE3_TARGETS_UNSUPPORTED );
   return false;
 }
 
 void
-stumpless_close_sqlite3_target_only( struct stumpless_target *target ) {
+stumpless_close_sqlite3_target_only( const struct stumpless_target *target ) {
   raise_target_unsupported( L10N_SQLITE3_TARGETS_UNSUPPORTED );
   return;
 }

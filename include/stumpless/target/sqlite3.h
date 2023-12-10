@@ -135,7 +135,7 @@ stumpless_close_sqlite3_target_only( const struct stumpless_target *target );
  * the value of \c STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING is configurable
  * and set at build time for the library.
  *
- * /code{.sql}
+ * \code{.sql}
  * CREATE TABLE STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING (
  *   log_id INTEGER PRIMARY KEY,
  *   prival INTEGER NOT NULL,
@@ -148,7 +148,7 @@ stumpless_close_sqlite3_target_only( const struct stumpless_target *target );
  *   structured_data TEXT,
  *   message TEXT
  * );
- * /endcode
+ * \endcode
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe as a mutex is used to coordinate the table
@@ -305,7 +305,7 @@ stumpless_open_sqlite3_target( const char *name );
  * can be opened and then passed to this function for logging.
  *
  * Note that there are two close functions for SQLite3 targets:
- * \ref stumpless_close_sqlite_target_and_db and
+ * \ref stumpless_close_sqlite3_target_and_db and
  * \ref stumpless_close_sqlite3_target_only. Be sure to call the appropriate
  * one depending on whether you want this handle to be closed when the target
  * is closed.
