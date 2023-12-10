@@ -22,8 +22,26 @@
 #include <stdlib.h>
 #include <stumpless.h>
 
+// an array of prepared statements to use in our custom prepare function
 static sqlite3_stmt *card_stmts[2] = { NULL, NULL };
 
+/**
+ * A custom prepare function for a Stumpless SQLite3 target.
+ *
+ * Extracts structured data from the entry, and builds two insert statements
+ * to put this data into custom tables.
+ *
+ * @param entry The entry to get the structured data from.
+ *
+ * @param data The SQLite3 database handle (sqlite3 *).
+ *
+ * @param count A pointer to an output variable where the number of valid
+ * prepared statements will be written to. This will always be 2 unless an
+ * error occurred.
+ *
+ * @return A pointer to an array of sqlite3_stmt pointers on success, or NULL
+ * on failure.
+ */
 void *
 card_played_prepare( const struct stumpless_entry *entry,
                      void *data,
@@ -39,7 +57,11 @@ card_played_prepare( const struct stumpless_entry *entry,
   const char *name;
 
   if( !card_stmts[0] ) {
-    sql_result = sqlite3_prepare_v2( db, card_insert_sql, -1, &card_stmts[0], NULL );
+    sql_result = sqlite3_prepare_v2( db,
+                                     card_insert_sql,
+                                     -1,
+                                     &card_stmts[0],
+                                     NULL );
     if( sql_result != SQLITE_OK ) {
       printf( "couldn't prepare the played_cards insert stmt: %s\n",
               sqlite3_errmsg( db ) );
@@ -50,7 +72,11 @@ card_played_prepare( const struct stumpless_entry *entry,
   }
 
   if( !card_stmts[1] ) {
-    sql_result = sqlite3_prepare_v2( db, player_insert_sql, -1, &card_stmts[1], NULL );
+    sql_result = sqlite3_prepare_v2( db,
+                                     player_insert_sql,
+                                     -1,
+                                     &card_stmts[1],
+                                     NULL );
     if( sql_result != SQLITE_OK ) {
       printf( "couldn't prepare the taken_turns insert stmt: %s\n",
               sqlite3_errmsg( db ) );
@@ -64,21 +90,33 @@ card_played_prepare( const struct stumpless_entry *entry,
   rank = stumpless_get_entry_param_value_by_name( entry, "card", "rank" );
   name = stumpless_get_entry_param_value_by_name( entry, "player", "name" );
 
-  sql_result = sqlite3_bind_text( card_stmts[0], 1, suit, -1, SQLITE_TRANSIENT );
+  sql_result = sqlite3_bind_text( card_stmts[0],
+                                  1,
+                                  suit,
+                                  -1,
+                                  SQLITE_TRANSIENT );
   if( sql_result != SQLITE_OK ) {
       printf( "couldn't bind the card suit: %s\n",
               sqlite3_errmsg( db ) );
       return NULL;
   }
 
-  sql_result = sqlite3_bind_text( card_stmts[0], 2, rank, -1, SQLITE_TRANSIENT );
+  sql_result = sqlite3_bind_text( card_stmts[0],
+                                  2,
+                                  rank,
+                                  -1,
+                                  SQLITE_TRANSIENT );
   if( sql_result != SQLITE_OK ) {
       printf( "couldn't bind the card rank: %s\n",
               sqlite3_errmsg( db ) );
       return NULL;
   }
 
-  sql_result = sqlite3_bind_text( card_stmts[1], 1, name, -1, SQLITE_TRANSIENT );
+  sql_result = sqlite3_bind_text( card_stmts[1],
+                                  1,
+                                  name,
+                                  -1,
+                                  SQLITE_TRANSIENT );
   if( sql_result != SQLITE_OK ) {
       printf( "couldn't bind the player name: %s\n",
               sqlite3_errmsg( db ) );
@@ -113,7 +151,7 @@ main( int argc, char **argv ) {
                                  "                        message )"
                                  "VALUES ( $facility, $severity, $timestamp,"
                                  "         $structured_data, $message )";
-  struct stumpless_entry *entry;
+  struct stumpless_entry *entry = NULL;
   const char *played_cards_create_sql = "CREATE TABLE played_cards ("
                                         "  played_card_id INTEGER PRIMARY KEY,"
                                         "  suit TEXT,"
@@ -165,14 +203,19 @@ main( int argc, char **argv ) {
     goto cleanup_and_finish;
   }
 
-  sql_result = sqlite3_prepare_v2( db, card_logs_create_sql, -1, &card_logs_create_stmt, NULL );
+  sql_result = sqlite3_prepare_v2( db,
+                                   card_logs_create_sql,
+                                   -1,
+                                   &card_logs_create_stmt,
+                                   NULL );
   if( sql_result != SQLITE_OK ) {
     // for simplicity, if this fails we simply print a warning and continue
     puts( "could not create card_logs table, perhaps it already exists?" );
   } else {
     sql_result = sqlite3_step( card_logs_create_stmt );
     if( sql_result != SQLITE_DONE ) {
-      printf( "couldn't create the card_logs table: %s\n", sqlite3_errmsg( db ) );
+      printf( "couldn't create the card_logs table: %s\n",
+              sqlite3_errmsg( db ) );
       result = EXIT_FAILURE;
       goto cleanup_and_finish;
     }
@@ -189,10 +232,10 @@ main( int argc, char **argv ) {
   // create a new entry with some structured data
   // we ignore the error checking here for brevity
   entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                             STUMPLESS_SEVERITY_INFO,
-                             "card-counter",
-                             "card-played",
-                             "a card was played" );
+                               STUMPLESS_SEVERITY_INFO,
+                               "card-counter",
+                               "card-played",
+                               "a card was played" );
 
   stumpless_add_new_param_to_entry( entry, "card", "suit", "hearts" );
   stumpless_add_new_param_to_entry( entry, "card", "rank", "5" );
@@ -209,27 +252,37 @@ main( int argc, char **argv ) {
 
   // finally, let's use a custom preparation function for more structure
   // first we create our new tables
-  sql_result = sqlite3_prepare_v2( db, played_cards_create_sql, -1, &played_cards_create_stmt, NULL );
+  sql_result = sqlite3_prepare_v2( db,
+                                   played_cards_create_sql,
+                                   -1,
+                                   &played_cards_create_stmt,
+                                   NULL );
   if( sql_result != SQLITE_OK ) {
     // for simplicity, if this fails we simply print a warning and continue
     puts( "could not create played_cards table, perhaps it already exists?" );
   } else {
     sql_result = sqlite3_step( played_cards_create_stmt );
     if( sql_result != SQLITE_DONE ) {
-      printf( "couldn't create the played_cards table: %s\n", sqlite3_errmsg( db ) );
+      printf( "couldn't create the played_cards table: %s\n",
+              sqlite3_errmsg( db ) );
       result = EXIT_FAILURE;
       goto cleanup_and_finish;
     }
   }
   
-  sql_result = sqlite3_prepare_v2( db, taken_turns_create_sql, -1, &taken_turns_create_stmt, NULL );
+  sql_result = sqlite3_prepare_v2( db,
+                                   taken_turns_create_sql,
+                                   -1,
+                                   &taken_turns_create_stmt,
+                                   NULL );
   if( sql_result != SQLITE_OK ) {
     // for simplicity, if this fails we simply print a warning and continue
     puts( "could not create taken_turns table, perhaps it already exists?" );
   } else {
     sql_result = sqlite3_step( taken_turns_create_stmt );
     if( sql_result != SQLITE_DONE ) {
-      printf( "couldn't create the taken_turns table: %s\n", sqlite3_errmsg( db ) );
+      printf( "couldn't create the taken_turns table: %s\n",
+              sqlite3_errmsg( db ) );
       result = EXIT_FAILURE;
       goto cleanup_and_finish;
     }

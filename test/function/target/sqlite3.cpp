@@ -25,6 +25,7 @@
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/memory_allocation.hpp"
 #include "test/helper/rfc5424.hpp"
 
 struct test_prepare_data {
@@ -34,7 +35,9 @@ struct test_prepare_data {
 
 static
 void *
-failing_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
+failing_prepare( const struct stumpless_entry *entry,
+                 void *data,
+                 size_t *count ) {
   return NULL;
 }
 
@@ -42,14 +45,19 @@ static
 void *
 test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
   const char *insert_sql = "INSERT INTO "
-                              STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " (prival, version, message) "
-                           "VALUES (0, 1, ?);";
+                              STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING
+                           "  (prival, version, message) "
+                           "VALUES (0, 1, ?)";
   int sql_result;
   struct test_prepare_data *test_data = ( struct test_prepare_data * ) data;
   sqlite3 *db = ( sqlite3 * ) stumpless_get_sqlite3_db( test_data->target );
 
   if( !test_data->insert_stmts[0] ) {
-    sql_result = sqlite3_prepare_v2( db, insert_sql, -1, &test_data->insert_stmts[0], NULL );
+    sql_result = sqlite3_prepare_v2( db,
+                                     insert_sql,
+                                     -1,
+                                     &test_data->insert_stmts[0],
+                                     NULL );
     if( sql_result != SQLITE_OK ) {
       return NULL;
     }
@@ -58,7 +66,11 @@ test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
   }
 
   if( !test_data->insert_stmts[1] ) {
-    sql_result = sqlite3_prepare_v2( db, insert_sql, -1, &test_data->insert_stmts[1], NULL );
+    sql_result = sqlite3_prepare_v2( db,
+                                     insert_sql,
+                                     -1,
+                                     &test_data->insert_stmts[1],
+                                     NULL );
     if( sql_result != SQLITE_OK ) {
       return NULL;
     }
@@ -66,12 +78,20 @@ test_prepare( const struct stumpless_entry *entry, void *data, size_t *count ) {
     sqlite3_reset( test_data->insert_stmts[1] );
   }
 
-  sql_result = sqlite3_bind_text( test_data->insert_stmts[0], 1, "test-prepare-1", -1, SQLITE_STATIC );
+  sql_result = sqlite3_bind_text( test_data->insert_stmts[0],
+                                  1,
+                                  "test-prepare-1",
+                                  -1,
+                                  SQLITE_STATIC );
   if( sql_result != SQLITE_OK ) {
     return NULL;
   }
 
-  sql_result = sqlite3_bind_text( test_data->insert_stmts[1], 1, "test-prepare-2", -1, SQLITE_STATIC );
+  sql_result = sqlite3_bind_text( test_data->insert_stmts[1],
+                                  1,
+                                  "test-prepare-2",
+                                  -1,
+                                  SQLITE_STATIC );
   if( sql_result != SQLITE_OK ) {
     return NULL;
   }
@@ -101,7 +121,8 @@ TestEntryInDatabase( std::string const &db_name,
   const char *actual_procid;
   const unsigned char *msgid;
   const char *actual_msgid;
-  const unsigned char *structured_data;
+  const char *structured_data;
+  std::string const sd;
 
   std::ostringstream query_stream;
   query_stream << "SELECT prival, version, timestamp, hostname,"
@@ -117,10 +138,17 @@ TestEntryInDatabase( std::string const &db_name,
   }
   std::string result_query = query_stream.str();
 
-  sql_result = sqlite3_open_v2( db_name.c_str(), &db, SQLITE_OPEN_READONLY, NULL );
+  sql_result = sqlite3_open_v2( db_name.c_str(),
+                                &db,
+                                SQLITE_OPEN_READONLY,
+                                NULL );
   ASSERT_EQ( sql_result, SQLITE_OK );
 
-  sql_result = sqlite3_prepare_v2( db, result_query.c_str(), -1, &result_stmt, NULL );
+  sql_result = sqlite3_prepare_v2( db,
+                                   result_query.c_str(),
+                                   -1,
+                                   &result_stmt,
+                                   NULL );
   EXPECT_EQ( sql_result, SQLITE_OK );
 
   if( expected_message ) {
@@ -183,11 +211,11 @@ TestEntryInDatabase( std::string const &db_name,
   EXPECT_STREQ( ( const char * ) msgid, actual_msgid );
   free( ( void * ) actual_msgid );
 
-  structured_data = sqlite3_column_text( result_stmt, 7 );
+  structured_data = ( const char * ) sqlite3_column_text( result_stmt, 7 );
   if( !structured_data ) {
-    structured_data = ( const unsigned char * ) "-";
+    structured_data = "-";
   }
-  TestRFC5424StructuredData( reinterpret_cast<const char *>( structured_data ) );
+  TestRFC5424StructuredData( structured_data );
 
   sqlite3_finalize( result_stmt );
   free( ( void * ) expected_message );
@@ -335,7 +363,9 @@ namespace {
     data.target = target;
     data.insert_stmts[0] = NULL;
     data.insert_stmts[1] = NULL;
-    target_result = stumpless_set_sqlite3_prepare( target, test_prepare, &data );
+    target_result = stumpless_set_sqlite3_prepare( target,
+                                                   test_prepare,
+                                                   &data );
     ASSERT_EQ( target_result, target );
     EXPECT_NO_ERROR;
 
@@ -692,7 +722,7 @@ namespace {
     const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
    
     target = stumpless_open_sqlite3_target( db_filename );
@@ -729,7 +759,7 @@ namespace {
                                   NULL );
     ASSERT_EQ( sql_result, SQLITE_OK );
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
     target = stumpless_open_sqlite3_target_from_db( db );

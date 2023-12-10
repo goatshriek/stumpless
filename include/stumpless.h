@@ -133,6 +133,8 @@
 #ifdef STUMPLESS_SQLITE3_TARGETS_SUPPORTED
 /** @example sqlite3_example.c
  * Demonstrates how to work with a sqlite3 target.
+ *
+ * @since release v2.2.0
  */
 
 #  include <stumpless/target/sqlite3.h>

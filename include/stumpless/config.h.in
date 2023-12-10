@@ -60,7 +60,8 @@
  *
  * @since release v2.2.0
  */
-#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING "@SQLITE3_DEFAULT_TABLE_NAME@"
+#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING                             \
+"@SQLITE3_DEFAULT_TABLE_NAME@"
 
 /**
  * The maximum number of retries for SQLite operations.

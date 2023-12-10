@@ -32,6 +32,7 @@
 #include "private/error.h"
 #include "private/facility.h"
 #include "private/formatter.h"
+#include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
@@ -41,9 +42,9 @@
 
 
 bool
-stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
+stumpless_close_sqlite3_target_and_db( const struct stumpless_target *target ) {
   struct sqlite3_target *db_target;
-  if( unlikely( target == NULL ) ) {
+  if( unlikely( !target ) ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
     return false;
   }
@@ -69,7 +70,7 @@ stumpless_close_sqlite3_target_and_db( struct stumpless_target *target ) {
 }
 
 void
-stumpless_close_sqlite3_target_only( struct stumpless_target *target ) {
+stumpless_close_sqlite3_target_only( const struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
 
   if( target->type != STUMPLESS_SQLITE3_TARGET ) {
@@ -308,6 +309,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
                            size_t *count ) {
   struct sqlite3_target *target;
   int sql_result;
+  int length;
   sqlite3_stmt *insert_stmt;
   int prival_index;
   int facility_index;
@@ -403,7 +405,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt,
                                       timestamp_index,
                                       timestamp,
-                                      buffer_size,
+                                      cap_size_t_to_int( buffer_size ),
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
@@ -415,8 +417,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
   if( hostname_index != 0 ) {
     strbuilder_result = strbuilder_append_hostname( builder );
     if( !strbuilder_result ) {
-
-      goto fail_bind;
+      goto fail;
     }
     buffer = strbuilder_get_buffer( builder, &buffer_size );
     if( buffer_size == 1 && buffer[0] == '-' ) {
@@ -427,7 +428,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt,
                                       hostname_index,
                                       buffer,
-                                      buffer_size,
+                                      cap_size_t_to_int( buffer_size ),
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
@@ -440,10 +441,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( entry->app_name_length == 1 && entry->app_name[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, app_name_index );
     } else {
+      length = cap_size_t_to_int( entry->app_name_length );
       sql_result = sqlite3_bind_text( insert_stmt,
                                       app_name_index,
                                       entry->app_name,
-                                      entry->app_name_length,
+                                      length,
                                       SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
@@ -467,7 +469,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt,
                                       procid_index,
                                       buffer,
-                                      buffer_size,
+                                      cap_size_t_to_int( buffer_size ),
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
@@ -480,10 +482,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
     if( entry->msgid_length == 1 && entry->msgid[0] == '-' ) {
       sql_result = sqlite3_bind_null( insert_stmt, msgid_index );
     } else {
+      length = cap_size_t_to_int( entry->msgid_length );
       sql_result = sqlite3_bind_text( insert_stmt,
                                       msgid_index,
                                       entry->msgid,
-                                      entry->msgid_length,
+                                      length,
                                       SQLITE_STATIC );
     }
     if( sql_result != SQLITE_OK ) {
@@ -507,7 +510,7 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
       sql_result = sqlite3_bind_text( insert_stmt,
                                       structured_data_index,
                                       buffer,
-                                      buffer_size,
+                                      cap_size_t_to_int( buffer_size ),
                                       SQLITE_TRANSIENT );
     }
     if( sql_result != SQLITE_OK ) {
@@ -518,10 +521,11 @@ stumpless_sqlite3_prepare( const struct stumpless_entry *entry,
 
   if( message_index != 0 ) {
     if( entry->message ) {
+      length = cap_size_t_to_int( entry->message_length );
       sql_result = sqlite3_bind_text( insert_stmt,
                                       message_index,
                                       entry->message,
-                                      entry->message_length,
+                                      length,
                                       SQLITE_STATIC );
     } else {
       sql_result = sqlite3_bind_null( insert_stmt, message_index );

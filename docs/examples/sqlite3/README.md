@@ -2,18 +2,18 @@
 SQLite targets provide a way to send logs into a SQLite database, if you'd like
 to store your logs there. A structured database provides a convenient place to
 store data like logs, as well as a way to perform searches without setting up a
-more complex sotrage and indexing system.
+more complex storage and indexing system.
 
 You can work with SQLite databases at three levels of abstraction in Stumpless,
 each providing more control but requiring more effort in return. We'll go
-through each option here in order of increasing complexity
+through each option in order of increasing complexity.
 
 
 # The `logs` Table
 In the most basic SQLite target, logs are put into a table with the name given
 in `STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING`, which defaults to `logs`. If
 you open a target and immediately send an entry to it, this is the table that
-it will go into. If the database doesn't exist, Stumpless will ask SQLite to
+it will go into. If the database doesn't exist, Stumpless can ask SQLite to
 create it first.
 
 The entry will be added using the insert statement given by
@@ -121,7 +121,7 @@ CREATE TABLE card_logs (
 
 We've made a few adjustments to the default schema here. Of course, there is a
 different table name to be more descriptive about the type of logs that are in
-the table. We've also broken the prival into it's separate parts, so that it is
+the table. We've also broken the prival into its separate parts, so that it is
 easier to filter entries using SQL without needing to parse the prival first.
 Finally, we've cut the columns down to specific things that our application
 cares about.
@@ -173,7 +173,7 @@ log_id      facility    severity    timestamp                    structured_data
 
 Great! We got our logs into our own table with the fields we needed. But what
 if we need even MORE control over the insertion? There's one more level of
-customization that you can use to 
+customization that you can use to get Stumpless to suit your needs.
 
 
 # Custom Prepared SQL Statements
@@ -182,7 +182,7 @@ enough. If you need to execute multiple statements or perform your own logic on
 the entry's data before making the insertion, you'll need more control over what
 happens to make the insertion.
 
-`stumpless_set_sqlite3_prepare` gives you a way to do this within a SQLite3
+`stumpless_set_sqlite3_prepare` gives you a way to do this within a SQLite
 target. You provide a function that take the entry and returns a number of
 prepared statements to execute. When setting up, you can also provide a pointer
 to anything you'd like, since you might need some extra information to create

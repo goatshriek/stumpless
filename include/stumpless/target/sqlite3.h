@@ -102,7 +102,7 @@ void *
  */
 STUMPLESS_PUBLIC_FUNCTION
 bool
-stumpless_close_sqlite3_target_and_db( struct stumpless_target *target );
+stumpless_close_sqlite3_target_and_db( const struct stumpless_target *target );
 
 /**
  * Closes a SQLite3 target, but does not touch the database handle.
@@ -127,7 +127,7 @@ stumpless_close_sqlite3_target_and_db( struct stumpless_target *target );
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_close_sqlite3_target_only( struct stumpless_target *target );
+stumpless_close_sqlite3_target_only( const struct stumpless_target *target );
 
 /**
  * Creates a table in the target's database for use with the default SQLite3
