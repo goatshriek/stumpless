@@ -93,13 +93,15 @@
 "GetModuleHandleExW dështoi"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"indeks jo-valid, ose -1 në qoftë se vlera është shumë e madhe për të qenë numër i plotë (integer)"
+"indeks jo-valid, ose -1 në qoftë se vlera është shumë e madhe" \
+"për të qenë numër i plotë (integer)"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "pajisje (facility) jo-valide"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"koded e pajisjes (facility) duhet të definohen në përputhshmëri me RFC 5424, pas shumëzimit me 8" 
+"koded e pajisjes (facility) duhet të definohen në përputhshmëri" \
+"me RFC 5424, pas shumëzimit me 8" 
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "id-ja e cakut (target) jo-valide"
@@ -108,7 +110,8 @@
 "indeks " INDEXED THING " jo-valid"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"vlera e një regjistri MULTI_SZ as nuk ishte e zbrazët dhe as nuk mbarohej me dy karaktere NULL"
+"vlera e një regjistri MULTI_SZ as nuk ishte e zbrazët" \
+"dhe as nuk mbarohej me dy karaktere NULL"
 
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string-u nuk është i formatit name=\"value\""
@@ -117,7 +120,8 @@
 "rëndësia jo-valide"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
-"koded e rëndësisë duhet të definohen në përputhshmëri me RFC 5424: vlera duhet të jetë në mes 0"\
+"koded e rëndësisë duhet të definohen në përputhshmëri" \
+" me RFC 5424: vlera duhet të jetë në mes 0" \
 " dhe 7 (duke përfshirë)"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
@@ -133,10 +137,12 @@
 "sd_journal_sendv dështoi"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
-"nuk mund të krijohej fajlli me emrin lokal të prizës (socket-ës) duke përdorur mkstemp"
+"nuk mund të krijohej fajlli me emrin lokal të prizës" \
+"(socket-ës) duke përdorur mkstemp"
 
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
-"gjatësia maksimale e mesazhit është valide vetëm për caqe (targetë) në rrjet UDP"
+"gjatësia maksimale e mesazhit është valide vetëm për caqe" \
+"(targetë) në rrjet UDP"
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
 "rezultati i GetLastError pas thirrjes së dështuar"
@@ -217,7 +223,8 @@ L"Stumpless regjistrimi i Windows Event Log Source"
 "nuk mund të mbyllej databaza sqlite3"
 
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"një thirrje mbrapa (callback) i kustomizuar për shprehjen e pregaditur dështoi"
+"një thirrje mbrapa (callback) i kustomizuar" \
+"për shprehjen e pregaditur dështoi"
 
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
 "nuk mund të hapej databaza sqlite3"
@@ -259,7 +266,8 @@ L"Stumpless regjistrimi i Windows Event Log Source"
 "dështoi hapja e një unix prize (socket-e) me një funksion prizë (socket)"
 
 #  define L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE \
-"u kontrollua për të parë nëse një tip caku (targeti) i papërkrahur ishte i hapur"
+"u kontrollua për të parë nëse një tip caku (targeti)" \
+"i papërkrahur ishte i hapur"
 
 #  define L10N_WEL_CLOSE_FAILURE_ERROR_MESSAGE \
 "nuk mund të mbyllej Windows Event Log"
