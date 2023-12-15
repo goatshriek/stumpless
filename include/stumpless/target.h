@@ -70,8 +70,11 @@ extern "C" {
 /**< add to the Windows Event Log */
 #define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
 
+/**< add to a SQLite3 database */
+#define STUMPLESS_SQLITE3_TARGET_VALUE 8
+
 /**< write to a series of targets and filters **/
-#define STUMPLESS_CHAIN_TARGET_VALUE 8
+#define STUMPLESS_CHAIN_TARGET_VALUE 9
 
 /**
  * A macro function that runs the provided action once for each target_type,
@@ -96,6 +99,8 @@ ACTION( STUMPLESS_SOCKET_TARGET, STUMPLESS_SOCKET_TARGET_VALUE )\
 ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
 /**< add to the Windows Event Log */\
 ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\
+/**< add to a SQLite3 database */\
+ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )\
 /**< write to a series of targets and filters **/\
 ACTION( STUMPLESS_CHAIN_TARGET, STUMPLESS_CHAIN_TARGET_VALUE )
 
@@ -430,6 +435,10 @@ stumpless_add_message_str( struct stumpless_target *target,
 
 /**
  * Closes a target.
+ *
+ * Targets that can be closed in multiple ways will be closed in the most
+ * complete way possible. Specifically, SQLite3 targets will have the underlying
+ * database connection closed as well.
  *
  * This function can be used when you'd like to avoid checking the type of the
  * target and then calling the appropriate close function. Note that use of this

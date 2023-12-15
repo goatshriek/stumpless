@@ -98,6 +98,7 @@
 #include <stumpless/target/chain.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
+#include <stumpless/target/sqlite3.h>
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
 #include <stumpless/priority.h>
@@ -129,6 +130,14 @@
  */
 
 #  include <stumpless/target/socket.h>
+#endif
+
+#ifdef STUMPLESS_SQLITE3_TARGETS_SUPPORTED
+/** @example sqlite3_example.c
+ * Demonstrates how to work with a sqlite3 target.
+ *
+ * @since release v2.2.0
+ */
 #endif
 
 #ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED

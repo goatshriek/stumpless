@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,30 +17,133 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_ENTRY_H
-#  define __STUMPLESS_PRIVATE_ENTRY_H
+#define __STUMPLESS_PRIVATE_ENTRY_H
 
-#  include <stdbool.h>
-#  include <stddef.h>
-#  include <stumpless/element.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/facility.h>
-#  include <stumpless/severity.h>
-#  include "private/strbuilder.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stumpless/element.h>
+#include <stumpless/entry.h>
+#include <stumpless/facility.h>
+#include <stumpless/severity.h>
+#include "private/strbuilder.h"
 
+/**
+ * Frees entry cache
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources(entry cache)
+ * that other threads can use.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to destroying
+ * resources(entry cache) that might be used within a function.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to leaving memory in an undefined state.
+ *
+ */
 void
 entry_free_all( void );
 
+/**
+ * Gets the priority value from facility and severity parameters.
+ * 
+ * Priority value is calculated by left shifting the facility value by 3 
+ * and adding it to the severity value which is according to the 
+ * RFC 5424 Section 6.2.1. The shift operation is done prior to get_prival()
+ * function with macros in "facility.h"
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe **
+ * This function must be safe to call from signal handlers
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function must be safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @param facility Facility value. This should be a \c STUMPLESS_FACILITY value.
+ * 
+ * @param severity Severity value. This should be a \c STUMPLESS_SEVERITY value
+ *
+ * @return Priority value
+ */
 int
 get_prival( enum stumpless_facility facility,
             enum stumpless_severity severity );
 
+/**
+ * Locks the mutex within the entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe **
+ * This function is not safe to call from signal handlers due to the use of
+ * mutexes that are not guarenteed to be async signal safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of lock that could be left in undefined state. 
+ *
+ * @param entry The entry to be locked.
+ *
+ */
 void
 lock_entry( const struct stumpless_entry *entry );
 
+/**
+ * Adds the element to the entry.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization 
+ * or locking mechanisms while accessing shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory functions that could leave the 
+ * memory in undefined state.
+ *
+ * @param entry The entry to add the new element.
+ *
+ * @param element The new element to add to entry.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered NULL is returned.
+ */
 struct stumpless_entry *
 locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
+/**
+ * Returns the element located at index within the entry.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization 
+ * or locking mechanisms while accessing shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to use of
+ * thread global structrues.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously 
+ * canceled due to use of thread-global structure that may left in a
+ * undefined state when cancelled.
+ *
+ * @param entry The entry to get the element from.
+ *
+ * @param index The index of element within the entry.
+ *
+ * @return The element if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
                              size_t index );
@@ -80,6 +183,31 @@ strbuilder_append_message( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder );
 
+/**
+ * Adds the structured data of an entry to the given strbuilder, in the format
+ * specified in RFC 5424.
+ *
+ * Assumes that the entry has already been locked.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it accesses the entry's element list
+ * without any coordination.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * strbuilder functions which may allocate memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the memory allocation function may not be AC-Safe.
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param entry The entry to extract the structured data from.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );

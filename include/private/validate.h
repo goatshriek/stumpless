@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_VALIDATE_H
-#  define __STUMPLESS_PRIVATE_VALIDATE_H
+#define __STUMPLESS_PRIVATE_VALIDATE_H
 
-#  include <stddef.h>
-#  include <stdbool.h>
-#  include <stumpless/error.h>
-#  include "private/config.h"
-#  include "private/config/locale/wrapper.h"
-#  include "private/error.h"
+#include <stddef.h>
+#include <stdbool.h>
+#include <stumpless/error.h>
+#include "private/config.h"
+#include "private/config/locale/wrapper.h"
+#include "private/error.h"
 
 /**
  * Checks to see if the variable with the provided name is NULL, and if it is
  * then raises an argument empty error and returns NULL.
  */
 #  define VALIDATE_ARG_NOT_NULL( ARG_NAME )                                    \
-if( unlikely( ARG_NAME == NULL ) ) {                                           \
+if( unlikely( ( ARG_NAME ) == NULL ) ) {                                       \
   raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
   return NULL;                                                                 \
 }
@@ -45,7 +45,7 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
  * negative value is needed to signify failure.
  */
 #  define VALIDATE_ARG_NOT_NULL_INT_RETURN( ARG_NAME )                         \
-if( unlikely( ARG_NAME == NULL ) ) {                                           \
+if( unlikely( ( ARG_NAME ) == NULL ) ) {                                       \
   raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
   return -STUMPLESS_ARGUMENT_EMPTY;                                            \
 }
@@ -59,9 +59,24 @@ if( unlikely( ARG_NAME == NULL ) ) {                                           \
  * and zero is needed to signify failure.
  */
 #  define VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( ARG_NAME )                    \
-if( unlikely( ARG_NAME == NULL ) ) {                                           \
+if( unlikely( ( ARG_NAME ) == NULL ) ) {                                       \
   raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
   return 0;                                                                    \
+}
+
+/**
+ * Checks to see if the variable with the provided name is NULL, and if it is
+ * then raises an argument empty error and returns.
+ *
+ * This is nearly identical to VALIDATE_ARG_NOT_NULL, but is suitable for use in
+ * functions where the return type is void.
+ *
+ * @since release v2.2.0
+ */
+#  define VALIDATE_ARG_NOT_NULL_VOID_RETURN( ARG_NAME )                        \
+if( unlikely( ( ARG_NAME)  == NULL ) ) {                                       \
+  raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( #ARG_NAME ) );            \
+  return;                                                                      \
 }
 
 /**

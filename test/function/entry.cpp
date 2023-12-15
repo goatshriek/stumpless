@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
+#include <cstddef>
+#include <cstdlib>
+#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
@@ -64,6 +64,7 @@ namespace {
       const char *param_1_1_name = "basic-param";
       const char *param_1_1_value = "basic-value";
       struct stumpless_param *param_1_1 = NULL;
+      struct stumpless_entry *nil_entry = NULL;
 
       virtual void
       SetUp( void ) {
@@ -81,11 +82,14 @@ namespace {
 
         element_2 = stumpless_new_element( element_2_name );
         stumpless_add_element( basic_entry, element_2 );
+
+        nil_entry = create_nil_entry();
       }
 
       virtual void
       TearDown( void ){
         stumpless_destroy_entry_and_contents( basic_entry );
+        stumpless_destroy_entry_only( nil_entry );
         stumpless_free_all(  );
       }
   };
@@ -544,6 +548,14 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, GetNullMessage ) {
+    const char *message;
+
+    message = stumpless_get_entry_message( nil_entry );
+    EXPECT_NULL( message );
+    EXPECT_NO_ERROR;
   }
 
   TEST_F( EntryTest, GetParamByIndex ) {

@@ -18,6 +18,10 @@
 
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
@@ -53,9 +57,61 @@ namespace {
     int result;
 
     #define CHECK_SEVERITY_ENUM( STRING, ENUM ) \
-      result = stumpless_get_severity_enum( #STRING ); \
+      result = stumpless_get_severity_enum( #STRING + 19 ); \
       EXPECT_EQ( result, ENUM );
     STUMPLESS_FOREACH_SEVERITY( CHECK_SEVERITY_ENUM )
+  }
+
+  TEST( GetSeverityEnum, LowercaseValidSeverity ) {
+    int result;
+
+    result = stumpless_get_severity_enum( "emerg" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_EMERG );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "alert" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_ALERT );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "crit" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_CRIT );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "err" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_ERR );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "warning" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_WARNING );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "notice" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_NOTICE );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "info" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_INFO );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "debug" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_DEBUG );
+    EXPECT_NO_ERROR;
+    // deprecated
+    result = stumpless_get_severity_enum( "panic" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_EMERG );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "error" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_ERR );
+    EXPECT_NO_ERROR;
+    result = stumpless_get_severity_enum( "warn" );
+    EXPECT_EQ( result, STUMPLESS_SEVERITY_WARNING );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST( GetSeverityEnum, InvalidMemSeverity ) {
+    int result;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_severity_enum( "info" );
+    EXPECT_EQ( result, -1 );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
   TEST( GetSeverityEnum, NoSuchSeverity ) {
@@ -64,6 +120,28 @@ namespace {
 
     result = stumpless_get_severity_enum( "an_invalid_severity" );
     EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetSeverityEnumFromBuffer, NoSuchSeverity ) {
+    int result;
+
+    result = stumpless_get_severity_enum_from_buffer( "an_invalid_severity", 10 );
+    EXPECT_EQ( result, -1 );
+  }
+
+  TEST( GetSeverityEnumFromBuffer, InvalidMemSeverity ) {
+    int result;
+    const struct stumpless_error *error;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_get_severity_enum_from_buffer( "info", sizeof("info") );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
   }
 
 }

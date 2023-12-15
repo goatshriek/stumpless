@@ -224,3 +224,17 @@ EXPORTS
   stumpless_unload_param                        @207
   vstumpless_load_entry                         @208
   stumpless_prival_from_string                  @209
+  stumpless_get_severity_enum_from_buffer       @210
+  stumpless_get_facility_enum_from_buffer       @211
+  stumpless_close_sqlite3_target_and_db         @212
+  stumpless_close_sqlite3_target_only           @213
+  stumpless_create_default_sqlite3_table        @214
+  stumpless_get_sqlite3_db                      @215
+  stumpless_get_sqlite3_insert_sql              @216
+  stumpless_get_sqlite3_prepare                 @217
+  stumpless_open_sqlite3_target                 @218
+  stumpless_open_sqlite3_target_from_db         @219
+  stumpless_open_sqlite3_target_with_options    @220
+  stumpless_set_sqlite3_insert_sql              @221
+  stumpless_set_sqlite3_prepare                 @222
+  stumpless_sqlite3_prepare                     @223

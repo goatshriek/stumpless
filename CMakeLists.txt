@@ -24,6 +24,7 @@ option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
+option(ENABLE_SQLITE3_TARGETS "support sqlite3 targets" ON)
 option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
 
 option(INSTALL_EXAMPLES "install examples" ON)
@@ -53,6 +54,32 @@ set(DEFAULT_SEVERITY "STUMPLESS_SEVERITY_INFO"
 
 set(FALLBACK_PAGESIZE 4096
   CACHE STRING "the memory page size to use if it cannot be detected at runtime"
+)
+
+string(CONCAT sqlite3_src_path_help_string
+  "The path to a SQLite3 source file, referred to as an 'amalgamation' in "
+  "SQLite documentation. If this variable is set, it is used to link SQLite3 "
+  "statically with Stumpless, instead of the default dynamic linking."
+)
+set(SQLITE3_SRC_PATH ""
+  CACHE FILEPATH ${sqlite3_src_path_help_string}
+)
+
+string(CONCAT sqlite3_include_path_help_string
+  "The path to the sqlite3.h header matching the source file provided in "
+  "SQLITE3_SRC_PATH. If the header is already in the include directores, this "
+  "does not need to be specified."
+)
+set(SQLITE3_INCLUDE_PATH ""
+  CACHE FILEPATH ${sqlite3_include_path_help_string}
+)
+
+set(SQLITE3_DEFAULT_TABLE_NAME "logs"
+  CACHE STRING "the name of the table used by default for SQLite3 targets"
+)
+
+set(SQLITE3_RETRY_MAX 3
+  CACHE STRING "the maximum number of retries on SQLite3 operations"
 )
 
 string(CONCAT benchmark_path_help_string
@@ -120,8 +147,16 @@ include(tools/cmake/test.cmake)
 
 
 # building configuration
+if(EXISTS ${SQLITE3_INCLUDE_PATH})
+  file(COPY
+    "${SQLITE3_INCLUDE_PATH}"
+    DESTINATION "${PROJECT_BINARY_DIR}/include"
+  )
+endif()
+
 check_include_files(pthread.h HAVE_PTHREAD_H)
 check_include_files(stdatomic.h HAVE_STDATOMIC_H)
+check_include_files("sqlite3.h" HAVE_SQLITE3_H)
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
 check_include_files(syslog.h STUMPLESS_SYSLOG_H_COMPATIBLE)
 check_include_files(systemd/sd-journal.h HAVE_SYSTEMD_SD_JOURNAL_H)
@@ -210,6 +245,12 @@ elseif(LOCALE MATCHES "^da[_-]")
 elseif(LOCALE MATCHES "^he[_-]")
   set(STUMPLESS_LANGUAGE "he-IL")
   set(USE_LOCALE_HE_IL TRUE)
+elseif(LOCALE MATCHES "^tr[_-]")
+  set(STUMPLESS_LANGUAGE "tr-TR")
+  set(USE_LOCALE_TR_TR TRUE)
+elseif(LOCALE MATCHES "^sq[_-]")
+  set(STUMPLESS_LANGUAGE "sq-AL")
+  set(USE_LOCALE_SQ_AL TRUE)
 else()
   if(NOT LOCALE MATCHES "^en[_-]")
     message("building default language en-US")
@@ -456,6 +497,45 @@ else()
 endif()
 
 
+# sqlite3 target support
+if(NOT ENABLE_SQLITE3_TARGETS)
+  set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+elseif(SQLITE3_SRC_PATH)
+  if(NOT EXISTS "${SQLITE3_SRC_PATH}")
+    message("the specified sqlite3 source file does not exist")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+  else()
+    list(APPEND STUMPLESS_SOURCES "${SQLITE3_SRC_PATH}")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED TRUE)
+  endif()
+elseif(NOT HAVE_SQLITE3_H)
+  message("sqlite3 targets are not supported without sqlite3.h")
+  set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+else()
+  find_library(LIBSQLITE3_FOUND sqlite3)
+  if(LIBSQLITE3_FOUND)
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED TRUE)
+  else()
+    message("sqlite3 targets are not supported without libsqlite3")
+    set(STUMPLESS_SQLITE3_TARGETS_SUPPORTED FALSE)
+  endif()
+endif()
+
+if(STUMPLESS_SQLITE3_TARGETS_SUPPORTED)
+  include(tools/cmake/sqlite3.cmake)
+else()
+  list(APPEND
+    STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/config/sqlite3_unsupported.c"
+  )
+
+  add_function_test(sqlite3_unsupported
+    SOURCES
+      ${PROJECT_SOURCE_DIR}/test/function/config/sqlite3_unsupported.cpp
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
+
+
 # windows event log target support
 if(NOT ENABLE_WINDOWS_EVENT_LOG_TARGETS)
   set(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED FALSE)
@@ -544,17 +624,15 @@ endif()
 add_library(stumpless ${STUMPLESS_SOURCES})
 set_target_properties(stumpless PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(stumpless PROPERTIES PUBLIC_HEADER include/stumpless.h)
+
+target_link_libraries(stumpless PRIVATE ${STUMPLESS_LINK_LIBRARIES})
+
 if(MINGW)
   target_compile_options(stumpless PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumpless PROPERTIES PREFIX "")
 endif()
 
-if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
-  target_link_libraries(stumpless PRIVATE systemd)
-endif()
-
 if(STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED)
-  target_link_libraries(stumpless PRIVATE KtmW32)
   add_dependencies(stumpless default_events)
 endif()
 
@@ -582,7 +660,7 @@ endif(FUZZ)
 target_include_directories(stumpless
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
 )
 
 
@@ -675,6 +753,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/target/sqlite3.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h
   DESTINATION "include/stumpless/target"
 )
@@ -1016,7 +1095,11 @@ add_custom_target(examples
 
 # performance tests
 add_performance_test(element
-  SOURCES test/performance/element.cpp
+SOURCES test/performance/element.cpp
+)
+
+add_performance_test(priority
+SOURCES test/performance/priority.cpp
 )
 
 add_performance_test(entry

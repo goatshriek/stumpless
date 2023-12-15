@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/socket.h"
+#include "private/config/wrapper/sqlite3.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -216,6 +217,12 @@ stumpless_add_entry( struct stumpless_target *target,
   // journald targets are not formatted
   if( target->type == STUMPLESS_JOURNALD_TARGET ) {
     result = config_send_entry_to_journald_target( target, entry );
+    goto finish;
+  }
+
+  // sqlite3 targets are not formatted
+  if( target->type == STUMPLESS_SQLITE3_TARGET ) {
+    result = config_send_entry_to_sqlite3_target( target, entry );
     goto finish;
   }
 
@@ -399,6 +406,10 @@ stumpless_close_target( struct stumpless_target *target ) {
 
     case STUMPLESS_SOCKET_TARGET:
       config_close_socket_target( target );
+      break;
+
+    case STUMPLESS_SQLITE3_TARGET:
+      config_close_sqlite3_target_and_db( target );
       break;
 
     case STUMPLESS_STREAM_TARGET:

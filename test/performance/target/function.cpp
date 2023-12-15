@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021 Joel E. Anderson
+ * Copyright 2021-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  */
 
 #include <benchmark/benchmark.h>
-#include <cstdlib>
 #include <stumpless.h>
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_counter.hpp"
@@ -46,9 +45,7 @@ public:
   }
 
   void TearDown( const ::benchmark::State &state ) {
-    stumpless_set_malloc( malloc );
-    stumpless_set_realloc( realloc );
-    stumpless_set_free( free );
+    FINALIZE_MEMORY_COUNTER( function );
     stumpless_destroy_entry_and_contents( entry );
     stumpless_close_function_target( target );
     stumpless_free_all(  );

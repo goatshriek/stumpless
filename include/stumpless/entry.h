@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2023 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,10 @@ struct stumpless_entry {
   char app_name[STUMPLESS_MAX_APP_NAME_LENGTH + 1];
 /** The length of the app name, without the NULL terminator. */
   size_t app_name_length;
-/** The message of this entry, as a NULL-terminated string. */
+/**
+ * The message of this entry, as a NULL-terminated string. This may be NULL
+ * if the entry does not have a message set.
+ */
   char *message;
 /** The length of the message in bytes, without the NULL terminator. */
   size_t message_length;
@@ -589,6 +592,10 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry );
  * Note that if this message was originally set using format specifiers, the
  * result will have them substituted, instead of the original placeholders.
  *
+ * It is also important to note that the message may be NULL if the entry
+ * does not have one. This differs from other fields like the app id or msgid,
+ * which will be an RFC 5424 NILVALUE '-' if they have not been set.
+ *
  * In versions prior to v2.0.0, the returned pointer was to the internal buffer
  * used to store the name and was not to be modified by the caller. This
  * behavior changed in v2.0.0 in order to avoid thread safety issues.
@@ -611,9 +618,8 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry );
  *
  * @param entry The entry to get the message of.
  *
- * @return The message of the entry if no error is encountered. If an error
- * was encountered, then NULL is returned and an error code is set
- * appropriately.
+ * @return The message of the entry (which may be NULL). If an error was
+ * encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *
@@ -1227,43 +1233,6 @@ stumpless_set_entry_hostname( struct stumpless_entry *entry,
                               const char *hostname );
 
 /**
- * Sets the msgid for an entry.
- *
- * **Thread Safety: MT-Safe race:msgid**
- * This function is thread safe, of course assuming that the msgid is not
- * changed by any other threads during execution. A mutex is used to coordinate
- * changes to the entry while it is being modified.
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the use of a
- * non-reentrant lock to coordinate changes and the use of memory management
- * functions to create the new msgid and free the old one.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked as well as
- * memory management functions.
- *
- * @since release v1.6.0.
- *
- * @param entry The entry for which the msgid will be set.
- *
- * @param msgid A NULL-terminated string holding the new msgid for the entry.
- * The string must be in the ASCII printable range 33 <= character <= 126 as
- * specified in RFC5424. This will be copied in to the entry, and therefore
- * may be modified or freed after this call without affecting the entry. If
- * this is NULL, then a single '-' character will be used, as specified as
- * the NILVALUE in RFC 5424.
- *
- * @return The modified entry if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-STUMPLESS_PUBLIC_FUNCTION
-struct stumpless_entry *
-stumpless_set_entry_msgid( struct stumpless_entry *entry,
-                           const char *msgid );
-
-/**
  * Sets the message of a given entry.
  *
  * The message must be a valid format specifier string provided along with the
@@ -1339,6 +1308,43 @@ STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_message_str( struct stumpless_entry *entry,
                                  const char *message );
+
+/**
+ * Sets the msgid for an entry.
+ *
+ * **Thread Safety: MT-Safe race:msgid**
+ * This function is thread safe, of course assuming that the msgid is not
+ * changed by any other threads during execution. A mutex is used to coordinate
+ * changes to the entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new msgid and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v1.6.0.
+ *
+ * @param entry The entry for which the msgid will be set.
+ *
+ * @param msgid A NULL-terminated string holding the new msgid for the entry.
+ * The string must be in the ASCII printable range 33 <= character <= 126 as
+ * specified in RFC5424. This will be copied in to the entry, and therefore
+ * may be modified or freed after this call without affecting the entry. If
+ * this is NULL, then a single '-' character will be used, as specified as
+ * the NILVALUE in RFC 5424.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_set_entry_msgid( struct stumpless_entry *entry,
+                           const char *msgid );
 
 /**
  * Puts the param in the element at the given index of an entry.
