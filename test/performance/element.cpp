@@ -24,6 +24,7 @@ NEW_MEMORY_COUNTER( copy_element )
 NEW_MEMORY_COUNTER( load_element )
 NEW_MEMORY_COUNTER( new_element )
 NEW_MEMORY_COUNTER( set_element_name )
+NEW_MEMORY_COUNTER( element_to_string )
 
 static void CopyElement(benchmark::State& state){
   struct stumpless_element *element;
@@ -113,7 +114,32 @@ static void SetElementName(benchmark::State& state){
   SET_STATE_COUNTERS( state, set_element_name );
 }
 
+static void ElementToString(benchmark::State& state){
+  struct stumpless_element *element;
+  const char *result;
+
+  INIT_MEMORY_COUNTER( element_to_string );
+
+  element = stumpless_new_element( "new-element-name" );
+
+  for(auto _ : state){
+    result = stumpless_element_to_string( element );
+    if( !result ) {
+      state.SkipWithError( "could not convert the element to string" );
+    }
+    else {
+      element_to_string_memory_counter_free( ( void * ) result );
+    }
+  }
+
+  stumpless_destroy_element_and_contents( element );
+  stumpless_free_all(  );
+
+  SET_STATE_COUNTERS( state, element_to_string );
+}
+
 BENCHMARK( CopyElement );
 BENCHMARK( LoadElement );
 BENCHMARK( NewElement );
 BENCHMARK( SetElementName );
+BENCHMARK( ElementToString );
