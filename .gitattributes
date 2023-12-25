@@ -9,9 +9,9 @@
 *.i     text eol=lf
 *.mc    text eol=crlf
 *.pl    text eol=lf
-*.png   binary
 *.ps1   text eol=crlf
 *.sh    text eol=lf
+*.svg   text eol=lf
 *.rb    text eol=lf
 *.txt   text eol=lf
 *.xml   text eol=lf
