@@ -62,10 +62,10 @@ jobs:
           wget -q https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
           ./build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir bw-output make all
-          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip
-          unzip -qq -o sonar-scanner-cli-4.5.0.2216-linux.zip
-          chmod +x sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner
-          sonar-scanner-4.5.0.2216-linux/bin/sonar-scanner -Dproject.settings=tools/sonar/sonar-project.properties
+          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip -qq -o sonar-scanner-cli-5.0.1.3006-linux.zip
+          chmod +x sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
+          sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dproject.settings=tools/sonar/sonar-project.properties
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
