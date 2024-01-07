@@ -29,7 +29,7 @@
 
 /**
  * Frees entry cache
- *
+ *stumpless_entry
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources(entry cache)
  * that other threads can use.
@@ -296,6 +296,37 @@ unchecked_load_entry( struct stumpless_entry *entry,
 void
 unchecked_unload_entry( const struct stumpless_entry *entry );
 
+/**
+ * Note (to delete before merge) : i'm concern this comment is not 100% accurate,
+ * i have some difficulties to understand the config_unlock_mutex macro
+ * if it does something or not
+ * 
+ * Unlocks the mutex of a given entry.
+ * 
+ * This function is used internally to ensure that the mutex of an entry
+ * is properly unlocked after operations that required synchronization are
+ * completed. It uses the config_unlock_mutex macro to perform the actual
+ * unlocking.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it directly manipulates the mutex
+ * of the entry. The caller must ensure that this function is not called
+ * concurrently with other functions that might be modifying the same entry.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * involves lock manipulation which is not async-signal-safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed if a cancellation
+ * request is received during execution.
+ * 
+ * @since release v2.0.0
+ * 
+ * @param entry The entry whose mutex is to be unlocked. The entry must not
+ *              be NULL, and it must have a valid mutex initialized.
+ */
 void
 unlock_entry( const struct stumpless_entry *entry );
 
