@@ -180,6 +180,32 @@ struct strbuilder *
 strbuilder_append_message( struct strbuilder *builder,
                            const struct stumpless_entry *entry );
 
+/**
+ * Appends the process ID to the string builder.
+ *
+ * This function gets the current process ID using `config_getpid` and appends
+ * it to the provided string builder object. It is useful for adding process
+ * identification information to a string being constructed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it does not modify shared data and relies
+ * on thread-safe underlying functions.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * relies on functions that may not be async-signal-safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * The function is not safe in the context of asynchronous cancellation due to
+ * potential resource cleanup issues.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to which the process ID is appended.
+ *                Must not be NULL.
+ *
+ * @return The string builder with the process ID appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder );
 
