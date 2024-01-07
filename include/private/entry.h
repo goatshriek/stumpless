@@ -176,6 +176,34 @@ struct strbuilder *
 strbuilder_append_msgid( struct strbuilder *builder,
                          const struct stumpless_entry *entry );
 
+/**
+ * Appends the message from a Stumpless entry to a string builder.
+ *
+ * This function extracts the message from the provided Stumpless entry and
+ * appends it to the specified string builder. It is useful for constructing
+ * strings that include log messages.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's message)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * involves memory manipulation and access to shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for use in contexts where threads may be asynchronously cancelled,
+ * as it could leave shared data in an inconsistent state.
+ *
+ * @since release 1.0.0
+ *
+ * @param builder A pointer to the string builder to which the entry's message is appended.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the message to be appended.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the message appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_message( struct strbuilder *builder,
                            const struct stumpless_entry *entry );
