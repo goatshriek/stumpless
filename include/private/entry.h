@@ -212,6 +212,29 @@ struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
 
+/**
+ * Destroys a Stumpless entry without performing any checks.
+ *
+ * This function deallocates resources associated with the given entry, including
+ * unloading the entry and freeing its memory from the cache. It assumes the entry
+ * is valid and does not perform any safety checks.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it modifies shared resources (the entry and
+ * its associated data) without synchronization.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers as it involves operations like memory
+ * deallocation and mutex destruction.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in the context of asynchronous cancellation due to potential resource
+ * cleanup issues.
+ *
+ * @since release v1.5.0
+ *
+ * @param entry A pointer to the entry to be destroyed. Must not be NULL.
+ */
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry );
 
