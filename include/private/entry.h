@@ -147,9 +147,34 @@ locked_get_element_by_name( const struct stumpless_entry *entry,
                             const char *name );
 
 /**
- * Creates a new entry with the given parameters.
+ * Creates a new Stumpless entry with specified parameters.
  *
- * @since release v2.1.0.
+ * This function allocates a new entry and initializes it with the provided facility,
+ * severity, application name, message ID, and message. It uses internal cache
+ * mechanisms for memory management and performs necessary validations and initializations.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it involves memory allocation and modification of
+ * shared resources without synchronization.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to memory allocation and
+ * manipulation operations.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might leave allocated
+ * resources in an inconsistent state.
+ *
+ * @since release v2.1.0
+ *
+ * @param facility The facility code for the entry.
+ * @param severity The severity code for the entry.
+ * @param app_name The application name for the entry. Can be NULL.
+ * @param msgid The message ID for the entry. Can be NULL.
+ * @param message The message for the entry. Can be NULL.
+ * @param message_length The length of the message.
+ *
+ * @return A pointer to the newly created entry, or NULL if an error occurs.
  */
 struct stumpless_entry *
 new_entry( enum stumpless_facility facility,
