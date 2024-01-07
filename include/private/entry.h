@@ -300,6 +300,7 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
  * Note (to delete before merge) : i'm concern this comment is not 100% accurate,
  * i have some difficulties to understand the config_unlock_mutex macro
  * if it does something or not
+ * (implement thread safety #136)
  * 
  * Unlocks the mutex of a given entry.
  * 
