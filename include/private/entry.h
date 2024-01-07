@@ -172,6 +172,34 @@ strbuilder_append_app_name( struct strbuilder *builder,
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder );
 
+/**
+ * Appends the message ID from a Stumpless entry to a string builder.
+ *
+ * This function takes the message ID from the provided Stumpless entry and
+ * appends it to the given string builder. It's designed for building strings
+ * that include the message ID of log entries.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's message ID)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to memory manipulation
+ * and accessing shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
+ * states of shared data.
+ *
+ * @since release 1.0.0
+ *
+ * @param builder A pointer to the string builder to append the message ID.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the message ID.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the message ID appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_msgid( struct strbuilder *builder,
                          const struct stumpless_entry *entry );
