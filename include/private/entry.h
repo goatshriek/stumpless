@@ -142,6 +142,29 @@ struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
                              size_t index );
 
+/**
+ * Retrieves an element by name from a Stumpless entry, ensuring thread safety.
+ *
+ * This function searches for an element within the given entry by its name. 
+ * It locks each element during comparison to ensure thread safety. If the 
+ * element with the specified name is found, it is returned.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it locks individual elements during the search process.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to lock manipulation.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might involve lock manipulation.
+ *
+ * @since release 2.0.0
+ *
+ * @param entry The entry containing the elements to search through. Must not be NULL.
+ * @param name The name of the element to find. Must be a NULL-terminated string.
+ *
+ * @return A pointer to the found element, or NULL if not found or an error occurs.
+ */
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
                             const char *name );
