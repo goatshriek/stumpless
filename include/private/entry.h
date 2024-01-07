@@ -54,13 +54,7 @@ entry_free_all( void );
  * RFC 5424 Section 6.2.1. The shift operation is done prior to get_prival()
  * function with macros in "facility.h"
  *
- * **Thread Safety: MT-Safe**
- * This function is thread safe.
- *
- * **Async Signal Safety: AS-Safe **
- * This function must be safe to call from signal handlers
- *
- * **Async Cancel Safety: AC-Safe**
+ * **Thread Safety: MT-Safe[appropriate version]afe**
  * This function must be safe to call from threads that may be asynchronously
  * cancelled.
  *
@@ -165,10 +159,65 @@ new_entry( enum stumpless_facility facility,
            char *message,
            size_t message_length );
 
+/**
+ * Appends the application name from a Stumpless entry to a string builder.
+ *
+ * This function takes the application name from the provided Stumpless entry and
+ * appends it to the specified string builder. It is designed for building strings
+ * that include the application name of log entries.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's application name)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to memory manipulation
+ * and accessing shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
+ * states of shared data.
+ *
+ * @since release 1.0.0
+ *
+ * @param builder A pointer to the string builder to append the application name.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the application name.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the application name appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry );
 
+/**
+ * Appends the hostname to the string builder.
+ *
+ * This function retrieves the system's current hostname using `config_gethostname`
+ * and appends it to the provided string builder. If the hostname cannot be
+ * obtained, a hyphen ('-') is appended instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * Assuming `config_gethostname` is thread-safe, this function is also thread-safe
+ * as it operates on local buffer and the provided string builder without
+ * sharing data with other threads.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * involves system calls and memory manipulation.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for use in contexts of asynchronous cancellation due to potential
+ * system call interruption and memory state inconsistency.
+ *
+ * @since release 1.0.0
+ *
+ * @param builder A pointer to the string builder to which the hostname is appended.
+ *                Must not be NULL.
+ *
+ * @return The string builder with the hostname appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder );
 
