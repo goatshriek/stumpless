@@ -215,6 +215,29 @@ strbuilder_append_structured_data( struct strbuilder *builder,
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry );
 
+/**
+ * Checks if the specified entry contains an element with the given name.
+ *
+ * **Thread Safety: MT-Safe race:entry race:name**
+ * This function is thread-safe assuming that the 'entry' and 'name' arguments
+ * are not modified concurrently by other threads. It relies on the immutability
+ * of these parameters during execution to maintain thread safety.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers due to
+ * potential manipulation of shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe for contexts where threads might be asynchronously
+ * cancelled, as it could leave shared data in an inconsistent state.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to be checked for the element. Must not be NULL.
+ * @param name The name of the element to look for. Must be a NULL-terminated string.
+ *
+ * @return Returns true if the element is found, false otherwise.
+ */
 bool
 unchecked_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
