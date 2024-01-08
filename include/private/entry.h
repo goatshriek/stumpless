@@ -531,18 +531,7 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
  * 
  * This function is used internally to ensure that the mutex of an entry
  * is properly unlocked after operations that required synchronization are
- * completed. It uses the config_unlock_mutex macro to perform the actual
- * unlocking.
- *
- * **Thread Safety: MT-Unsafe**
- * This function is not thread-safe as it directly manipulates the mutex
- * of the entry. The caller must ensure that this function is not called
- * concurrently with other functions that might be modifying the same entry.
- *
- * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from asynchronous signal handlers as it
- * involves lock manipulation which is not async-signal-safe.
- *
+ * completed. It uses the config_unlock_unchecked_entry_has_element
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the cleanup of the lock may not be completed if a cancellation
