@@ -29,7 +29,7 @@
 
 /**
  * Frees entry cache
- *stumpless_entry
+ *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it destroys resources(entry cache)
  * that other threads can use.
@@ -48,18 +48,24 @@ entry_free_all( void );
 
 /**
  * Gets the priority value from facility and severity parameters.
- * 
- * Priority value is calculated by left shifting the facility value by 3 
- * and adding it to the severity value which is according to the 
+ *
+ * Priority value is calculated by left shifting the facility value by 3
+ * and adding it to the severity value which is according to the
  * RFC 5424 Section 6.2.1. The shift operation is done prior to get_prival()
  * function with macros in "facility.h"
  *
- * **Thread Safety: MT-Safe[appropriate version]afe**
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe **
+ * This function must be safe to call from signal handlers
+ *
+ * **Async Cancel Safety: AC-Safe**
  * This function must be safe to call from threads that may be asynchronously
  * cancelled.
  *
  * @param facility Facility value. This should be a \c STUMPLESS_FACILITY value.
- * 
+ *
  * @param severity Severity value. This should be a \c STUMPLESS_SEVERITY value
  *
  * @return Priority value
@@ -80,7 +86,7 @@ get_prival( enum stumpless_facility facility,
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of lock that could be left in undefined state. 
+ * cancelled, due to the use of lock that could be left in undefined state.
  *
  * @param entry The entry to be locked.
  *
@@ -92,7 +98,7 @@ lock_entry( const struct stumpless_entry *entry );
  * Adds the element to the entry.
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it doesn't use any synchronization 
+ * This function is not thread safe as it doesn't use any synchronization
  * or locking mechanisms while accessing shared resources.
  *
  * **Async Signal Safety: AS-Unsafe**
@@ -101,7 +107,7 @@ lock_entry( const struct stumpless_entry *entry );
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of memory functions that could leave the 
+ * cancelled, due to the use of memory functions that could leave the
  * memory in undefined state.
  *
  * @param entry The entry to add the new element.
@@ -116,37 +122,10 @@ locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
 /**
- * Returns the element located at index within the entry.
- *
- * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it doesn't use any synchronization 
- * or locking mechanisms while accessing shared resources.
- *
- * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from signal handlers due to use of
- * thread global structrues.
- *
- * **Async Cancel Safety: AC-Unsafe**
- * This function is not safe to call from threads that may be asynchronously 
- * canceled due to use of thread-global structure that may left in a
- * undefined state when cancelled.
- *
- * @param entry The entry to get the element from.
- *
- * @param index The index of element within the entry.
- *
- * @return The element if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
- */
-struct stumpless_element *
-locked_get_element_by_index( const struct stumpless_entry *entry,
-                             size_t index );
-
-/**
  * Retrieves an element by name from a Stumpless entry, ensuring thread safety.
  *
- * This function searches for an element within the given entry by its name. 
- * It locks each element during comparison to ensure thread safety. If the 
+ * This function searches for an element within the given entry by its name.
+ * It locks each element during comparison to ensure thread safety. If the
  * element with the specified name is found, it is returned.
  *
  * **Thread Safety: MT-Safe**
@@ -159,11 +138,39 @@ locked_get_element_by_index( const struct stumpless_entry *entry,
  * Not safe in contexts of asynchronous cancellation, as it might involve lock manipulation.
  *
  * @since release 2.0.0
- *
+  *
  * @param entry The entry containing the elements to search through. Must not be NULL.
  * @param name The name of the element to find. Must be a NULL-terminated string.
  *
  * @return A pointer to the found element, or NULL if not found or an error occurs.
+ */
+struct stumpless_element *
+locked_get_element_by_index( const struct stumpless_entry *entry,
+                             size_t index );
+
+/**
+ * Searches for an element by name within a given Stumpless entry, assuming external thread safety management.
+ *
+ * This function looks for an element with the specified name in the provided entry.
+ * It does not manage thread safety internally but assumes that the calling function
+ * has already acquired the necessary locks on the entry.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * The function itself is not thread-safe. It relies on the caller to ensure thread safety
+ * by appropriately locking the entry before calling.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to potential shared data access.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
+ *
+ * @since release 2.0.0
+ *
+ * @param entry The entry containing the elements to be searched. Must not be NULL.
+ * @param name The name of the element to find. Must be a NULL-terminated string.
+ *
+ * @return A pointer to the found element, or NULL if not found or in case of an error.
  */
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
@@ -172,21 +179,23 @@ locked_get_element_by_name( const struct stumpless_entry *entry,
 /**
  * Creates a new Stumpless entry with specified parameters.
  *
- * This function allocates a new entry and initializes it with the provided facility,
- * severity, application name, message ID, and message. It uses internal cache
- * mechanisms for memory management and performs necessary validations and initializations.
+ * Allocates a new entry and initializes it with the provided facility,
+ * severity, application name, message ID, and message. It assumes that memory
+ * allocation (e.g., for the entry itself and string copies) is thread-safe as
+ * provided by the system's standard library.
  *
- * **Thread Safety: MT-Unsafe**
- * This function is not thread-safe as it involves memory allocation and modification of
- * shared resources without synchronization.
+ * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * This function is considered thread-safe under the condition that the string
+ * parameters (app_name, msgid, message) are not concurrently modified. The entry
+ * itself is a new, unshared resource, thus it is safe to modify in this context.
  *
  * **Async Signal Safety: AS-Unsafe**
- * Unsafe to call from asynchronous signal handlers due to memory allocation and
- * manipulation operations.
+ * It is not safe to call this function from signal handlers as the memory
+ * allocation functions used within may not be signal-safe.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * Not safe in contexts of asynchronous cancellation, as it might leave allocated
- * resources in an inconsistent state.
+ * This function is unsafe in the context of asynchronous cancellation, as it
+ * might leave allocated resources in an inconsistent state.
  *
  * @since release v2.1.0
  *
@@ -523,7 +532,7 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
 
 /**
  * Unlocks the mutex of a given entry.
- * 
+ *
  * This function is used internally to ensure that the mutex of an entry
  * is properly unlocked after operations that required synchronization are
  * completed. It uses the config_unlock_unchecked_entry_has_element
@@ -531,9 +540,9 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the cleanup of the lock may not be completed if a cancellation
  * request is received during execution.
- * 
+ *
  * @since release v2.0.0
- * 
+ *
  * @param entry The entry whose mutex is to be unlocked. The entry must not
  *              be NULL, and it must have a valid mutex initialized.
  */
