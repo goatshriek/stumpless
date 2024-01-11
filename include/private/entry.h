@@ -122,27 +122,27 @@ locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
 /**
- * Retrieves an element by name from a Stumpless entry, ensuring thread safety.
+ * Retrieves an element by index from a Stumpless entry, assuming external thread safety management.
  *
- * This function searches for an element within the given entry by its name.
- * It locks each element during comparison to ensure thread safety. If the
- * element with the specified name is found, it is returned.
+ * This function locates an element within the provided entry using its index.
+ * It does not manage thread safety internally but assumes that the calling function
+ * has already acquired the necessary locks on the entry.
  *
- * **Thread Safety: MT-Safe**
- * This function is thread-safe as it locks individual elements during the search process.
+ * **Thread Safety: MT-Unsafe**
+ * The function is not inherently thread-safe and relies on the caller to manage thread safety.
  *
  * **Async Signal Safety: AS-Unsafe**
- * Unsafe to call from asynchronous signal handlers due to lock manipulation.
+ * Not safe to call from asynchronous signal handlers due to potential shared data access.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * Not safe in contexts of asynchronous cancellation, as it might involve lock manipulation.
+ * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
  *
  * @since release 2.0.0
-  *
- * @param entry The entry containing the elements to search through. Must not be NULL.
- * @param name The name of the element to find. Must be a NULL-terminated string.
  *
- * @return A pointer to the found element, or NULL if not found or an error occurs.
+ * @param entry The entry containing the elements. Must not be NULL.
+ * @param index The index of the element to retrieve.
+ *
+ * @return A pointer to the element at the specified index, or NULL if not found or in case of an error.
  */
 struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
@@ -533,18 +533,22 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
 /**
  * Unlocks the mutex of a given entry.
  *
- * This function is used internally to ensure that the mutex of an entry
- * is properly unlocked after operations that required synchronization are
- * completed. It uses the config_unlock_unchecked_entry_has_element
+ * This function is used internally to unlock the mutex of an entry after
+ * operations requiring synchronization are completed. It is part of the internal
+ * locking mechanism and relies on the `config_unlock_mutex` macro.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it manipulates mutexes without additional safety checks.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers as it involves mutex operations which are not async-signal-safe.
+ *
  * **Async Cancel Safety: AC-Unsafe**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, as the cleanup of the lock may not be completed if a cancellation
- * request is received during execution.
+ * Not safe to call from threads that may be asynchronously cancelled, as the lock might not be properly released.
  *
  * @since release v2.0.0
  *
- * @param entry The entry whose mutex is to be unlocked. The entry must not
- *              be NULL, and it must have a valid mutex initialized.
+ * @param entry The entry whose mutex is to be unlocked. Must not be NULL and must have an initialized mutex.
  */
 void
 unlock_entry( const struct stumpless_entry *entry );
