@@ -182,9 +182,7 @@ locked_get_element_by_name( const struct stumpless_entry *entry,
  * Allocates a new entry and initializes it with the provided facility,
  * severity, application name, message ID, and message. It assumes that memory
  * allocation (e.g., for the entry itself and string copies) is thread-safe as
- * provided by the system's standard library.
- *
- * **Thread Safety: MT-Safe race:app_name race:msgid race:message**
+ * provided by the system's standard librarylock_entryace:msgid race:message**
  * This function is considered thread-safe under the condition that the string
  * parameters (app_name, msgid, message) are not concurrently modified. The entry
  * itself is a new, unshared resource, thus it is safe to modify in this context.
@@ -265,7 +263,7 @@ strbuilder_append_app_name( struct strbuilder *builder,
  * involves system calls and memory manipulation.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * Not safe for use in contexts of asynchronous cancellation due to potential
+ * Not safe for use in contexts of asynchronolock_entryus cancellation due to potential
  * system call interruption and memory state inconsistency.
  *
  * @since release 1.0.0
@@ -346,11 +344,7 @@ strbuilder_append_message( struct strbuilder *builder,
  * Appends the process ID to the string builder.
  *
  * This function gets the current process ID using `config_getpid` and appends
- * it to the provided string builder object. It is useful for adding process
- * identification information to a string being constructed.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread-safe as it does not modify shared data and relies
+ * it to the provided string builder object. It lock_entry modify shared data and relies
  * on thread-safe underlying functions.
  *
  * **Async Signal Safety: AS-Unsafe**
@@ -419,8 +413,7 @@ strbuilder_append_structured_data( struct strbuilder *builder,
  * Not safe in the context of asynchronous cancellation due to potential resource
  * cleanup issues.
  *
- * @since release v1.5.0
- *
+ * @since release v1.5.0lock_entry
  * @param entry A pointer to the entry to be destroyed. Must not be NULL.
  */
 void
@@ -533,24 +526,25 @@ unchecked_unload_entry( const struct stumpless_entry *entry );
 /**
  * Unlocks the mutex of a given entry.
  *
- * This function is used internally to unlock the mutex of an entry after
- * operations requiring synchronization are completed. It is part of the internal
- * locking mechanism and relies on the `config_unlock_mutex` macro.
- *
- * **Thread Safety: MT-Unsafe**
- * This function is not thread-safe as it manipulates mutexes without additional safety checks.
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it properly releases a mutex, allowing for safe
+ * concurrent access to shared resources.
  *
  * **Async Signal Safety: AS-Unsafe**
- * Not safe to call from signal handlers as it involves mutex operations which are not async-signal-safe.
+ * Since mutex operations are not safe in signal handlers, this function is also
+ * considered unsafe for asynchronous signal handling.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * Not safe to call from threads that may be asynchronously cancelled, as the lock might not be properly released.
+ * The function is unsafe for asynchronous cancellation as the cleanup of the mutex
+ * may not be completed if a thread is cancelled during execution.
  *
  * @since release v2.0.0
  *
- * @param entry The entry whose mutex is to be unlocked. Must not be NULL and must have an initialized mutex.
+ * @param entry The entry whose mutex is to be unlocked. Must not be NULL, and it
+ *              must have a valid mutex initialized.
  */
 void
-unlock_entry( const struct stumpless_entry *entry );
+unlock_entry(const struct stumpless_entry *entry);
+
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
