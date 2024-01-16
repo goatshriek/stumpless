@@ -137,7 +137,7 @@ locked_add_element( struct stumpless_entry *entry,
  * **Async Cancel Safety: AC-Unsafe**
  * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
  *
- * @since release 2.0.0
+ * @since release v2.0.0
  *
  * @param entry The entry containing the elements. Must not be NULL.
  * @param index The index of the element to retrieve.
@@ -165,7 +165,7 @@ locked_get_element_by_index( const struct stumpless_entry *entry,
  * **Async Cancel Safety: AC-Unsafe**
  * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
  *
- * @since release 2.0.0
+ * @since release v2.0.0
  *
  * @param entry The entry containing the elements to be searched. Must not be NULL.
  * @param name The name of the element to find. Must be a NULL-terminated string.
@@ -233,7 +233,7 @@ new_entry( enum stumpless_facility facility,
  * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
  * states of shared data.
  *
- * @since release 1.0.0
+ * @since release v1.0.0
  *
  * @param builder A pointer to the string builder to append the application name.
  *                Must not be NULL.
@@ -266,7 +266,7 @@ strbuilder_append_app_name( struct strbuilder *builder,
  * Not safe for use in contexts of asynchronolock_entryus cancellation due to potential
  * system call interruption and memory state inconsistency.
  *
- * @since release 1.0.0
+ * @since release v1.0.0
  *
  * @param builder A pointer to the string builder to which the hostname is appended.
  *                Must not be NULL.
@@ -295,7 +295,7 @@ strbuilder_append_hostname( struct strbuilder *builder );
  * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
  * states of shared data.
  *
- * @since release 1.0.0
+ * @since release v1.0.0
  *
  * @param builder A pointer to the string builder to append the message ID.
  *                Must not be NULL.
@@ -327,7 +327,7 @@ strbuilder_append_msgid( struct strbuilder *builder,
  * Not safe for use in contexts where threads may be asynchronously cancelled,
  * as it could leave shared data in an inconsistent state.
  *
- * @since release 1.0.0
+ * @since release v1.0.0
  *
  * @param builder A pointer to the string builder to which the entry's message is appended.
  *                Must not be NULL.
