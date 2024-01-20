@@ -1,4 +1,4 @@
-![Stumpless logo](assets/logo-and-name.svg)
+![Stumpless logo](./assets/logo-and-name.svg)
 
 **A C logging library built for high performance and a rich feature set.**
 
@@ -10,6 +10,10 @@
 [![Gitter](https://badges.gitter.im/stumpless/community.svg)](https://gitter.im/stumpless/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
+
+
+[简体中文](./l10n/zh-cn/自述.md)
+
 
 [Key Features](#key-features) |
 [Build and Install](#quick-build-and-install) |
