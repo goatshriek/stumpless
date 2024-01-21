@@ -74,4 +74,6 @@ else() # default to USE_LOCALE_EN_US
   set(DOXYGEN_OUTPUT_LANGUAGE "English")
 endif()
 
-set(DOXYGEN_INPUT "${DOXYGEN_INCLUDE_DIR}/stumpless.h ${DOXYGEN_INCLUDE_DIR}/stumpless ${PROJECT_BINARY_DIR}/include/stumpless")
+# we add the source dir include path at the very end so that any elements not
+# documented in the localized headers get default documentation of English
+set(DOXYGEN_INPUT "${DOXYGEN_INCLUDE_DIR}/stumpless.h ${DOXYGEN_INCLUDE_DIR}/stumpless ${PROJECT_BINARY_DIR}/include/stumpless ${PROJECT_SOURCE_DIR}/include/stumpless ")
