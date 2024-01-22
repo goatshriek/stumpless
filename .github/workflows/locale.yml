@@ -2,9 +2,9 @@ name: "Locale"
 
 on:
   push:
-    branches: [latest]
+    branches: [ latest ]
   pull_request:
-    branches: [latest]
+    branches: [ latest ]
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
