@@ -194,6 +194,7 @@ else()
   set(STUMPLESS_DEFAULT_SOCKET "/dev/log")
 endif()
 
+
 # standard source files
 set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/cache.c
