@@ -1,5 +1,7 @@
 # deliberate settings
 DOXYFILE_ENCODING      = UTF-8
+INPUT_ENCODING         = UTF-8
+INPUT_FILE_ENCODING    = UTF-8
 PROJECT_NAME           = "stumpless"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 INPUT                  = @DOXYGEN_INPUT@
@@ -24,7 +26,7 @@ EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             = __attribute__(x)=
 SHOW_INCLUDE_FILES     = NO
 
-EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/docs/examples
+EXAMPLE_PATH           = @DOXYGEN_EXAMPLE_DIR@
 EXAMPLE_PATTERNS       = *.c *.cpp
 EXAMPLE_RECURSIVE      = NO
 
@@ -107,7 +109,6 @@ WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = YES
 WARN_FORMAT            = "$file:$line: $text"
-INPUT_ENCODING         = UTF-8
 RECURSIVE              = YES
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = *scripts*

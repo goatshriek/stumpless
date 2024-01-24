@@ -22,17 +22,16 @@
 
 
 ## Key Features
-Stumpless offers a robust set of features to make logging in C faster and
-easier:
- * easy logging to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
+Stumpless has lots of features that make logging in C fast and easy:
+ * log to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
    journald, the Windows Event Log, and more!
  * structured and unstructured logging to suit your needs
- * interoperable with common log daemons and libraries
  * builds for Linux, Windows, Mac, MinGW, MSYS2, Cygwin, and more
- * completely thread safe
- * can be adjusted or removed during compilation for zero runtime impact
- * localized for multiple languages :brazil: :bulgaria: :cn: :czech_republic:
-   :de: :es: :fr: :greece: :india: :it: :poland: :slovakia: :sweden: :tr: :us: :denmark: :israel: :kenya: :albania:
+ * thread safe
+ * can be adjusted or removed during compilation for zero runtime cost
+ * localized for multiple languages :albania: :brazil: :bulgaria: :cn:
+   :czech_republic: :de: :denmark: :es: :fr: :greece: :india: :israel: :it:
+   :kenya: :poland: :slovakia: :sweden: :tr: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
@@ -50,6 +49,7 @@ and plugins to get them where you want. Stumpless can write logs to:
  * Unix sockets (such as a local syslog daemon)
  * Network Servers (IPv4 or IPv6, TCP or UDP)
  * Systemd Journald Service
+ * Sqlite3 Databases
  * Windows Event Log
  * Custom functions, for whatever else you may need!
 

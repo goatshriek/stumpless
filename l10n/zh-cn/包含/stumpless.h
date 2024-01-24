@@ -19,9 +19,9 @@
 
 /** @mainpage 无树桩
  *
- * \~Chinese 无树桩是一个高性能，很多特征的C日志库。
+ * 无树桩是一个高性能，很多特征的C日志库。
  */
 
 /** @example basic_example.c
- * \~Chinese 什么什么什么
+ * 简单的示例。
  */
