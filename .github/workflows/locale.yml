@@ -12,7 +12,7 @@ env:
 jobs:
   linux-de-de:
     name: "linux, de-de"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "de_DE.UTF-8"
     steps:
@@ -32,7 +32,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-cz-cz:
     name: "linux, cz-cz"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "cz_ES.UTF-8"
     steps:
@@ -52,7 +52,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-es-es:
     name: "linux, es-es"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "es_ES.UTF-8"
     steps:
@@ -72,7 +72,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-fr-fr:
     name: "linux, fr-fr"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "fr_FR.UTF-8"
     steps:
@@ -92,7 +92,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-it-it:
     name: "linux, it-it"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "it_IT.UTF-8"
     steps:
@@ -112,7 +112,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sk-sk:
     name: "linux, sk-sk"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "sk_SK.UTF-8"
     steps:
@@ -132,7 +132,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-tr-tr:
     name: "linux, tr-tr"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "tr_TR.UTF-8"
     steps:
@@ -152,7 +152,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-pl-pl:
     name: "linux, pl-pl"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "pl_PL.UTF-8"
     steps:
@@ -170,9 +170,29 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+  linux-hu-hu:
+    name: "linux, hu-hu"
+    runs-on: "ubuntu-latest"
+    env:
+      LANG: "hu_HU.UTF-8"
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Configure
+        run: |
+          cmake .
+      - name: Check Language
+        run: |
+          grep -q "STUMPLESS_LANGUAGE \"hu-HU\"" include/stumpless/config.h
+      - name: Build
+        run: |
+          make all
+      - name: Test
+        run: |
+          make check
+          if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sq-al:
     name: "linux, sq-al"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "sq_AL.UTF-8"
     steps:
@@ -192,7 +212,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sv-se:
     name: "linux, sv-se"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "sv_SE.UTF-8"
     steps:
@@ -212,7 +232,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-bg-bg:
     name: "linux, bg-bg"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "bg_BG.UTF-8"
     steps:
@@ -232,7 +252,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-el-gr:
     name: "linux, el-gr"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "el_GR.UTF-8"
     steps:
@@ -252,7 +272,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-sw-ke:
     name: "linux, sw-ke"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "sw-KE.UTF-8"
     steps:
@@ -272,7 +292,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-pt-br:
     name: "linux, pt-br"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "pt_BR.UTF-8"
     steps:
@@ -292,7 +312,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-zh-cn:
     name: "linux, zh-cn"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "zh_CN.UTF-8"
     steps:
@@ -310,9 +330,12 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+      - name: Docs
+        run: |
+          make docs
   linux-hi-in:
     name: "linux, hi-in"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "hi_IN.UTF-8"
     steps:
@@ -332,7 +355,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-bn-in:
     name: "linux, bn-in"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "bn_IN.UTF-8"
     steps:
@@ -352,7 +375,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-da-dk:
     name: "linux, da-dk"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "da_DK.UTF-8"
     steps:
@@ -372,7 +395,7 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
   linux-he-il:
     name: "linux, he-il"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     env:
       LANG: "he_IL.UTF-8"
     steps:

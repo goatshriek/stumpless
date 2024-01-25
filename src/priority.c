@@ -89,7 +89,8 @@ stumpless_prival_from_string( const char *string ) {
   }
 
   // Calculate the severity length
-  len = slen - ++len;
+  len++;
+  len = slen - len;
 
   // Copy the severity substring to the param buffer
   param = copy_cstring_length( ++period, len );

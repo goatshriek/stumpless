@@ -48,9 +48,9 @@ entry_free_all( void );
 
 /**
  * Gets the priority value from facility and severity parameters.
- * 
- * Priority value is calculated by left shifting the facility value by 3 
- * and adding it to the severity value which is according to the 
+ *
+ * Priority value is calculated by left shifting the facility value by 3
+ * and adding it to the severity value which is according to the
  * RFC 5424 Section 6.2.1. The shift operation is done prior to get_prival()
  * function with macros in "facility.h"
  *
@@ -65,7 +65,7 @@ entry_free_all( void );
  * cancelled.
  *
  * @param facility Facility value. This should be a \c STUMPLESS_FACILITY value.
- * 
+ *
  * @param severity Severity value. This should be a \c STUMPLESS_SEVERITY value
  *
  * @return Priority value
@@ -86,7 +86,7 @@ get_prival( enum stumpless_facility facility,
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of lock that could be left in undefined state. 
+ * cancelled, due to the use of lock that could be left in undefined state.
  *
  * @param entry The entry to be locked.
  *
@@ -98,7 +98,7 @@ lock_entry( const struct stumpless_entry *entry );
  * Adds the element to the entry.
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it doesn't use any synchronization 
+ * This function is not thread safe as it doesn't use any synchronization
  * or locking mechanisms while accessing shared resources.
  *
  * **Async Signal Safety: AS-Unsafe**
@@ -107,7 +107,7 @@ lock_entry( const struct stumpless_entry *entry );
  *
  * **Async Cancel Safety: AC-Unsafe**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of memory functions that could leave the 
+ * cancelled, due to the use of memory functions that could leave the
  * memory in undefined state.
  *
  * @param entry The entry to add the new element.
@@ -122,40 +122,89 @@ locked_add_element( struct stumpless_entry *entry,
                     struct stumpless_element *element );
 
 /**
- * Returns the element located at index within the entry.
+ * Retrieves an element by index from a Stumpless entry, assuming external thread safety management.
+ *
+ * This function locates an element within the provided entry using its index.
+ * It does not manage thread safety internally but assumes that the calling function
+ * has already acquired the necessary locks on the entry.
  *
  * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it doesn't use any synchronization 
- * or locking mechanisms while accessing shared resources.
+ * The function is not inherently thread-safe and relies on the caller to manage thread safety.
  *
  * **Async Signal Safety: AS-Unsafe**
- * This function is not safe to call from signal handlers due to use of
- * thread global structrues.
+ * Not safe to call from asynchronous signal handlers due to potential shared data access.
  *
  * **Async Cancel Safety: AC-Unsafe**
- * This function is not safe to call from threads that may be asynchronously 
- * canceled due to use of thread-global structure that may left in a
- * undefined state when cancelled.
+ * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
  *
- * @param entry The entry to get the element from.
+ * @since release v2.0.0
  *
- * @param index The index of element within the entry.
+ * @param entry The entry containing the elements. Must not be NULL.
+ * @param index The index of the element to retrieve.
  *
- * @return The element if no error is encountered. If an error is
- * encountered, then NULL is returned and an error code is set appropriately.
+ * @return A pointer to the element at the specified index, or NULL if not found or in case of an error.
  */
 struct stumpless_element *
 locked_get_element_by_index( const struct stumpless_entry *entry,
                              size_t index );
 
+/**
+ * Searches for an element by name within a given Stumpless entry, assuming external thread safety management.
+ *
+ * This function looks for an element with the specified name in the provided entry.
+ * It does not manage thread safety internally but assumes that the calling function
+ * has already acquired the necessary locks on the entry.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * The function itself is not thread-safe. It relies on the caller to ensure thread safety
+ * by appropriately locking the entry before calling.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to potential shared data access.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might involve unsafe data access.
+ *
+ * @since release v2.0.0
+ *
+ * @param entry The entry containing the elements to be searched. Must not be NULL.
+ * @param name The name of the element to find. Must be a NULL-terminated string.
+ *
+ * @return A pointer to the found element, or NULL if not found or in case of an error.
+ */
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
                             const char *name );
 
 /**
- * Creates a new entry with the given parameters.
+ * Creates a new Stumpless entry with specified parameters.
  *
- * @since release v2.1.0.
+ * Allocates a new entry and initializes it with the provided facility,
+ * severity, application name, message ID, and message. It assumes that memory
+ * allocation (e.g., for the entry itself and string copies) is thread-safe as
+ * provided by the system's standard librarylock_entryace:msgid race:message**
+ * This function is considered thread-safe under the condition that the string
+ * parameters (app_name, msgid, message) are not concurrently modified. The entry
+ * itself is a new, unshared resource, thus it is safe to modify in this context.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * It is not safe to call this function from signal handlers as the memory
+ * allocation functions used within may not be signal-safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is unsafe in the context of asynchronous cancellation, as it
+ * might leave allocated resources in an inconsistent state.
+ *
+ * @since release v2.1.0
+ *
+ * @param facility The facility code for the entry.
+ * @param severity The severity code for the entry.
+ * @param app_name The application name for the entry. Can be NULL.
+ * @param msgid The message ID for the entry. Can be NULL.
+ * @param message The message for the entry. Can be NULL.
+ * @param message_length The length of the message.
+ *
+ * @return A pointer to the newly created entry, or NULL if an error occurs.
  */
 struct stumpless_entry *
 new_entry( enum stumpless_facility facility,
@@ -165,21 +214,154 @@ new_entry( enum stumpless_facility facility,
            char *message,
            size_t message_length );
 
+/**
+ * Appends the application name from a Stumpless entry to a string builder.
+ *
+ * This function takes the application name from the provided Stumpless entry and
+ * appends it to the specified string builder. It is designed for building strings
+ * that include the application name of log entries.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's application name)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to memory manipulation
+ * and accessing shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
+ * states of shared data.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to append the application name.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the application name.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the application name appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_app_name( struct strbuilder *builder,
                             const struct stumpless_entry *entry );
 
+/**
+ * Appends the hostname to the string builder.
+ *
+ * This function retrieves the system's current hostname using `config_gethostname`
+ * and appends it to the provided string builder. If the hostname cannot be
+ * obtained, a hyphen ('-') is appended instead.
+ *
+ * **Thread Safety: MT-Safe**
+ * Assuming `config_gethostname` is thread-safe, this function is also thread-safe
+ * as it operates on local buffer and the provided string builder without
+ * sharing data with other threads.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * involves system calls and memory manipulation.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for use in contexts of asynchronolock_entryus cancellation due to potential
+ * system call interruption and memory state inconsistency.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to which the hostname is appended.
+ *                Must not be NULL.
+ *
+ * @return The string builder with the hostname appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_hostname( struct strbuilder *builder );
 
+/**
+ * Appends the message ID from a Stumpless entry to a string builder.
+ *
+ * This function takes the message ID from the provided Stumpless entry and
+ * appends it to the given string builder. It's designed for building strings
+ * that include the message ID of log entries.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's message ID)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Unsafe to call from asynchronous signal handlers due to memory manipulation
+ * and accessing shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in contexts of asynchronous cancellation, as it might lead to inconsistent
+ * states of shared data.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to append the message ID.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the message ID.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the message ID appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_msgid( struct strbuilder *builder,
                          const struct stumpless_entry *entry );
 
+/**
+ * Appends the message from a Stumpless entry to a string builder.
+ *
+ * This function extracts the message from the provided Stumpless entry and
+ * appends it to the specified string builder. It is useful for constructing
+ * strings that include log messages.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it accesses shared data (the entry's message)
+ * without synchronization mechanisms.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * involves memory manipulation and access to shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for use in contexts where threads may be asynchronously cancelled,
+ * as it could leave shared data in an inconsistent state.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to which the entry's message is appended.
+ *                Must not be NULL.
+ * @param entry The Stumpless entry containing the message to be appended.
+ *              Must not be NULL.
+ *
+ * @return The string builder with the message appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_message( struct strbuilder *builder,
                            const struct stumpless_entry *entry );
 
+/**
+ * Appends the process ID to the string builder.
+ *
+ * This function gets the current process ID using `config_getpid` and appends
+ * it to the provided string builder object. It lock_entry modify shared data and relies
+ * on thread-safe underlying functions.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers as it
+ * relies on functions that may not be async-signal-safe.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * The function is not safe in the context of asynchronous cancellation due to
+ * potential resource cleanup issues.
+ *
+ * @since release v1.0.0
+ *
+ * @param builder A pointer to the string builder to which the process ID is appended.
+ *                Must not be NULL.
+ *
+ * @return The string builder with the process ID appended, or NULL if an error occurs.
+ */
 struct strbuilder *
 strbuilder_append_procid( struct strbuilder *builder );
 
@@ -212,9 +394,54 @@ struct strbuilder *
 strbuilder_append_structured_data( struct strbuilder *builder,
                                    const struct stumpless_entry *entry );
 
+/**
+ * Destroys a Stumpless entry without performing any checks.
+ *
+ * This function deallocates resources associated with the given entry, including
+ * unloading the entry and freeing its memory from the cache. It assumes the entry
+ * is valid and does not perform any safety checks.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread-safe as it modifies shared resources (the entry and
+ * its associated data) without synchronization.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers as it involves operations like memory
+ * deallocation and mutex destruction.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe in the context of asynchronous cancellation due to potential resource
+ * cleanup issues.
+ *
+ * @since release v1.5.0lock_entry
+ * @param entry A pointer to the entry to be destroyed. Must not be NULL.
+ */
 void
 unchecked_destroy_entry( const struct stumpless_entry *entry );
 
+/**
+ * Checks if the specified entry contains an element with the given name.
+ *
+ * **Thread Safety: MT-Safe race:entry race:name**
+ * This function is thread-safe assuming that the 'entry' and 'name' arguments
+ * are not modified concurrently by other threads. It relies on the immutability
+ * of these parameters during execution to maintain thread safety.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from asynchronous signal handlers due to
+ * potential manipulation of shared data structures.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe for contexts where threads might be asynchronously
+ * cancelled, as it could leave shared data in an inconsistent state.
+ *
+ * @since release v1.6.0
+ *
+ * @param entry The entry to be checked for the element. Must not be NULL.
+ * @param name The name of the element to look for. Must be a NULL-terminated string.
+ *
+ * @return Returns true if the element is found, false otherwise.
+ */
 bool
 unchecked_entry_has_element( const struct stumpless_entry *entry,
                              const char *name );
@@ -296,7 +523,28 @@ unchecked_load_entry( struct stumpless_entry *entry,
 void
 unchecked_unload_entry( const struct stumpless_entry *entry );
 
+/**
+ * Unlocks the mutex of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it properly releases a mutex, allowing for safe
+ * concurrent access to shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Since mutex operations are not safe in signal handlers, this function is also
+ * considered unsafe for asynchronous signal handling.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * The function is unsafe for asynchronous cancellation as the cleanup of the mutex
+ * may not be completed if a thread is cancelled during execution.
+ *
+ * @since release v2.0.0
+ *
+ * @param entry The entry whose mutex is to be unlocked. Must not be NULL, and it
+ *              must have a valid mutex initialized.
+ */
 void
-unlock_entry( const struct stumpless_entry *entry );
+unlock_entry(const struct stumpless_entry *entry);
+
 
 #endif /* __STUMPLESS_PRIVATE_ENTRY_H */
