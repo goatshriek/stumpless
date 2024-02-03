@@ -167,6 +167,8 @@
 "SUPPORT_GETHOSTBYNAME": "private/config.h"
 "SUPPORT_UNISTD_SYSCONF_GETPAGESIZE": "private/config.h"
 "SUPPORT_WINDOWS_GET_NOW": "private/config.h"
+"sys_socket_sendto_tcp_target": "private/config/have_sys_socket.h"
+"sys_socket_sendto_udp_target": "private/config/have_sys_socket.h"
 "target_free_global": "private/target.h"
 "target_free_thread": "private/target.h"
 "thread_safety_destroy_mutex": "private/config/thread_safety_supported.h"

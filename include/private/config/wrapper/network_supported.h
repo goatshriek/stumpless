@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORT_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORT_H
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORTED_H
+#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORTED_H
 
 #  include <stumpless/config.h>
 #  include "private/config.h"
@@ -49,10 +49,10 @@
 #    define config_reopen_tcp6_target sys_socket_reopen_tcp6_target
 #    define config_reopen_udp4_target sys_socket_reopen_udp4_target
 #    define config_reopen_udp6_target sys_socket_reopen_udp6_target
-#    define config_sendto_tcp4_target sys_socket_sendto_target
-#    define config_sendto_tcp6_target sys_socket_sendto_target
-#    define config_sendto_udp4_target sys_socket_sendto_target
-#    define config_sendto_udp6_target sys_socket_sendto_target
+#    define config_sendto_tcp4_target sys_socket_sendto_tcp_target
+#    define config_sendto_tcp6_target sys_socket_sendto_tcp_target
+#    define config_sendto_udp4_target sys_socket_sendto_udp_target
+#    define config_sendto_udp6_target sys_socket_sendto_udp_target
 #    define config_tcp4_is_open sys_socket_network_target_is_open
 #    define config_tcp6_is_open sys_socket_network_target_is_open
 #    define config_udp4_is_open sys_socket_network_target_is_open
@@ -104,4 +104,4 @@
 #    define config_open_network_target open_unsupported_target
 #    define config_sendto_network_target sendto_unsupported_target
 #  endif
-#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORT_H */
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_NETWORK_SUPPORTED_H */
