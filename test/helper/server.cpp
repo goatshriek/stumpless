@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,10 @@ open_tcp_server_socket( int af, const char *dest, const char *port ){
     }
   }
 
-  getaddrinfo( dest, port, NULL, &addr_result );
+  if( getaddrinfo( dest, port, NULL, &addr_result ) != 0 ) {
+    return INVALID_SOCKET;
+  }
+
   bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
   listen( handle, 1 );
   freeaddrinfo( addr_result );
@@ -88,7 +91,10 @@ open_udp_server_socket( int af, const char *dest, const char *port ){
     }
   }
 
-  getaddrinfo( dest, port, NULL, &addr_result );
+  if( getaddrinfo( dest, port, NULL, &addr_result ) != 0 ) {
+    return INVALID_SOCKET;
+  }
+
   bind(handle, addr_result->ai_addr, ( int ) addr_result->ai_addrlen );
   listen( handle, 1 );
   freeaddrinfo( addr_result );
@@ -136,7 +142,11 @@ open_tcp_server_socket( int domain, const char *dest, const char *port ) {
   handle = socket( domain, SOCK_STREAM, 0 );
 
   setsockopt( handle, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof( int ) );
-  getaddrinfo( dest, port, NULL, &addr_result );
+
+  if( getaddrinfo( dest, port, NULL, &addr_result ) != 0 ) {
+    return BAD_HANDLE;
+  }
+
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
     freeaddrinfo( addr_result );
     return BAD_HANDLE;
@@ -154,7 +164,11 @@ open_udp_server_socket( int domain, const char *dest, const char *port ) {
   struct addrinfo *addr_result;
 
   handle = socket( domain, SOCK_DGRAM, 0 );
-  getaddrinfo( dest, port, NULL, &addr_result );
+
+  if( getaddrinfo( dest, port, NULL, &addr_result ) != 0 ) {
+    return BAD_HANDLE;
+  }
+
   if( bind(handle, addr_result->ai_addr, addr_result->ai_addrlen ) == -1 ){
     freeaddrinfo( addr_result );
     return BAD_HANDLE;
