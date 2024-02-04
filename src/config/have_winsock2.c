@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,38 @@
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
+
+/* global static variables */
+static WSADATA wsa_data;
+static config_atomic_bool_t wsa_data_free = config_atomic_bool_true;
+static config_atomic_bool_t wsa_initialized = config_atomic_bool_false;
+
+static
+int
+init_wsa( void ) {
+  bool locked;
+  int result = 0;
+
+  if( config_read_bool( &wsa_initialized ) ) {
+    return 0;
+  }
+
+  do {
+    locked = config_compare_exchange_bool( &wsa_data_free, true, false );
+  } while( !locked );
+
+  // check to see if it was initialized while waiting on the lock
+  if( config_read_bool( &wsa_initialized ) ) {
+    goto cleanup_and_return;
+  }
+
+  result = WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+  config_write_bool( &wsa_initialized, true );
+
+cleanup_and_return:
+  config_write_bool( &wsa_data_free, true );
+  return result;
+}
 
 static
 SOCKET
@@ -98,9 +130,10 @@ winsock2_close_network_target( const struct network_target *target ) {
 
 struct network_target *
 winsock2_init_network_target( struct network_target *target ) {
-  WSADATA wsa_data;
+  if( init_wsa() != 0 ) {
+    return NULL;
+  }
 
-  WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
   target->handle = INVALID_SOCKET;
   config_init_mutex( &target->mutex );
 
