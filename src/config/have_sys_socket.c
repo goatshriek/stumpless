@@ -181,10 +181,10 @@ int
 sys_socket_sendto_tcp_target( struct network_target *target,
                               const char *msg,
                               size_t msg_length ) {
-  ssize_t send_result;
-  ssize_t sent_bytes = 0;
   ssize_t recv_result;
   char recv_buffer[1];
+  ssize_t send_result;
+  size_t sent_bytes = 0;
 
   lock_network_target( target );
 
@@ -199,7 +199,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
 
     send_result = send( target->handle,
                         msg,
-                        msg_length,
+                        msg_length - sent_bytes,
                         MSG_NOSIGNAL );
 
     if( unlikely( send_result == -1 ) ){
@@ -214,8 +214,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
   }
 
   unlock_network_target( target );
-
-  return msg_length;
+  return 1;
 }
 
 int
@@ -240,7 +239,7 @@ sys_socket_sendto_udp_target( struct network_target *target,
 
   unlock_network_target( target );
 
-  return send_result;
+  return 1;
 }
 
 int

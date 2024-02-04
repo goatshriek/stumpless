@@ -240,26 +240,61 @@ winsock2_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-winsock2_sendto_target( struct network_target *target,
-                        const char *msg,
-                        size_t msg_length ) {
-  int result;
+winsock2_sendto_tcp_target( struct network_target *target,
+                            const char *msg,
+                            size_t msg_length ) {
+  int send_result;
+  size_t sent_bytes = 0;
+  int remaining_length;
 
   lock_network_target( target );
-  result = send( target->handle,
-                 msg,
-                 cap_size_t_to_int( msg_length ),
-                 0 );
+
+  while( sent_bytes < msg_length ) {
+    // check to see if the remote end has sent a FIN
+    // TODO
+
+    remaining_length = cap_size_t_to_int( msg_length - sent_bytes );
+    send_result = send( target->handle,
+                        msg,
+                        remaining_length,
+                        0 );
+
+    if( send_result == SOCKET_ERROR ) {
+      unlock_network_target( target );
+      raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,
+                                 WSAGetLastError(  ),
+                                 L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
+      return -1;
+    }
+
+    sent_bytes += send_result;
+  }
+
+  unlock_network_target( target );
+  return 1;
+}
+
+int
+winsock2_sendto_udp_target( struct network_target *target,
+                            const char *msg,
+                            size_t msg_length ) {
+  int send_result;
+
+  lock_network_target( target );
+  send_result = send( target->handle,
+                      msg,
+                      cap_size_t_to_int( msg_length ),
+                      0 );
   unlock_network_target( target );
 
-  if( result == SOCKET_ERROR ) {
+  if( send_result == SOCKET_ERROR ) {
     raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,
                                WSAGetLastError(  ),
                                L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
     return -1;
   }
 
-  return result;
+  return send_result;
 }
 
 int
