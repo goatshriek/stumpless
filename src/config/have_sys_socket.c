@@ -178,7 +178,7 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-sys_socket_sendto_tcp_target( struct network_target *target,
+sys_socket_sendto_tcp_target( const struct network_target *target,
                               const char *msg,
                               size_t msg_size ) {
   ssize_t recv_result;
@@ -193,7 +193,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
     // check to see if the remote end has sent a FIN
     recv_result = recv( target->handle, recv_buffer, 1, MSG_DONTWAIT );
     if( recv_result == 0 ){
-      // TODO raise error for connection closed
+      // TODO raise error for connection closed and close the target
       return -1;
     }
 
@@ -218,7 +218,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
 }
 
 int
-sys_socket_sendto_udp_target( struct network_target *target,
+sys_socket_sendto_udp_target( const struct network_target *target,
                               const char *msg,
                               size_t msg_size ) {
   ssize_t send_result;

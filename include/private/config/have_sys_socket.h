@@ -78,7 +78,7 @@ sys_socket_reopen_udp6_target( struct network_target *target );
  * error is encountered, an error code is set appropriately.
  */
 int
-sys_socket_sendto_tcp_target( struct network_target *target,
+sys_socket_sendto_tcp_target( const struct network_target *target,
                               const char *msg,
                               size_t msg_size );
 
@@ -108,7 +108,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
  * error is encountered, an error code is set appropriately.
  */
 int
-sys_socket_sendto_udp_target( struct network_target *target,
+sys_socket_sendto_udp_target( const struct network_target *target,
                               const char *msg,
                               size_t msg_size );
 

@@ -100,7 +100,7 @@ winsock2_reopen_udp6_target( struct network_target *target );
  * error is encountered, an error code is set appropriately.
  */
 int
-winsock2_sendto_tcp_target( struct network_target *target,
+winsock2_sendto_tcp_target( const struct network_target *target,
                             const char *msg,
                             size_t msg_size );
 
@@ -130,7 +130,7 @@ winsock2_sendto_tcp_target( struct network_target *target,
  * error is encountered, an error code is set appropriately.
  */
 int
-winsock2_sendto_udp_target( struct network_target *target,
+winsock2_sendto_udp_target( const struct network_target *target,
                             const char *msg,
                             size_t msg_size );
 
