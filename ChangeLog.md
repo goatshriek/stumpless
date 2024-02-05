@@ -9,7 +9,7 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
-## [2.2.0] - 2023-12-10
+## [2.2.0] - 2024-02-05
 ### Added 
  - @since format check enforcement in CI pipeline.
  - `single-file` target for rollup `.c` and `.h` files.
@@ -18,8 +18,9 @@ fixes, check out the
  - Deadlock potential in `stumpless_set_entry_hostname` and
    `stumpless_set_entry_procid` when validation fails.
  - Builds in ANSI C environments.
- - `sys/socket.h`-based TCP network targets will fail to send if the remote
-   end sends a FIN message without waiting for `send` to fail.
+ - `sys/socket.h`-based TCP network targets will immediately fail with an error
+   if the remote end sends a FIN message, instead of waiting for `send` to fail,
+   possibly sending messages that are not actually received by the remote end.
 
 
 ## [2.1.0] - 2022-11-13

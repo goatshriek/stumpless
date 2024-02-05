@@ -180,7 +180,7 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 int
 sys_socket_sendto_tcp_target( struct network_target *target,
                               const char *msg,
-                              size_t msg_length ) {
+                              size_t msg_size ) {
   ssize_t recv_result;
   char recv_buffer[1];
   ssize_t send_result;
@@ -189,7 +189,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
   lock_network_target( target );
 
   // loop in case our send is interrupted
-  while( sent_bytes < msg_length ) {
+  while( sent_bytes < msg_size ) {
     // check to see if the remote end has sent a FIN
     recv_result = recv( target->handle, recv_buffer, 1, MSG_DONTWAIT );
     if( recv_result == 0 ){
@@ -199,7 +199,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
 
     send_result = send( target->handle,
                         msg,
-                        msg_length - sent_bytes,
+                        msg_size - sent_bytes,
                         MSG_NOSIGNAL );
 
     if( unlikely( send_result == -1 ) ){
@@ -220,13 +220,13 @@ sys_socket_sendto_tcp_target( struct network_target *target,
 int
 sys_socket_sendto_udp_target( struct network_target *target,
                               const char *msg,
-                              size_t msg_length ) {
+                              size_t msg_size ) {
   ssize_t send_result;
 
   lock_network_target( target );
   send_result = send( target->handle,
                       msg,
-                      msg_length,
+                      msg_size,
                       MSG_NOSIGNAL );
 
   if( unlikely( send_result == -1 ) ){

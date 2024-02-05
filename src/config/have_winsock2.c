@@ -312,22 +312,20 @@ winsock2_reopen_udp6_target( struct network_target *target ) {
 int
 winsock2_sendto_tcp_target( struct network_target *target,
                             const char *msg,
-                            size_t msg_length ) {
+                            size_t msg_size ) {
   int send_result;
   size_t sent_bytes = 0;
-  int remaining_length;
+  int remaining_size;
 
   lock_network_target( target );
 
-  while( sent_bytes < msg_length ) {
-    // check to see if the remote end has sent a FIN
-    // TODO
+  while( sent_bytes < msg_size ) {
+    // sys/socket.h network targets can check for a FIN message using recv
+    // winsock doesn't provide MSG_DONTWAIT, making this strategy not viable
+    // using non-blocking connections is one potential solution to this problem
 
-    remaining_length = cap_size_t_to_int( msg_length - sent_bytes );
-    send_result = send( target->handle,
-                        msg,
-                        remaining_length,
-                        0 );
+    remaining_size = cap_size_t_to_int( msg_size - sent_bytes );
+    send_result = send( target->handle, msg, remaining_size, 0 );
 
     if( send_result == SOCKET_ERROR ) {
       unlock_network_target( target );
@@ -347,13 +345,13 @@ winsock2_sendto_tcp_target( struct network_target *target,
 int
 winsock2_sendto_udp_target( struct network_target *target,
                             const char *msg,
-                            size_t msg_length ) {
+                            size_t msg_size ) {
   int send_result;
 
   lock_network_target( target );
   send_result = send( target->handle,
                       msg,
-                      cap_size_t_to_int( msg_length ),
+                      cap_size_t_to_int( msg_size ),
                       0 );
   unlock_network_target( target );
 
