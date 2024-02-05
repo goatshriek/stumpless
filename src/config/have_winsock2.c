@@ -19,6 +19,7 @@
 /* this must be included first to avoid errors */
 #include "private/windows_wrapper.h"
 
+#include <stdbool.h>
 #include <stddef.h>
 #include "private/config/have_winsock2.h"
 #include "private/config/locale/wrapper.h"
@@ -52,7 +53,9 @@ init_wsa( void ) {
   }
 
   result = WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
-  config_write_bool( &wsa_initialized, true );
+  if( result == 0 ) {
+    config_write_bool( &wsa_initialized, true );
+  }
 
 cleanup_and_return:
   config_write_bool( &wsa_data_free, true );
@@ -124,8 +127,24 @@ winsock2_close_network_target( const struct network_target *target ) {
     closesocket( target->handle );
   }
 
-  WSACleanup(  );
   config_destroy_mutex( &target->mutex );
+}
+
+void
+winsock2_free_all( void ) {
+  bool locked;
+  int result;
+
+  do {
+    locked = config_compare_exchange_bool( &wsa_data_free, true, false );
+  } while( !locked );
+
+  result = WSACleanup();
+  if( result != 0 ) {
+    config_write_bool( &wsa_initialized, false );
+  }
+
+  config_write_bool( &wsa_data_free, true );
 }
 
 struct network_target *

@@ -719,6 +719,7 @@ lock_network_target( const struct network_target *target ) {
 
 void
 network_free_all( void ) {
+  config_network_provider_free_all();
   free_mem( tcp_send_buffer );
   tcp_send_buffer = NULL;
   tcp_send_buffer_length = 0;
