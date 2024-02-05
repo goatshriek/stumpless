@@ -27,9 +27,22 @@ void
 winsock2_close_network_target( const struct network_target *target );
 
 /**
- * TODO
+ * Runs WSACleanup if WSA has already been started.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of lock schemes that may be left locked.
+ *
+ * @return The return code from WSACleanup.
  */
-void
+int
 winsock2_free_all( void );
 
 struct network_target *

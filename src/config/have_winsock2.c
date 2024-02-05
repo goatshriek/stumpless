@@ -33,6 +33,22 @@ static WSADATA wsa_data;
 static config_atomic_bool_t wsa_data_free = config_atomic_bool_true;
 static config_atomic_bool_t wsa_initialized = config_atomic_bool_false;
 
+/**
+ * Runs WSAStartup if WSA hasn't been initialized yet.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of lock schemes that may be left locked.
+ *
+ * @return The return code from WSAStartup.
+ */
 static
 int
 init_wsa( void ) {
@@ -130,7 +146,7 @@ winsock2_close_network_target( const struct network_target *target ) {
   config_destroy_mutex( &target->mutex );
 }
 
-void
+int
 winsock2_free_all( void ) {
   bool locked;
   int result;
@@ -145,6 +161,8 @@ winsock2_free_all( void ) {
   }
 
   config_write_bool( &wsa_data_free, true );
+
+  return result;
 }
 
 struct network_target *
