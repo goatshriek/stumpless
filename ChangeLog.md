@@ -18,6 +18,8 @@ fixes, check out the
  - Deadlock potential in `stumpless_set_entry_hostname` and
    `stumpless_set_entry_procid` when validation fails.
  - Builds in ANSI C environments.
+ - `sys/socket.h`-based TCP network targets will fail to send if the remote
+   end sends a FIN message without waiting for `send` to fail.
 
 
 ## [2.1.0] - 2022-11-13
