@@ -198,7 +198,7 @@ sys_socket_sendto_tcp_target( struct network_target *target,
       close( target->handle );
       target->handle = -1;
       result = -1;
-      goto cleanup_and_return;
+      break;
     }
 
     send_result = send( target->handle,
@@ -211,13 +211,12 @@ sys_socket_sendto_tcp_target( struct network_target *target,
                                  errno,
                                  L10N_ERRNO_ERROR_CODE_TYPE );
       result = -1;
-      goto cleanup_and_return;
+      break;
     }
 
     sent_bytes += send_result;
   }
 
-cleanup_and_return:
   unlock_network_target( target );
   return result;
 }

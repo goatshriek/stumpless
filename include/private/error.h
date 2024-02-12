@@ -196,6 +196,8 @@ raise_memory_allocation_failure( void );
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, due to the use of a thread-global structure to store the error.
  *
+ * @since release v2.2.0
+ *
  * @param message The message to assign to the error.
  */
 COLD_FUNCTION
