@@ -31,7 +31,7 @@ namespace {
   const int THREAD_COUNT = 8;
   const int MESSAGE_COUNT = 50;
   const int WRITE_COUNT = MESSAGE_COUNT / 10;
-  const int ACCEPT_COUNT = THREAD_COUNT * WRITE_COUNT * 2 + 1;
+  const int ACCEPT_COUNT = THREAD_COUNT * WRITE_COUNT * 2;
 
   void
   read_network_target( const struct stumpless_target *target, bool is_udp ) {
@@ -163,6 +163,7 @@ namespace {
                                 false );
 
       // cleanup after the test
+      listener_thread->join();
       stumpless_close_network_target( target );
       EXPECT_NO_ERROR;
       stumpless_free_all(  );
@@ -198,6 +199,7 @@ namespace {
                                 false );
 
       // cleanup after the test
+      listener_thread->join();
       stumpless_close_network_target( target );
       EXPECT_NO_ERROR;
       stumpless_free_all(  );
