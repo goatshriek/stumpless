@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
 #include "private/config/locale/wrapper.h"
-#include "private/config/network_support_wrapper.h"
+#include "private/config/wrapper/network_supported.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -285,7 +285,7 @@ sendto_tcp_target( struct network_target *target,
 
 static
 int
-sendto_udp_target( struct network_target *target,
+sendto_udp_target( const struct network_target *target,
                    const char *msg,
                    size_t msg_length ) {
   size_t effective_length;
@@ -719,6 +719,7 @@ lock_network_target( const struct network_target *target ) {
 
 void
 network_free_all( void ) {
+  config_network_provider_free_all();
   free_mem( tcp_send_buffer );
   tcp_send_buffer = NULL;
   tcp_send_buffer_length = 0;

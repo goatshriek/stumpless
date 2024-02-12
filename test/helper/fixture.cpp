@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2023 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ create_nil_entry( void ) {
 
 const char *
 load_corpus( const string& name ) {
-  int file_length;
+  streamoff file_length;
   string corpora_dir ( FUZZ_CORPORA_DIR );
   ifstream corpus_file( corpora_dir + "/" + name, ifstream::binary );
   if( !corpus_file ) {

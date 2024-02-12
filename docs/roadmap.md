@@ -4,15 +4,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 
-## 2.2.0
- * [ADD] **Improved network target error detection**
-   Network targets do not currently detect errors that they would be able to in
-   some cases, such as with `select` or `poll`. This may lead to a connection
-   being left open for longer than necessary if the error is already detected.
-   This change will improve error detection in network targets to reduce the
-   time needed to pass these errors on to callers.
-
-
 ## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
    Removing previously deprecated feature.

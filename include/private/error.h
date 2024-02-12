@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,6 +181,28 @@ raise_mb_conversion_failure( int code );
 COLD_FUNCTION
 void
 raise_memory_allocation_failure( void );
+
+/**
+ * Raises an error indicating a network connection is closed.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * a thread-global structure to store the error.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a thread-global structure to store the error.
+ *
+ * @since release v2.2.0
+ *
+ * @param message The message to assign to the error.
+ */
+COLD_FUNCTION
+void
+raise_network_closed( const char *message );
 
 COLD_FUNCTION
 void

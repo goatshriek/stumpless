@@ -139,6 +139,7 @@
 "realloc":
   - "cstdlib"
   - "stdlib.h"
+"recv": "sys/socket.h"
 "recvfrom": "sys/socket.h"
 "regex_match": "regex"
 "RegisterEventSource":

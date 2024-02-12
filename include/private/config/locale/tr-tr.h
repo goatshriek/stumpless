@@ -159,6 +159,10 @@
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
 "gethostbyname[2] ve inet_pton ismi çözümleyemedi"
 
+// todo translate
+#  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
+"the network connection is closed"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "seçilen ağ protokolü desteklenmiyor"
 
