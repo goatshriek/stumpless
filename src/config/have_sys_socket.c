@@ -178,13 +178,14 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-sys_socket_sendto_tcp_target( const struct network_target *target,
+sys_socket_sendto_tcp_target( struct network_target *target,
                               const char *msg,
                               size_t msg_size ) {
   ssize_t recv_result;
   char recv_buffer[1];
   ssize_t send_result;
   size_t sent_bytes = 0;
+  int result = 1;
 
   lock_network_target( target );
 
@@ -193,8 +194,11 @@ sys_socket_sendto_tcp_target( const struct network_target *target,
     // check to see if the remote end has sent a FIN
     recv_result = recv( target->handle, recv_buffer, 1, MSG_DONTWAIT );
     if( recv_result == 0 ){
-      // TODO raise error for connection closed and close the target
-      return -1;
+      raise_network_closed( L10N_NETWORK_CLOSED_ERROR_MESSAGE );
+      close( target->handle );
+      target->handle = -1;
+      result = -1;
+      goto cleanup_and_return;
     }
 
     send_result = send( target->handle,
@@ -203,18 +207,19 @@ sys_socket_sendto_tcp_target( const struct network_target *target,
                         MSG_NOSIGNAL );
 
     if( unlikely( send_result == -1 ) ){
-      unlock_network_target( target );
       raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,
                                  errno,
                                  L10N_ERRNO_ERROR_CODE_TYPE );
-      return -1;
+      result = -1;
+      goto cleanup_and_return;
     }
 
     sent_bytes += send_result;
   }
 
+cleanup_and_return:
   unlock_network_target( target );
-  return 1;
+  return result;
 }
 
 int

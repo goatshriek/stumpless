@@ -124,6 +124,7 @@
 "raise_gethostname_failure": "private/error.h"
 "raise_journald_failure": "private/error.h"
 "raise_mb_conversion_failure": "private/error.h"
+"raise_network_closed": "private/error.h"
 "raise_resolve_hostname_failure": "private/error.h"
 "raise_sqlite3_busy": "private/error.h"
 "raise_sqlite3_failure": "private/error.h"

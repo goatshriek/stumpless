@@ -285,7 +285,7 @@ sendto_tcp_target( struct network_target *target,
 
 static
 int
-sendto_udp_target( struct network_target *target,
+sendto_udp_target( const struct network_target *target,
                    const char *msg,
                    size_t msg_length ) {
   size_t effective_length;

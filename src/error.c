@@ -278,6 +278,11 @@ raise_memory_allocation_failure( void ) {
 }
 
 void
+raise_network_closed( const char *message ) {
+  raise_error( STUMPLESS_NETWORK_CLOSED, message, 0, NULL );
+}
+
+void
 raise_network_protocol_unsupported( void ) {
   raise_error( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED,
                L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE,

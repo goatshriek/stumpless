@@ -156,6 +156,10 @@
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
 "לא הצליחו לפתור שם זה gethostbyname[2] וגם inet_pton"
 
+// todo translate
+#  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
+"the network connection is closed"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "פרוטוקול הרשת שנבחר אינו נתמך"
 
