@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include "private/config.h"
-#include "private/config/network_support_wrapper.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/open_default_target.h"
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
+#include "private/config/wrapper/network_supported.h"
 #include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/sqlite3.h"
 #include "private/config/wrapper/thread_safety.h"

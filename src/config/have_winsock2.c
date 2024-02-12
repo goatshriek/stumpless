@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 /* this must be included first to avoid errors */
 #include "private/windows_wrapper.h"
 
+#include <stdbool.h>
 #include <stddef.h>
 #include "private/config/have_winsock2.h"
 #include "private/config/locale/wrapper.h"
@@ -26,6 +27,56 @@
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/target/network.h"
+
+/* global static variables */
+static WSADATA wsa_data;
+static config_atomic_bool_t wsa_data_free = config_atomic_bool_true;
+static config_atomic_bool_t wsa_initialized = config_atomic_bool_false;
+
+/**
+ * Runs WSAStartup if WSA hasn't been initialized yet.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers as some targets make
+ * use of non-reentrant locks to coordinate access.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of lock schemes that may be left locked.
+ *
+ * @return The return code from WSAStartup.
+ */
+static
+int
+init_wsa( void ) {
+  bool locked;
+  int result = 0;
+
+  if( config_read_bool( &wsa_initialized ) ) {
+    return 0;
+  }
+
+  do {
+    locked = config_compare_exchange_bool( &wsa_data_free, true, false );
+  } while( !locked );
+
+  // check to see if it was initialized while waiting on the lock
+  if( config_read_bool( &wsa_initialized ) ) {
+    goto cleanup_and_return;
+  }
+
+  result = WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
+  if( result == 0 ) {
+    config_write_bool( &wsa_initialized, true );
+  }
+
+cleanup_and_return:
+  config_write_bool( &wsa_data_free, true );
+  return result;
+}
 
 static
 SOCKET
@@ -92,15 +143,34 @@ winsock2_close_network_target( const struct network_target *target ) {
     closesocket( target->handle );
   }
 
-  WSACleanup(  );
   config_destroy_mutex( &target->mutex );
+}
+
+int
+winsock2_free_all( void ) {
+  bool locked;
+  int result;
+
+  do {
+    locked = config_compare_exchange_bool( &wsa_data_free, true, false );
+  } while( !locked );
+
+  result = WSACleanup();
+  if( result != 0 ) {
+    config_write_bool( &wsa_initialized, false );
+  }
+
+  config_write_bool( &wsa_data_free, true );
+
+  return result;
 }
 
 struct network_target *
 winsock2_init_network_target( struct network_target *target ) {
-  WSADATA wsa_data;
+  if( init_wsa() != 0 ) {
+    return NULL;
+  }
 
-  WSAStartup( MAKEWORD( 2, 2 ), &wsa_data );
   target->handle = INVALID_SOCKET;
   config_init_mutex( &target->mutex );
 
@@ -240,26 +310,59 @@ winsock2_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-winsock2_sendto_target( struct network_target *target,
-                        const char *msg,
-                        size_t msg_length ) {
-  int result;
+winsock2_sendto_tcp_target( const struct network_target *target,
+                            const char *msg,
+                            size_t msg_size ) {
+  int send_result;
+  size_t sent_bytes = 0;
+  int remaining_size;
 
   lock_network_target( target );
-  result = send( target->handle,
-                 msg,
-                 cap_size_t_to_int( msg_length ),
-                 0 );
+
+  while( sent_bytes < msg_size ) {
+    // sys/socket.h network targets can check for a FIN message using recv
+    // winsock doesn't provide MSG_DONTWAIT, making this strategy not viable
+    // using non-blocking connections is one potential solution to this problem
+
+    remaining_size = cap_size_t_to_int( msg_size - sent_bytes );
+    send_result = send( target->handle, msg, remaining_size, 0 );
+
+    if( send_result == SOCKET_ERROR ) {
+      unlock_network_target( target );
+      raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,
+                                 WSAGetLastError(  ),
+                                 L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
+      return -1;
+    }
+
+    sent_bytes += send_result;
+  }
+
+  unlock_network_target( target );
+  return 1;
+}
+
+int
+winsock2_sendto_udp_target( const struct network_target *target,
+                            const char *msg,
+                            size_t msg_size ) {
+  int send_result;
+
+  lock_network_target( target );
+  send_result = send( target->handle,
+                      msg,
+                      cap_size_t_to_int( msg_size ),
+                      0 );
   unlock_network_target( target );
 
-  if( result == SOCKET_ERROR ) {
+  if( send_result == SOCKET_ERROR ) {
     raise_socket_send_failure( L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE,
                                WSAGetLastError(  ),
                                L10N_WSAGETLASTERROR_ERROR_CODE_TYPE );
     return -1;
   }
 
-  return result;
+  return send_result;
 }
 
 int

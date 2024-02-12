@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2023 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@
 #include <errno.h>
 #include <stddef.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include "private/config.h"
 #include "private/config/locale/wrapper.h"
 #include "private/config/wrapper/int_connect.h"
 #include "private/config/wrapper/thread_safety.h"
@@ -176,25 +178,72 @@ sys_socket_reopen_udp6_target( struct network_target *target ) {
 }
 
 int
-sys_socket_sendto_target( struct network_target *target,
-                          const char *msg,
-                          size_t msg_length ) {
-  int result;
+sys_socket_sendto_tcp_target( struct network_target *target,
+                              const char *msg,
+                              size_t msg_size ) {
+  ssize_t recv_result;
+  char recv_buffer[1];
+  ssize_t send_result;
+  size_t sent_bytes = 0;
+  int result = 1;
 
   lock_network_target( target );
-  result = send( target->handle,
-                 msg,
-                 msg_length,
-                 MSG_NOSIGNAL );
-  unlock_network_target( target );
 
-  if( result == -1 ){
+  // loop in case our send is interrupted
+  while( sent_bytes < msg_size ) {
+    // check to see if the remote end has sent a FIN
+    recv_result = recv( target->handle, recv_buffer, 1, MSG_DONTWAIT );
+    if( recv_result == 0 ){
+      raise_network_closed( L10N_NETWORK_CLOSED_ERROR_MESSAGE );
+      close( target->handle );
+      target->handle = -1;
+      result = -1;
+      break;
+    }
+
+    send_result = send( target->handle,
+                        msg,
+                        msg_size - sent_bytes,
+                        MSG_NOSIGNAL );
+
+    if( unlikely( send_result == -1 ) ){
+      raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,
+                                 errno,
+                                 L10N_ERRNO_ERROR_CODE_TYPE );
+      result = -1;
+      break;
+    }
+
+    sent_bytes += send_result;
+  }
+
+  unlock_network_target( target );
+  return result;
+}
+
+int
+sys_socket_sendto_udp_target( const struct network_target *target,
+                              const char *msg,
+                              size_t msg_size ) {
+  ssize_t send_result;
+
+  lock_network_target( target );
+  send_result = send( target->handle,
+                      msg,
+                      msg_size,
+                      MSG_NOSIGNAL );
+
+  if( unlikely( send_result == -1 ) ){
+    unlock_network_target( target );
     raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,
                                errno,
                                L10N_ERRNO_ERROR_CODE_TYPE );
+    return -1;
   }
 
-  return result;
+  unlock_network_target( target );
+
+  return 1;
 }
 
 int

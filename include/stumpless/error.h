@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,7 +150,13 @@ extern "C" {
  *
  * @since release v2.2.0
  */\
-  ERROR( STUMPLESS_SQLITE3_FAILURE, 32 )
+  ERROR( STUMPLESS_SQLITE3_FAILURE, 32 ) \
+/**
+ * The network connection requested has been closed.
+ *
+ * @since release v2.2.0
+ */\
+  ERROR( STUMPLESS_NETWORK_CLOSED, 33 )
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.
