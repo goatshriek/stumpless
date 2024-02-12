@@ -733,6 +733,12 @@ add_function_test(buffer_leak
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
+add_function_test(chain
+  SOURCES
+    "${PROJECT_SOURCE_DIR}/test/function/target/chain.cpp"
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_function_test(current_target
   SOURCES test/function/startup/current_target.cpp
 )
