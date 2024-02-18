@@ -49,6 +49,8 @@
 #    include "private/config/locale/hi-in.h"
 #  elif defined USE_LOCALE_BN_IN
 #    include "private/config/locale/bn-in.h"
+#  elif defined USE_LOCALE_TE_IN
+#    include "private/config/locale/te-in.h"
 #  elif defined USE_LOCALE_DA_DK
 #    include "private/config/locale/da-dk.h"
 #  elif defined USE_LOCALE_HE_IL
