@@ -40,7 +40,7 @@ struct chain_target {
  * large enough. This will be NULL if it is not needed.
  */
   struct stumpless_target **overflow_targets;
-/** The number of targets in this chain. */
+/** The total number of targets in this chain. */
   size_t target_count;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
@@ -68,9 +68,9 @@ struct chain_target {
  * cancelled, as the cleanup of the lock may not be completed, and the memory
  * deallocation function may not be AC-Safe itself.
  *
- * @param target The chain target to destroy.
- *
  * @since release v2.2.0
+ *
+ * @param target The chain target to destroy.
  */
 void
 destroy_chain_target( const struct chain_target *target );
@@ -113,9 +113,17 @@ new_chain_target( void );
  * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v2.2.0
+ *
+ * @param target The chain target to send the entry to.
+ *
+ * @param entry The entry to send to all targets in this chain.
+ *
+ * @return The result of the send for the final target in the chain. If any send
+ * fails, the rest of the targets do not receive the entry and the return value
+ * of the failing target is returned.
  */
 int
 sendto_chain( struct chain_target *target,
-              struct stumpless_entry *entry );
+              const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_CHAIN_H */

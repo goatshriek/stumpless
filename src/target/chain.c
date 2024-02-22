@@ -116,7 +116,7 @@ new_chain_target( void ) {
 
 int
 sendto_chain( struct chain_target *target,
-              struct stumpless_entry *entry ) {
+              const struct stumpless_entry *entry ) {
   size_t i;
   int result;
   int final_result = 1;

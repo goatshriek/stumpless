@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -189,7 +189,8 @@ struct stumpless_target {
 /**
  * A filter function used to determine if a given entry should be processed by
  * this target or ignored. If this is NULL, then all entries sent to the target
- * are accepted. By default, targets use a filter that
+ * are accepted. By default targets use the stumpless_mask_filter which filters
+ * messages based on the severity bits in the mask of the target.
  *
  * @since release v2.1.0
  */
@@ -438,7 +439,8 @@ stumpless_add_message_str( struct stumpless_target *target,
  *
  * Targets that can be closed in multiple ways will be closed in the most
  * complete way possible. Specifically, SQLite3 targets will have the underlying
- * database connection closed as well.
+ * database connection closed as well, chain targets will have all targets in
+ * them closed.
  *
  * This function can be used when you'd like to avoid checking the type of the
  * target and then calling the appropriate close function. Note that use of this

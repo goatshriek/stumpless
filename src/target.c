@@ -33,6 +33,7 @@
 #include <stumpless/target.h>
 #include <stumpless/error.h>
 #include <stumpless/target/buffer.h>
+#include <stumpless/target/chain.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
@@ -58,6 +59,7 @@
 #include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
+#include "private/target/chain.h"
 #include "private/target/file.h"
 #include "private/target/function.h"
 #include "private/target/stream.h"
@@ -206,6 +208,12 @@ stumpless_add_entry( struct stumpless_target *target,
     }
     buffer = strbuilder_get_buffer( builder, &builder_length );
     write_to_error_stream( buffer, builder_length );
+  }
+
+  // chain targets simply pass the entry on
+  if( target->type == STUMPLESS_CHAIN_TARGET ) {
+    result = sendto_chain( target->id, entry );
+    goto finish;
   }
 
   // function targets are not formatted
@@ -386,6 +394,10 @@ stumpless_close_target( struct stumpless_target *target ) {
   switch( target->type ) {
     case STUMPLESS_BUFFER_TARGET:
       stumpless_close_buffer_target( target );
+      break;
+
+    case STUMPLESS_CHAIN_TARGET:
+      stumpless_close_chain_and_contents( target );
       break;
 
     case STUMPLESS_FILE_TARGET:
