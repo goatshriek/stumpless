@@ -68,6 +68,8 @@
 #cmakedefine USE_LOCALE_SW_KE 1
 #cmakedefine USE_LOCALE_TR_TR 1
 #cmakedefine USE_LOCALE_HU_HU 1
+#cmakedefine USE_LOCALE_SI_LK 1
+#cmakedefine USE_LOCALE_JA_JP 1
 
 /* optimizations */
 #define unlikely( EXPRESSION )  @UNLIKELY_FUNCTION@
