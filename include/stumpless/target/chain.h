@@ -39,6 +39,7 @@
 #ifndef __STUMPLESS_TARGET_CHAIN_H
 #define __STUMPLESS_TARGET_CHAIN_H
 
+#include <stddef.h>
 #include <stumpless/config.h>
 #include <stumpless/target.h>
 
@@ -48,6 +49,21 @@ extern "C" {
 
 /**
  * Adds a target to an existing chain target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock as well as the use of memory allocation functions when the
+ * static target array is not big enough. If the chain has space for the new
+ * target in its static array, then the heap constraint is not present.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock may not be released, and the memory allocation
+ * functions may not be AC-Safe. If the chain has space for the new
+ * target in its static array, then the heap constraint is not present.
  *
  * @since release v2.2.0
  *
@@ -84,11 +100,11 @@ stumpless_add_target_to_chain( struct stumpless_target *chain,
  *
  * @since release v2.2.0
  *
- * @param target The chain of targets to close.
+ * @param chain The chain of targets to close.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_close_chain_and_contents( struct stumpless_target *target );
+stumpless_close_chain_and_contents( struct stumpless_target *chain );
 
 /**
  * Closes a chain target.
@@ -112,11 +128,32 @@ stumpless_close_chain_and_contents( struct stumpless_target *target );
  *
  * @since release v2.2.0
  *
- * @param target The chain to close.
+ * @param chain The chain to close.
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_close_chain_only( struct stumpless_target *target );
+stumpless_close_chain_only( struct stumpless_target *chain );
+
+/**
+ * Gets the number of targets currently in a chain.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the lock may not be released.
+ *
+ * @since release v2.2.0
+ *
+ * @param chain The chain to get the length of.
+ */
+size_t
+stumpless_get_chain_length( const struct stumpless_target *chain );
 
 /**
  * Creates a new target chain.

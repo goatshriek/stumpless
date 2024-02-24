@@ -25,7 +25,12 @@
 #include <stumpless/target.h>
 #include "private/config/wrapper/thread_safety.h"
 
-#define CHAIN_TARGET_ARRAY_SIZE 4
+/**
+ * The length of the array in the chain target structure. Chains where all
+ * targets fit into this array will require less dynamic memory and fewer
+ * dereferences, speeding up their performance.
+ */
+#define CHAIN_TARGET_ARRAY_LENGTH 4
 
 /**
  * Internal representation of a chain target.
@@ -34,7 +39,7 @@
  */
 struct chain_target {
 /** A static array of targets this chain contains.*/
-  struct stumpless_target *targets[CHAIN_TARGET_ARRAY_SIZE];
+  struct stumpless_target *targets[CHAIN_TARGET_ARRAY_LENGTH];
 /**
  * A dynamic array of targets this chain contains, if the static array is not
  * large enough. This will be NULL if it is not needed.
@@ -70,10 +75,31 @@ struct chain_target {
  *
  * @since release v2.2.0
  *
- * @param target The chain target to destroy.
+ * @param chain The chain target to destroy.
  */
 void
-destroy_chain_target( const struct chain_target *target );
+destroy_chain_target( const struct chain_target *chain );
+
+/**
+ * Acquires the lock for the provided chain target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * a non-reentrant lock.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, , due to the use of a lock that could be left locked.
+ *
+ * @since release v2.2.0
+ *
+ * @param chain The chain target to lock. Must not be NULL.
+ */
+void
+lock_chain_target( struct chain_target *chain );
 
 /**
  * Creates a new empty chain target.
@@ -114,7 +140,7 @@ new_chain_target( void );
  *
  * @since release v2.2.0
  *
- * @param target The chain target to send the entry to.
+ * @param chain The chain target to send the entry to.
  *
  * @param entry The entry to send to all targets in this chain.
  *
@@ -123,7 +149,28 @@ new_chain_target( void );
  * of the failing target is returned.
  */
 int
-sendto_chain( struct chain_target *target,
+sendto_chain( struct chain_target *chain,
               const struct stumpless_entry *entry );
+
+/**
+ * Releases the lock for the provided chain target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of
+ * a non-reentrant lock.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, , due to the use of a lock that could be left locked.
+ *
+ * @since release v2.2.0
+ *
+ * @param chain The chain target to unlock. Must not be NULL.
+ */
+void
+unlock_chain_target( struct chain_target *chain );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_CHAIN_H */

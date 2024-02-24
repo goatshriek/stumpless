@@ -29,38 +29,103 @@
 #include "private/target/chain.h"
 #include "private/validate.h"
 
-void
-stumpless_close_chain_and_contents( struct stumpless_target *target ) {
-  if( unlikely( !target ) ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return;
+
+struct stumpless_target *
+stumpless_add_target_to_chain( struct stumpless_target *chain,
+                               struct stumpless_target *target ) {
+  struct chain_target *internal_chain;
+  size_t overflow_count;
+  size_t old_size;
+  size_t new_size;
+  struct stumpless_target **new_targets;
+  struct stumpless_target *result = chain;
+
+  VALIDATE_ARG_NOT_NULL( chain );
+  VALIDATE_ARG_NOT_NULL( target );
+  
+  clear_error();
+
+  lock_target( chain );
+
+  if( chain->type != STUMPLESS_CHAIN_TARGET ) {
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    result = NULL;
+    goto finish;
   }
 
-  if( unlikely( target->type != STUMPLESS_CHAIN_TARGET ) ) {
+  internal_chain = chain->id;
+  lock_chain_target( internal_chain );
+
+  if( unlikely( internal_chain->target_count >= CHAIN_TARGET_ARRAY_LENGTH ) ) {
+    overflow_count = internal_chain->target_count - CHAIN_TARGET_ARRAY_LENGTH;
+    old_size = overflow_count * sizeof( target );
+    new_size = old_size + sizeof( target );
+    new_targets = realloc_mem( internal_chain->overflow_targets, new_size );
+    if( !new_targets ) {
+      result = NULL;
+      goto internal_finish;
+    }
+
+    new_targets[overflow_count] = target;
+    internal_chain->overflow_targets = new_targets;
+  } else {
+    internal_chain->targets[internal_chain->target_count] = target;
+  }
+
+  internal_chain->target_count++;
+
+internal_finish:
+  unlock_chain_target( internal_chain );
+finish:
+  unlock_target( chain );
+  return result;
+}
+
+void
+stumpless_close_chain_and_contents( struct stumpless_target *chain ) {
+  VALIDATE_ARG_NOT_NULL_VOID_RETURN( chain );
+
+  if( unlikely( chain->type != STUMPLESS_CHAIN_TARGET ) ) {
     raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
     return;
   }
 
-  destroy_chain_target( target->id );
-  destroy_target( target );
+  destroy_chain_target( chain->id );
+  destroy_target( chain );
   clear_error();
 }
 
 void
-stumpless_close_chain_only( struct stumpless_target *target ) {
-  if( unlikely( !target ) ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return;
-  }
+stumpless_close_chain_only( struct stumpless_target *chain ) {
+  VALIDATE_ARG_NOT_NULL_VOID_RETURN( chain );
 
-  if( unlikely( target->type != STUMPLESS_CHAIN_TARGET ) ) {
+  if( unlikely( chain->type != STUMPLESS_CHAIN_TARGET ) ) {
     raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
     return;
   }
 
-  destroy_chain_target( target->id );
-  destroy_target( target );
+  destroy_chain_target( chain->id );
+  destroy_target( chain );
   clear_error();
+}
+
+size_t
+stumpless_get_chain_length( const struct stumpless_target *chain ) {
+  struct chain_target *internal_chain;
+  size_t result;
+
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( chain );
+
+  if( unlikely( !chain->id ) ) {
+    raise_invalid_id(  );
+    return -1;
+  }
+
+  internal_chain = chain->id;
+  lock_chain_target( internal_chain );
+  result = internal_chain->target_count;
+  unlock_chain_target( internal_chain );
+  return result;
 }
 
 struct stumpless_target *
@@ -92,10 +157,15 @@ fail:
 /* private definitions */
 
 void
-destroy_chain_target( const struct chain_target *target ) {
-  config_destroy_mutex( &target->chain_mutex );
-  free_mem( target->overflow_targets );
-  free_mem( target );
+destroy_chain_target( const struct chain_target *chain ) {
+  config_destroy_mutex( &chain->chain_mutex );
+  free_mem( chain->overflow_targets );
+  free_mem( chain );
+}
+
+void
+lock_chain_target( struct chain_target *chain ) {
+  config_lock_mutex( &chain->chain_mutex );
 }
 
 struct chain_target *
@@ -115,18 +185,20 @@ new_chain_target( void ) {
 }
 
 int
-sendto_chain( struct chain_target *target,
+sendto_chain( struct chain_target *chain,
               const struct stumpless_entry *entry ) {
   size_t i;
   int result;
   int final_result = 1;
   struct stumpless_target *sub_target;
 
-  for( i = 0; i < target->target_count; i++ ) {
-    if( i < CHAIN_TARGET_ARRAY_SIZE ) {
-      sub_target = target->targets[i];
+  lock_chain_target( chain );
+
+  for( i = 0; i < chain->target_count; i++ ) {
+    if( i < CHAIN_TARGET_ARRAY_LENGTH ) {
+      sub_target = chain->targets[i];
     } else {
-      sub_target = target->overflow_targets[i - CHAIN_TARGET_ARRAY_SIZE];
+      sub_target = chain->overflow_targets[i - CHAIN_TARGET_ARRAY_LENGTH];
     }
 
     result = stumpless_add_entry( sub_target, entry );
@@ -135,5 +207,11 @@ sendto_chain( struct chain_target *target,
     }
   }
 
+  unlock_chain_target( chain );
   return final_result;
+}
+
+void
+unlock_chain_target( struct chain_target *chain ) {
+  config_unlock_mutex( &chain->chain_mutex );
 }
