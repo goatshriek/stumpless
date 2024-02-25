@@ -83,6 +83,10 @@ finish:
 
 void
 stumpless_close_chain_and_contents( struct stumpless_target *chain ) {
+  struct chain_target *internal_target;
+  size_t i;
+  struct stumpless_target *curr;
+
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( chain );
 
   if( unlikely( chain->type != STUMPLESS_CHAIN_TARGET ) ) {
@@ -90,7 +94,18 @@ stumpless_close_chain_and_contents( struct stumpless_target *chain ) {
     return;
   }
 
-  destroy_chain_target( chain->id );
+  internal_target = chain->id;
+  for( i = 0; i < internal_target->target_count; i++ ) {
+    if( unlikely( i >= CHAIN_TARGET_ARRAY_LENGTH ) ) {
+      curr = internal_target->overflow_targets[i - CHAIN_TARGET_ARRAY_LENGTH];
+    } else {
+      curr = internal_target->targets[i];
+    }
+
+    stumpless_close_target( curr );
+  }
+
+  destroy_chain_target( internal_target );
   destroy_target( chain );
   clear_error();
 }
