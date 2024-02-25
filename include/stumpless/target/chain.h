@@ -74,6 +74,7 @@ extern "C" {
  * @return The chain target if no error is encountered. In the event of an
  * error, NULL is returned and an error code is set appropriately.
  */
+STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_add_target_to_chain( struct stumpless_target *chain,
                                struct stumpless_target *target );
@@ -152,6 +153,7 @@ stumpless_close_chain_only( struct stumpless_target *chain );
  *
  * @param chain The chain to get the length of.
  */
+STUMPLESS_PUBLIC_FUNCTION
 size_t
 stumpless_get_chain_length( const struct stumpless_target *chain );
 
