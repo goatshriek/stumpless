@@ -156,6 +156,9 @@
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
 "gethostbyname[2] සහ inet_pton නම විසඳීමට අසමත් විය"
 
+#  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
+"ජාල සම්බන්ධතාවය වසා ඇත"
+
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "තෝරාගත් ජාල ප්‍රොටෝකෝලය සහාය නොදක්වයි"
 
