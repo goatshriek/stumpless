@@ -61,6 +61,10 @@
 #    include "private/config/locale/tr-tr.h"
 #  elif defined USE_LOCALE_HU_HU
 #    include "private/config/locale/hu-hu.h"
+#  elif defined USE_LOCALE_SI_LK
+#    include "private/config/locale/si-lk.h"
+#  elif defined USE_LOCALE_JA_JP
+#    include "private/config/locale/ja-jp.h"
 #  else
 #    include "private/config/locale/en-us.h"
 #  endif
