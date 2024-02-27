@@ -31,7 +31,7 @@ Stumpless has lots of features that make logging in C fast and easy:
  * can be adjusted or removed during compilation for zero runtime cost
  * localized for multiple languages :albania: :brazil: :bulgaria: :cn:
    :czech_republic: :de: :denmark: :es: :fr: :greece: :hungary: :india:
-   :israel: :it: :kenya: :poland: :slovakia: :sweden: :tr: :us:
+   :israel: :it: :jp: :kenya: :poland: :slovakia: :sri_lanka: :sweden: :tr: :us:
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
