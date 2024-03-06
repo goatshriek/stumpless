@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@
  */
 
 #ifndef __STUMPLESS_PRIORITY_H
-#  define __STUMPLESS_PRIORITY_H
+#define __STUMPLESS_PRIORITY_H
 
-#  include <stumpless.h>
+#include <stumpless/config.h>
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
 
 /**
  * Extract PRIVAL number (Facility and Severity) from the given string with
@@ -59,8 +59,8 @@ STUMPLESS_PUBLIC_FUNCTION
 int
 stumpless_prival_from_string( const char *string );
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 } /* extern "C" */
-#  endif
+#endif
 
 #endif /* __STUMPLESS_PRIORITY_H */

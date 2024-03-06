@@ -107,6 +107,7 @@
 "new_entry": "private/entry.h"
 "new_sqlite3_target": "private/target/sqlite3.h"
 "no_abstract_socket_names_get_local_socket_name": "private/config/abstract_socket_names_unsupported.h"
+"no_gmtime_get_now": "private/config/no_gmtime.h"
 "no_thread_safety_compare_exchange_bool": "private/config/thread_safety_unsupported.h"
 "no_thread_safety_compare_exchange_ptr": "private/config/thread_safety_unsupported.h"
 "no_wcsrtombs_s_copy_wstring_to_cstring": "private/config/no_wcsrtombs_s.h"

@@ -321,6 +321,8 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime_r.c)
 elseif(NOT SUPPORT_WINDOWS_GET_NOW AND HAVE_GMTIME)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime.c)
+else()
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_gmtime.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)
