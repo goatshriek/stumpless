@@ -26,7 +26,10 @@
 #include <stddef.h>
 
 /**
- * Gets the current time as a string and places it into the given buffer.
+ * Writes an RFC 5424 NILVALUE to the provided buffer and returns its size.
+ *
+ * This function is used to get the time if no other suitable time function is
+ * available.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
