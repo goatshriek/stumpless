@@ -1,4 +1,4 @@
-function(include_file source_filename include_filenames already_included)
+function(include_file source_filename include_filenames already_included new_already_included)
   foreach(include_filename ${include_filenames})
     file(APPEND "${source_filename}" "\n/* ${include_filename} */\n\n")
     file(STRINGS "${include_filename}" raw_include_contents NEWLINE_CONSUME ENCODING UTF-8)
@@ -29,13 +29,16 @@ function(include_file source_filename include_filenames already_included)
         else()
           set(extracted_full_path "${PROJECT_SOURCE_DIR}/include/${CMAKE_MATCH_1}")
         endif()
-        list(FIND ${already_included} "${extracted_full_path}" FOUND_INDEX)
+        list(FIND already_included "${extracted_full_path}" FOUND_INDEX)
         if((${FOUND_INDEX} EQUAL -1 AND EXISTS "${extracted_full_path}") OR ("${include_filename}" MATCHES "private/config/wrapper/thread_safety.h$"))
-          list(APPEND ${already_included} "${extracted_full_path}")
+          list(APPEND already_included "${extracted_full_path}")
           include_file(
             "${source_filename}"
             "${extracted_full_path}"
-            ${already_included}
+            "${already_included}"
+            # we can't depend on new inclusions in sub files, since these may
+            # occur in ifdef blocks that won't be active
+            ignored
           )
         endif()
       else()
@@ -53,6 +56,7 @@ function(include_file source_filename include_filenames already_included)
       endif()
     endforeach()
   endforeach()
+  set(${new_already_included} "${already_included}" PARENT_SCOPE)
 endfunction()
 
 message("creating single file library ${SINGLE_SOURCE_FILE}")
@@ -64,6 +68,7 @@ foreach(source_file ${SOURCE_FILES})
     include_file(
       "${SINGLE_SOURCE_FILE}"
       "${source_file}"
+      "${include_list}"
       include_list
     )
   endif()
@@ -75,5 +80,8 @@ set(include_list "")
 include_file(
   "${SINGLE_HEADER_FILE}"
   "${PROJECT_SOURCE_DIR}/include/stumpless.h"
-  include_list
+  "${include_list}"
+  # since this header is done in a single pass there is no need to keep track
+  # of which headers have been included
+  ignored
 )
