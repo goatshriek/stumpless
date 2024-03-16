@@ -47,7 +47,7 @@ set(DEFAULT_FACILITY "STUMPLESS_FACILITY_USER"
   CACHE STRING ${default_facility_help_string}
 )
 
-string(CONCAT default_filename_help_string
+string(CONCAT default_file_help_string
   "The name of the file opened if the default target is to a file."
 )
 set(DEFAULT_FILE "stumpless-default.log"
