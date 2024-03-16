@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,6 @@
 #include <stumpless/entry.h>
 #include <stumpless/id.h>
 #include <stumpless/generator.h>
-
-/** The file opened if the default target is to a file. */
-#define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
 
 /** The name of the default target. */
 #define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"

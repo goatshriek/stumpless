@@ -73,7 +73,9 @@ copy_cstring_length( const char *str, size_t length ) {
 
 void
 to_upper_case( char *str ) {
-  for( int i = 0; str[i]; i++) {
+  size_t i;
+
+  for( i = 0; str[i]; i++) {
     str[i] = toupper( str[i] );
   }
 }
