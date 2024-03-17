@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <fstream>
 #include <regex>
 #include <string>
 #include <gtest/gtest.h>
@@ -42,6 +43,21 @@ void TestRFC5424Compliance( const std::string &syslog_msg ) {
   if( msg[0] == '\xef' && msg[1] == '\xbb' && msg[2] == '\xbf' ) {
     TestUTF8Compliance( msg );
   }
+}
+
+void
+TestRFC5424File( const std::string &filename,
+                 std::size_t expected_count ) {
+  std::ifstream log_file( filename );
+  std::string line;
+  std::size_t i = 0;
+
+  while( std::getline( log_file, line ) ) {
+    TestRFC5424Compliance( line.c_str() );
+    i++;
+  }
+
+  EXPECT_EQ( i, expected_count );
 }
 
 void TestRFC5424StructuredData( const std::string &structured_data ) {

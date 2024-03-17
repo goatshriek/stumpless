@@ -7,4 +7,5 @@
 "CRITICAL_SECTION":
   - "private/windows_wrapper.h"
   - "windows.h"
+"size_t": "stddef.h"
 "true": "stdbool.h"

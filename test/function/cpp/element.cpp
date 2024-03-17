@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2021 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.hpp>
@@ -46,7 +45,7 @@ namespace {
   };
 
   TEST_F( CppElementTest, GetParamByIndex ) {
-     Param param = element_with_params->GetParam( ( size_t ) 0 );
+     Param param = element_with_params->GetParam( ( std::size_t ) 0 );
      const char *param_name = param.GetName(  );
      EXPECT_STREQ( param_name, param_1_name );
      free( ( void * ) param_name );

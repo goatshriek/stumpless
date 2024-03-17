@@ -42,7 +42,7 @@ stumpless_add_target_to_chain( struct stumpless_target *chain,
 
   VALIDATE_ARG_NOT_NULL( chain );
   VALIDATE_ARG_NOT_NULL( target );
-  
+
   clear_error();
 
   lock_target( chain );
