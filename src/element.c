@@ -194,8 +194,11 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     const char *name;
     size_t name_len;
     size_t format_len;
+    const char **params_format;
+    size_t i;
     size_t param_count;
     struct stumpless_param **params;
+    size_t pos_offset;
 
     VALIDATE_ARG_NOT_NULL( element );
 
@@ -209,8 +212,8 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     // acc total format size
     format_len = name_len;
 
-    const char **params_format = alloc_mem(sizeof(char*) * param_count);
-    for( size_t i = 0; i < param_count; i++ ) {
+    params_format = alloc_mem(sizeof(char*) * param_count);
+    for( i = 0; i < param_count; i++ ) {
       params_format[i] = stumpless_param_to_string(params[i]);
       // does not count '\0' on purpose
       format_len += strlen(params_format[i]);
@@ -232,8 +235,8 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     memcpy( format, name, name_len );
 
     // build params list "param_1_to_string,param_2_to_string, ..."
-    size_t pos_offset = name_len + 2;
-    for( size_t i = 0; i < param_count; i++) {
+    pos_offset = name_len + 2;
+    for( i = 0; i < param_count; i++) {
       // replace '\0' with ',' at the end of each string
       memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
       pos_offset += strlen(params_format[i]);

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -348,7 +348,7 @@ enum stumpless_facility {
   STUMPLESS_FOREACH_FACILITY( STUMPLESS_GENERATE_ENUM )
 };
 
-  /**
+/**
  * Gets the string representation of the given facility.
  *
  * This is a string literal that should not be modified or freed by the caller.
@@ -373,7 +373,7 @@ STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_facility_string( enum stumpless_facility facility );
 
-  /**
+/**
  * Gets the enum value corresponding to the given facility string.
  *
  * **Thread Safety: MT-Safe**
@@ -397,7 +397,7 @@ STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_facility
 stumpless_get_facility_enum( const char *facility_string );
 
-  /**
+/**
  * Gets the enum value corresponding to the given facility string.
  *
  * **Thread Safety: MT-Safe**

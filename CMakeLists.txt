@@ -38,11 +38,20 @@ string(CONCAT enable_deprecation_warnings_help_string
 )
 option(ENABLE_DEPRECATION_WARNINGS ${enable_deprecation_warnings_help_string} ON)
 
+
+# default settings
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
 )
 set(DEFAULT_FACILITY "STUMPLESS_FACILITY_USER"
   CACHE STRING ${default_facility_help_string}
+)
+
+string(CONCAT default_file_help_string
+  "The name of the file opened if the default target is to a file."
+)
+set(DEFAULT_FILE "stumpless-default.log"
+  CACHE STRING "${default_file_help_string}"
 )
 
 string(CONCAT default_severity_help_string
@@ -322,6 +331,8 @@ if(HAVE_GMTIME_R)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime_r.c)
 elseif(NOT SUPPORT_WINDOWS_GET_NOW AND HAVE_GMTIME)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/have_gmtime.c)
+else()
+  list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/no_gmtime.c)
 endif()
 
 if(HAVE_UNISTD_GETHOSTNAME)

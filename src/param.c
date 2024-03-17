@@ -144,9 +144,6 @@ stumpless_new_param( const char *name, const char *value ) {
 
 struct stumpless_param *
 stumpless_new_param_from_string( const char *string ) {
-  
-  VALIDATE_ARG_NOT_NULL( string );
-
   int i;
   size_t name_len = 0;
   size_t name_start = 0;
@@ -155,6 +152,8 @@ stumpless_new_param_from_string( const char *string ) {
   char *name;
   char *value;
   struct stumpless_param *result;
+
+  VALIDATE_ARG_NOT_NULL( string );
 
   /* Check that the characters in 'name' are allowed. */
   for (i = 0; string[i] != '='; i++) {

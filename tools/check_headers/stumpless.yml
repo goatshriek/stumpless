@@ -205,7 +205,7 @@
 "stumpless_close_wel_target": "stumpless/target/wel.h"
 "stumpless_create_default_sqlite3_table": "stumpless/target/sqlite3.h"
 "STUMPLESS_DEFAULT_FACILITY": "stumpless/config.h"
-"STUMPLESS_DEFAULT_FILE": "stumpless/target.h"
+"STUMPLESS_DEFAULT_FILE": "stumpless/config.h"
 "STUMPLESS_DEFAULT_SEVERITY": "stumpless/config.h"
 "STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL": "stumpless/target/sqlite3.h"
 "STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING": "stumpless/config.h"

@@ -36,9 +36,6 @@
 #include <stumpless/id.h>
 #include <stumpless/generator.h>
 
-/** The file opened if the default target is to a file. */
-#define STUMPLESS_DEFAULT_FILE "stumpless-default.log"
-
 /** The name of the default target. */
 #define STUMPLESS_DEFAULT_TARGET_NAME "stumpless-default"
 

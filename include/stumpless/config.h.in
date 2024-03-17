@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,9 @@
 
 /** The facility code to use when one is not supplied. */
 #define STUMPLESS_DEFAULT_FACILITY @DEFAULT_FACILITY@
+
+/** The name of the file opened if the default target is to a file. */
+#define STUMPLESS_DEFAULT_FILE "@DEFAULT_FILE@"
 
 /** The severity code to use when one is not supplied. */
 #define STUMPLESS_DEFAULT_SEVERITY @DEFAULT_SEVERITY@

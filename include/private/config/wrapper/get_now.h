@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2022-2023 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,23 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
-#  define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
+#define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H
 
-#  include "private/config.h"
+#include "private/config.h"
 
 /* definition of config_get_now */
-#  ifdef HAVE_GMTIME_R
-#    include "private/config/have_gmtime_r.h"
-#    define config_get_now gmtime_r_get_now
-#  elif SUPPORT_WINDOWS_GET_NOW
-#    include "private/config/windows_get_now_supported.h"
-#    define config_get_now windows_get_now
-#  elif HAVE_GMTIME
-#    include "private/config/have_gmtime.h"
-#    define config_get_now gmtime_get_now
-#  endif
+#ifdef HAVE_GMTIME_R
+#  include "private/config/have_gmtime_r.h"
+#  define config_get_now gmtime_r_get_now
+#elif SUPPORT_WINDOWS_GET_NOW
+#  include "private/config/windows_get_now_supported.h"
+#  define config_get_now windows_get_now
+#elif HAVE_GMTIME
+#  include "private/config/have_gmtime.h"
+#  define config_get_now gmtime_get_now
+#else
+#  include "private/config/no_gmtime.h"
+#  define config_get_now no_gmtime_get_now
+#endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_GET_NOW_H */
