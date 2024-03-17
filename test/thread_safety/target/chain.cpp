@@ -18,6 +18,8 @@
 
 #include <cstddef>
 #include <gtest/gtest.h>
+#include <sstream>
+#include <string>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
