@@ -520,6 +520,13 @@ else()
       $<TARGET_OBJECTS:test_helper_usage>
   )
 
+  add_thread_safety_test(chain
+    SOURCES
+      test/thread_safety/target/chain.cpp
+      $<TARGET_OBJECTS:test_helper_rfc5424>
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
+
   add_thread_safety_test(element
     SOURCES
       test/thread_safety/element.cpp

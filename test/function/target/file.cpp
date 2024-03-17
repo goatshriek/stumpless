@@ -18,11 +18,10 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <fstream>
-#include <string>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 #include "test/helper/rfc5424.hpp"
 
 namespace {
@@ -69,8 +68,8 @@ namespace {
     SCOPED_TRACE( "EntryTargetTest.AddEntry" );
 
     result = stumpless_add_entry( target, basic_entry );
+    EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
   /* non-fixture tests */
@@ -147,15 +146,7 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
     stumpless_close_file_target( target );
 
-    std::ifstream infile( filename );
-    std::string line;
-    i = 0;
-    while( std::getline( infile, line ) ) {
-      TestRFC5424Compliance( line.c_str() );
-      i++;
-    }
-
-    EXPECT_EQ( i, line_count );
+    TestRFC5424File( filename, line_count );
     remove( filename );
   }
 
@@ -174,7 +165,7 @@ namespace {
     const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
    
     target = stumpless_open_file_target( filename );

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2023 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdio>
-#include <fstream>
 #include <gtest/gtest.h>
-#include <string>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
@@ -132,14 +130,7 @@ namespace {
     EXPECT_NO_ERROR;
 
     // checking the perror file for consistency
-    std::ifstream error_file( error_filename );
-    std::string line;
-    line_count = 0;
-    while( std::getline( error_file, line ) ) {
-      TestRFC5424Compliance( line.c_str() );
-      line_count++;
-    }
-    EXPECT_EQ( line_count, THREAD_COUNT * MESSAGE_COUNT );
+    TestRFC5424File( error_filename, THREAD_COUNT * MESSAGE_COUNT );
 
     // final cleanup
     remove( error_filename );
