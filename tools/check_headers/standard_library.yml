@@ -204,9 +204,6 @@
  - "cstdint"
  - "stdint.h"
 "uintptr_t": "stdint.h"
-"va_end": "stdarg.h"
-"va_list": "stdarg.h"
-"va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
 "WC_ERR_INVALID_CHARS":

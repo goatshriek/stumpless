@@ -7,5 +7,13 @@
 "CRITICAL_SECTION":
   - "private/windows_wrapper.h"
   - "windows.h"
-"size_t": "stddef.h"
+"size_t":
+  - "stddef.h"
+  - "stdio.h"
+  - "stdlib.h"
+  - "string.h"
+  - "time.h"
 "true": "stdbool.h"
+"va_end": "stdarg.h"
+"va_list": "stdarg.h"
+"va_start": "stdarg.h"

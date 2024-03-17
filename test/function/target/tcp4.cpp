@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2022 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 
 #include "test/helper/server.hpp"
 
+#include <cstddef>
+#include <cstdio>
+#include <cstring>
 #include <regex>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"

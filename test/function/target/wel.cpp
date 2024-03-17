@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
+#include <cstdarg>
+#include <cstddef>
+#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <string.h>
 #include <stumpless.h>
 #include <wchar.h>
 #include <windows.h>

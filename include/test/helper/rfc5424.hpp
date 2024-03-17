@@ -151,9 +151,7 @@ void TestRFC5424Compliance( const std::string &syslog_msg );
  * Tests each line of the given file for RFC 5424 compliance, and also tests
  * that the number of messages equals the expected count.
  */
-void
-TestRFC5424File( const std::string &filename,
-                 std::size_t expected_count );
+void TestRFC5424File( const std::string &filename, size_t expected_count );
 
 void TestRFC5424StructuredData( const std::string &sd_elements );
 

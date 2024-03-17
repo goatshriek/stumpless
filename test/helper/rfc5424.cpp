@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <fstream>
 #include <regex>
 #include <string>
@@ -45,9 +46,7 @@ void TestRFC5424Compliance( const std::string &syslog_msg ) {
   }
 }
 
-void
-TestRFC5424File( const std::string &filename,
-                 std::size_t expected_count ) {
+void TestRFC5424File( const std::string &filename, size_t expected_count ) {
   std::ifstream log_file( filename );
   std::string line;
   std::size_t i = 0;
