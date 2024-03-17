@@ -382,12 +382,6 @@ endif()
 
 if(STUMPLESS_CHAIN_TARGETS_SUPPORTED)
   include(tools/cmake/chain.cmake)
-else()
-  add_function_test(chain_unsupported
-    SOURCES
-      "${PROJECT_SOURCE_DIR}/test/function/config/chain_unsupported.cpp"
-      $<TARGET_OBJECTS:test_helper_fixture>
-  )
 endif()
 
 
@@ -715,7 +709,6 @@ install(FILES
 
 install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/target/sqlite3.h
