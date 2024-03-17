@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_TEST_HELPER_RFC5424_HPP
 #define __STUMPLESS_TEST_HELPER_RFC5424_HPP
 
+#include <cstddef>
 #include <string>
 
 /**

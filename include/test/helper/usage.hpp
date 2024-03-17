@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #ifndef __STUMPLESS_TEST_HELPER_USAGE_HPP
 #  define __STUMPLESS_TEST_HELPER_USAGE_HPP
 
-#  include <stddef.h>
+#  include <cstddef>
 #  include <stumpless.h>
 
 void
