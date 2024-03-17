@@ -21,6 +21,7 @@ option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 
+option(ENABLE_CHAIN_TARGETS "support chain targets" ON)
 option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -373,6 +374,24 @@ else()
 endif()
 
 
+# chain target support
+if(NOT ENABLE_CHAIN_TARGETS)
+  set(STUMPLESS_CHAIN_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_CHAIN_TARGETS_SUPPORTED TRUE)
+endif()
+
+if(STUMPLESS_CHAIN_TARGETS_SUPPORTED)
+  include(tools/cmake/chain.cmake)
+else()
+  add_function_test(chain_unsupported
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/config/chain_unsupported.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
+
+
 # journald target support
 if(NOT ENABLE_JOURNALD_TARGETS)
   set(STUMPLESS_JOURNALD_TARGETS_SUPPORTED FALSE)
@@ -516,13 +535,6 @@ else()
   add_thread_safety_test(buffer
     SOURCES
       test/thread_safety/target/buffer.cpp
-      $<TARGET_OBJECTS:test_helper_rfc5424>
-      $<TARGET_OBJECTS:test_helper_usage>
-  )
-
-  add_thread_safety_test(chain
-    SOURCES
-      test/thread_safety/target/chain.cpp
       $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_usage>
   )
@@ -748,12 +760,6 @@ add_function_test(buffer
 add_function_test(buffer_leak
   SOURCES
     test/function/leak/buffer.cpp
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
-
-add_function_test(chain
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/function/target/chain.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
