@@ -187,6 +187,7 @@
 "STUMPLESS_BUFFER_TARGET": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGET": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGET_VALUE": "stumpless/target.h"
+"STUMPLESS_CHAIN_TARGETS_SUPPORTED": "stumpless/config.h"
 "stumpless_copy_element": "stumpless/element.h"
 "stumpless_copy_entry": "stumpless/entry.h"
 "stumpless_copy_param": "stumpless/param.h"

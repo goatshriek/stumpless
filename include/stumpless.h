@@ -95,13 +95,20 @@
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
-#include <stumpless/target/chain.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
 #include <stumpless/target/sqlite3.h>
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
 #include <stumpless/priority.h>
+
+#ifdef STUMPLESS_CHAIN_TARGETS_SUPPORTED
+/** @example chain_example.c
+ * Demonstrates how to work with a chain target.
+ */
+
+#  include <stumpless/target/chain.h>
+#endif
 
 #ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 /** @example journald_example.c
