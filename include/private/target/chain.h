@@ -149,8 +149,8 @@ new_chain_target( void );
  * of the failing target is returned.
  */
 int
-sendto_chain( struct chain_target *chain,
-              const struct stumpless_entry *entry );
+send_entry_to_chain_target( struct chain_target *chain,
+                            const struct stumpless_entry *entry );
 
 /**
  * Releases the lock for the provided chain target.

@@ -33,12 +33,12 @@
 #include <stumpless/target.h>
 #include <stumpless/error.h>
 #include <stumpless/target/buffer.h>
-#include <stumpless/target/chain.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include "private/config.h"
 #include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/chain.h"
 #include "private/config/wrapper/open_default_target.h"
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
@@ -59,7 +59,6 @@
 #include "private/strhelper.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
-#include "private/target/chain.h"
 #include "private/target/file.h"
 #include "private/target/function.h"
 #include "private/target/stream.h"
@@ -212,7 +211,7 @@ stumpless_add_entry( struct stumpless_target *target,
 
   // chain targets simply pass the entry on
   if( target->type == STUMPLESS_CHAIN_TARGET ) {
-    result = sendto_chain( target->id, entry );
+    result = config_send_entry_to_chain_target( target->id, entry );
     goto finish;
   }
 
@@ -397,7 +396,7 @@ stumpless_close_target( struct stumpless_target *target ) {
       break;
 
     case STUMPLESS_CHAIN_TARGET:
-      stumpless_close_chain_and_contents( target );
+      config_close_chain_and_contents( target );
       break;
 
     case STUMPLESS_FILE_TARGET:
