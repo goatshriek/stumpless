@@ -29,6 +29,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "දී ඇති පණිවිඩයට බෆරය කුඩා වැඩිය"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "සහාය නොදක්වන ඉලක්ක වර්ගයක් වැසීමට උත්සාහ කරන ලදී"
 

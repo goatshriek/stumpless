@@ -29,6 +29,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "a puffer túl kicsi az adott üzenethez"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "nem támogatott céltípust próbált bezárni"
 

@@ -25,6 +25,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "buffer je príliš malý pre tuto správu"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "pokus o uzatvorenie cieľového súboru nepodporovaného typu"
 

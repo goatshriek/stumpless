@@ -29,6 +29,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "ఇచ్చిన సందేశానికి బఫర్ చాలా చిన్నది"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "మద్దతు లేని లక్ష్య రకాన్ని మూసివేయడానికి ప్రయత్నించారు"
 
