@@ -1,0 +1,32 @@
+version: "0.5.0"
+classes:
+  - name: "ChainTarget"
+    doc: >
+      A target allowing entries to be sent to a sequence of targets.
+    namespace: "stumpless"
+    equivalent-struct:
+      name: "stumpless_target"
+      includes: "stumpless/target.h"
+    constructors:
+      - doc: "Creates a new chain target."
+        wrapped-function:
+          name: "stumpless_new_chain"
+          includes: "stumpless/target/chain.h"
+          params:
+            - name: "name"
+              doc: "The name of this target."
+              type: "const char *"
+          return:
+            type: "equivalent-struct-pointer"
+          use-template: "pointer-return-error-check"
+    destructor:
+      doc: >
+        Closes this chain and releases all memory and other resources held by
+        it. Does not close the targets in the chain.
+      wrapped-function:
+        name: "stumpless_close_chain_only"
+        includes: "stumpless/target/chain.h"
+        params:
+          - name: "equivalent-struct-pointer"
+    functions:
+      - use-template: "common-target-functions"
