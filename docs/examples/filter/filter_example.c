@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ main( int argc, char **argv ) {
   stump_n( "notice" );
   stump_i( "informational" );
   stump_d( "debug" );
-  stump_d( "trace" );
+  stump_t( "trace" );
 
   // the resulting output looks something like this:
   // <8>1 2022-01-26T02:00:54.250910Z Angus - - - - emergency!
@@ -60,7 +60,7 @@ main( int argc, char **argv ) {
   // <13>1 2022-01-26T02:00:54.253226Z Angus - - - - notice
   // <14>1 2022-01-26T02:00:54.253634Z Angus - - - - informational
   // <15>1 2022-01-26T02:00:54.254015Z Angus - - - - debug
-  // <15>1 2022-01-26T02:00:54.254347Z Angus - - - - trace
+  // <15>1 2022-01-26T02:00:54.254347Z Angus - - - [trace file="/mnt/c/users/reall/code/stumpless/docs/examples/filter/filter_example.c" line="52" function="main"] trace
 
 
 
@@ -81,7 +81,7 @@ main( int argc, char **argv ) {
   stump_n( "notice" );
   stump_i( "informational" );
   stump_d( "debug" );
-  stump_d( "trace" );
+  stump_t( "trace" );
 
   // the mask filtered output:
   // <8>1 2022-01-26T02:00:54.254749Z Angus - - - - emergency!
@@ -89,7 +89,7 @@ main( int argc, char **argv ) {
   // <10>1 2022-01-26T02:00:54.255394Z Angus - - - - critical!
   // <11>1 2022-01-26T02:00:54.255691Z Angus - - - - error!
   // <15>1 2022-01-26T02:00:54.256015Z Angus - - - - debug
-  // <15>1 2022-01-26T02:00:54.256365Z Angus - - - - trace
+  // <15>1 2022-01-26T02:00:54.256365Z Angus - - - [trace file="/mnt/c/users/reall/code/stumpless/docs/examples/filter/filter_example.c" line="84" function="main"] trace
 
 
   // if we want to customize the filtering even more, then we can set the filter

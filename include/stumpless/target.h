@@ -436,8 +436,8 @@ stumpless_add_message_str( struct stumpless_target *target,
  *
  * Targets that can be closed in multiple ways will be closed in the most
  * complete way possible. Specifically, SQLite3 targets will have the underlying
- * database connection closed as well, chain targets will have all targets in
- * them closed.
+ * database connection closed as well, and chain targets will have all targets
+ * in them closed.
  *
  * This function can be used when you'd like to avoid checking the type of the
  * target and then calling the appropriate close function. Note that use of this
