@@ -59,9 +59,9 @@ stumpless_add_message( simple_chain, "simple chain message" );
 
 
 ## Nesting Chains
-Chains also allow us to create hierarchical logging structures, similar to those
-that other frameworks provide. To do this, we add chains to other chains,
-applying filters along the way to control message flow down to lower levels.
+Chains also allow us to create hierarchical logging structures. To do this, we
+add chains to other chains, applying filters along the way to control message
+flow down to lower levels.
 
 To show this, we'll create two more chains. First, an error chain that will
 send high-level errors to stderr, as well as to a log buffer where we can

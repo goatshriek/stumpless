@@ -20,6 +20,7 @@ add_function_test(chain
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/function/target/chain.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
+    $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_performance_test(chain

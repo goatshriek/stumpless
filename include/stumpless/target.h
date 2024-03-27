@@ -70,7 +70,11 @@ extern "C" {
 /**< add to a SQLite3 database */
 #define STUMPLESS_SQLITE3_TARGET_VALUE 8
 
-/**< write to a series of targets and filters **/
+/**
+ * write to a series of targets
+ *
+ * @since release v2.2.0
+ */
 #define STUMPLESS_CHAIN_TARGET_VALUE 9
 
 /**

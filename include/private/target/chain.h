@@ -29,6 +29,8 @@
  * The length of the array in the chain target structure. Chains where all
  * targets fit into this array will require less dynamic memory and fewer
  * dereferences, speeding up their performance.
+ *
+ * @since release v2.2.0
  */
 #define CHAIN_TARGET_ARRAY_LENGTH 4
 

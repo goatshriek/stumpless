@@ -21,8 +21,9 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <stumpless.h>
-#include <test/helper/assert.hpp>
-#include <test/helper/fixture.hpp>
+#include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
+#include "test/helper/rfc5424.hpp"
 
 using::testing::HasSubstr;
 
@@ -30,10 +31,16 @@ namespace {
   class ChainTargetTest : public::testing::Test {
     protected:
       struct stumpless_target *chain = NULL;
+      char buffer[8192];
+      struct stumpless_target *target_1;
 
       void
       SetUp( void ) override {
         chain = stumpless_new_chain( "test-fixture" );
+        target_1 = stumpless_open_buffer_target( "chain-element-1",
+                                                 buffer,
+                                                 sizeof( buffer ) );
+        stumpless_add_target_to_chain( chain, target_1 );
       }
 
       void
@@ -43,7 +50,7 @@ namespace {
       }
   };
 
-  TEST_F( ChainTargetTest, AddTarget ) {
+  TEST_F( ChainTargetTest, AddTarget ){
     size_t starting_length;
     char target_buffer[1024];
     struct stumpless_target *target;
@@ -84,7 +91,7 @@ namespace {
     EXPECT_THAT( read_message, HasSubstr( test_message ) );
   }
 
-  TEST_F( ChainTargetTest, AddEntry ) {
+  TEST_F( ChainTargetTest, AddEntry ){
     struct stumpless_entry *entry;
     int result;
 
@@ -94,6 +101,24 @@ namespace {
     EXPECT_GE( result, 0 );
     EXPECT_NO_ERROR;
 
+    TestRFC5424Compliance( buffer );
+
     stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST( ChainTargetLengthTest, EmptyChain ){
+    struct stumpless_target *chain;
+    size_t length;
+
+    chain = stumpless_new_chain( "empty" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( chain );
+
+    length = stumpless_get_chain_length( chain );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( length, 0 );
+
+    stumpless_close_chain_only( chain );
+    stumpless_free_all();
   }
 }

@@ -385,7 +385,7 @@ if(STUMPLESS_CHAIN_TARGETS_SUPPORTED)
 else()
   if(WIN32)
     list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/config/chain_unsupported.c")
-  endif(WIN32) 
+  endif(WIN32)
 endif()
 
 
