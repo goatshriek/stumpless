@@ -86,7 +86,7 @@ finish:
 
 void
 stumpless_close_chain_and_contents( struct stumpless_target *chain ){
-  struct chain_target *internal_target;
+  const struct chain_target *internal_target;
   size_t i;
   size_t index;
   struct stumpless_target *curr;
@@ -141,6 +141,7 @@ stumpless_get_chain_length( const struct stumpless_target *chain ){
     return -1;
   }
 
+  clear_error();
   internal_chain = chain->id;
   lock_chain_target( internal_chain );
   result = internal_chain->target_count;

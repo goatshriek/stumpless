@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,29 +17,28 @@
  */
 
 #ifndef __STUMPLESS_TEST_HELPER_ASSERT_HPP
-#  define __STUMPLESS_TEST_HELPER_ASSERT_HPP
+#define __STUMPLESS_TEST_HELPER_ASSERT_HPP
 
-#  include <cstddef>
-#  include <gtest/gtest.h>
-#  include <stumpless.h>
+#include <cstddef>
+#include <gtest/gtest.h>
+#include <stumpless.h>
 
-#  define ASSERT_NOT_NULL( thing ) ASSERT_FALSE( (thing) == NULL )
+#define ASSERT_NOT_NULL( thing ) ASSERT_FALSE( ( thing ) == NULL )
 
-#  define ASSERT_NULL( thing ) ASSERT_TRUE( (thing) == NULL )
+#define ASSERT_NULL( thing ) ASSERT_TRUE( ( thing ) == NULL )
 
-#  define EXPECT_ERROR_ID_EQ( code ) \
-error = stumpless_get_error(  );     \
-EXPECT_TRUE( error != NULL );        \
-if( error ) {                        \
-  EXPECT_EQ( error->id, (code) );    \
+#define EXPECT_ERROR_ID_EQ( code )                                             \
+EXPECT_TRUE( stumpless_has_error() );                                          \
+if( stumpless_has_error() ) {                                                  \
+  EXPECT_EQ( stumpless_get_error()->id, ( code ) );                            \
 }
 
-#  define EXPECT_NO_ERROR                \
-EXPECT_FALSE( stumpless_has_error(  ) ); \
+#define EXPECT_NO_ERROR                                                        \
+EXPECT_FALSE( stumpless_has_error() );                                         \
 stumpless_perror( "an unexpected error occurred" )
 
-#  define EXPECT_NOT_NULL( thing ) EXPECT_FALSE( (thing) == NULL )
+#define EXPECT_NOT_NULL( thing ) EXPECT_FALSE( ( thing ) == NULL )
 
-#  define EXPECT_NULL( thing ) EXPECT_TRUE( (thing) == NULL )
+#define EXPECT_NULL( thing ) EXPECT_TRUE( ( thing ) == NULL )
 
 #endif /* __STUMPLESS_TEST_HELPER_ASSERT_HPP */

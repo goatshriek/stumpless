@@ -17,12 +17,14 @@
  */
 
 #include <cstddef>
+#include <cstdlib>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <string>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
+#include "test/helper/memory_allocation.hpp"
 #include "test/helper/rfc5424.hpp"
 
 using::testing::HasSubstr;
@@ -32,7 +34,7 @@ namespace {
     protected:
       struct stumpless_target *chain = NULL;
       char buffer[8192];
-      struct stumpless_target *target_1;
+      struct stumpless_target *target_1 = NULL;
       struct stumpless_target *full_chain = NULL;
 
       void
@@ -98,6 +100,8 @@ namespace {
 
     std::string read_message( read_buffer, read_size );
     EXPECT_THAT( read_message, HasSubstr( test_message ) );
+
+    stumpless_close_buffer_target( target );
   }
 
   TEST_F( ChainTargetTest, AddTargetToFullChain ){
@@ -139,6 +143,40 @@ namespace {
 
     std::string read_message( read_buffer, read_size );
     EXPECT_THAT( read_message, HasSubstr( test_message ) );
+
+    stumpless_close_buffer_target( target );
+  }
+
+  TEST_F( ChainTargetTest, AddTargetToFullChainMemoryFailure ){
+    size_t starting_length;
+    char target_buffer[1024];
+    struct stumpless_target *target;
+    struct stumpless_target *add_target_result;
+    size_t new_length;
+
+    starting_length = stumpless_get_chain_length( full_chain );
+    EXPECT_NO_ERROR;
+
+    target = stumpless_open_buffer_target( "chain-add-new",
+                                           target_buffer,
+                                           sizeof( target_buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_realloc( REALLOC_FAIL );
+    EXPECT_NO_ERROR;
+
+    add_target_result = stumpless_add_target_to_chain( full_chain, target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( add_target_result );
+
+    new_length = stumpless_get_chain_length( full_chain );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( new_length, starting_length );
+
+    stumpless_set_realloc( realloc );
+    EXPECT_NO_ERROR;
+
+    stumpless_close_buffer_target( target );
   }
 
   TEST_F( ChainTargetTest, AddEntry ){
@@ -156,9 +194,23 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
   }
 
+  TEST_F( ChainTargetTest, AddEntryToFullChain ){
+    struct stumpless_entry *entry;
+    int result;
+
+    entry = create_entry();
+
+    result = stumpless_add_entry( full_chain, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    TestRFC5424Compliance( buffer );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST_F( ChainTargetTest, AddNullTargetToChain ){
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     result = stumpless_add_target_to_chain( chain, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
@@ -167,7 +219,6 @@ namespace {
 
   TEST_F( ChainTargetTest, AddTargetToNonChain ){
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     result = stumpless_add_target_to_chain( target_1, target_1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
@@ -176,7 +227,6 @@ namespace {
 
   TEST_F( ChainTargetTest, AddTargetToNullChain ){
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     result = stumpless_add_target_to_chain( NULL, target_1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
@@ -184,15 +234,11 @@ namespace {
   }
 
   TEST_F( ChainTargetTest, CloseIncompatibleTargetAndContents ){
-    const struct stumpless_error *error;
-
     stumpless_close_chain_and_contents( target_1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
   TEST_F( ChainTargetTest, CloseIncompatibleTargetOnly ){
-    const struct stumpless_error *error;
-
     stumpless_close_chain_only( target_1 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
@@ -210,6 +256,56 @@ namespace {
     EXPECT_EQ( length, 0 );
 
     stumpless_close_chain_only( chain );
+    stumpless_free_all();
+  }
+
+  TEST( CloseChainAndContentsTest, FullChain ){
+    struct stumpless_target *chain;
+    struct stumpless_target *sub_target;
+    char buffer[1024];
+    size_t i;
+
+    chain = stumpless_new_chain( "full-chain-to-close" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( chain );
+
+    for( i = 0; i < STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH + 1; i++ ){
+      sub_target = stumpless_open_buffer_target( "sub-target",
+                                                 buffer,
+                                                 sizeof( buffer ) );
+      EXPECT_NO_ERROR;
+
+      stumpless_add_target_to_chain( chain, sub_target );
+      EXPECT_NO_ERROR;
+    }
+
+    stumpless_close_chain_and_contents( chain );
+    EXPECT_NO_ERROR;
+  }
+
+  TEST( CloseChainAndContentsTest, NullTarget ){
+    stumpless_close_chain_and_contents( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( CloseChainOnlyTest, NullTarget ){
+    stumpless_close_chain_only( NULL );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( NewChainTargetTest, MemoryFailure ){
+    const struct stumpless_target *result;
+
+    stumpless_set_malloc( MALLOC_FAIL );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_new_chain( "memory-failure" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    stumpless_set_malloc( malloc );
+    EXPECT_NO_ERROR;
+
     stumpless_free_all();
   }
 }
