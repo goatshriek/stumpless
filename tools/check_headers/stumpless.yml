@@ -186,6 +186,7 @@
 "STUMPLESS_ARGUMENT_TOO_BIG": "stumpless/error.h"
 "STUMPLESS_BUFFER_TARGET": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGET": "stumpless/target.h"
+"STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH": "stumpless/config.h"
 "STUMPLESS_CHAIN_TARGET_VALUE": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGETS_SUPPORTED": "stumpless/config.h"
 "stumpless_copy_element": "stumpless/element.h"

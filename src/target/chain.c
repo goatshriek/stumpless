@@ -17,6 +17,7 @@
  */
 
 #include <stddef.h>
+#include <stumpless/config.h>
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/chain.h>
@@ -33,6 +34,7 @@
 struct stumpless_target *
 stumpless_add_target_to_chain( struct stumpless_target *chain,
                                struct stumpless_target *target ){
+  size_t count;
   struct chain_target *internal_chain;
   size_t overflow_count;
   size_t old_size;
@@ -56,8 +58,9 @@ stumpless_add_target_to_chain( struct stumpless_target *chain,
   internal_chain = chain->id;
   lock_chain_target( internal_chain );
 
-  if( unlikely( internal_chain->target_count >= CHAIN_TARGET_ARRAY_LENGTH ) ){
-    overflow_count = internal_chain->target_count - CHAIN_TARGET_ARRAY_LENGTH;
+  count = internal_chain->target_count;
+  if( unlikely( count >= STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH ) ){
+    overflow_count = count - STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH;
     old_size = overflow_count * sizeof( target );
     new_size = old_size + sizeof( target );
     new_targets = realloc_mem( internal_chain->overflow_targets, new_size );
@@ -85,6 +88,7 @@ void
 stumpless_close_chain_and_contents( struct stumpless_target *chain ){
   struct chain_target *internal_target;
   size_t i;
+  size_t index;
   struct stumpless_target *curr;
 
   VALIDATE_ARG_NOT_NULL_VOID_RETURN( chain );
@@ -96,8 +100,9 @@ stumpless_close_chain_and_contents( struct stumpless_target *chain ){
 
   internal_target = chain->id;
   for( i = 0; i < internal_target->target_count; i++ ){
-    if( unlikely( i >= CHAIN_TARGET_ARRAY_LENGTH ) ){
-      curr = internal_target->overflow_targets[i - CHAIN_TARGET_ARRAY_LENGTH];
+    if( unlikely( i >= STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH ) ){
+      index = i - STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH;
+      curr = internal_target->overflow_targets[index];
     } else {
       curr = internal_target->targets[i];
     }
@@ -205,15 +210,17 @@ send_entry_to_chain_target( struct chain_target *chain,
   size_t i;
   int result;
   int final_result = 1;
+  size_t index;
   struct stumpless_target *sub_target;
 
   lock_chain_target( chain );
 
   for( i = 0; i < chain->target_count; i++ ){
-    if( i < CHAIN_TARGET_ARRAY_LENGTH ){
+    if( i < STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH ){
       sub_target = chain->targets[i];
     } else {
-      sub_target = chain->overflow_targets[i - CHAIN_TARGET_ARRAY_LENGTH];
+      index = i - STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH;
+      sub_target = chain->overflow_targets[index];
     }
 
     result = stumpless_add_entry( sub_target, entry );

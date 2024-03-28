@@ -41,7 +41,7 @@
  */
 struct chain_target {
 /** A static array of targets this chain contains.*/
-  struct stumpless_target *targets[CHAIN_TARGET_ARRAY_LENGTH];
+  struct stumpless_target *targets[STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH];
 /**
  * A dynamic array of targets this chain contains, if the static array is not
  * large enough. This will be NULL if it is not needed.

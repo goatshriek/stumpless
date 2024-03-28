@@ -41,6 +41,10 @@ option(ENABLE_DEPRECATION_WARNINGS ${enable_deprecation_warnings_help_string} ON
 
 
 # default settings
+set(CHAIN_TARGET_ARRAY_LENGTH 4
+  CACHE STRING "the chain target static array size"
+)
+
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
 )
