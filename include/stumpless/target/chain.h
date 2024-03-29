@@ -152,6 +152,9 @@ stumpless_close_chain_only( struct stumpless_target *chain );
  * @since release v2.2.0
  *
  * @param chain The chain to get the length of.
+ *
+ * @return The length of the provided chain if no error is encountered. If an
+ * error is encountered, 0 is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 size_t

@@ -243,6 +243,28 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
+  TEST_F( ChainTargetTest, GetLengthFromIncompatibleTarget ){
+    size_t result;
+
+    result = stumpless_get_chain_length( target_1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    EXPECT_EQ( result, 0 );
+  }
+
+  TEST_F( ChainTargetTest, GetLengthFromInvalidTarget ){
+    void *id;
+    size_t result;
+
+    id = chain->id;
+    chain->id = NULL;
+
+    result = stumpless_get_chain_length( chain );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_ID );
+    EXPECT_EQ( result, 0 );
+
+    chain->id = id;
+  }
+
   /* non-fixture tests */
 
   TEST( CloseTargetTest, ChainTarget ){

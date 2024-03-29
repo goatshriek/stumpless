@@ -961,7 +961,6 @@ namespace {
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
-
     target_result = stumpless_set_target_default_msgid( target, "msgid-that-is-too-long-to-be-accepted" );
     ASSERT_NULL( target_result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );

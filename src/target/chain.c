@@ -136,9 +136,14 @@ stumpless_get_chain_length( const struct stumpless_target *chain ){
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( chain );
 
+  if( unlikely( chain->type != STUMPLESS_CHAIN_TARGET ) ){
+    raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
+    return 0;
+  }
+
   if( unlikely( !chain->id ) ){
     raise_invalid_id(  );
-    return -1;
+    return 0;
   }
 
   clear_error();
