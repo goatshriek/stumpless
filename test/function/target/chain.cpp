@@ -243,6 +243,26 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
+  /* non-fixture tests */
+
+  TEST( CloseTargetTest, ChainTarget ){
+    struct stumpless_target *chain;
+
+    chain = stumpless_new_chain( "generic-close-test" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( chain );
+
+    EXPECT_EQ( stumpless_get_current_target(), chain );
+
+    stumpless_close_target( chain );
+    EXPECT_NO_ERROR;
+
+    EXPECT_EQ( stumpless_get_current_target(),
+               stumpless_get_default_target() );
+
+    stumpless_free_all();
+  }
+
   TEST( ChainTargetLengthTest, EmptyChain ){
     struct stumpless_target *chain;
     size_t length;
