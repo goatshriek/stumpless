@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/rfc5424.hpp"
 
 namespace {
@@ -115,15 +116,12 @@ namespace {
   }
 
   TEST( StreamTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_stream_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( StreamTargetCloseTest, WrongTargetType ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_function_target( "not-a-stream-target",
                                              basic_log_function );
@@ -146,10 +144,10 @@ namespace {
     size_t i;
 
     stream = fopen( filename, "w+" );
-    ASSERT_TRUE( stream != NULL );
+    ASSERT_NOT_NULL( stream );
 
     target = stumpless_open_stream_target( filename, stream );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -159,11 +157,11 @@ namespace {
     ASSERT_TRUE( entry != NULL );
 
     element = stumpless_new_element( "basic-element" );
-    ASSERT_TRUE( element != NULL );
+    ASSERT_NOT_NULL( element );
     stumpless_add_element( entry, element );
 
     param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    ASSERT_TRUE( param != NULL );
+    ASSERT_NOT_NULL( param );
     stumpless_add_param( element, param );
 
     for( i = 0; i < line_count; i++ ) {
@@ -189,13 +187,12 @@ namespace {
 
   TEST( StreamTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     const char *filename = "open-malloc-fail.log";
     FILE *stream;
     void *(*set_malloc_result)(size_t);
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     stream = fopen( filename, "w+" );
     EXPECT_NOT_NULL( stream );
@@ -213,7 +210,6 @@ namespace {
 
   TEST( StreamTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     const char *filename = "null-name.log";
     FILE *stream;
 
@@ -230,7 +226,6 @@ namespace {
 
   TEST( StreamTargetOpenTest, NullStream ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stream_target( "no-stream-provided", NULL );
     EXPECT_NULL( target );
@@ -239,7 +234,6 @@ namespace {
 
   TEST( StreamTargetStderrTest, NullName ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stderr_target( NULL );
     EXPECT_NULL( target );
@@ -248,7 +242,6 @@ namespace {
 
   TEST( StreamTargetStdoutTest, NullName ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( NULL );
     EXPECT_NULL( target );
@@ -257,27 +250,22 @@ namespace {
 
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
     const char *filename = "null-name.log";
     FILE *stream;
     int result;
 
-    basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                       STUMPLESS_SEVERITY_INFO,
-                                      "stumpless-unit-test",
-                                      "basic-entry",
-                                      "basic test message" );
-    ASSERT_TRUE( basic_entry != NULL );
+    basic_entry = create_entry();
+    ASSERT_NOT_NULL( basic_entry );
 
     stream = fopen( filename, "w+" );
     fclose( stream );
 
     stream = fopen( filename, "r" );
-    ASSERT_TRUE( stream != NULL );
+    ASSERT_NOT_NULL( stream );
 
     target = stumpless_open_stream_target( filename, stream );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_add_entry( target, basic_entry );
     EXPECT_LT( result, 0 );

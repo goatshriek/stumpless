@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -172,13 +172,12 @@ namespace {
   TEST_F( WelSupportedTest, GetInsertionParamIndexTooHigh ) {
     const struct stumpless_param *result;
     WORD index = 4;
-    const struct stumpless_error *error;
 
     result = stumpless_get_wel_insertion_param( one_insertion_param_entry, index );
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
-    EXPECT_EQ( error->code, index );
+    EXPECT_EQ( stumpless_get_error()->code, index );
   }
 
   TEST_F( WelSupportedTest, GetInsertionParamStringSetInstead ) {
@@ -192,7 +191,6 @@ namespace {
   TEST_F( WelSupportedTest, GetInsertionStringIndexTooHigh ) {
     LPCSTR result;
     WORD index = 4;
-    const struct stumpless_error *error;
 
     ASSERT_NOT_NULL( insertion_entry );
 
@@ -200,13 +198,12 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
-    EXPECT_EQ( error->code, index );
+    EXPECT_EQ( stumpless_get_error()->code, index );
   }
 
   TEST_F( WelSupportedTest, GetInsertionStringWIndexTooHigh ) {
     LPCWSTR result;
     WORD index = 4;
-    const struct stumpless_error *error;
 
     ASSERT_NOT_NULL( insertion_entry );
 
@@ -214,7 +211,7 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
-    EXPECT_EQ( error->code, index );
+    EXPECT_EQ( stumpless_get_error()->code, index );
   }
 
   TEST_F( WelSupportedTest, GetInsertionStringFirstString ) {
@@ -271,7 +268,6 @@ namespace {
 
   TEST_F( WelSupportedTest, GetInsertionStringNullEntry ) {
     LPCSTR result;
-    const struct stumpless_error *error;
 
     ASSERT_NOT_NULL( insertion_entry );
 
@@ -282,7 +278,6 @@ namespace {
 
   TEST_F( WelSupportedTest, GetInsertionStringWNullEntry ) {
     LPCWSTR result;
-    const struct stumpless_error* error;
 
     ASSERT_NOT_NULL( insertion_entry );
 
@@ -318,7 +313,6 @@ namespace {
   }
 
   TEST_F( WelSupportedTest, SetNullInsertionString ) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
 
     entry_result = stumpless_set_wel_insertion_string( simple_entry, 0, NULL );
@@ -327,7 +321,6 @@ namespace {
   }
 
   TEST_F( WelSupportedTest, SetWNullInsertionString ) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
 
     entry_result = stumpless_set_wel_insertion_string_w( simple_entry, 0, NULL );
@@ -336,7 +329,6 @@ namespace {
   }
 
   TEST_F( WelSupportedTest, InvalidUtf8InsertionString ) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
     LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
 
@@ -348,7 +340,6 @@ namespace {
   }
 
   TEST_F( WelSupportedTest, InsertionStringNotModifiedWhenInvalidUtf8StringProvided ) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
     LPCSTR valid_string = "valid string";
     LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
@@ -368,7 +359,6 @@ namespace {
   }
 
   TEST_F(WelSupportedTest, InsertionIndexNotModifiedWhenOutOfRange) {
-    const struct stumpless_error *error;
     const struct stumpless_entry *entry_result;
     LPCSTR valid_string = "valid string";
     LPCSTR invalid_utf8_string = "\xc3\x28 invalid";
@@ -424,7 +414,6 @@ namespace {
   }
 
   TEST( WelEntryCategoryTest, NullEntry ) {
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_category( NULL, CATEGORY_TEST );
@@ -433,7 +422,6 @@ namespace {
   }
 
   TEST( WelEntryEventIdTest, NullEntry ) {
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_event_id( NULL, MSG_SIMPLE );
@@ -442,7 +430,6 @@ namespace {
   }
 
   TEST( WelEntryTypeTest, NullEntry ) {
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_type( NULL, EVENTLOG_SUCCESS );
@@ -460,10 +447,10 @@ namespace {
     LPCWSTR category_file_w = L"%APPDATA%\\è\\category.dll";
     LPCSTR parameter_file = "%APPDATA%\\è\\parameter.dll";
     LPCWSTR parameter_file_w = L"%APPDATA%\\è\\parameter.dll";
+    const struct stumpless_error *error;
     DWORD types_supported = EVENTLOG_ERROR_TYPE | 
                               EVENTLOG_INFORMATION_TYPE |
                               EVENTLOG_WARNING_TYPE;
-    const struct stumpless_error *error;
     LPCWSTR full_key = BASE_KEY L"\\StumplessTestSubkey\\StumplessTestSource";
     LPCWSTR subkey = BASE_KEY L"\\StumplessTestSubkey";
     LPCWSTR event_subkey = BASE_KEY L"\\StumplessTestSubkey"\
@@ -761,7 +748,6 @@ namespace {
 
   TEST( WelGetEntryCategoryTest, NullEntry ) {
     WORD result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_wel_category( NULL );
     EXPECT_EQ( result, 0 );
@@ -808,7 +794,6 @@ namespace {
 
   TEST( WelGetEntryEventIdTest, NullEntry ) {
     DWORD result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_wel_event_id( NULL );
     EXPECT_EQ( result, 0 );
@@ -817,7 +802,6 @@ namespace {
 
   TEST( WelGetEntryInsertionParamTest, NullEntry ) {
     const struct stumpless_param *result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_wel_insertion_param( NULL, 0 );
     EXPECT_NULL( result );
@@ -828,7 +812,6 @@ namespace {
     const struct stumpless_entry *entry;
     WORD index = 0;
     const struct stumpless_param *result;
-    const struct stumpless_error *error;
 
     entry = create_empty_entry(  );
     ASSERT_NOT_NULL( entry );
@@ -837,7 +820,7 @@ namespace {
     EXPECT_NULL( result );
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
-    EXPECT_EQ( error->code, index );
+    EXPECT_EQ( stumpless_get_error()->code, index );
 
     stumpless_destroy_entry_only( entry );
   }
@@ -981,7 +964,6 @@ namespace {
 
   TEST( WelGetEntryTypeTest, NullEntry ) {
     DWORD result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_wel_type( NULL );
     EXPECT_EQ( result, 0 );
@@ -989,7 +971,6 @@ namespace {
   }
 
   TEST( WelSetEntryInsertionParamTest, NullEntry ) {
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
     struct stumpless_param *param;
 
@@ -1087,7 +1068,6 @@ namespace {
   }
 
   TEST( WelSetEntryInsertionStringTest, NullEntry ) {
-    const struct stumpless_error *error;
     struct stumpless_entry *entry;
 
     entry = stumpless_set_wel_insertion_string( NULL, 0, "test-string" );
@@ -1148,7 +1128,6 @@ namespace {
 
   TEST( WelSetInsertionStringsTest, NullEntry ) {
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     result = stumpless_set_wel_insertion_strings( NULL, 1, "add me!" );
     EXPECT_NULL( result );
@@ -1158,7 +1137,6 @@ namespace {
   TEST( WelSetInsertionStringsTest, NullString ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     entry = create_empty_entry();
     EXPECT_NO_ERROR;
@@ -1201,7 +1179,6 @@ namespace {
 
   TEST( WelSetInsertionStringsWTest, NullEntry ) {
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     result = stumpless_set_wel_insertion_strings_w( NULL, 1, L"add me!" );
     EXPECT_NULL( result );
@@ -1211,7 +1188,6 @@ namespace {
   TEST( WelSetInsertionStringsWTest, NullString ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     entry = create_empty_entry();
     EXPECT_NO_ERROR;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2023 Joel E. Anderson
+ * Copyright 2023-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, CloseTargetAndDb ) {
     struct stumpless_target *target;
-    bool result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -41,7 +39,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, CloseTargetOnly ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -55,7 +52,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, CreateDefaultDatabase ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -69,7 +65,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, DefaultPrepare ) {
     void *result;
-    const struct stumpless_error *error;
 
     result = stumpless_sqlite3_prepare( NULL, NULL, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
@@ -78,7 +73,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, GenericClose ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -96,7 +90,6 @@ namespace {
   TEST( Sqlite3TargetTest, GetDb ) {
     struct stumpless_target *target;
     void *result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -112,7 +105,6 @@ namespace {
   TEST( Sqlite3TargetTest, GetInsertSql ) {
     struct stumpless_target *target;
     const char *result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -128,7 +120,6 @@ namespace {
   TEST( Sqlite3TargetTest, GetPrepare ) {
     struct stumpless_target *target;
     stumpless_sqlite3_prepare_func_t result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -142,7 +133,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, Open ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_sqlite3_target( "open-please" );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
@@ -153,7 +143,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, OpenFromDb ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_sqlite3_target_from_db( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
@@ -164,7 +153,6 @@ namespace {
 
   TEST( Sqlite3TargetTest, OpenWithOptions ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_sqlite3_target_with_options( "optional", 0, NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_UNSUPPORTED );
@@ -176,7 +164,6 @@ namespace {
   TEST( Sqlite3TargetTest, SetInsertSql ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -192,7 +179,6 @@ namespace {
   TEST( Sqlite3TargetTest, SetPrepare ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-sqlite3-target" );
     ASSERT_NOT_NULL( target );
@@ -210,7 +196,6 @@ namespace {
   TEST( Sqlite3TargetTest, Unsupported ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     int result;
 
     entry = create_entry(  );

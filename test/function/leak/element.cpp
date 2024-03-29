@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ namespace {
   TEST( AddNewParamLeakTest, ErrorCondition ) {
     struct stumpless_element *element;
     const struct stumpless_element *result;
-    const struct stumpless_error *error;
 
     INIT_MEMORY_COUNTER( add_new_param );
 

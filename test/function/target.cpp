@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,6 @@ namespace {
   TEST_F( TargetTest, GetDefaultAppNameMallocFailure ) {
     void * ( *set_malloc_result )( size_t );
     const char *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -144,7 +143,6 @@ namespace {
   TEST_F( TargetTest, GetDefaultMsgidMallocFailure ) {
     void * ( *set_malloc_result )( size_t );
     const char *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -182,7 +180,6 @@ namespace {
   TEST_F( TargetTest, GetNameMallocFailure ) {
     void * ( *set_malloc_result )( size_t );
     const char *result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -251,7 +248,6 @@ namespace {
     const char *filename = "trace_entry_test_malloc_failure.c";
     const char *function_name = "TargetTest.TraceEntryMallocFailureOnFile";
     int result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 34 ) );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -279,7 +275,6 @@ namespace {
     const char *filename = "trace_entry_test_malloc_failure.c";
     const char *function_name = "TargetTest.TraceEntryMallocFailureOnFunction";
     int result;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 45 ) );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -305,7 +300,6 @@ namespace {
     struct stumpless_entry *entry;
     const char *function_name = "TargetTest.TraceEntry";
     int result;
-    const struct stumpless_error *error;
 
     entry = create_entry(  );
     EXPECT_NO_ERROR;
@@ -325,7 +319,6 @@ namespace {
     struct stumpless_entry *entry;
     const char *filename = "trace_entry_test.c";
     int result;
-    const struct stumpless_error *error;
 
     entry = create_entry(  );
     EXPECT_NO_ERROR;
@@ -346,7 +339,6 @@ namespace {
   TEST( AddEntryTest, NullEntry ) {
     int result;
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     char buffer[10];
 
     target = stumpless_open_buffer_target( "null entry testing",
@@ -364,7 +356,6 @@ namespace {
   TEST( AddEntryTest, NullTarget ) {
     int result;
     const struct stumpless_entry *entry;
-    const struct stumpless_error *error;
 
     entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
@@ -379,7 +370,6 @@ namespace {
 
   TEST( AddEntryTest, UnsupportedType ) {
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     int result;
     char buffer[10];
@@ -412,7 +402,6 @@ namespace {
   TEST( AddLogStrTest, NullTarget ) {
     int priority;
     int result;
-    const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     result = stumpless_add_log_str( NULL, priority , "test-message" );
@@ -424,7 +413,6 @@ namespace {
   TEST( AddLogTest, NullTarget ) {
     int priority;
     int result;
-    const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     result = stumpless_add_log( NULL, priority , "test-message-%s", "null" );
@@ -435,7 +423,6 @@ namespace {
 
   TEST( AddMessageStrTest, NullTarget ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_add_message_str( NULL, "test-message" );
     EXPECT_LT( result, 0 );
@@ -445,7 +432,6 @@ namespace {
 
   TEST( AddMessageTest, NullTarget ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_add_message( NULL, "test-message-%s", "null-target" );
     EXPECT_LT( result, 0 );
@@ -464,7 +450,6 @@ namespace {
                                "size, then a memory allocation failure will be "
                                "raised.";
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -489,7 +474,6 @@ namespace {
     void *(*set_malloc_result)(size_t);
     void *(*set_realloc_result)(void *, size_t);
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -518,7 +502,6 @@ namespace {
 
   TEST( CloseTarget, BadTargetType ) {
     struct stumpless_target target;
-    const struct stumpless_error *error;
 
     target.type = ( enum stumpless_target_type ) -1; // assuming this is invalid
 
@@ -528,7 +511,6 @@ namespace {
   }
 
   TEST( CloseTarget, NullTarget ) {
-    const struct stumpless_error *error;
 
     stumpless_close_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
@@ -559,7 +541,6 @@ namespace {
   }
 
   TEST( GetDefaultAppName, NullTarget ) {
-    const struct stumpless_error *error;
     const char *result;
 
     result = stumpless_get_target_default_app_name( NULL );
@@ -569,7 +550,6 @@ namespace {
   }
 
   TEST( GetDefaultFacility, NullTarget ) {
-    const struct stumpless_error *error;
     int facility;
 
     facility = stumpless_get_default_facility( NULL );
@@ -580,7 +560,6 @@ namespace {
   }
 
   TEST( GetDefaultMsgid, NullTarget ) {
-    const struct stumpless_error *error;
     const char *result;
 
     result = stumpless_get_target_default_msgid( NULL );
@@ -590,7 +569,6 @@ namespace {
   }
 
   TEST( GetFilter, NullTarget ) {
-    const struct stumpless_error *error;
     stumpless_filter_func_t result;
 
     result = stumpless_get_target_filter( NULL );
@@ -600,7 +578,6 @@ namespace {
   }
 
   TEST( GetMask, NullTarget ) {
-    const struct stumpless_error *error;
     int result;
 
     result = stumpless_get_target_mask( NULL );
@@ -610,7 +587,6 @@ namespace {
   }
 
   TEST( GetName, NullTarget ) {
-    const struct stumpless_error *error;
     const char *result;
 
     result = stumpless_get_target_name( NULL );
@@ -620,7 +596,6 @@ namespace {
   }
 
   TEST( GetOption, NullTarget ) {
-    const struct stumpless_error *error;
     int option;
 
     option = stumpless_get_option( NULL, STUMPLESS_OPTION_PID );
@@ -633,7 +608,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -652,7 +626,6 @@ namespace {
     const char *target_name = "test-target-name-of-known-length";
     char buffer[100];
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 33 ) );
@@ -670,7 +643,6 @@ namespace {
 
   TEST( OpenTarget, NullTarget ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_target( NULL );
     EXPECT_NULL( target );
@@ -800,7 +772,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -817,7 +788,6 @@ namespace {
 
   TEST( SetDefaultAppName, NullTarget ) {
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target_result = stumpless_set_target_default_app_name( NULL, "app-name" );
     EXPECT_NULL( target_result );
@@ -831,7 +801,6 @@ namespace {
     struct stumpless_target* target_result;
     const char *app_name = "app-name-that-is-too-long-to-be-accepted-it-should-"
                            "be-rejected";
-    const struct stumpless_error* error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -872,7 +841,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -889,7 +857,6 @@ namespace {
 
   TEST( SetDefaultFacility, NullTarget ) {
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target_result = stumpless_set_default_facility( NULL, STUMPLESS_FACILITY_USER );
     EXPECT_NULL( target_result );
@@ -901,7 +868,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -920,7 +886,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -962,7 +927,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -979,7 +943,6 @@ namespace {
 
   TEST( SetDefaultMsgId, NullTarget ) {
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target_result = stumpless_set_target_default_msgid( NULL, "msgid" );
     EXPECT_NULL( target_result );
@@ -992,7 +955,6 @@ namespace {
     char buffer[100];
     struct stumpless_target* target;
     struct stumpless_target* target_result;
-    const struct stumpless_error* error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -1012,7 +974,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -1032,7 +993,6 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -1074,7 +1034,6 @@ namespace {
   }
 
   TEST( SetFilter, NullTarget ) {
-    const struct stumpless_error *error;
     const struct stumpless_target *result;
 
     result = stumpless_set_target_filter( NULL, stumpless_mask_filter );
@@ -1084,7 +1043,6 @@ namespace {
   }
 
   TEST( SetMask, NullTarget ) {
-    const struct stumpless_error *error;
     const struct stumpless_target *result;
 
     result = stumpless_set_target_mask( NULL, 0 );
@@ -1118,7 +1076,6 @@ namespace {
   }
 
   TEST( SetOption, NullTarget ) {
-    const struct stumpless_error *error;
     const struct stumpless_target *result;
 
     result = stumpless_set_option( NULL, STUMPLESS_OPTION_PID );
@@ -1177,7 +1134,6 @@ namespace {
 
   TEST( WithCons, ConsDisabled ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
 
     int result;
@@ -1243,7 +1199,6 @@ namespace {
   TEST( WithCons, ConsEnabled ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
 
     const char *message = "STUMPLESS_OPTION_CONS::enabled";
@@ -1314,7 +1269,6 @@ namespace {
   TEST( WithCons, ConsNull ) {
     struct stumpless_target *target;
     struct stumpless_target *target_result;
-    const struct stumpless_error *error;
     struct stumpless_entry *basic_entry;
 
     const char *message = "STUMPLESS_OPTION_CONS::null";
@@ -1470,7 +1424,6 @@ namespace {
     struct stumpless_entry *entry;
     void *(*set_malloc_result)(size_t);
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "trace-fail-target",
                                            buffer,
@@ -1500,7 +1453,6 @@ namespace {
   TEST( TraceEntryTest, NullEntry ) {
     int result;
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     char buffer[10];
 
     target = stumpless_open_buffer_target( "null entry testing",
@@ -1522,7 +1474,6 @@ namespace {
   TEST( TraceEntryTest, NullTarget ) {
     int result;
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
 
     entry = create_entry(  );
     ASSERT_NOT_NULL( entry );
@@ -1542,7 +1493,6 @@ namespace {
   TEST( TraceLogStrTest, NullTarget ) {
     int priority;
     int result;
-    const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     result = stumpless_trace_log_str( NULL,
@@ -1559,7 +1509,6 @@ namespace {
   TEST( TraceLogTest, NullTarget ) {
     int priority;
     int result;
-    const struct stumpless_error *error;
 
     priority = STUMPLESS_SEVERITY_INFO | STUMPLESS_FACILITY_USER;
     result = stumpless_trace_log( NULL,
@@ -1576,7 +1525,6 @@ namespace {
 
   TEST( TraceMessageStrTest, NullTarget ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_trace_message_str( NULL,
                                           __FILE__,
@@ -1590,7 +1538,6 @@ namespace {
 
   TEST( TraceMessageTest, NullTarget ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_trace_message( NULL,
                                       __FILE__,
@@ -1613,7 +1560,6 @@ namespace {
                                "size, then a memory allocation failure will be "
                                "raised.";
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -1642,7 +1588,6 @@ namespace {
     void *(*set_malloc_result)(size_t);
     void *(*set_realloc_result)(void *, size_t);
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "test target",
                                            buffer,
@@ -1678,7 +1623,6 @@ namespace {
   }
 
   TEST( UnsetOption, NullTarget ) {
-    const struct stumpless_error *error;
     const struct stumpless_target *result;
 
     result = stumpless_unset_option( NULL, STUMPLESS_OPTION_PID );

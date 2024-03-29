@@ -185,8 +185,8 @@ namespace {
     struct stumpless_target *target;
 
     target = stumpless_new_tcp6_target( "my-tcp6-target" );
-    EXPECT_TRUE( target != NULL );
-    EXPECT_TRUE( stumpless_get_error(  ) == NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
 
     EXPECT_FALSE( stumpless_target_is_open( target ) );
 
@@ -195,38 +195,23 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadAddress ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp6_target( "bad-ipv6-address",
                                          "ff:fe::43::30:1" );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ADDRESS_FAILURE );
   }
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp6_target( "no-destination-provided", NULL );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp6_target( NULL, "::1" );
     EXPECT_NULL( target );

@@ -29,7 +29,6 @@ namespace {
 
   TEST( EntryStartupTest, MemoryFailure ) {
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     void *(*result)(size_t);
 
     result = stumpless_set_malloc( MALLOC_FAIL );

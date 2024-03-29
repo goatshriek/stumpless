@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,6 @@ namespace {
 
   TEST( GetVersion, MemoryFailure ) {
     struct stumpless_version *version;
-    const struct stumpless_error *error;
     void *(*result)(size_t);
 
     result = stumpless_set_malloc( MALLOC_FAIL );
@@ -149,7 +148,6 @@ namespace {
     void *(*malloc_result)(size_t);
     struct stumpless_version version = { 1, 5, 0};
     char *string_result;
-    const struct stumpless_error *error;
 
     malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( malloc_result );
@@ -163,7 +161,6 @@ namespace {
 
   TEST( VersionToString, NullVersion ) {
     char *result;
-    const struct stumpless_error *error;
 
     result = stumpless_version_to_string( NULL );
     EXPECT_NULL( result );

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2023 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,7 +236,6 @@ namespace {
 
   TEST_F( PerrorTest, StreamWriteFailure ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     const char *filename = "stream-write-failure.log";
     FILE *stream;
     int result;

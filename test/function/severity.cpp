@@ -130,7 +130,6 @@ namespace {
 
   TEST( GetSeverityEnumFromBuffer, InvalidMemSeverity ) {
     int result;
-    const struct stumpless_error *error;
     void * (*set_malloc_result)(size_t);
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );

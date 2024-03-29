@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2023 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,6 @@ namespace {
 
   TEST_F( Udp6TargetTest, AddEntry ) {
     int result;
-    const struct stumpless_error *error;
 
     if( !udp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
@@ -94,12 +93,8 @@ namespace {
       ASSERT_TRUE( basic_entry != NULL );
 
       result = stumpless_add_entry( target, basic_entry );
+      EXPECT_NO_ERROR;
       EXPECT_GE( result, 0 );
-
-      error = stumpless_get_error( );
-      if( error ) {
-        FAIL(  ) << error->message;
-      }
 
       GetNextMessage(  );
       TestRFC5424Compliance( buffer );
@@ -152,7 +147,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadAddress ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "bad-ipv6-address",
                                          "ff:fe::43::30:1" );
@@ -172,22 +166,14 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( "no-name-provided", NULL );
-    EXPECT_TRUE( target == NULL );
-
-    error = stumpless_get_error(  );
-    EXPECT_TRUE( error != NULL );
-
-    if( error ) {
-      EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    }
+    EXPECT_NULL( target );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetOpenTest, NullName ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp6_target( NULL, "::1" );
     EXPECT_NULL( target );

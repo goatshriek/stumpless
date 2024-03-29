@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021-2023 Joel E. Anderson
+ * Copyright 2021-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -221,7 +221,6 @@ void TestTruncatedMessage( struct stumpless_target *target ) {
   size_t my_msg_size;
   char *message;
   int result;
-  const struct stumpless_error *error;
 
   ASSERT_NOT_NULL( target );
   ASSERT_TRUE( stumpless_target_is_open( target ) );

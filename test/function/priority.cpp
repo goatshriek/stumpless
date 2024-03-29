@@ -37,7 +37,6 @@ namespace {
 
   TEST( GetPriorityValue, NumTooHighPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "192" );
     EXPECT_EQ( result, -1 );
@@ -46,7 +45,6 @@ namespace {
 
   TEST( GetPriorityValue, NumInvalidPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "119aa" );
     EXPECT_EQ( result, -1 );
@@ -69,7 +67,6 @@ namespace {
 
   TEST( GetPriorityValue, EmptyPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "" );
     EXPECT_EQ( result, -1 );
@@ -78,7 +75,6 @@ namespace {
 
   TEST( GetPriorityValue, NullPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( NULL );
     EXPECT_EQ( result, -1 );
@@ -87,7 +83,6 @@ namespace {
 
   TEST( GetPriorityValue, InvalidFacilityPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "umer.info" );
     EXPECT_EQ( result, -1 );
@@ -96,7 +91,6 @@ namespace {
 
   TEST( GetPriorityValue, InvalidSeverityPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "user.imfo" );
     EXPECT_EQ( result, -1 );
@@ -105,7 +99,6 @@ namespace {
 
   TEST( GetPriorityValue, InvalidNoPeriodPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "userinfo" );
     EXPECT_EQ( result, -1 );
@@ -114,7 +107,6 @@ namespace {
 
   TEST( GetPriorityValue, InvalidMorePeriodPriority ) {
     int result;
-    const struct stumpless_error *error;
 
     result = stumpless_prival_from_string( "user.info." );
     EXPECT_EQ( result, -1 );
@@ -137,7 +129,6 @@ namespace {
   TEST( GetPriorityValue, InvalidMemSeverityPriority ) {
     int result;
     void * (*set_malloc_result)(size_t);
-    const struct stumpless_error *error;
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 4 ) );
     ASSERT_NOT_NULL( set_malloc_result );
 

@@ -97,15 +97,12 @@ namespace {
   }
 
   TEST( FileTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_file_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( FileTargetCloseTest, WrongTargetType ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-file-target" );
 
@@ -152,7 +149,6 @@ namespace {
 
   TEST( FileTargetOpenTest, Directory ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
    
     target = stumpless_open_file_target( "/" );
     EXPECT_NULL( target );
@@ -162,7 +158,6 @@ namespace {
   TEST( FileTargetOpenTest, MallocFailure ) {
     const char *filename = "open-malloc-fail.log";
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
@@ -179,7 +174,6 @@ namespace {
 
   TEST( FileTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_file_target( NULL );
     EXPECT_NULL( target );

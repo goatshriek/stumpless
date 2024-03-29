@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ namespace {
   TEST( AddNewElementLeakTest, ErrorCondition ) {
     struct stumpless_entry *entry;
     const struct stumpless_entry *result;
-    const struct stumpless_error *error;
 
     INIT_MEMORY_COUNTER( add_new_element_leak );
 

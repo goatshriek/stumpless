@@ -826,7 +826,7 @@ add_function_test(function
 )
 
 add_function_test(get_error_stream
-  SOURCES test/function/startup/get_error_stream.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/startup/get_error_stream.cpp
 )
 
 add_function_test(level_all_disabled
@@ -975,44 +975,45 @@ add_function_test(log
 )
 
 add_function_test(memory
-  SOURCES test/function/memory.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/memory.cpp
 )
 
 add_function_test(param
-  SOURCES test/function/param.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/param.cpp
 )
 
 add_function_test(perror
-  SOURCES test/function/startup/perror.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/startup/perror.cpp
 )
 
 add_function_test(severity
-  SOURCES test/function/severity.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/severity.cpp
 )
 
 add_function_test(stream
   SOURCES
-    test/function/target/stream.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/target/stream.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target
   SOURCES
-    test/function/target.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/target.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target_leak
-  SOURCES test/function/leak/target.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/leak/target.cpp
 )
 
 add_function_test(version
-  SOURCES test/function/version.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/version.cpp
 )
 
 add_function_test(priority
-  SOURCES test/function/priority.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/priority.cpp
 )
 
 add_custom_target(build-test

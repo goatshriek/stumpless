@@ -319,16 +319,12 @@ namespace {
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_wel_target( NULL );
-
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelTargetCloseTest, WrongTargetType ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-wel-target" );
     ASSERT_NOT_NULL( target );
@@ -341,7 +337,6 @@ namespace {
 
   TEST( WelTargetOpenRemoteTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_remote_wel_target( "remote-server", NULL );
     ASSERT_NULL( target );

@@ -28,7 +28,6 @@ namespace {
   TEST( ErrorMemoryAllocationFailureTest, Initialization ) {
     void *(*result)(size_t);
     const struct stumpless_param *param;
-    const struct stumpless_error *error;
 
     result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( result );
