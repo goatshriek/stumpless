@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +101,14 @@
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
 #include <stumpless/priority.h>
+
+#ifdef STUMPLESS_CHAIN_TARGETS_SUPPORTED
+/** @example chain_example.c
+ * Demonstrates how to work with a chain target.
+ */
+
+#  include <stumpless/target/chain.h>
+#endif
 
 #ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED
 /** @example journald_example.c

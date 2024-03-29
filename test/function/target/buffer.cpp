@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstddef>
+#include <cstdlib>
+#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -161,7 +161,6 @@ namespace {
 
   TEST_F( BufferTargetTest, NullReadBuffer ) {
     size_t result;
-    const struct stumpless_error *error;
 
     result = stumpless_read_buffer( target, NULL, sizeof( read_buffer ) );
     EXPECT_EQ( result, 0 );
@@ -170,9 +169,8 @@ namespace {
 
   TEST_F( BufferTargetTest, OverFill ) {
     char test_string[TEST_BUFFER_LENGTH + 1];
-    const struct stumpless_error *error;
 
-    ASSERT_TRUE( stumpless_get_current_target(  ) != NULL );
+    ASSERT_NOT_NULL( stumpless_get_current_target() );
 
     memset( test_string, 'g', TEST_BUFFER_LENGTH );
     test_string[TEST_BUFFER_LENGTH] = '\0';
@@ -182,7 +180,6 @@ namespace {
 
   TEST_F( BufferTargetTest, ReadBufferSizeZero ) {
     size_t result;
-    const struct stumpless_error *error;
 
     result = stumpless_read_buffer( target, read_buffer, 0 );
     EXPECT_EQ( result, 0 );
@@ -269,15 +266,12 @@ namespace {
   }
 
   TEST( BufferTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_buffer_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( BufferTargetCloseTest, WrongTargetType ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-buffer-target" );
 
@@ -305,7 +299,6 @@ namespace {
     void * ( *set_malloc_result )( size_t );
     char buffer[100];
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
@@ -322,7 +315,6 @@ namespace {
 
   TEST( BufferTargetOpenTest, NullBuffer ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_buffer_target( "null-buffer",
                                            NULL,
@@ -333,7 +325,6 @@ namespace {
 
   TEST( BufferTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     char buffer[100];
 
     target = stumpless_open_buffer_target( NULL,
@@ -364,7 +355,6 @@ namespace {
   TEST( BufferTargetReadTest, NullTarget ) {
     char buffer[100];
     size_t result;
-    const struct stumpless_error *error;
 
     result = stumpless_read_buffer( NULL, buffer, sizeof( buffer ) );
     EXPECT_EQ( result, 0 );

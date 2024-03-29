@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2021-2023 Joel E. Anderson
+ * Copyright 2021-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdlib>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
@@ -101,8 +101,6 @@ namespace {
   }
 
   TEST( FunctionTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_function_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
     stumpless_free_all(  );
@@ -110,7 +108,6 @@ namespace {
 
   TEST( FunctionTargetCloseTest, WrongTargetType ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-function-target" );
 
@@ -123,7 +120,6 @@ namespace {
   TEST( FunctionTargetFailureTest, FunctionFailure ) {
     struct stumpless_target *target;
     int result;
-    const struct stumpless_error *error;
 
     target = stumpless_open_function_target( "failing-function-target",
                                              failing_log_function );
@@ -139,7 +135,6 @@ namespace {
 
   TEST( FunctionTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void * ( *set_malloc_result )( size_t );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
@@ -157,7 +152,6 @@ namespace {
 
   TEST( FunctionTargetOpenTest, MallocFailureOnFuncPointerSize ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void * ( *set_malloc_result )( size_t );
 
     set_malloc_result = stumpless_set_malloc(
@@ -176,7 +170,6 @@ namespace {
 
   TEST( FunctionTargetOpenTest, NullFunction ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_function_target( "null-function-test", NULL );
     EXPECT_NULL( target );
@@ -186,7 +179,6 @@ namespace {
 
   TEST( FunctionTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_function_target( NULL, basic_log_function );
     EXPECT_NULL( target );

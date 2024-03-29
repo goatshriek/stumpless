@@ -30,6 +30,15 @@
 /** Marks functions that are provided for use by the library. */
 #define STUMPLESS_PUBLIC_FUNCTION @PUBLIC_FUNCTION_DECORATION@
 
+/**
+ * The length of the array in the chain target structure. Chains where all
+ * targets fit into this array will require less dynamic memory and fewer
+ * dereferences, speeding up their performance.
+ *
+ * @since release v2.2.0
+ */
+#define STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH @CHAIN_TARGET_ARRAY_LENGTH@
+
 /** The facility code to use when one is not supplied. */
 #define STUMPLESS_DEFAULT_FACILITY @DEFAULT_FACILITY@
 
@@ -47,6 +56,9 @@
 
 /** The language stumpless was built for, as an RFC 5646 language tag. */
 #define STUMPLESS_LANGUAGE "@STUMPLESS_LANGUAGE@"
+
+/** Defined if chain targets are supported by this build. */
+#cmakedefine STUMPLESS_CHAIN_TARGETS_SUPPORTED 1
 
 /** Defined if journald targets are supported by this build. */
 #cmakedefine STUMPLESS_JOURNALD_TARGETS_SUPPORTED 1

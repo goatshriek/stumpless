@@ -29,6 +29,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "buffer-i është shumë i vogël për mesazhin e dhënë"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "u provua të mbyllej një lloj caku (targeti) i papërkrahur"
 

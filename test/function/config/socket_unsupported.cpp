@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2021 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ namespace {
 
   TEST( SocketTargetTest, GenericClose ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "fake-socket-target" );
     ASSERT_NOT_NULL( target );
@@ -57,7 +56,6 @@ namespace {
   TEST( SocketTargetTest, Unsupported ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     int result;
 
     entry = create_entry(  );

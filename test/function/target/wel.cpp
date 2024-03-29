@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
+#include <cstdarg>
+#include <cstddef>
+#include <cstring>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <string.h>
 #include <stumpless.h>
 #include <wchar.h>
 #include <windows.h>
@@ -319,16 +319,12 @@ namespace {
   }
 
   TEST( WelTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_wel_target( NULL );
-
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( WelTargetCloseTest, WrongTargetType ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-wel-target" );
     ASSERT_NOT_NULL( target );
@@ -341,7 +337,6 @@ namespace {
 
   TEST( WelTargetOpenRemoteTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_remote_wel_target( "remote-server", NULL );
     ASSERT_NULL( target );

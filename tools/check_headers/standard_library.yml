@@ -158,9 +158,6 @@
 "SIG_ERR": "signal.h"
 "SIGINT": "signal.h"
 "signal": "signal.h"
-"size_t":
-  - "cstddef"
-  - "stddef.h"
 "snprintf":
  - "cstdio"
  - "stdio.h"
@@ -207,9 +204,6 @@
  - "cstdint"
  - "stdint.h"
 "uintptr_t": "stdint.h"
-"va_end": "stdarg.h"
-"va_list": "stdarg.h"
-"va_start": "stdarg.h"
 "vsnprintf": "stdio.h"
 "vsnprintf_s": "stdio.h"
 "WC_ERR_INVALID_CHARS":

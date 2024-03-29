@@ -238,3 +238,8 @@ EXPORTS
   stumpless_set_sqlite3_insert_sql              @221
   stumpless_set_sqlite3_prepare                 @222
   stumpless_sqlite3_prepare                     @223
+  stumpless_add_target_to_chain                 @224
+  stumpless_close_chain_and_contents            @225
+  stumpless_close_chain_only                    @226
+  stumpless_get_chain_length                    @227
+  stumpless_new_chain                           @228

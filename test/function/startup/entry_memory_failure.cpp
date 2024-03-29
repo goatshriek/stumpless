@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -30,7 +29,6 @@ namespace {
 
   TEST( EntryStartupTest, MemoryFailure ) {
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     void *(*result)(size_t);
 
     result = stumpless_set_malloc( MALLOC_FAIL );

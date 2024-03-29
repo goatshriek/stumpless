@@ -29,6 +29,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "tampon bellek verilen mesaj için çok küçük"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "desteklenmeyen hedef tipi kapatılmaya çalışıldı"
 

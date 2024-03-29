@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #ifndef __STUMPLESS_TEST_HELPER_RFC5424_HPP
 #define __STUMPLESS_TEST_HELPER_RFC5424_HPP
 
+#include <cstddef>
 #include <string>
 
 /**
@@ -146,7 +147,15 @@
 #define RFC_5424_PRIVAL_MAX 191
 
 void TestRFC5424Compliance( const std::string &syslog_msg );
+
+/**
+ * Tests each line of the given file for RFC 5424 compliance, and also tests
+ * that the number of messages equals the expected count.
+ */
+void TestRFC5424File( const std::string &filename, size_t expected_count );
+
 void TestRFC5424StructuredData( const std::string &sd_elements );
+
 void TestRFC5424Timestamp( const std::string &timestamp );
 
 #endif /* __STUMPLESS_TEST_HELPER_RFC5424_HPP */

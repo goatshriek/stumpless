@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@
 #  include <sys/socket.h>
 #endif
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstddef>
+#include <cstdlib>
+#include <cstdio>
 #include <stumpless.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -58,15 +58,12 @@ namespace {
   }
 
   TEST( NetworkTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_network_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetCloseTest, WrongTargetType ) {
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-network-target" );
 
@@ -78,7 +75,6 @@ namespace {
 
   TEST( NetworkTargetGetDestination, NullTarget ) {
     const char *result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_destination( NULL );
     EXPECT_TRUE( result == NULL );
@@ -87,17 +83,16 @@ namespace {
 
   TEST( NetworkTargetGetDestination, BadTargetType ) {
     const char *result;
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     char buffer[100];
 
     target = stumpless_open_buffer_target( "not-a-network-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_get_destination( target );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_buffer_target( target );
@@ -105,26 +100,24 @@ namespace {
 
   TEST( NetworkTargetGetTransportPort, NullTarget ) {
     const char *result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_transport_port( NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetGetTransportPort, BadTargetType ) {
     const char *result;
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     char buffer[100];
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_get_transport_port( target );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_buffer_target( target );
@@ -132,14 +125,13 @@ namespace {
 
   TEST( NetworkTargetGetUdpMaxMessage, BadTargetType ) {
     size_t result;
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     char buffer[100];
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_get_udp_max_message_size( target );
     EXPECT_EQ( result, 0 );
@@ -150,16 +142,14 @@ namespace {
 
   TEST( NetworkTargetGetUdpMaxMessage, NullTarget ) {
     size_t result;
-    const struct stumpless_error *error;
 
     result = stumpless_get_udp_max_message_size( NULL );
-    EXPECT_TRUE( result == 0 );
+    EXPECT_EQ( result, 0 );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetNewTest, BadIpv4TransportProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_new_network_target( "bad-ipv4-transport",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
@@ -171,7 +161,6 @@ namespace {
 
   TEST( NetworkTargetNewTest, BadIpv6TransportProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_new_network_target( "bad-ipv6-transport",
                                            STUMPLESS_IPV6_NETWORK_PROTOCOL,
@@ -183,7 +172,6 @@ namespace {
 
   TEST( NetworkTargetNewTest, BadNetworkProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_new_network_target( "bad-network",
                                            // assuming this isn't a valid protocol
@@ -195,7 +183,6 @@ namespace {
 
   TEST( NetworkTargetIsOpen, NullTarget ) {
     const struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     result = stumpless_target_is_open( NULL );
     EXPECT_NULL( result );
@@ -204,16 +191,15 @@ namespace {
 
   TEST( NetworkTargetNewTest, MallocFailure ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void * ( *set_malloc_result ) ( size_t );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     target = stumpless_new_network_target( "malloc-failure-target",
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                            STUMPLESS_TCP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -222,18 +208,16 @@ namespace {
 
   TEST( NetworkTargetNewTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_new_network_target( NULL,
                                            STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                            STUMPLESS_UDP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetOpenTest, BadHostname ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     const char *hostname = "this doesn't exist.net";
 
     if( name_resolves( hostname, AF_INET ) ) {
@@ -252,40 +236,37 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadIpv4TransportProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_network_target( "bad-ipv4-transport",
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_transport_protocol ) -1 );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
 
   TEST( NetworkTargetOpenTest, BadIpv6TransportProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_network_target( "bad-ipv6-transport",
                                             "::1",
                                             STUMPLESS_IPV6_NETWORK_PROTOCOL,
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_transport_protocol ) -1 );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED );
   }
 
   TEST( NetworkTargetOpenTest, BadNetworkProtocol ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_network_target( "bad-network",
                                             "127.0.0.1",
                                             // assuming this isn't a valid protocol
                                             ( enum stumpless_network_protocol ) -1,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED );
   }
 
@@ -312,17 +293,16 @@ namespace {
 
   TEST( NetworkTargetOpenTest, MallocFailure ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void * ( *set_malloc_result ) ( size_t );
 
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     target = stumpless_open_network_target( "malloc-failure-target",
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -331,30 +311,27 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_network_target( NULL,
                                             "127.0.0.1",
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_network_target( "no-name-provided",
                                             NULL,
                                             STUMPLESS_IPV4_NETWORK_PROTOCOL,
                                             STUMPLESS_TCP_TRANSPORT_PROTOCOL );
-    EXPECT_TRUE( target == NULL );
+    EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetSetDestination, BadTargetType ) {
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_target *result;
     char buffer[100];
@@ -362,10 +339,10 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_destination( target, "localhost" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_buffer_target( target );
@@ -374,20 +351,19 @@ namespace {
   TEST( NetworkTargetSetDestination, MallocFailure ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
     const char *original_destination = "127.0.0.1";
     const char *new_destination = "localhost";
     void * ( *set_malloc_result ) ( size_t );
 
     target = stumpless_open_udp4_target( "target-to-self",
                                          original_destination );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
-    ASSERT_TRUE( set_malloc_result != NULL );
+    ASSERT_NOT_NULL( set_malloc_result );
 
     result = stumpless_set_destination( target, new_destination );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
 
     set_malloc_result = stumpless_set_malloc( malloc );
@@ -397,31 +373,28 @@ namespace {
   }
 
   TEST( NetworkTargetSetDestination, NullDestination ) {
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_target *result;
 
     target = stumpless_open_udp4_target( "target-to-self", "127.0.0.1" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_destination( target, NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_network_target( target );
   }
 
   TEST( NetworkTargetSetDestination, NullTarget ) {
-    const struct stumpless_error *error;
     struct stumpless_target *result;
 
     result = stumpless_set_destination( NULL, "localhost" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetSetTransportPort, BadTargetType ) {
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_target *result;
     char buffer[100];
@@ -429,10 +402,10 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "5514" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_buffer_target( target );
@@ -441,7 +414,6 @@ namespace {
   TEST( NetworkTargetSetTransportPort, MallocFailure ) {
     struct stumpless_target *target;
     struct stumpless_target *result;
-    const struct stumpless_error *error;
     const char *default_port;
     const char *new_port = "5514";
     void * ( *set_malloc_result ) ( size_t );
@@ -469,31 +441,28 @@ namespace {
   }
 
   TEST( NetworkTargetSetTransportPort, NullPort ) {
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_target *result;
 
     target = stumpless_open_udp4_target( "target-to-self", "127.0.0.1" );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
     stumpless_close_network_target( target );
   }
 
   TEST( NetworkTargetSetTransportPort, NullTarget ) {
-    const struct stumpless_error *error;
     struct stumpless_target *result;
 
     result = stumpless_set_transport_port( NULL, "5514" );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( NetworkTargetSetUdpMaxMessage, BadTargetType ) {
-    const struct stumpless_error *error;
     struct stumpless_target *target;
     struct stumpless_target *result;
     char buffer[100];
@@ -501,10 +470,10 @@ namespace {
     target = stumpless_open_buffer_target( "not-a-udp-target",
                                            buffer,
                                            sizeof( buffer ) );
-    ASSERT_TRUE( target != NULL );
+    ASSERT_NOT_NULL( target );
 
     result = stumpless_set_udp_max_message_size( target, 1500 );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
 
     stumpless_close_buffer_target( target );
@@ -512,10 +481,9 @@ namespace {
 
   TEST( NetworkTargetSetUdpMaxMessage, NullTarget ) {
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     result = stumpless_set_udp_max_message_size( NULL, 1500 );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -535,17 +503,15 @@ namespace {
 
   TEST ( NetworkTargetGetNetworkProtocol, NullTarget ) {
     enum stumpless_network_protocol result;
-    const struct stumpless_error *error;
 
-    result = stumpless_get_network_protocol(NULL);
+    result = stumpless_get_network_protocol( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_TRUE( result == -1 );
+    EXPECT_EQ( result, -1 );
   }
 
   TEST ( NetworkTargetGetNetworkProtocol, BadTargetType ) {
     enum stumpless_network_protocol result;
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
     char buffer[100];
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
@@ -555,7 +521,7 @@ namespace {
 
     result = stumpless_get_network_protocol( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
-    EXPECT_TRUE( result == -1 );
+    EXPECT_EQ( result, -1 );
 
     stumpless_close_buffer_target( target );
   }
@@ -576,17 +542,15 @@ namespace {
 
   TEST ( NetworkTargetGetTransportProtocol, NullTarget ) {
     enum stumpless_transport_protocol result;
-    const struct stumpless_error *error;
 
-    result = stumpless_get_transport_protocol(NULL);
+    result = stumpless_get_transport_protocol( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    EXPECT_TRUE( result == -1 );
+    EXPECT_EQ( result, -1 );
   }
 
   TEST ( NetworkTargetGetTransportProtocol, BadTargetType ) {
     enum stumpless_transport_protocol result;
     const struct stumpless_target *target;
-    const struct stumpless_error *error;
     char buffer[100];
 
     target = stumpless_open_buffer_target( "not-a-udp-target",
@@ -596,7 +560,7 @@ namespace {
 
     result = stumpless_get_transport_protocol( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
-    EXPECT_TRUE( result == -1 );
+    EXPECT_EQ( result, -1 );
 
     stumpless_close_buffer_target( target );
   }

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,9 @@ void *
 
 /**
  * Sets the function used by the library to free memory.
+ *
+ * The provided free function must be able to handle a NULL pointer as the
+ * provided argument.
  *
  * **Thread Safety: MT-Unsafe**
  * This function is not thread safe as it changes the memory allocation

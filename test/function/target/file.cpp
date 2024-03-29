@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-#include <fstream>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string>
+#include <cstddef>
+#include <cstdlib>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 #include "test/helper/rfc5424.hpp"
 
 namespace {
@@ -69,8 +68,8 @@ namespace {
     SCOPED_TRACE( "EntryTargetTest.AddEntry" );
 
     result = stumpless_add_entry( target, basic_entry );
+    EXPECT_NO_ERROR;
     EXPECT_GE( result, 0 );
-    EXPECT_EQ( NULL, stumpless_get_error(  ) );
   }
 
   /* non-fixture tests */
@@ -98,15 +97,12 @@ namespace {
   }
 
   TEST( FileTargetCloseTest, NullTarget ) {
-    const struct stumpless_error *error;
-
     stumpless_close_file_target( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
   TEST( FileTargetCloseTest, WrongTargetType ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_stdout_target( "not-a-file-target" );
 
@@ -147,21 +143,12 @@ namespace {
     stumpless_destroy_entry_and_contents( entry );
     stumpless_close_file_target( target );
 
-    std::ifstream infile( filename );
-    std::string line;
-    i = 0;
-    while( std::getline( infile, line ) ) {
-      TestRFC5424Compliance( line.c_str() );
-      i++;
-    }
-
-    EXPECT_EQ( i, line_count );
+    TestRFC5424File( filename, line_count );
     remove( filename );
   }
 
   TEST( FileTargetOpenTest, Directory ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
    
     target = stumpless_open_file_target( "/" );
     EXPECT_NULL( target );
@@ -171,10 +158,9 @@ namespace {
   TEST( FileTargetOpenTest, MallocFailure ) {
     const char *filename = "open-malloc-fail.log";
     struct stumpless_target *target;
-    const struct stumpless_error *error;
     void *(*set_malloc_result)(size_t);
 
-    set_malloc_result = stumpless_set_malloc( [](size_t size)->void *{ return NULL; } );
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
    
     target = stumpless_open_file_target( filename );
@@ -188,7 +174,6 @@ namespace {
 
   TEST( FileTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_file_target( NULL );
     EXPECT_NULL( target );

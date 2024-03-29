@@ -144,7 +144,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadAddress ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( "bad-ipv4-address",
                                          "256.256.256.256" );
@@ -165,7 +164,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( "no-name-provided", NULL );
     EXPECT_NULL( target );
@@ -174,7 +172,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_udp4_target( NULL, "127.0.0.1" );
     EXPECT_NULL( target );

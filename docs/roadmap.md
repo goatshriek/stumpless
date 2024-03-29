@@ -4,14 +4,6 @@ or want to make a suggestion, please submit an issue on the project's
 [Github page](https://github.com/goatshriek/stumpless).
 
 
-## 2.2.0
- * [ADD] **Target chaining**
-   In some cases a log message needs to be sent to multiple destinations, such
-   as to a local file as well as a network server. Target chains will allow this
-   stream to be defined as a logging target, and a logging call only made to
-   this instead of manually logging to each target.
-
-
 ## 3.0.0 (next major release)
  * [REMOVE] **entry and element destructor synonyms**
    Removing previously deprecated feature.

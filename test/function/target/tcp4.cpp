@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2022 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 
 #include "test/helper/server.hpp"
 
+#include <cstddef>
+#include <cstdio>
+#include <cstring>
 #include <regex>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
@@ -129,7 +129,6 @@ namespace {
 
   TEST_F( Tcp4TargetTest, GetUdpMaxMessageSize ) {
     size_t result;
-    const struct stumpless_error *error;
 
     if( !tcp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
@@ -146,7 +145,6 @@ namespace {
 
   TEST_F( Tcp4TargetTest, SetUdpMaxMessageSize ) {
     struct stumpless_target *result;
-    const struct stumpless_error *error;
 
     if( !tcp_fixtures_enabled ) {
       SUCCEED(  ) << BINDING_DISABLED_WARNING;
@@ -177,7 +175,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, BadAddress ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp4_target( "bad-ipv4-address",
                                          "256.256.256.256" );
@@ -187,7 +184,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullDestination ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp4_target( "no-destination-provided", NULL );
     EXPECT_NULL( target );
@@ -196,7 +192,6 @@ namespace {
 
   TEST( NetworkTargetOpenTest, NullName ) {
     struct stumpless_target *target;
-    const struct stumpless_error *error;
 
     target = stumpless_open_tcp4_target( NULL, "127.0.0.1" );
     EXPECT_NULL( target );

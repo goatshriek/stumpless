@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2023 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@
  */
 
 #include <cstddef>
-#include <fstream>
 #include <gtest/gtest.h>
-#include <string>
 #include <stumpless.h>
 #include <thread>
 #include "test/helper/assert.hpp"
@@ -59,15 +57,7 @@ namespace {
     stumpless_free_all(  );
 
     // check for consistency in the log file
-    std::ifstream log_file( filename );
-    std::string line;
-    i = 0;
-    while( std::getline( log_file, line ) ) {
-      TestRFC5424Compliance( line.c_str() );
-      i++;
-    }
-    EXPECT_EQ( i, THREAD_COUNT * MESSAGE_COUNT );
-
+    TestRFC5424File( filename, THREAD_COUNT * MESSAGE_COUNT );
     remove( filename );
   }
 }

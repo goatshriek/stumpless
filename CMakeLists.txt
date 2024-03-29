@@ -21,6 +21,7 @@ option(BUILD_PYTHON "include the python libary" OFF)
 
 option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
 
+option(ENABLE_CHAIN_TARGETS "support chain targets" ON)
 option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
 option(ENABLE_NETWORK_TARGETS "support network targets" ON)
 option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
@@ -40,6 +41,10 @@ option(ENABLE_DEPRECATION_WARNINGS ${enable_deprecation_warnings_help_string} ON
 
 
 # default settings
+set(CHAIN_TARGET_ARRAY_LENGTH 4
+  CACHE STRING "the chain target static array size"
+)
+
 string(CONCAT default_facility_help_string
   "The facility code to use for messages where one is not explicitly provided."
 )
@@ -369,6 +374,22 @@ elseif(NOT HAVE_WINDOWS_H AND (NOT HAVE_PTHREAD_H OR NOT HAVE_STDATOMIC_H))
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED FALSE)
 else()
   set(STUMPLESS_THREAD_SAFETY_SUPPORTED TRUE)
+endif()
+
+
+# chain target support
+if(NOT ENABLE_CHAIN_TARGETS)
+  set(STUMPLESS_CHAIN_TARGETS_SUPPORTED FALSE)
+else()
+  set(STUMPLESS_CHAIN_TARGETS_SUPPORTED TRUE)
+endif()
+
+if(STUMPLESS_CHAIN_TARGETS_SUPPORTED)
+  include(tools/cmake/chain.cmake)
+else()
+  if(WIN32)
+    list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/config/chain_unsupported.c")
+  endif(WIN32)
 endif()
 
 
@@ -805,7 +826,7 @@ add_function_test(function
 )
 
 add_function_test(get_error_stream
-  SOURCES test/function/startup/get_error_stream.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/startup/get_error_stream.cpp
 )
 
 add_function_test(level_all_disabled
@@ -954,44 +975,45 @@ add_function_test(log
 )
 
 add_function_test(memory
-  SOURCES test/function/memory.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/memory.cpp
 )
 
 add_function_test(param
-  SOURCES test/function/param.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/param.cpp
 )
 
 add_function_test(perror
-  SOURCES test/function/startup/perror.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/startup/perror.cpp
 )
 
 add_function_test(severity
-  SOURCES test/function/severity.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/severity.cpp
 )
 
 add_function_test(stream
   SOURCES
-    test/function/target/stream.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/target/stream.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target
   SOURCES
-    test/function/target.cpp
+    ${PROJECT_SOURCE_DIR}/test/function/target.cpp
     $<TARGET_OBJECTS:test_helper_fixture>
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_function_test(target_leak
-  SOURCES test/function/leak/target.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/leak/target.cpp
 )
 
 add_function_test(version
-  SOURCES test/function/version.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/version.cpp
 )
 
 add_function_test(priority
-  SOURCES test/function/priority.cpp
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/priority.cpp
 )
 
 add_custom_target(build-test

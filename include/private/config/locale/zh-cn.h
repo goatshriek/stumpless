@@ -31,6 +31,10 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "缓冲区对于给定消息太小"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "试图关闭不受支持的目标类型"
 

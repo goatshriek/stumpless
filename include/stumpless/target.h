@@ -44,7 +44,7 @@ extern "C" {
 #endif
 
 /**< write to a character buffer */
-# define STUMPLESS_BUFFER_TARGET_VALUE 0
+#define STUMPLESS_BUFFER_TARGET_VALUE 0
 
 /**< write to a file */
 #define STUMPLESS_FILE_TARGET_VALUE 1
@@ -71,6 +71,13 @@ extern "C" {
 #define STUMPLESS_SQLITE3_TARGET_VALUE 8
 
 /**
+ * write to a series of targets
+ *
+ * @since release v2.2.0
+ */
+#define STUMPLESS_CHAIN_TARGET_VALUE 9
+
+/**
  * A macro function that runs the provided action once for each target_type,
  * providing the symbol and value. The action must take two arguments, the
  * first being the symbol name of the target_type, and the second the numeric
@@ -94,7 +101,9 @@ ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
 /**< add to the Windows Event Log */\
 ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\
 /**< add to a SQLite3 database */\
-ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )
+ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )\
+/**< write to a series of targets and filters **/\
+ACTION( STUMPLESS_CHAIN_TARGET, STUMPLESS_CHAIN_TARGET_VALUE )
 
 /** Types of targets that may be created. */
 enum stumpless_target_type {
@@ -181,7 +190,8 @@ struct stumpless_target {
 /**
  * A filter function used to determine if a given entry should be processed by
  * this target or ignored. If this is NULL, then all entries sent to the target
- * are accepted. By default, targets use a filter that
+ * are accepted. By default targets use the stumpless_mask_filter which filters
+ * messages based on the severity bits in the mask of the target.
  *
  * @since release v2.1.0
  */
@@ -430,7 +440,8 @@ stumpless_add_message_str( struct stumpless_target *target,
  *
  * Targets that can be closed in multiple ways will be closed in the most
  * complete way possible. Specifically, SQLite3 targets will have the underlying
- * database connection closed as well.
+ * database connection closed as well, and chain targets will have all targets
+ * in them closed.
  *
  * This function can be used when you'd like to avoid checking the type of the
  * target and then calling the appropriate close function. Note that use of this

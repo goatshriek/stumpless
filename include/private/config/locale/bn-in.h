@@ -27,6 +27,10 @@
 "প্রদত্ত বার্তার জন্য"\
  "বাফারটি খুবই ছোট"
 
+// todo translate
+#  define L10N_CHAIN_TARGETS_UNSUPPORTED \
+"chain targets are not supported by this build"
+
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "একটি অসমর্থিত টার্গেট টাইপ"\
  "বন্ধ করার চেষ্টা করা হয়েছে"

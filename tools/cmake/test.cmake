@@ -384,6 +384,10 @@ set_target_properties(test_helper_usage
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
+target_link_libraries(test_helper_usage
+  libgtest
+)
+
 target_include_directories(test_helper_usage
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
