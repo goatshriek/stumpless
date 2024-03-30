@@ -2427,7 +2427,6 @@ namespace {
     entry = create_empty_entry();
     ASSERT_NOT_NULL( entry );
 
-    wprintf(L"wide message: %ls\n", wide_message );
     result = stumpless_set_entry_message_str_w( entry, wide_message );
     EXPECT_EQ( entry, result );
     EXPECT_NO_ERROR;

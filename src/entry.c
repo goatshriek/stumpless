@@ -887,6 +887,7 @@ stumpless_set_entry_message_str_w( struct stumpless_entry *entry,
     if( !new_message ){
       return NULL;
     }
+    new_message_size--; // leave off the NULL character
 
   } else {
     new_message = NULL;
