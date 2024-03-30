@@ -17,3 +17,6 @@
 "va_end": "stdarg.h"
 "va_list": "stdarg.h"
 "va_start": "stdarg.h"
+"wchar_t":
+  - "stddef.h"
+  - "wchar.h"

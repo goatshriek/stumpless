@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1308,6 +1308,39 @@ STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_entry *
 stumpless_set_entry_message_str( struct stumpless_entry *entry,
                                  const char *message );
+
+/**
+ * Sets the message of a given entry.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions to create the new message and free the old one.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v2.2.0
+ *
+ * @param entry The entry to modify.
+ *
+ * @param message The new message to set on the entry. If this is NULL, then it
+ * will be blank in the entry (no characters). This must be a valid UTF-16 string
+ * in shortest form.
+ *
+ * @return The modified entry if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_entry *
+stumpless_set_entry_message_str_w( struct stumpless_entry *entry,
+                                   const wchar_t *message );
 
 /**
  * Sets the msgid for an entry.

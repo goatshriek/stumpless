@@ -2318,6 +2318,130 @@ namespace {
     stumpless_free_all(  );
   }
 
+    TEST( SetMessageWideStrTest, AsciiMessage ) {
+    struct stumpless_entry *entry;
+    const wchar_t *wide_ascii_message = L"ASCII Message";
+    const char *ascii_message = "ASCII Message";
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry();
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, wide_ascii_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( ascii_message, new_message );
+
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all();
+  }
+
+  TEST( SetMessageWideStrTest, LongAsciiMessage ) {
+    struct stumpless_entry *entry;
+    const char *long_message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin porta, sem quis imperdiet aliquam, lectus odio consequat elit, at ullamcorper felis urna vel leo. Ut vitae risus cursus, tempor risus sed, elementum risus. Vestibulum porta egestas libero et lacinia.";
+    const wchar_t *wide_long_message = L"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin porta, sem quis imperdiet aliquam, lectus odio consequat elit, at ullamcorper felis urna vel leo. Ut vitae risus cursus, tempor risus sed, elementum risus. Vestibulum porta egestas libero et lacinia.";
+    const struct stumpless_entry *result;
+    const char *new_message;
+
+    entry = create_empty_entry();
+    ASSERT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, wide_long_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( long_message, new_message );
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all();
+  }
+
+  TEST( SetMessageWideStrTest, MallocFailureOnMessage ) {
+    void * (*set_malloc_result)(size_t);
+    struct stumpless_entry *entry;
+    const wchar_t *new_message = L"nice and long to make sure it beats the first";
+    const struct stumpless_entry *result;
+
+    entry = create_empty_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 46 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_set_entry_message_str_w( entry, new_message );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all();
+  }
+
+  TEST( SetMessageWideStrTest, NullEntry ) {
+    const struct stumpless_entry *result;
+
+    result = stumpless_set_entry_message_str_w( NULL, L"test-message" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL( result );
+
+    stumpless_free_all();
+  }
+
+  TEST( SetMessageWideStrTest, NullMessage ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+
+    entry = create_empty_entry();
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( entry );
+
+    result = stumpless_set_entry_message_str_w( entry, NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_EQ( entry, result );
+
+    EXPECT_NULL( entry->message );
+    EXPECT_EQ( 0, entry->message_length );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all();
+  }
+
+  TEST( SetMessageWideStrTest, WideMessage ) {
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+    const wchar_t *wide_message= L"message";
+    const char *utf8_message = "message";
+    const char *new_message;
+
+    entry = create_empty_entry();
+    ASSERT_NOT_NULL( entry );
+
+    wprintf(L"wide message: %ls\n", wide_message );
+    result = stumpless_set_entry_message_str_w( entry, wide_message );
+    EXPECT_EQ( entry, result );
+    EXPECT_NO_ERROR;
+
+    new_message = stumpless_get_entry_message( entry );
+    EXPECT_NOT_NULL( new_message );
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ( new_message, utf8_message );
+
+    free( ( void * ) new_message );
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all();
+  }
+
   TEST( SetParam, NullEntry ) {
     struct stumpless_param *param;
     const struct stumpless_entry *result;
@@ -2387,6 +2511,7 @@ namespace {
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
     const char *message = "test-message";
+    const char *param_name = "very-long-name-abcdefghijklmnopqrstuvwxyz";
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -2395,9 +2520,9 @@ namespace {
                                  message );
 
     result = stumpless_add_new_param_to_entry( entry,
-					       "new-element-name",
-					       "very-long-name-abcdefghijklmnopqrstuvwxyz",
-					       "test-value" );
+                                               "new-element-name",
+                                               param_name,
+                                               "test-value" );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
