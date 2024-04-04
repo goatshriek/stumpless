@@ -1025,6 +1025,9 @@ add_custom_target(check
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
+add_function_test(prival
+  SOURCES test/function/prival.cpp
+)
 
 # examples
 add_example(basic

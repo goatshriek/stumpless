@@ -101,6 +101,7 @@
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
 #include <stumpless/priority.h>
+#include <stumpless/prival.h>
 
 #ifdef STUMPLESS_CHAIN_TARGETS_SUPPORTED
 /** @example chain_example.c
