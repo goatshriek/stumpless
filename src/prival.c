@@ -27,22 +27,15 @@
 #include "private/prival.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
-#include "private/validate.h"
 
-static char stumpless_get_prival_string( int prival ) {
-	VALIDATE_ARG_NOT_NULL( prival );
-	
+static char* stumpless_get_prival_string( int prival ) {	
 	const char *severity = stumpless_get_severity_string( get_severity( prival ) );
 	const char *facility = stumpless_get_facility_string( get_facility( prival ) );
 	
 	size_t prival_string_length = ( strlen( severity ) + strlen( facility ) + 3); //+3 for formatting
-	const char *prival_string = alloc_mem( prival_string_length );
+	char *prival_string = alloc_mem( prival_string_length );
 	
 	snprintf(prival_string, prival_string_length + 3, "%s | %s", severity, facility);
 	
-	return prival_string;
+	return *prival_string;
 }
-
-static char *severity_enum_to_string[] = {
-  STUMPLESS_FOREACH_SEVERITY( GENERATE_STRING )
-};

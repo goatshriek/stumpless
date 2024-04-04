@@ -39,4 +39,4 @@
 int
 get_prival_string( int prival );
 
-#endif /* __STUMPLESS_PRIVAL_STRING
+#endif /* __STUMPLESS_PRIVAL_STRING */
