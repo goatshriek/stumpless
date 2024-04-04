@@ -29,7 +29,7 @@
 #include "private/strhelper.h"
 #include "private/memory.h"
 
-const char* stumpless_get_prival_string( int prival ) {	
+char* stumpless_get_prival_string( int prival ) {	
 	const char *severity = stumpless_get_severity_string( get_severity( prival ) );
 	const char *facility = stumpless_get_facility_string( get_facility( prival ) );
 	
