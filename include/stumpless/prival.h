@@ -56,4 +56,4 @@ stumpless_get_prival_string( int prival );
 } /* extern "C" */
 #  endif
 
-#endif /* __STUMPLESS_SEVERITY_H */
+#endif /* __STUMPLESS_PRIVAL_STRING */
