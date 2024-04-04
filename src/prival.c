@@ -38,5 +38,5 @@ const char* stumpless_get_prival_string( int prival ) {
 	
 	snprintf(prival_string, prival_string_length + 3, "%s | %s", severity, facility);
 	
-	return *prival_string;
+	return prival_string;
 }
