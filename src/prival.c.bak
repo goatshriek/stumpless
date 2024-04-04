@@ -18,7 +18,6 @@
 
 #include <stddef.h>
 #include <string.h>
-#include <stdio.h>
 #include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
