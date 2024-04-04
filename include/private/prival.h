@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2022 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,11 @@
  * limitations under the License.
  */
 
-/** @file
- * Function for converting prival from int to string
- */
-
 #ifndef __STUMPLESS_PRIVAL_STRING
 #  define __STUMPLESS_PRIVAL_STRING
 
-#  include <stumpless/config.h>
-
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-#    include <syslog.h>
-#  endif
-
 /**
- * Gets the string representation of the given prival.
- *
- * This is a string literal that should not be modified or freed by the caller.
+ * Function for converting prival from int to string
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
@@ -48,12 +36,7 @@
  *
  * @return The string representation of the given prival.
  */
-STUMPLESS_PUBLIC_FUNCTION
-const char *
-stumpless_get_prival_string( int prival );
+int
+get_prival_string( int prival );
 
-#  ifdef __cplusplus
-} /* extern "C" */
-#  endif
-
-#endif /* __STUMPLESS_SEVERITY_H */
+#endif /* __STUMPLESS_PRIVAL_STRING
