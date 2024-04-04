@@ -233,6 +233,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
   ${PROJECT_SOURCE_DIR}/src/priority.c
+  ${PROJECT_SOURCE_DIR}/src/prival.c
 )
 
 
@@ -698,6 +699,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/priority.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/prival.h
   DESTINATION "include/stumpless"
 )
 
