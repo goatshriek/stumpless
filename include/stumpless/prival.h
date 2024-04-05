@@ -52,8 +52,4 @@ STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_prival_string( int prival );
 
-#  ifdef __cplusplus
-} /* extern "C" */
-#  endif
-
 #endif /* __STUMPLESS_PRIVAL_STRING */
