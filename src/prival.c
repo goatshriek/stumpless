@@ -36,7 +36,7 @@ const char* stumpless_get_prival_string( int prival ) {
 	size_t prival_string_length = ( strlen( severity ) + strlen( facility ) + 3); //+3 for formatting
 	char *prival_string = alloc_mem( prival_string_length );
 	
-	snprintf(prival_string, prival_string_length + 3, "%s | %s", severity, facility);
+	snprintf(prival_string, prival_string_length, "%s | %s", severity, facility);
 	
 	return prival_string;
 }
