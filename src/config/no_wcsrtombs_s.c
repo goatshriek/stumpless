@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 #include <errno.h>
 #include <stddef.h>
+#include <string.h>
 #include <wchar.h>
 #include "private/config/locale/wrapper.h"
 #include "private/config/no_wcsrtombs_s.h"
@@ -32,6 +33,7 @@ no_wcsrtombs_s_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   mbstate_t state;
   size_t conversion_result;
 
+  memset( &state, 0, sizeof( state ) );
   conversion_result = wcsrtombs( NULL, &str, 0, &state );
   if( conversion_result == -1 ) {
     raise_wide_conversion_failure( errno, L10N_ERRNO_ERROR_CODE_TYPE );

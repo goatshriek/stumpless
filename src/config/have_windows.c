@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,14 +91,13 @@ windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length ) {
 }
 
 char *
-windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
+windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ){
   int needed_size;
   LPSTR str_copy;
   int conversion_result;
 
   needed_size = WideCharToMultiByte( CP_UTF8,
-                                     WC_ERR_INVALID_CHARS |
-                                       WC_NO_BEST_FIT_CHARS,
+                                     WC_ERR_INVALID_CHARS,
                                      str,
                                      -1,
                                      NULL,
@@ -106,9 +105,9 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
                                      NULL,
                                      NULL );
 
-  if( needed_size == 0 ) {
+  if( needed_size == 0 ){
     raise_wide_conversion_failure(
-      GetLastError(  ),
+      GetLastError(),
       L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
     );
     return NULL;
@@ -120,8 +119,7 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
   }
 
   conversion_result = WideCharToMultiByte( CP_UTF8,
-                                           WC_ERR_INVALID_CHARS |
-                                             WC_NO_BEST_FIT_CHARS,
+                                           WC_ERR_INVALID_CHARS,
                                            str,
                                            -1,
                                            str_copy,
@@ -129,10 +127,10 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ) {
                                            NULL,
                                            NULL );
 
-  if( conversion_result == 0 ) {
+  if( conversion_result == 0 ){
     free_mem( str_copy );
     raise_wide_conversion_failure(
-      GetLastError(  ),
+      GetLastError(),
       L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE
     );
     return NULL;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@
 #include "private/config/wrapper/getpid.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/config/wrapper/wel.h"
+#include "private/config/wrapper/wstring.h"
 #include "private/deprecate.h"
 #include "private/element.h"
 #include "private/entry.h"
@@ -868,6 +869,39 @@ stumpless_set_entry_message_str( struct stumpless_entry *entry,
 
   free_mem( old_message );
   clear_error(  );
+
+  return entry;
+}
+
+struct stumpless_entry *
+stumpless_set_entry_message_str_w( struct stumpless_entry *entry,
+                                   const wchar_t *message ){
+  char *new_message;
+  int new_message_size;
+  const char *old_message;
+
+  VALIDATE_ARG_NOT_NULL( entry );
+
+  if( message ){
+    new_message = config_copy_wstring_to_cstring( message, &new_message_size );
+    if( !new_message ){
+      return NULL;
+    }
+    new_message_size--; // leave off the NULL character
+
+  } else {
+    new_message = NULL;
+    new_message_size = 0;
+  }
+
+  lock_entry( entry );
+  old_message = entry->message;
+  entry->message = new_message;
+  entry->message_length = new_message_size;
+  unlock_entry( entry );
+
+  free_mem( old_message );
+  clear_error();
 
   return entry;
 }
