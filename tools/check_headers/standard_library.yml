@@ -212,7 +212,6 @@
 "WC_NO_BEST_FIT_CHARS":
   - "windows.h"
   - "private/windows_wrapper.h"
-"wchar_t": "stddef.h"
 "wcslen": "wchar.h"
 "wcsrtombs": "wchar.h"
 "wcstombs": "stdlib.h"

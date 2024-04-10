@@ -243,6 +243,6 @@ EXPORTS
   stumpless_close_chain_only                    @226
   stumpless_get_chain_length                    @227
   stumpless_new_chain                           @228
-
-; added in prival branch
-  stumpless_get_prival_string					@229
+  stumpless_set_entry_message_str_w             @229
+  
+  stumpless_get_prival_string                   @230

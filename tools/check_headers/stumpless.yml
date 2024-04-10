@@ -358,6 +358,7 @@
 "stumpless_set_entry_msgid": "stumpless/entry.h"
 "stumpless_set_entry_message": "stumpless/entry.h"
 "stumpless_set_entry_message_str": "stumpless/entry.h"
+"stumpless_set_entry_message_str_w" : "stumpless/entry.h"
 "stumpless_set_entry_priority": "stumpless/entry.h"
 "stumpless_set_entry_prival": "stumpless/entry.h"
 "stumpless_set_entry_severity": "stumpless/entry.h"
