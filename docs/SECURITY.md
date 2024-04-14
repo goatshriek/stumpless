@@ -22,9 +22,9 @@ version.
 
 ## Reporting a Vulnerability
 If you discover a problem with Stumpless, please report it immediately to the
-project owner, [Joel Anderson](mailto:joelanderson333@gmail.com). The issue
-will be investigated as soon as possible and you will receive a response within
-14 days of the message.
+project owner, [Joel Anderson](mailto:joel@goatshriek.com). The issue will be
+investigated as soon as possible and you will receive a response within 14 days
+of the message.
 
 A fix will be deployed to all affected supported versions with a high priority.
 However, there is currently no guaranteed timeline for the patch as the project
