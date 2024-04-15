@@ -17,10 +17,8 @@
  */
 
 #include <gtest/gtest.h>
-#include <stumpless.h>
-
 extern "C" {
-#include <stumpless/prival.h>
+#include <stumpless.h>
 }
 
 namespace {
