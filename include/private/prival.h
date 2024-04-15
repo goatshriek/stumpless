@@ -37,6 +37,6 @@
  * @return The string representation of the given prival.
  */
 int
-get_prival_string( int prival );
+stumpless_get_prival_string( int prival );
 
 #endif /* __STUMPLESS_PRIVAL_STRING */
