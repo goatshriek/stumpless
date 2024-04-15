@@ -28,6 +28,6 @@ namespace {
 	const char *result;
 
 	result = stumpless_get_prival_string( 11 ); \
-	EXPECT_STREQ( result, "3 | 8" );
+	EXPECT_STREQ( result, "STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER" );
   }
 } 
