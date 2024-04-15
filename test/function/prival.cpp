@@ -19,6 +19,10 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 
+extern "C" {
+#include <stumpless/prival.h>
+}
+
 namespace {
 
 	class PrivalTest : public::testing::Test {
