@@ -17,9 +17,7 @@
  */
 
 #include <gtest/gtest.h>
-extern "C" {
 #include <stumpless.h>
-}
 
 namespace {
 
