@@ -1018,6 +1018,10 @@ add_function_test(priority
   SOURCES ${PROJECT_SOURCE_DIR}/test/function/priority.cpp
 )
 
+add_function_test(prival
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/prival.cpp
+)
+
 add_custom_target(build-test
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
@@ -1025,10 +1029,6 @@ add_custom_target(build-test
 add_custom_target(check
   COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
-)
-
-add_function_test(prival
-  SOURCES test/function/prival.cpp
 )
 
 # examples
