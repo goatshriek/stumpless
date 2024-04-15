@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 
-#include <cstdlib>
+
+extern "C" {
 #include <gtest/gtest.h>
 #include <stumpless.h>
+}
 
 namespace {
 
