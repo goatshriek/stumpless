@@ -1019,7 +1019,7 @@ add_function_test(priority
 )
 
 add_function_test(prival
-  SOURCES ${PROJECT_SOURCE_DIR}/test/function/prival.cpp
+  SOURCES test/function/prival.cpp
 )
 
 add_custom_target(build-test
