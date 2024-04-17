@@ -25,10 +25,6 @@
 
 #  include <stumpless/config.h>
 
-#  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
-#    include <syslog.h>
-#  endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
