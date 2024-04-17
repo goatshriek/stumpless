@@ -1031,6 +1031,7 @@ add_custom_target(check
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
+
 # examples
 add_example(basic
   ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
