@@ -41,12 +41,13 @@ extern "C" {
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
  *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of memory management functions.
  *
  * @since release v2.2.0
  *
