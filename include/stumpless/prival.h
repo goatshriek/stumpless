@@ -35,7 +35,8 @@ extern "C" {
 /**
  * Gets the string representation of the given prival.
  *
- * This is a string that must be freed by the caller
+ * The string returned must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe.
