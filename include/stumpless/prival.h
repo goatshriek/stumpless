@@ -48,6 +48,8 @@ extern "C" {
  * This function is safe to call from threads that may be asynchronously
  * cancelled.
  *
+ * @since release v2.2.0
+ *
  * @param prival int to get the string from.
  *
  * @return The string representation of the given prival.
