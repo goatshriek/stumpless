@@ -20,8 +20,8 @@
  * Function for converting prival from int to string
  */
 
-#ifndef __STUMPLESS_PRIVAL_STRING
-#  define __STUMPLESS_PRIVAL_STRING
+#ifndef __STUMPLESS_PRIVAL_H
+#  define __STUMPLESS_PRIVAL_H
 
 #  include <stumpless/config.h>
 
@@ -59,4 +59,4 @@ stumpless_get_prival_string( int prival );
 } /* extern "C" */
 #endif
 
-#endif /* __STUMPLESS_PRIVAL_STRING */
+#endif /* __STUMPLESS_PRIVAL_H */
