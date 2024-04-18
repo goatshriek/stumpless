@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <stddef.h>
 #include <string.h>
 #include <stdio.h>
 #include <stumpless/prival.h>
@@ -24,7 +23,6 @@
 #include <stumpless/facility.h>
 #include "private/severity.h"
 #include "private/facility.h"
-#include "private/strhelper.h"
 #include "private/memory.h"
 
 const char* stumpless_get_prival_string( int prival ) {	
