@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Configure
         run: |
+          rm -rf l10n # to avoid codecov upload failures on non-ascii filenames
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
       - name: Build
         run: |
@@ -38,7 +39,6 @@ jobs:
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
         with:
-          exclude: l10n
           fail_ci_if_error: true
           gcov: true
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -154,6 +154,7 @@ jobs:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Configure
         run: |
+          rm -rf l10n # to avoid codecov upload failures on non-ascii filenames
           cmake -DCOVERAGE=ON -DENABLE_CHAIN_TARGETS=OFF -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
       - name: Build
         run: |
