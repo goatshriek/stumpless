@@ -41,11 +41,11 @@ jobs:
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
-          gcov: true
+          plugin: gcov
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -96,11 +96,11 @@ jobs:
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
-          gcov: true
+          plugin: gcov
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -291,11 +291,11 @@ jobs:
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
-          gcov: true
+          plugin: gcov
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Run Examples
         run: |
           make examples
