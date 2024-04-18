@@ -46,6 +46,7 @@ jobs:
           fail_ci_if_error: true
           plugin: gcov
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -101,6 +102,7 @@ jobs:
           fail_ci_if_error: true
           plugin: gcov
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -296,6 +298,7 @@ jobs:
           fail_ci_if_error: true
           plugin: gcov
           token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
       - name: Run Examples
         run: |
           make examples
