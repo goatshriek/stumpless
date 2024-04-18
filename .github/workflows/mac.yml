@@ -38,6 +38,7 @@ jobs:
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
           plugin: gcov
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -165,6 +166,8 @@ jobs:
       - name: Codecov Upload
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
         with:
+          directory: CMakeFiles/stumpless.dir
+          disable_file_fixes: true
           fail_ci_if_error: true
           plugin: gcov
           token: ${{ secrets.CODECOV_TOKEN }}
