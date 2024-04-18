@@ -22,10 +22,8 @@
 #include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
-#include "private/prival.h"
 #include "private/severity.h"
 #include "private/facility.h"
-#include "private/prival.h"
 #include "private/strhelper.h"
 #include "private/memory.h"
 
