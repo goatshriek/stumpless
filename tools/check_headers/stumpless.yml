@@ -639,3 +639,4 @@
 "STUMPLESS_FOREACH_TARGET_TYPE" : "stumpless/target.h"
 "STUMPLESS_FOREACH_SEVERITY" : "stumpless/severity.h"
 "stumpless_prival_from_string" : "stumpless/priority.h"
+"stumpless_get_prival_string" : "stumpless/prival.h"

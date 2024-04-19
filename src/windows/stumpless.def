@@ -244,3 +244,5 @@ EXPORTS
   stumpless_get_chain_length                    @227
   stumpless_new_chain                           @228
   stumpless_set_entry_message_str_w             @229
+  
+  stumpless_get_prival_string                   @230

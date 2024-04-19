@@ -233,6 +233,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
   ${PROJECT_SOURCE_DIR}/src/priority.c
+  ${PROJECT_SOURCE_DIR}/src/prival.c
 )
 
 
@@ -698,6 +699,7 @@ install(FILES
   ${PROJECT_SOURCE_DIR}/include/stumpless/target.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/version.h
   ${PROJECT_SOURCE_DIR}/include/stumpless/priority.h
+  ${PROJECT_SOURCE_DIR}/include/stumpless/prival.h
   DESTINATION "include/stumpless"
 )
 
@@ -1014,6 +1016,10 @@ add_function_test(version
 
 add_function_test(priority
   SOURCES ${PROJECT_SOURCE_DIR}/test/function/priority.cpp
+)
+
+add_function_test(prival
+  SOURCES ${PROJECT_SOURCE_DIR}/test/function/prival.cpp
 )
 
 add_custom_target(build-test
