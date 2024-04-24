@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,16 @@
 
 namespace {
 
-	class PrivalTest : public::testing::Test {
-	};
+  class PrivalTest : public::testing::Test {};
 
-	TEST(GetPrivalString, ValidPrival) {
-	const char *result;
+  TEST(GetPrivalString, ValidPrival) {
+    int prival;
+    const char *result;
 
-	result = stumpless_get_prival_string( 11 ); \
-	EXPECT_STREQ( result, "STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER" );
+    prival = STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER;
+    result = stumpless_get_prival_string( prival );
+    EXPECT_STREQ( result, "STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER" );
+
+    free( ( void * ) result );
   }
-} 
+}

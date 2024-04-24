@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,15 @@
  */
 
 /** @file
- * Function for converting prival from int to string
+ * Functions for working with privals.
+ *
+ * @since release v2.2.0
  */
 
 #ifndef __STUMPLESS_PRIVAL_H
-#  define __STUMPLESS_PRIVAL_H
+#define __STUMPLESS_PRIVAL_H
 
-#  include <stumpless/config.h>
+#include <stumpless/config.h>
 
 #ifdef __cplusplus
 extern "C" {

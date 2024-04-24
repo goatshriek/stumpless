@@ -25,14 +25,21 @@
 #include "private/facility.h"
 #include "private/memory.h"
 
-const char* stumpless_get_prival_string( int prival ) {	
-	const char *severity = stumpless_get_severity_string( get_severity( prival ) );
-	const char *facility = stumpless_get_facility_string( get_facility( prival ) );
-	
-	size_t prival_string_length = ( strlen( severity ) + strlen( facility ) + 4); //+3 for formatting, +1 for termination
-	char *prival_string = alloc_mem( prival_string_length );
-	
-	snprintf(prival_string, prival_string_length, "%s | %s", severity, facility);
-	
-	return prival_string;
+const char *
+stumpless_get_prival_string( int prival ) {
+  const char *severity;
+  const char *facility;
+  size_t prival_string_size;
+  char *prival_string;
+
+  severity = stumpless_get_severity_string( get_severity( prival ) );
+  facility = stumpless_get_facility_string( get_facility( prival ) );
+
+  // +3 for formatting, +1 for termination
+  prival_string_size = ( strlen( severity ) + strlen( facility ) + 4);
+  prival_string = alloc_mem( prival_string_size );
+
+  snprintf( prival_string, prival_string_size, "%s | %s", severity, facility );
+
+  return prival_string;
 }
