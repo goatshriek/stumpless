@@ -56,7 +56,7 @@ in your own additions.
    avoid NULL checks and other checks that would be redundant because they have
    already been performed elsewhere. Of course, the caller needs to make sure
    that they do any necessary checks before calling these.
- * **`_w` suffix** Functions that end with `_w` have arguments that are wide
+ * **`_w` suffix** Functions with a `_w` at the end have arguments that are wide
    character strings in UTF-16 encoding, instead of the UTF-8 multibyte strings
    that are standard for arguments. These functions are provided to ease use in
    Windows environments, where wide strings may be the standard instead of
@@ -64,6 +64,12 @@ in your own additions.
    Windows functions to delineate ASCII vs. wide string arguments. Keep in mind
    that this is different though; stumpless uses multibyte strings otherwise,
    not just ASCII!
+ * **`_str` suffix** For functions that support format specifiers, there may
+   also be a version with `_str` added to the end. These functions are the same
+   as the format specifier version, but don't support format specifiers and
+   instead take a single string. `_str` functions require less parsing and have
+   fewer security concerns, and so should be used whenever possible over the
+   format specifier version.
  * **`new` constructors and `destroy` destructors** Constructors with "new" in
    the name, such as `stumpless_new_entry`, allocate the memory for a new
    structure and return it after initializing it. Structures created this way

@@ -634,25 +634,21 @@ namespace {
     struct stumpless_param *param;
     
     param = stumpless_new_param_from_string( NULL );
-
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
-    stumpless_destroy_param( param );
-
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
-  TEST( ParamFromStringTest, InvalidName ) {
+  TEST( ParamFromStringTest, InvalidFormat ) {
     std::vector<const char *> invalid_names = {
       "test-param-na=me=\"test-param-value\"",
       "test-param-name\"test-param-value\"",
       "test-param]-name=\"test-value\"",
       "test-p\"aram-name=\"test-value\"",
-      "!test-param-name=\"test-value\"",
-      "test-param,name=\"test-value\"",
-      "test-param-name%%=\"test-value\"",
       "test-param-name==\"test-value\"",
-      "test-param-name=\"test-value"
+      "test-param-name=\"test-value",
+      "test-param-name=\""
     };
     struct stumpless_param *param;
 
@@ -662,6 +658,6 @@ namespace {
       EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
     }
 
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,71 +144,79 @@ stumpless_new_param( const char *name, const char *value ) {
 
 struct stumpless_param *
 stumpless_new_param_from_string( const char *string ) {
-  int i;
-  size_t name_len = 0;
-  size_t name_start = 0;
-  size_t value_len = 0;
-  size_t value_start = 0;
-  char *name;
-  char *value;
-  struct stumpless_param *result;
+  struct stumpless_param *param;
+  size_t i;
+  const char *value;
+  size_t value_len;
+  struct stumpless_param *load_result;
 
   VALIDATE_ARG_NOT_NULL( string );
 
-  /* Check that the characters in 'name' are allowed. */
-  for (i = 0; string[i] != '='; i++) {
-    if (!((string[i] >= 'a' && string[i] <= 'z') ||
-	  (string[i] >= 'A' && string[i] <= 'Z') ||
-	  (string[i] >= '0' && string[i] <= '9') ||
-	  (string[i] == '-') ||
-	  (string[i] == '.') ||
-	  (string[i] == '_'))){
-      raise_invalid_param(  );
-      return NULL;
+  param = alloc_mem( sizeof( *param ) );
+  if( !param ){
+    return NULL;
+  }
+
+  // this setup should be consolidated once the load param function
+  // is able to accept string references instead of only NULL-terminated strings
+  config_assign_cached_mutex( param->mutex );
+  if( !config_check_mutex_valid( param->mutex ) ) {
+    goto fail;
+  }
+  config_init_journald_param( param );
+
+  // validate and load the param name
+  for( i = 0; string[i] != '=' && i < STUMPLESS_MAX_PARAM_NAME_LENGTH; i++ ){
+    if( i >= STUMPLESS_MAX_PARAM_NAME_LENGTH ){
+      raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
+                              0,
+                              NULL );
+      goto fail;
     }
+
+    if( string[i] < 33 ||
+        string[i] > 126 ||
+        string[i] == ']' ||
+        string[i] == '"' ){
+      raise_invalid_param();
+      goto fail;
+    }
+
+    param->name[i] = string[i];
   }
+  param->name_length = i;
   
-  /* Check if the character after the '=' is '"', else raise an error. */
-  if (string[i + 1] != '"'){
-    raise_invalid_param(  );
+  // validate the character after the '=' is '"'
+  if( string[i + 1] != '"' ){
+    raise_invalid_param();
     return NULL;
   }
 
-  name_len = i;
-  /* We add 1 to the length for the '\0' character. */
-  name = alloc_mem( name_len + 1 );
-  /* We make this addition to skip '=' and '"' characters. */
-  i += 2;
-  value_start = i;
+  value = string + i + 2;
+  value_len = strlen( value );
 
-  /* Iterate to the end of the 'value' string. */
-  //for (; string[i] != '\0'; i++){}
-  while (string[i] != '\0'){
-    i++;
+  // validate the final character is '"'
+  if( value_len == 0 || value[value_len-1] != '"' ){
+    raise_invalid_param();
+    goto fail;
   }
-  /* If the final character isn't '"' we raise an error. */
-  if (string[i - 1] != '"') {
-    raise_invalid_param(  );
-    /* We need to free name here to avoid memory leaks */
-    free_mem( name );
-    return NULL;
-  } else {
-    /* We make this substraction for the 2 '"' characters and for the '=' character. */
-    value_len = i - name_len - 3;
+
+  // we're going to replace the ending '"' with a null character
+  param->value = alloc_mem( value_len );
+  if( !param->value ){
+    goto fail;
   }
-  
-  /* We add 1 to the length for the '\0' character. */
-  value = alloc_mem( value_len + 1 );
-  
-  memcpy(name, string + name_start, name_len);
-  name[name_len] = '\0';
-  memcpy(value, string + value_start, value_len);
-  value[value_len] = '\0';
-  result = stumpless_new_param(name, value);
-  free_mem( name );
-  free_mem( value );
-  
-  return result;
+
+  memcpy( param->value, value, value_len - 1 );
+  param->value[value_len] = '\0';
+  param->value_length = value_len - 1;
+
+  clear_error();
+  return param;
+
+fail:
+  free_mem( param );
+  return NULL;
 }
 
 struct stumpless_param *
