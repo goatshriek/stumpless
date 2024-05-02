@@ -148,7 +148,6 @@ stumpless_new_param_from_string( const char *string ) {
   size_t i;
   const char *value;
   size_t value_len;
-  struct stumpless_param *load_result;
 
   VALIDATE_ARG_NOT_NULL( string );
 
