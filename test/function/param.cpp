@@ -678,7 +678,6 @@ namespace {
       "p\"aram-name=\"param-value\"",
       "param-name==\"param-value\"",
       "param-name=\"param-value",
-      "param-name-that-is-just-entirely-too-long=\"param-value\"",
       "param-name=\""
     };
     struct stumpless_param *param;
@@ -688,6 +687,17 @@ namespace {
       EXPECT_NULL( param );
       EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
     }
+
+    stumpless_free_all();
+  }
+
+  TEST( ParamFromStringTest, NameTooLong ){
+    const char *str = "param-name-that-is-entirely-too-long=\"param-value\"";
+    struct stumpless_param *param;
+
+    param = stumpless_new_param_from_string( str );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
     stumpless_free_all();
   }

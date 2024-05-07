@@ -166,7 +166,7 @@ stumpless_new_param_from_string( const char *string ) {
   config_init_journald_param( param );
 
   // validate and load the param name
-  for( i = 0; string[i] != '=' && i < STUMPLESS_MAX_PARAM_NAME_LENGTH; i++ ){
+  for( i = 0; string[i] != '='; i++ ){
     if( i >= STUMPLESS_MAX_PARAM_NAME_LENGTH ){
       raise_argument_too_big( L10N_STRING_TOO_LONG_ERROR_MESSAGE,
                               0,
