@@ -188,7 +188,7 @@ stumpless_new_param_from_string( const char *string ) {
   // validate the character after the '=' is '"'
   if( string[i + 1] != '"' ){
     raise_invalid_param();
-    return NULL;
+    goto fail;
   }
 
   value = string + i + 2;
@@ -207,7 +207,7 @@ stumpless_new_param_from_string( const char *string ) {
   }
 
   memcpy( param->value, value, value_len - 1 );
-  param->value[value_len] = '\0';
+  param->value[value_len-1] = '\0';
   param->value_length = value_len - 1;
 
   clear_error();
