@@ -606,7 +606,37 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( ParamFromStringTest, New ) {
+  TEST( ParamFromStringTest, MallocFail ){
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_param *param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    param = stumpless_new_param_from_string( "param-name=\"param-value\"" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( ParamFromStringTest, MallocFailOnValue ){
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_param *param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 12 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    param = stumpless_new_param_from_string( "param-name=\"param-value\"" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( ParamFromStringTest, New ){
     struct stumpless_param *param;
     const char *param_string = "test-param-name=\"test-param-value\"";
 
@@ -627,10 +657,10 @@ namespace {
 
     stumpless_destroy_param( param );
 
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
-  TEST( ParamFromStringTest, NullName ) {
+  TEST( ParamFromStringTest, NullName ){
     struct stumpless_param *param;
     
     param = stumpless_new_param_from_string( NULL );
@@ -640,15 +670,16 @@ namespace {
     stumpless_free_all();
   }
 
-  TEST( ParamFromStringTest, InvalidFormat ) {
+  TEST( ParamFromStringTest, InvalidFormat ){
     std::vector<const char *> invalid_names = {
-      "test-param-na=me=\"test-param-value\"",
-      "test-param-name\"test-param-value\"",
-      "test-param]-name=\"test-value\"",
-      "test-p\"aram-name=\"test-value\"",
-      "test-param-name==\"test-value\"",
-      "test-param-name=\"test-value",
-      "test-param-name=\""
+      "param-na=me=\"param-value\"",
+      "param-name\"param-value\"",
+      "param]-name=\"param-value\"",
+      "p\"aram-name=\"param-value\"",
+      "param-name==\"param-value\"",
+      "param-name=\"param-value",
+      "param-name-that-is-just-entirely-too-long=\"param-value\"",
+      "param-name=\""
     };
     struct stumpless_param *param;
 
