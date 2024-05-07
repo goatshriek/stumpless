@@ -29,7 +29,7 @@
 #include "private/config.h"
 #include "private/strhelper.h"
 #include "private/error.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 
 int
 stumpless_prival_from_string( const char *string ) {

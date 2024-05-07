@@ -19,7 +19,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "private/config/have_windows.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/error.h"
 #include "private/inthelper.h"
 #include "private/memory.h"

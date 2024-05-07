@@ -45,6 +45,10 @@ or want to make a suggestion, please submit an issue on the project's
    required version of CMake will change in this release to a minimum of 3.11.
    The requirement minimum version may be even higher after the actual
    implementation of this change.
+ * [ADD] **Runtime localization support.**
+   The ability to choose the language used at runtime could be especially useful
+   in distributed builds, where the same binary may be used in very different
+   locations, and doing a specific build would be inconvenient.
 
 
 ## Unallocated to a release

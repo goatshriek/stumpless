@@ -20,7 +20,7 @@
 #include <stddef.h>
 #include <unistd.h>
 #include "private/config/have_unistd_gethostname.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/error.h"
 
 int

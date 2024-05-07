@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@
 #  include <stumpless/param.h>
 #  include <stumpless/target.h>
 #  include "private/config.h"
-#  include "private/config/locale/wrapper.h"
+#  include "private/config/wrapper/locale.h"
 #  include "private/config/wrapper/thread_safety.h"
 #  include "private/error.h"
 

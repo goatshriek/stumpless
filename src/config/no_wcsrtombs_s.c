@@ -20,7 +20,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <wchar.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/no_wcsrtombs_s.h"
 #include "private/error.h"
 #include "private/inthelper.h"

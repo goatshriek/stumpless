@@ -21,7 +21,7 @@
 #include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/sqlite3.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/error.h"
 
 bool

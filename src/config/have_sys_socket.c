@@ -24,7 +24,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "private/config.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/int_connect.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
