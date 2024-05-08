@@ -606,7 +606,37 @@ namespace {
     stumpless_free_all(  );
   }
 
-  TEST( ParamFromStringTest, New ) {
+  TEST( ParamFromStringTest, MallocFail ){
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_param *param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    param = stumpless_new_param_from_string( "param-name=\"param-value\"" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( ParamFromStringTest, MallocFailOnValue ){
+    void * ( *set_malloc_result )( size_t );
+    const struct stumpless_param *param;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 12 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    param = stumpless_new_param_from_string( "param-name=\"param-value\"" );
+    EXPECT_NULL( param );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( ParamFromStringTest, New ){
     struct stumpless_param *param;
     const char *param_string = "test-param-name=\"test-param-value\"";
 
@@ -627,66 +657,48 @@ namespace {
 
     stumpless_destroy_param( param );
 
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
-  TEST( ParamFromStringTest, NullName ) {
+  TEST( ParamFromStringTest, NullName ){
     struct stumpless_param *param;
     
     param = stumpless_new_param_from_string( NULL );
-
+    EXPECT_NULL( param );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
-    stumpless_destroy_param( param );
-
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
-  TEST( ParamFromStringTest, InvalidName ) {
+  TEST( ParamFromStringTest, InvalidFormat ){
+    std::vector<const char *> invalid_names = {
+      "param-na=me=\"param-value\"",
+      "param-name\"param-value\"",
+      "param]-name=\"param-value\"",
+      "p\"aram-name=\"param-value\"",
+      "param-name==\"param-value\"",
+      "param-name=\"param-value",
+      "param-name=\""
+    };
     struct stumpless_param *param;
-    
-    param = stumpless_new_param_from_string( "test-param-na=me=\"test-param-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
-    
-    param = stumpless_new_param_from_string( "test-param-name\"test-param-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
 
-    param = stumpless_new_param_from_string( "test-param]-name=\"test-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+    for( auto it = begin( invalid_names ); it != end( invalid_names ); ++it ){
+      param = stumpless_new_param_from_string( *it );
+      EXPECT_NULL( param );
+      EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+    }
 
-    param = stumpless_new_param_from_string( "test-p\"aram-name=\"test-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+    stumpless_free_all();
+  }
 
-    param = stumpless_new_param_from_string( "!test-param-name=\"test-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  TEST( ParamFromStringTest, NameTooLong ){
+    const char *str = "param-name-that-is-entirely-too-long=\"param-value\"";
+    struct stumpless_param *param;
 
-    param = stumpless_new_param_from_string( "test-param,name=\"test-value\"" );
+    param = stumpless_new_param_from_string( str );
     EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_BIG );
 
-    param = stumpless_new_param_from_string( "test-param-name%%=\"test-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
-
-    param = stumpless_new_param_from_string( "test-param-name==\"test-value\"" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
-        
-    param = stumpless_new_param_from_string( "test-param-name=\"test-value" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
-
-    param = stumpless_new_param_from_string( "" );
-    EXPECT_NULL( param );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
-
-    stumpless_destroy_param( param );
-
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 }

@@ -24,7 +24,7 @@
 #include <stumpless/target.h>
 #include <stumpless/target/wel.h>
 #include "private/config/have_windows.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wel_supported.h"
 #include "private/entry.h"
 #include "private/error.h"

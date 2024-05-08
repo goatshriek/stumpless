@@ -19,7 +19,7 @@
 #include <stddef.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/error.h"
 
 void

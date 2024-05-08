@@ -37,7 +37,7 @@
 #include <stumpless/target/function.h>
 #include <stumpless/target/stream.h>
 #include "private/config.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/chain.h"
 #include "private/config/wrapper/open_default_target.h"
 #include "private/config/wrapper/wel.h"

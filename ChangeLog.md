@@ -15,6 +15,16 @@ fixes, check out the
  - `single-file` target for rollup `.c` and `.h` files.
  - SQLite3 logging targets.
  - Target chains.
+ - Localizations for:
+    * Albanian (sq-AL :albania:)
+    * Danish (da-DK :denmark:)
+    * Hebrew (he-IL :israel:)
+    * Hungarian (hu-HU :hungary:)
+    * Japanese (ja-JP :jp:)
+    * Sinhala (si-LK :sri_lanka_:)
+    * Swahili (sw-KE :kenya:)
+    * Teluga (te-IN :india:)
+    * Turkish (tr-TR :tr:)
 
 ### Fixed
  - Deadlock potential in `stumpless_set_entry_hostname` and

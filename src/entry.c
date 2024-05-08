@@ -27,7 +27,7 @@
 #include <stumpless/severity.h>
 #include "private/cache.h"
 #include "private/config.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/format_string.h"
 #include "private/config/wrapper/gethostname.h"
 #include "private/config/wrapper/getpid.h"

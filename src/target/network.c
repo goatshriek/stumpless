@@ -21,7 +21,7 @@
 #include <string.h>
 #include <stumpless/target.h>
 #include <stumpless/target/network.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/network_supported.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"

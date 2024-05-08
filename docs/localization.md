@@ -19,7 +19,7 @@ be accepted.
 Stumpless implements a simple framework to support different languages for
 human-readable output, such as error messages. This implementation is based on
 the use of header files with definitions for the strings based on a specific
-locale. A simple wrapper header, `private/config/locale/wrapper.h`, can then
+locale. A simple wrapper header, `private/config/wrapper/locale.h`, can then
 be included by source files. This wrapper header chooses the correct locale
 header based on the build configuration.
 
@@ -102,7 +102,7 @@ header is a valid IETF Language Tag in all lowercase letters.
 After adding the header itself, you will need to tie it in to the build system
 by updating the `tools/cmake/l10n.cmake` file, the `include/private/config.h.in`
 header template, and the locale wrapper
-`include/private/config/locale/wrapper.h`. In the CMake script, add an `elseif`
+`include/private/config/wrapper/locale.h`. In the CMake script, add an `elseif`
 block to the chain of conditionals responsible for determining the locale
 following the pattern of the others that are already there. Next, in the private
 config header template, add a definition for the locale symbol for the new

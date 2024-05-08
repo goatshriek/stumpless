@@ -23,7 +23,7 @@
 #include <stumpless/param.h>
 #include "private/error.h"
 #include "private/validate.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 
 /**
  * Validates that a provide string is less than or equal to the maximum length

@@ -33,7 +33,7 @@
 #include <stumpless/target/wel.h>
 #include <wchar.h>
 #include "private/config/have_windows.h"
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wel_supported.h"
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/thread_safety.h"

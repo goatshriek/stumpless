@@ -23,7 +23,7 @@
 #include <sys/socket.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/socket.h"
 #include "private/error.h"
 #include "private/memory.h"

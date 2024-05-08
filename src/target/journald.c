@@ -28,7 +28,7 @@
 #include <stumpless/target/journald.h>
 #include <sys/uio.h>
 #include <systemd/sd-journal.h>
-#include "private/config/locale/wrapper.h"
+#include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/getpid.h"
 #include "private/config/wrapper/get_now.h"
 #include "private/config/wrapper/thread_safety.h"

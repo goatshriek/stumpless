@@ -98,7 +98,7 @@ ARGV.each do |source_glob|
         next
       end
 
-      if skipping || line.match?(/\s*\/\/.*/)
+      if skipping || line.match?(/^\s*\/\/.*/)
         # skip if in skipping mode or only a single-line comment
         next
       end

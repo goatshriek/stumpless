@@ -32,6 +32,27 @@ or want to make a suggestion, please submit an issue on the project's
  * [CHANGE] **Rename `STUMPLESS_DEFAULT_TRANSPORT_PORT`**
    This symbol will be renamed so that it is clear that it refers to a string
    literal, likely by adding a `_STR` suffix.
+ * [CHANGE] **`const` usage will be reviewed**
+   Some functions currently have `const` specified for parameters where this is
+   not strictly true. This will be reviewed and removed throughout the code,
+   for both public and private functions.
+ * [CHANGE] **Target names will be optional and not part of construction.**
+   This will remove unnecessary parameters when names are not needed, and
+   separate names from functional needs like filenames. A way to retrieve
+   targets by name will be included in this change as well.
+ * [CHANGE] **CMake version requirement increase.**
+   In order to clean up the CMake scripts and avoid deprecation warnings, the
+   required version of CMake will change in this release to a minimum of 3.11.
+   The requirement minimum version may be even higher after the actual
+   implementation of this change.
+ * [ADD] **Runtime localization support.**
+   The ability to choose the language used at runtime could be especially useful
+   in distributed builds, where the same binary may be used in very different
+   locations, and doing a specific build would be inconvenient.
+ * [ADD] **`mark` struct for specific instances of an entry.**
+   This will allow for more efficient use and passing of formatted fields, and
+   also allow for a single timestamp when sending an entry through a chain of
+   targets.
 
 
 ## Unallocated to a release
@@ -40,7 +61,8 @@ or want to make a suggestion, please submit an issue on the project's
  * [ADD] **TCL language bindings**
  * [ADD] **Java language bindings**
  * [ADD] **Powershell language bindings**
- * [ADD] **Perl language bindings**
+ * [ADD] **Perl/Raku language bindings**
+ * [ADD] **Crystal language bindings**
  * [ADD] **AWS/S3 logging target**
  * [ADD] **REST endpoint logging target**
  * [ADD] **Hyperledger/blockchain logging target**
@@ -58,6 +80,7 @@ or want to make a suggestion, please submit an issue on the project's
    capabilities. This will also need to include an ability to retrieve a target
    by name, enforce uniqueness of names, and include other changes that require
    it to be done in a major release.
+
 
 ## What you'll find here and what you wont
 Stumpless is under active development, and has a long list of new features and

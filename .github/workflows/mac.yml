@@ -36,10 +36,12 @@ jobs:
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
-        uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3.1.4
+        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
-          gcov: true
+          plugin: gcov
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Thread Safety Tests
         run: |
           make check-thread-safety
@@ -161,10 +163,12 @@ jobs:
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Codecov Upload
-        uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d # v3.1.4
+        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
         with:
+          disable_file_fixes: true
           fail_ci_if_error: true
-          gcov: true
+          plugin: gcov
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Run Examples
         run: |
           make examples
@@ -176,7 +180,7 @@ jobs:
     runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-      - uses: ruby/setup-ruby@5cfe23c062c0aac352e765b1b7cc12ea5255ccc4 # v1.156.0
+      - uses: ruby/setup-ruby@70da3bbf44ac06db1b0547ce2acc9380a5270d1e # v1.175.0
         with:
           ruby-version: '3.2'
       - name: Install Packages

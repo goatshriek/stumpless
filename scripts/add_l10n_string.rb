@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-# Copyright 2022-2023 Joel E. Anderson
+# Copyright 2022-2024 Joel E. Anderson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ define_lines = ["#  define #{define_name} \\\n", english_lines].flatten
 
 root_dir = File.expand_path('..', __dir__)
 locale_dir = File.join(root_dir, 'include', 'private', 'config', 'locale')
-Dir.new(locale_dir).reject { |file| %w[wrapper.h . ..].include?(file) }.each do |file|
+Dir.new(locale_dir).each do |file|
   new_file_lines = []
   line_buffer = []
   inserted = false
