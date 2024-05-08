@@ -18,7 +18,7 @@ fi
 
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64 ~x86"
-IUSE="doc examples sockets systemd test threads"
+IUSE="chain-targets doc examples sockets sqlite systemd test threads"
 
 DEPEND="test? ( dev-cpp/gtest )
 	systemd? ( sys-apps/systemd )"
@@ -30,8 +30,10 @@ RESTRICT="!test? ( test )"
 
 src_configure() {
 	local mycmakeargs=(
+		-DENABLE_CHAIN_TARGETS="$(usex chain-targets)"
 		-DENABLE_NETWORK_TARGETS="$(usex sockets)"
 		-DENABLE_JOURNALD_TARGETS="$(usex systemd)"
+		-DENABLE_SQLITE3_TARGETS="$(usex sqlite)"
 		-DENABLE_THREAD_SAFETY="$(usex threads)"
 		-DINSTALL_EXAMPLES="$(usex examples)"
 		-DINSTALL_MANPAGES="$(usex doc)"
