@@ -49,6 +49,10 @@ or want to make a suggestion, please submit an issue on the project's
    The ability to choose the language used at runtime could be especially useful
    in distributed builds, where the same binary may be used in very different
    locations, and doing a specific build would be inconvenient.
+ * [ADD] **`mark` struct for specific instances of an entry.**
+   This will allow for more efficient use and passing of formatted fields, and
+   also allow for a single timestamp when sending an entry through a chain of
+   targets.
 
 
 ## Unallocated to a release
