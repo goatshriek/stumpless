@@ -1273,7 +1273,7 @@ locked_get_element_by_index( const struct stumpless_entry *entry,
 struct stumpless_element *
 locked_get_element_by_name( const struct stumpless_entry *entry,
                             const char *name ) {
-  int i;
+  size_t i;
   struct stumpless_element *element;
   int cmp_result;
 
