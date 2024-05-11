@@ -274,6 +274,8 @@ classes:
           doc: |
             The name of the Param at the given index. If there is no Param, or
             some other error occurs, a StumplessException will be thrown.
+          type:
+            name: "const char *"
         wrapped-function:
           name: "stumpless_get_param_name_by_index"
           includes: "stumpless/element.h"
