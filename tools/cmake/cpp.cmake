@@ -126,7 +126,7 @@ file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
 if(MSVC)
   add_custom_command(
-    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
     COMMAND call wrapture ${WRAPTURE_SPECS}
     COMMAND powershell ${PROJECT_SOURCE_DIR}/scripts/Repair-HeaderDllExports.ps1 -InputFileDir ${CPP_LIB_BUILD_DIR} -OutputFileDir ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
@@ -135,7 +135,7 @@ if(MSVC)
   )
 else()
   add_custom_command(
-    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
     COMMAND wrapture ${WRAPTURE_SPECS}
     COMMAND ruby ${PROJECT_SOURCE_DIR}/scripts/copy_headers.rb ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}

@@ -8,6 +8,12 @@ install(FILES
 )
 
 install(FILES
+  ${MANPAGE_BUILD_DIR}/chain.h.3
+  RENAME stumpless_target_chain.h.3
+  DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
+)
+
+install(FILES
   ${MANPAGE_BUILD_DIR}/config.h.3
   RENAME stumpless_config.h.3
   DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
