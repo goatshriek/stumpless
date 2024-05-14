@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2023 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,16 +25,16 @@
  */
 
 #ifndef __STUMPLESS_LEVEL_WARNING_H
-#  define __STUMPLESS_LEVEL_WARNING_H
+#define __STUMPLESS_LEVEL_WARNING_H
 
-#  include <stumpless/level/mask.h>
+#include <stumpless/level/mask.h>
 
-#  ifndef STUMPLESS_DISABLE_WARNING_LEVEL
-#    include <stumpless/config.h>
-#    include <stumpless/log.h>
-#    include <stumpless/severity.h>
-#    include <stumpless/target.h>
-#  endif
+#ifndef STUMPLESS_DISABLE_WARNING_LEVEL
+#  include <stumpless/config.h>
+#  include <stumpless/log.h>
+#  include <stumpless/severity.h>
+#  include <stumpless/target.h>
+#endif
 
 /**
  * Logs a message to the current target with warning severity.
@@ -61,7 +61,7 @@
  * safer alternative without the risks of format strings, use
  * \c stump_w_str instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -80,13 +80,9 @@
  * cancelled, due to the use of locks in some targets that could be left locked
  * and the potential for memory allocation.
  *
- * @param message The message to log, optionally containing any format
+ * @param ... The message to log, optionally containing any format
  * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
  * form.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
@@ -94,14 +90,14 @@
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w( ... ) ( 0 )
-#  else
-#    define stump_w( ... )                                                     \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w( ... ) ( 0 )
+#else
+#  define stump_w( ... )                                                       \
 stumpless_add_log( stumpless_get_current_target(  ),                           \
                    STUMPLESS_SEVERITY_WARNING | STUMPLESS_DEFAULT_FACILITY,    \
                    __VA_ARGS__ )
-#  endif
+#endif
 
 /**
  * Logs a message to the current target with warning severity.
@@ -122,7 +118,7 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stumplog_w instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -152,14 +148,14 @@ stumpless_add_log( stumpless_get_current_target(  ),                           \
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_str( message ) ( 0 )
-#  else
-#    define stump_w_str( message )                                             \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_str( message ) ( 0 )
+#else
+#  define stump_w_str( message )                                               \
 stumpless_add_log_str( stumpless_get_current_target(  ),                       \
                        STUMPLESS_SEVERITY_WARNING | STUMPLESS_DEFAULT_FACILITY,\
                        ( message ) )
-#  endif
+#endif
 
 /**
  * Adds an entry to a given target with warning severity.
@@ -179,7 +175,7 @@ stumpless_add_log_str( stumpless_get_current_target(  ),                       \
  * intended to allow logging calls to be removed at compile time if the severity
  * is known ahead of time.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -205,12 +201,12 @@ stumpless_add_log_str( stumpless_get_current_target(  ),                       \
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_entry( target, entry ) ( 0 )
-#  else
-#    define stump_w_entry( target, entry )                                     \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_entry( target, entry ) ( 0 )
+#else
+#  define stump_w_entry( target, entry )                                       \
 stumpless_add_entry( ( target ), ( entry ) )
-#  endif
+#endif
 
 /**
  * Adds a message to a given target with the specified priority.
@@ -230,9 +226,9 @@ stumpless_add_entry( ( target ), ( entry ) )
  * appropriate number of variable arguments afterwards. This means that it
  * should not be a user-controlled value under any circumstances. If you need a
  * safer alternative without the risks of format strings, use
- * \c stump_w_log_str instead.
+ * \ref stump_w_log_str instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -256,13 +252,9 @@ stumpless_add_entry( ( target ), ( entry ) )
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
- * @param message The message to log, optionally containing any format
+ * @param ... The message to log, optionally containing any format
  * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
  * form.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
@@ -270,10 +262,10 @@ stumpless_add_entry( ( target ), ( entry ) )
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_log( target, priority, ... ) ( 0 )
-#  else
-#    define stump_w_log( target, priority, ... )                               \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_log( target, priority, ... ) ( 0 )
+#else
+#  define stump_w_log( target, priority, ... )                                 \
 stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
 #endif
 
@@ -291,7 +283,7 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * side effects you rely on will not cause problems if they are left out during
  * a build with warning level calls disabled.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -326,10 +318,10 @@ stumpless_add_log( ( target ), ( priority ), __VA_ARGS__ )
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_log_str( target, priority, message ) ( 0 )
-#  else
-#    define stump_w_log_str( target, priority, message )                       \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_log_str( target, priority, message ) ( 0 )
+#else
+#  define stump_w_log_str( target, priority, message )                         \
 stumpless_add_log_str( ( target ), ( priority ), ( message ) )
 #endif
 
@@ -356,9 +348,9 @@ stumpless_add_log_str( ( target ), ( priority ), ( message ) )
  * appropriate number of variable arguments afterwards. This means that it
  * should not be a user-controlled value under any circumstances. If you need a
  * safer alternative without the risks of format strings, use
- * \c stump_w_message_str instead.
+ * \ref stump_w_message_str instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -379,13 +371,9 @@ stumpless_add_log_str( ( target ), ( priority ), ( message ) )
  *
  * @param target The target to send the entry to.
  *
- * @param message The message to log, optionally containing any format
+ * @param ... The message to log, optionally containing any format
  * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
  * form.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
  *
  * @return A non-negative value if no error is encountered. If an error is
  * encountered, then a negative value is returned and an error code is set
@@ -393,14 +381,14 @@ stumpless_add_log_str( ( target ), ( priority ), ( message ) )
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_message( target, ... ) ( 0 )
-#  else
-#    define stump_w_message( target, ... )                                     \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_message( target, ... ) ( 0 )
+#else
+#  define stump_w_message( target, ... )                                       \
 stumpless_add_log( ( target ),                                                 \
                    STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_WARNING,    \
                    __VA_ARGS__ )
-#  endif
+#endif
 
 /**
  * Adds a message to a given target with warning severity.
@@ -421,7 +409,7 @@ stumpless_add_log( ( target ),                                                 \
  * STUMPLESS_DEFAULT_FACILITY. If you wish to specify a different priority, then
  * you will need to use stump_w_log instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -453,14 +441,14 @@ stumpless_add_log( ( target ),                                                 \
  * is zero, although a return value of zero does not guarantee that this
  * function is disabled.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stump_w_message_str( target, message ) ( 0 )
-#  else
-#    define stump_w_message_str( target, message )                             \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stump_w_message_str( target, message ) ( 0 )
+#else
+#  define stump_w_message_str( target, message )                               \
 stumpless_add_log_str( ( target ),                                             \
                        STUMPLESS_DEFAULT_FACILITY | STUMPLESS_SEVERITY_WARNING,\
                        ( message ) )
-#  endif
+#endif
 
 /**
  * Adds a message to the current target with the specified priority.
@@ -480,9 +468,9 @@ stumpless_add_log_str( ( target ),                                             \
  * appropriate number of variable arguments afterwards. This means that it
  * should not be a user-controlled value under any circumstances. If you need a
  * safer alternative without the risks of format strings, use
- * \c stumplog_w_str instead.
+ * stumplog_w_str instead.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -504,19 +492,15 @@ stumpless_add_log_str( ( target ),                                             \
  * @param priority The priority of the message - this should be the bitwise or
  * of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value.
  *
- * @param message The message to log, optionally containing any format
+ * @param ... The message to log, optionally containing any format
  * specifiers valid in \c printf. This must be a valid UTF-8 string in shortest
  * form.
- *
- * @param ... Substitutions for any format specifiers provided in message. The
- * number of substitutions provided must exactly match the number of
- * specifiers given.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stumplog_w( priority, ... ) ( ( void ) 0 )
-#  else
-#    define stumplog_w( priority, ... ) stumplog( ( priority ), __VA_ARGS__ )
-#  endif
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stumplog_w( priority, ... ) ( ( void ) 0 )
+#else
+#  define stumplog_w( priority, ... ) stumplog( ( priority ), __VA_ARGS__ )
+#endif
 
 /**
  * Adds a message to the current target with the specified priority.
@@ -532,7 +516,7 @@ stumpless_add_log_str( ( target ),                                             \
  * side effects you rely on will not cause problems if they are left out during
  * a build with warning level calls disabled.
  *
- * **Thread Safety: MT-Safe env locale
+ * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
  * differently, as some require per-target locks and others can rely on system
  * libraries to log safely, but all targets support thread safe logging in some
@@ -559,11 +543,11 @@ stumpless_add_log_str( ( target ),                                             \
  * @param message The message to log. This must be a valid UTF-8 string in
  * shortest form.
  */
-#  ifdef STUMPLESS_DISABLE_WARNING_LEVEL
-#    define stumplog_w_str( priority, message ) ( ( void ) 0 )
-#  else
-#    define stumplog_w_str( priority, message )                                \
+#ifdef STUMPLESS_DISABLE_WARNING_LEVEL
+#  define stumplog_w_str( priority, message ) ( ( void ) 0 )
+#else
+#  define stumplog_w_str( priority, message )                                  \
 stumplog_str( ( priority ), ( message ) )
-#  endif
+#endif
 
 #endif /* __STUMPLESS_LEVEL_WARNING_H */

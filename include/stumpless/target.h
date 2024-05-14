@@ -1645,7 +1645,7 @@ vstumpless_trace_message( struct stumpless_target *target,
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *
-stumpless_get_target_type_string( enum stumpless_target_type target );
+stumpless_get_target_type_string( enum stumpless_target_type target_type );
 
 
 #ifdef __cplusplus

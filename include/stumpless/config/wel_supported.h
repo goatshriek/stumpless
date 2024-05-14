@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,10 +45,10 @@ extern "C" {
  *
  * Specifically, the following registry subkey is created, or modified if it
  * already exists:
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Stumpless
  *
- * This key is given the following registry values:
- * Sources: "Stumpless" as an entry, assuming it is a REG_MULTI_SZ.
+ * The "Sources" subkey of this entry has "Stumpless" added to it, assuming it
+ * is a \c REG_MULTI_SZ type if it already exists.
  *
  * If an existing Sources key is already present and is not correctly formatted
  * with NULL terminating characters as required by a MULTI_SZ, then this call
@@ -56,10 +56,10 @@ extern "C" {
  *
  * A subkey is also created within this key named "Stumpless", with the
  * following values set in it:
- * CategoryCount: 8 (one category is present for each severity in RFC 5424)
- * CategoryMessageFile: Points to the image containing stumpless.
- * EventMessageFile: Points to the image containing stumpless.
- * TypesSupported: 0x1f (all event types are allowed).
+ *  - CategoryCount: 8 (one category is present for each severity in RFC 5424)
+ *  - CategoryMessageFile: Points to the image containing stumpless.
+ *  - EventMessageFile: Points to the image containing stumpless.
+ *  - TypesSupported: 0x1f (all event types are allowed).
  *
  * This call is semantically equivalent to stumpless_add_wel_event_source_w(
  * L"Stumpless", L"Stumpless", 8, L"stumpless.dll", L"stumpless.dll", NULL,
@@ -127,8 +127,8 @@ stumpless_add_default_wel_event_source( void );
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a UTF-8 NULL terminated string. This subkey will be created under
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
- * contain backslashes to nest the key under other subkeys.
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog. This name
+ * may contain backslashes to nest the key under other subkeys.
  *
  * @param source_name The name of the event source, as a UTF-8 NULL terminated
  * string. This will be added to the "Sources" value of the subkey, and created
@@ -203,8 +203,8 @@ stumpless_add_wel_event_source( LPCSTR subkey_name,
  *
  * @param subkey_name The name of the subkey that the source should be added to,
  * as a wide char NULL terminated string. This subkey will be created under
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
- * contain backslashes to nest the key under other subkeys.
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog. This name
+ * may contain backslashes to nest the key under other subkeys.
  *
  * @param source_name The name of the event source, as a wide char NULL
  * terminated string. This will be added to the "Sources" value of the subkey,
@@ -453,7 +453,7 @@ stumpless_get_wel_type( const struct stumpless_entry *entry );
  * Removes the registry entries for the event source for default WEL entries.
  *
  * Specifically, the following registry subkey and all subkeys are deleted:
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\Stumpless
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Stumpless
  *
  * This call is semantically equivalent to
  * stumpless_remove_wel_event_source_w( L"Stumpless", L"Stumpless" ).
@@ -499,8 +499,8 @@ stumpless_remove_default_wel_event_source( void );
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a UTF-8 NULL terminated string. This subkey will be looked for under
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
- * contain backslashes to nest the key under other subkeys.
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog. This name
+ * may contain backslashes to nest the key under other subkeys.
  *
  * @param source_name The name of the event source, as a UTF-8 NULL terminated
  * string. This will be removed from the "Sources" value of the subkey, and then
@@ -533,8 +533,8 @@ stumpless_remove_wel_event_source( LPCSTR subkey_name,
  *
  * @param subkey_name The name of the subkey that the source is installed in,
  * as a wide char NULL terminated string. This subkey will be looked for under
- * HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog. This name may
- * contain backslashes to nest the key under other subkeys.
+ * HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog. This name
+ * may contain backslashes to nest the key under other subkeys.
  *
  * @param source_name The name of the event source, as a wide char NULL
  * terminated string. This will be removed from the "Sources" value of the

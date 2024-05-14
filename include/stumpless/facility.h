@@ -339,7 +339,7 @@ extern "C" {
 /**
  * All possible facility codes available to log entries.
  *
- * In versions prior to 2.0.0, these values were simply #define symbols. They
+ * In versions prior to 2.0.0, these values were simply \#define symbols. They
  * have been changed to an enum to clearly convey proper usage.
  *
  * @since release v2.0.0.
