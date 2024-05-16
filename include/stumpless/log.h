@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2023 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ extern "C" {
  * appropriate number of variable arguments afterwards. This means that it
  * should not be a user-controlled value under any circumstances. If you need a
  * safer alternative without the risks of format strings, use
- * \c stump_str instead.
+ * stump_str() instead.
  *
  * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety
@@ -375,7 +375,7 @@ stumplog_str( int priority, const char *message );
  * appropriate number of variable arguments afterwards. This means that it
  * should not be a user-controlled value under any circumstances. If you need a
  * safer alternative without the risks of format strings, use
- * \c stumplog_trace_str instead.
+ * stumplog_trace_str() instead.
  *
  * **Thread Safety: MT-Safe env locale**
  * This function is thread safe. Different target types handle thread safety

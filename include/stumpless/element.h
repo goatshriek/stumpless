@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,8 +143,8 @@ struct stumpless_element {
 /**
  * Creates a new param and adds it to the given element.
  *
- * This is equivalent to calling stumpless_new_param and passing the result
- * directly stumpless_add_param.
+ * This is equivalent to calling stumpless_new_param() and passing the result
+ * directly stumpless_add_param().
  *
  * **Thread Safety: MT-Safe race:param_name race:param_value**
  * This function is thread safe, of course assuming that the param name and

@@ -21,8 +21,8 @@
  * level.
  *
  * These can be turned into no-ops at compile time by defining
- * STUMPLESS_DISABLE_@@_LEVEL during build, or at least before inclusion of
- * this header (or stumpless.h).
+ * STUMPLESS_DISABLE_@LEVEL_NAME_UPCASE@_LEVEL during build, or at least before
+ * inclusion of this header (or stumpless.h).
  */
 
 #ifndef __STUMPLESS_LEVEL_@LEVEL_NAME_UPCASE@_H
