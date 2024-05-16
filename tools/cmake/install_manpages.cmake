@@ -1,4 +1,4 @@
-set(MANPAGE_BUILD_DIR "${PROJECT_BINARY_DIR}/docs/man/man3")
+set(MANPAGE_BUILD_DIR "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3")
 
 # install the generated manpages
 # rename them so that they are globally unique
