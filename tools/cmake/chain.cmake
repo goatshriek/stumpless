@@ -1,18 +1,18 @@
-list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/chain.c)
-list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/chain_target.yml)
+list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/target/chain.c")
+list(APPEND WRAPTURE_SPECS "${PROJECT_SOURCE_DIR}/tools/wrapture/chain_target.yml")
 
 install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h
+  "${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h"
   DESTINATION "include/stumpless/target"
 )
 
-list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/chain.h.3)
+list(APPEND DOXYGEN_MANPAGES "${PROJECT_BINARY_DIR}/docs/man/man3/chain.h.3")
 
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
-    ${PROJECT_BINARY_DIR}/docs/man/man3/chain.h.3
-    RENAME stumpless_target_chain.h.3
-    DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
+    "${PROJECT_BINARY_DIR}/docs/man/man3/chain.h.3"
+    RENAME "stumpless_target_chain.h.3"
+    DESTINATION "${CMAKE_INSTALL_MANDIR}/man3"
   )
 endif()
 
