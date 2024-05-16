@@ -77,18 +77,13 @@ else()
 endif()
 
 
-# set the doxygen input files
+# set the input files for documentation
 if(USE_LOCALE_ZH_CN)
-  set(DOXYGEN_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/l10n/zh-cn/包含")
-  set(DOXYGEN_EXAMPLE_DIR "${PROJECT_SOURCE_DIR}/l10n/zh-cn/文档/示例")
+  set(L10N_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/l10n/zh-cn/包含")
+  set(L10N_EXAMPLE_DIR "${PROJECT_SOURCE_DIR}/l10n/zh-cn/文档/示例")
   set(DOXYGEN_OUTPUT_LANGUAGE "Chinese")
 else() # default to USE_LOCALE_EN_US
-  set(DOXYGEN_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/")
-  set(DOXYGEN_EXAMPLE_DIR "${PROJECT_SOURCE_DIR}/docs/examples")
+  set(L10N_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/")
+  set(L10N_EXAMPLE_DIR "${PROJECT_SOURCE_DIR}/docs/examples")
   set(DOXYGEN_OUTPUT_LANGUAGE "English")
 endif()
-
-
-# we add the source dir include path at the very end so that any elements not
-# documented in the localized headers get default documentation of English
-set(DOXYGEN_INPUT "${DOXYGEN_INCLUDE_DIR}/stumpless.h ${DOXYGEN_INCLUDE_DIR}/stumpless ${PROJECT_BINARY_DIR}/include/stumpless ${PROJECT_SOURCE_DIR}/include/stumpless ")

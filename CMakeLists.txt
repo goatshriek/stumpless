@@ -674,6 +674,89 @@ configure_file(${PROJECT_SOURCE_DIR}/tools/portage/stumpless.ebuild.in
 )
 
 
+# generating level header files
+set(LEVEL_NAME_UPCASE "ALERT")
+set(LEVEL_NAME_DOWNCASE "alert")
+set(LEVEL_SHORTNAME "a")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "CRIT")
+set(LEVEL_NAME_DOWNCASE "crit")
+set(LEVEL_SHORTNAME "c")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "DEBUG")
+set(LEVEL_NAME_DOWNCASE "debug")
+set(LEVEL_SHORTNAME "d")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "EMERG")
+set(LEVEL_NAME_DOWNCASE "emerg")
+set(LEVEL_SHORTNAME "em")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "ERR")
+set(LEVEL_NAME_DOWNCASE "err")
+set(LEVEL_SHORTNAME "er")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "INFO")
+set(LEVEL_NAME_DOWNCASE "info")
+set(LEVEL_SHORTNAME "i")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "NOTICE")
+set(LEVEL_NAME_DOWNCASE "notice")
+set(LEVEL_SHORTNAME "n")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "WARNING")
+set(LEVEL_NAME_DOWNCASE "warning")
+set(LEVEL_SHORTNAME "w")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+set(LEVEL_NAME_UPCASE "TRACE")
+set(LEVEL_NAME_DOWNCASE "trace")
+set(LEVEL_SHORTNAME "t")
+configure_file(
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  @ONLY
+)
+
+
 # installation of the library
 install(TARGETS stumpless
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -704,16 +787,16 @@ install(FILES
 )
 
 install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/alert.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/crit.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/debug.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/emerg.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/err.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/info.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/mask.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/notice.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/trace.h
-  ${PROJECT_SOURCE_DIR}/include/stumpless/level/warning.h
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/alert.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/crit.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/debug.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/emerg.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/err.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/info.h"
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/mask.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/notice.h"
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/trace.h"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/warning.h"
   DESTINATION "include/stumpless/level"
 )
 
@@ -1192,22 +1275,36 @@ endif()
 
 # doxygen build target
 if(DOXYGEN_FOUND)
-  configure_file(${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in ${PROJECT_BINARY_DIR}/tools/doxygen/Doxyfile)
+  set(DOXYGEN_INPUT "${PROJECT_BINARY_DIR}/include/doxygen")
+
+  configure_file(
+    "${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in"
+    "${PROJECT_BINARY_DIR}/tools/doxygen/Doxyfile"
+  )
 
   file(GLOB_RECURSE DOXYGEN_PUBLIC_HEADERS ${DOXYGEN_INCLUDE_DIR}/stumpless/*.h)
   set(EXAMPLE_SOURCES
-    ${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c
+    "${PROJECT_SOURCE_DIR}/docs/examples/basic/basic_example.c"
+    # TODO: add remaining
   )
 
+  # we copy files into a specific doxygen folder because otherwise doxygen
+  # generates multiple folders with the same name in the file tree
+  # see https://github.com/doxygen/doxygen/issues/8318 for details
   add_custom_command(
     OUTPUT ${DOXYGEN_MANPAGES}
-    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile
-    MAIN_DEPENDENCY ${PROJECT_BINARY_DIR}/tools/doxygen/Doxyfile
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${DOXYGEN_INPUT}"
+    COMMAND ${CMAKE_COMMAND} -E copy "${L10N_INCLUDE_DIR}/stumpless.h" "${DOXYGEN_INPUT}/stumpless.h"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${L10N_INCLUDE_DIR}/stumpless" "${DOXYGEN_INPUT}/stumpless"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_BINARY_DIR}/include/stumpless" "${DOXYGEN_INPUT}/stumpless"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/include/stumpless" "${DOXYGEN_INPUT}/stumpless"
+    COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_BINARY_DIR}/tools/doxygen/Doxyfile"
+    MAIN_DEPENDENCY "${PROJECT_BINARY_DIR}/tools/doxygen/Doxyfile"
     DEPENDS
       ${DOXYGEN_PUBLIC_HEADERS}
       ${EXAMPLE_SOURCES}
-      ${DOXYGEN_INCLUDE_DIR}/stumpless.h
-      ${PROJECT_BINARY_DIR}/include/stumpless/config.h
+      "${L10N_INCLUDE_DIR}/stumpless.h"
+      "${PROJECT_BINARY_DIR}/include/stumpless/config.h"
     VERBATIM
   )
 

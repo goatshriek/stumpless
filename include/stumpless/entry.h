@@ -961,6 +961,8 @@ stumpless_load_entry( struct stumpless_entry *entry,
  *
  * @since release v2.2.0
  *
+ * @param entry The entry structure to load with the given fields.
+ *
  * @param facility The facility code of the event this entry describes. This
  * should be a \c STUMPLESS_FACILITY value.
  *
