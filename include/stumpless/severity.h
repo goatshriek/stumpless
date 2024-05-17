@@ -181,6 +181,9 @@ extern "C" {
  * In versions prior to 2.0.0, these values were simply \#define symbols. They
  * have been changed to an enum to clearly convey proper usage.
  *
+ * See STUMPLESS_FOREACH_SEVERITY() and STUMPLESS_GENERATE_ENUM() for how the
+ * enumeration is actually defined.
+ *
  * @since release v2.0.0.
  */
 enum stumpless_severity {

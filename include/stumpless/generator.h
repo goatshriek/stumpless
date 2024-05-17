@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,20 @@
  */
 
 /** @file
- * The identification for targets within the library.
+ * Generic functionality to be used with STUMPLESS_FOREACH macros to allow for
+ * more generic definition of enumerations and to string functions.
  */
 
 #ifndef __STUMPLESS_GENERATOR_H
-#  define __STUMPLESS_GENERATOR_H
+#define __STUMPLESS_GENERATOR_H
 
 /**
  * Returns a definition of a symbol with the given name and value fit for use in
- * an enum definition. Compatible with STUMPLESS_FOREACH macro functions such as
- * STUMPLESS_FOREACH_FACILITY.
+ * an enum definition. Compatible with \c STUMPLESS_FOREACH_ macro functions
+ * such as STUMPLESS_FOREACH_FACILITY().
  *
  * @since release v2.0.0.
  */
-#  define STUMPLESS_GENERATE_ENUM( NAME, VALUE ) NAME = ( VALUE ),
+#define STUMPLESS_GENERATE_ENUM( NAME, VALUE ) NAME = ( VALUE ),
 
 #endif /* __STUMPLESS_GENERATOR_H */

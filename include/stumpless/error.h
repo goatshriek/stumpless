@@ -165,10 +165,11 @@ extern "C" {
  * different ultimate cause. To completely diagnose a problem, you will need
  * to look at more than just the error id.
  *
- * @note The real implementation of enum values is now moved under `STUMPLESS_FOREACH_ERROR(ERROR)` macro.
+ * See STUMPLESS_FOREACH_ERROR() and STUMPLESS_GENERATE_ENUM() for how this
+ * enumeration is generated.
  */
 enum stumpless_error_id {
-  STUMPLESS_FOREACH_ERROR(STUMPLESS_GENERATE_ENUM)
+  STUMPLESS_FOREACH_ERROR( STUMPLESS_GENERATE_ENUM )
 };
 
 

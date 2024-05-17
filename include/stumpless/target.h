@@ -43,31 +43,31 @@
 extern "C" {
 #endif
 
-/**< write to a character buffer */
+/** write to a character buffer */
 #define STUMPLESS_BUFFER_TARGET_VALUE 0
 
-/**< write to a file */
+/** write to a file */
 #define STUMPLESS_FILE_TARGET_VALUE 1
 
-/**< call a custom function */
+/** call a custom function */
 #define STUMPLESS_FUNCTION_TARGET_VALUE 2
 
-/**< send to the systemd journald service */
+/** send to the systemd journald service */
 #define STUMPLESS_JOURNALD_TARGET_VALUE 3
 
-/**< send to a network endpoint */
+/** send to a network endpoint */
 #define STUMPLESS_NETWORK_TARGET_VALUE 4
 
-/**< write to a Unix socket */
+/** write to a Unix socket */
 #define STUMPLESS_SOCKET_TARGET_VALUE 5
 
-/**< write to a FILE stream */
+/** write to a FILE stream */
 #define STUMPLESS_STREAM_TARGET_VALUE 6
 
-/**< add to the Windows Event Log */
+/** add to the Windows Event Log */
 #define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE 7
 
-/**< add to a SQLite3 database */
+/** add to a SQLite3 database */
 #define STUMPLESS_SQLITE3_TARGET_VALUE 8
 
 /**
@@ -84,28 +84,20 @@ extern "C" {
  * value of the target_type.
  */
 #define STUMPLESS_FOREACH_TARGET_TYPE( ACTION )\
-/**< write to a character buffer */\
 ACTION( STUMPLESS_BUFFER_TARGET, STUMPLESS_BUFFER_TARGET_VALUE )\
-/**< write to a file */\
 ACTION( STUMPLESS_FILE_TARGET, STUMPLESS_FILE_TARGET_VALUE )\
-/**< call a custom function */\
 ACTION( STUMPLESS_FUNCTION_TARGET, STUMPLESS_FUNCTION_TARGET_VALUE )\
-/**< send to the systemd journald service */\
 ACTION( STUMPLESS_JOURNALD_TARGET, STUMPLESS_JOURNALD_TARGET_VALUE )\
-/**< send to a network endpoint */\
 ACTION( STUMPLESS_NETWORK_TARGET, STUMPLESS_NETWORK_TARGET_VALUE )\
-/**< write to a Unix socket */\
 ACTION( STUMPLESS_SOCKET_TARGET, STUMPLESS_SOCKET_TARGET_VALUE )\
-/**< write to a FILE stream */\
 ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\
-/**< add to the Windows Event Log */\
 ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\
-/**< add to a SQLite3 database */\
 ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )\
-/**< write to a series of targets and filters **/\
 ACTION( STUMPLESS_CHAIN_TARGET, STUMPLESS_CHAIN_TARGET_VALUE )
 
-/** Types of targets that may be created. */
+/**
+ * Types of targets that may be created.
+ */
 enum stumpless_target_type {
   STUMPLESS_FOREACH_TARGET_TYPE( STUMPLESS_GENERATE_ENUM )
 };

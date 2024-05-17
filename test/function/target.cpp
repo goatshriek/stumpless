@@ -537,6 +537,7 @@ namespace {
     stumpless_set_cons_stream( file );
 	EXPECT_TRUE( stumpless_get_cons_stream() == file );
 	fclose( file );
+    remove( filename );
     stumpless_free_all(  );
   }
 
@@ -697,6 +698,7 @@ namespace {
     EXPECT_EQ( line_count, 1 );
 
     stumpless_free_all(  );
+    remove( error_filename );
   }
 
   TEST( PerrorOption, NullErrorStream ) {
