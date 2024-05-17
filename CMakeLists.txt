@@ -815,7 +815,7 @@ include(FindPkgConfig QUIET)
 if(PKG_CONFIG_FOUND)
   configure_file("${PROJECT_SOURCE_DIR}/tools/pkg-config/stumpless.pc.in" "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc" @ONLY)
   install(FILES "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc"
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endif()
 
 
