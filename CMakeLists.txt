@@ -259,12 +259,12 @@ set(WRAPTURE_SPECS
 
 
 # documentation and doxygen steup
+set(PROJECT_DOCS_DIR "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}")
 set(DOXYGEN_MANPAGES
-  ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/stumpless.h.3
-  ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/config.h.3
+  "${PROJECT_DOCS_DIR}/man/man3/stumpless.h.3"
+  "${PROJECT_DOCS_DIR}/man/man3/config.h.3"
 )
 
-set(PROJECT_DOCS_DIR ${PROJECT_BINARY_DIR}/docs)
 if(DOXYGEN_FOUND)
   set(INCLUDE_MANPAGES_IN_INSTALL ${INSTALL_MANPAGES})
 else()

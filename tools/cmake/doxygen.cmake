@@ -1,5 +1,5 @@
 set(DOXYGEN_INPUT "${PROJECT_BINARY_DIR}/include/doxygen")
-set(DOXYGEN_OUTPUT "${PROJECT_DOCS_DIR}/${STUMPLESS_LANGUAGE}")
+set(DOXYGEN_OUTPUT "${PROJECT_DOCS_DIR}")
 
 configure_file(
   "${PROJECT_SOURCE_DIR}/tools/doxygen/Doxyfile.in"
@@ -19,6 +19,7 @@ file(GLOB_RECURSE DOXYGEN_EXAMPLE_SOURCES "${L10N_EXAMPLE_DIR}/*.c")
 # see https://github.com/doxygen/doxygen/issues/8318 for details
 add_custom_command(
   OUTPUT ${DOXYGEN_MANPAGES}
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_DOCS_DIR}"
   COMMAND ${CMAKE_COMMAND} -E rm -rf "${DOXYGEN_INPUT}"
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_BINARY_DIR}/include/stumpless" "${DOXYGEN_INPUT}/stumpless"
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/include/stumpless" "${DOXYGEN_INPUT}/stumpless"
