@@ -4,7 +4,9 @@ if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
 endif()
 
-project(stumpless VERSION 2.2.0)
+project(stumpless
+  VERSION 2.2.0
+)
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
@@ -813,8 +815,13 @@ include(tools/cmake/cpack.cmake)
 
 include(FindPkgConfig QUIET)
 if(PKG_CONFIG_FOUND)
-  configure_file("${PROJECT_SOURCE_DIR}/tools/pkg-config/stumpless.pc.in" "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc" @ONLY)
-  install(FILES "${PROJECT_BINARY_DIR}/tools/pkg-config/stumpless.pc"
+  configure_file(
+    "${PROJECT_SOURCE_DIR}/tools/pkg-config/libstumpless.pc.in"
+    "${PROJECT_BINARY_DIR}/tools/pkg-config/libstumpless.pc"
+    @ONLY
+  )
+
+  install(FILES "${PROJECT_BINARY_DIR}/tools/pkg-config/libstumpless.pc"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endif()
 

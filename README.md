@@ -236,6 +236,13 @@ is also hosted on the
 [project website](https://goatshriek.github.io/stumpless/), for both the C
 library as well as the other language bindings like C++.
 
+Stumpless also includes documentation in local installations in the form of
+`man` pages. Once you've installed the library, you can check the documentation
+for any header file (and the functions it contains) by running man with the
+name of the header with directories replaced with underscores, for example
+`man stumpless_log.h` to see documentation for functions that log simple string
+messages.
+
 There are also plenty of ways that you can reach out to the project team and
 broader community for support.
  * [Issues](https://github.com/goatshriek/stumpless/issues) and

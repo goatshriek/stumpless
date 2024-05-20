@@ -3,8 +3,8 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: @CMAKE_PROJECT_NAME@
-Description: C logging library built for high performance and a rich feature set
+Name: @PROJECT_NAME@
+Description: C logging library
 Version: @PROJECT_VERSION@
 Libs: -L${libdir} -lstumpless
 Cflags: -I${includedir}
