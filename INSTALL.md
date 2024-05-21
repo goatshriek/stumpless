@@ -31,6 +31,16 @@ rpm -i stumpless-2.2.0-x86_64.rpm
 ```
 
 
+## FreeBSD Pkg
+A `.pkg` package is provided for use in FreeBSD environments. Of course, it is
+installed just as any other pkg would be:
+
+```sh
+# permissions need to be correct, of course
+pkg add stumpless-2.2.0-amd64.pkg
+```
+
+
 ## Gentoo ebuild
 A `.ebuild` package is provided with each release version of the library, and
 is also generated during the configuration stage of the build by cmake. The

@@ -26,7 +26,7 @@ Stumpless has lots of features that make logging in C fast and easy:
  * log to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
    journald, the Windows Event Log, sqlite, and more!
  * structured and unstructured logging to suit your needs
- * builds on Linux, Windows, Mac, MinGW, MSYS2, Cygwin, DOS, and more
+ * builds on Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS, and more!
  * thread safe
  * can be adjusted or removed during compilation for zero runtime cost
  * localized for multiple languages :albania: :brazil: :bulgaria: :cn:
@@ -45,11 +45,11 @@ a wide variety of log targets. This means you can focus on defining events
 and where you want them to go, without finding other SDKs or adding daemons
 and plugins to get them where you want. Stumpless can write logs to:
  * Simple character buffers
- * Files and Streams
+ * Files and streams
  * Unix sockets (such as a local syslog daemon)
- * Network Servers (IPv4 or IPv6, TCP or UDP)
- * Systemd Journald Service
- * Sqlite3 Databases
+ * Network servers (IPv4 or IPv6, TCP or UDP)
+ * Systemd Journald service
+ * Sqlite3 databases
  * Windows Event Log
  * Custom functions, for whatever else you may need!
 
