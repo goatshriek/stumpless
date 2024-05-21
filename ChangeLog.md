@@ -15,6 +15,7 @@ fixes, check out the
  - `single-file` target for rollup `.c` and `.h` files.
  - SQLite3 logging targets.
  - Target chains.
+ - Support for `pkg-config`.
  - Localizations for:
     * Albanian (sq-AL :albania:)
     * Danish (da-DK :denmark:)

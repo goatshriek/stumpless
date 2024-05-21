@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2021 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 
 int
 main( int argc, char **argv ) {
-  const char *socket = "/dev/log";
+  const char *socket_name = "/dev/log";
   struct stumpless_entry *entry;
   struct stumpless_element *element;
   struct stumpless_entry *entry_result;
@@ -61,7 +61,7 @@ main( int argc, char **argv ) {
 
 
   // opening the target is straightforward
-  socket_target = stumpless_open_socket_target( socket,
+  socket_target = stumpless_open_socket_target( socket_name,
                                                 // making this argument NULL
                                                 // means that a randomized local
                                                 // socket will be created
@@ -74,7 +74,7 @@ main( int argc, char **argv ) {
 
   // if you want to specify the local socket used to connect to the target
   // socket, then you can specify it in the local_socket parameter
-  manual_target = stumpless_open_socket_target( socket, "logfromthis" );
+  manual_target = stumpless_open_socket_target( socket_name, "logfromthis" );
   if( !manual_target ) {
     stumpless_perror( "couldn't create a new socket target with a manual local"
                       " socket" );
