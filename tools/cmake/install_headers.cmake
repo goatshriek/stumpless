@@ -47,6 +47,7 @@ install(
     "${PROJECT_SOURCE_DIR}/include/stumpless/target/buffer.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/target/file.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/target/function.h"
+    "${PROJECT_SOURCE_DIR}/include/stumpless/target/sqlite3.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/target/stream.h"
   DESTINATION
     "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
