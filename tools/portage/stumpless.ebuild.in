@@ -18,12 +18,14 @@ fi
 
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64 ~x86"
-IUSE="chain-targets doc examples sockets sqlite systemd test threads"
+IUSE="chain-targets doc examples man sockets sqlite systemd test threads"
 
 DEPEND="test? ( dev-cpp/gtest )
+	sqlite? ( >=dev-db/sqlite )
 	systemd? ( sys-apps/systemd )"
 RDEPEND="${DEPEND}"
-BDEPEND="doc? ( app-text/doxygen )"
+BDEPEND="doc? ( app-text/doxygen )
+	man? ( app-text/doxygen )"
 
 # disable test phase if the test USE flag is disabled
 RESTRICT="!test? ( test )"
@@ -36,7 +38,8 @@ src_configure() {
 		-DENABLE_SQLITE3_TARGETS="$(usex sqlite)"
 		-DENABLE_THREAD_SAFETY="$(usex threads)"
 		-DINSTALL_EXAMPLES="$(usex examples)"
-		-DINSTALL_MANPAGES="$(usex doc)"
+		-DINSTALL_HTML="$(usex doc)"
+		-DINSTALL_MANPAGES="$(usex man)"
 	)
 	cmake_src_configure
 }

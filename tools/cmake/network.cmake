@@ -16,10 +16,12 @@ elseif(HAVE_WINSOCK2_H)
   find_library(WINSOCK2 NAMES Ws2_32)
 endif()
 
-install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h
-  DESTINATION "include/stumpless/target"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/target/network.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
+  )
+endif()
 
 list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/network.h.3)
 

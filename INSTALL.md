@@ -31,7 +31,7 @@ rpm -i stumpless-2.2.0-x86_64.rpm
 ```
 
 
-## FreeBSD Pkg
+## FreeBSD Package
 A `.pkg` package is provided for use in FreeBSD environments. Of course, it is
 installed just as any other pkg would be:
 

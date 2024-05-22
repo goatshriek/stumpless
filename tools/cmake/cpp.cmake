@@ -177,7 +177,6 @@ target_include_directories(stumplesscpp
 set_target_properties(stumplesscpp
   PROPERTIES
     VERSION ${PROJECT_VERSION}
-    PUBLIC_HEADER ${cpp_rollup_header}
 )
 
 if(WIN32)
@@ -271,14 +270,20 @@ add_custom_target(run-example-cpp
 install(TARGETS stumplesscpp
   RUNTIME DESTINATION "bin"
   LIBRARY DESTINATION "lib"
-  PUBLIC_HEADER DESTINATION "include"
   ARCHIVE DESTINATION "lib"
 )
 
-install(
-  FILES ${GENERATED_CPP_LIB_HEADERS}
-  DESTINATION "include/stumpless"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${cpp_rollup_header}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+  )
+
+  install(
+    FILES ${GENERATED_CPP_LIB_HEADERS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless"
+  )
+endif()
 
 #documentation generation
 if(DOXYGEN_FOUND)

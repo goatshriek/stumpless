@@ -2,6 +2,13 @@ list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/target/sqlite3.c")
 list(APPEND WRAPTURE_SPECS "${PROJECT_SOURCE_DIR}/tools/wrapture/sqlite3_target.yml")
 list(APPEND DOXYGEN_MANPAGES "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/sqlite3.h.3")
 
+if(INSTALL_HEADERS)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/target/sqlite3.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
+  )
+endif()
+
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
     "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/sqlite3.h.3"

@@ -1,10 +1,12 @@
 list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/target/chain.c")
 list(APPEND WRAPTURE_SPECS "${PROJECT_SOURCE_DIR}/tools/wrapture/chain_target.yml")
 
-install(FILES
-  "${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h"
-  DESTINATION "include/stumpless/target"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/target/chain.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
+  )
+endif()
 
 list(APPEND DOXYGEN_MANPAGES "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/chain.h.3")
 
