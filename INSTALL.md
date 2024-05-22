@@ -10,6 +10,17 @@ Stumpless is not currently registered in any online package repositories such
 as Chocolatey or Debian. If you need the library in a location like this, please
 open an issue and the project team will see what we can do.
 
+The provided release packages contain all of the items in the following list.
+If you want a package with only a selection of these items, you'll need to build
+it yourself using `cpack` and the appropriate configuration.
+
+ * shared library
+ * header files
+ * `.pc` file for `pkg-config` implementations
+ * examples
+ * HTML documentation
+ * man pages
+
 
 ## Debian Package
 A `.deb` package is provided for use in environments that support them, like
