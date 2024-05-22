@@ -148,11 +148,11 @@ endif()
 # create the rollup header
 SET(cpp_rollup_header "${PROJECT_BINARY_DIR}/include/stumpless.hpp")
 FILE(WRITE ${cpp_rollup_header} "#ifndef __STUMPLESS_HPP\n")
-FILE(APPEND ${cpp_rollup_header} "#  define __STUMPLESS_HPP\n\n")
+FILE(APPEND ${cpp_rollup_header} "#define __STUMPLESS_HPP\n\n")
 
 foreach(header_path ${GENERATED_CPP_LIB_HEADERS})
   get_filename_component(header_filename ${header_path} NAME)
-  FILE(APPEND ${cpp_rollup_header} "#  include <stumpless/${header_filename}>\n")
+  FILE(APPEND ${cpp_rollup_header} "#include <stumpless/${header_filename}>\n")
 endforeach(header_path)
 
 FILE(APPEND ${cpp_rollup_header} "\n#endif /* __STUMPLESS_HPP */\n")
