@@ -201,7 +201,6 @@
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
-#include <stumpless/target/sqlite3.h>
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
 #include <stumpless/priority.h>
@@ -250,6 +249,8 @@
  *
  * @since release v2.2.0
  */
+
+#  include <stumpless/target/sqlite3.h>
 #endif
 
 #ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
