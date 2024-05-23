@@ -795,9 +795,9 @@ endif()
 
 # installation of examples if enabled
 if(INSTALL_EXAMPLES)
-  install(DIRECTORY
-    ${PROJECT_SOURCE_DIR}/docs/examples
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+  install(
+    DIRECTORY "${PROJECT_SOURCE_DIR}/docs/examples"
+    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/doc/libstumpless"
   )
 endif()
 
