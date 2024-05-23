@@ -28,7 +28,7 @@ Debian and Ubuntu. The package can be installed with the usual command:
 
 ```sh
 # you might need sudo (or root privileges) to install
-dpkg -i stumpless-2.2.0-amd64.deb
+dpkg -i libstumpless-2.2.0-amd64.deb
 ```
 
 
@@ -38,7 +38,7 @@ installed in the traditional way as well:
 
 ```sh
 # again, make sure you have the correct permissions
-rpm -i stumpless-2.2.0-x86_64.rpm
+rpm -i libstumpless-2.2.0-x86_64.rpm
 ```
 
 
@@ -48,7 +48,7 @@ installed just as any other pkg would be:
 
 ```sh
 # permissions need to be correct, of course
-pkg add stumpless-2.2.0-amd64.pkg
+pkg add libstumpless-2.2.0-amd64.pkg
 ```
 
 
@@ -68,7 +68,7 @@ In either case, you could install the ebuild by putting it into a repository and
 running ebuild ultimately as something like:
 
 ```sh
-ebuild stumpless-2.2.0.ebuild clean install merge
+ebuild libstumpless-2.2.0.ebuild clean install merge
 ```
 
 USE flags and other customizations can be done here as well. Gentoo installs are
@@ -87,7 +87,7 @@ files.
 # you might need to do this with sudo!
 # make sure your permissions allow you to write to the install locations
 cd /usr
-./stumpless-2.2.0.sh
+./libstumpless-2.2.0.sh
 ```
 
 
