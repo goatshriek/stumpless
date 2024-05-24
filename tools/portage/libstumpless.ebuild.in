@@ -8,11 +8,11 @@ inherit cmake
 DESCRIPTION="a C logging library built for high performance and a rich feature set"
 HOMEPAGE="http://stumpless.goatshriek.com"
 if [[ ${PV} == *9999 ]]; then
-	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/heads/latest.tar.gz -> stumpless-${PV}.tar.gz"
+	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/heads/latest.tar.gz -> libstumpless-${PV}.tar.gz"
 	S="${WORKDIR}/stumpless-latest"
 	SLOT="0"
 else
-	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz -> stumpless-${PV}.tar.gz"
+	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz -> libstumpless-${PV}.tar.gz"
 	SLOT="$(ver_cut 1)/$(ver_cut 2)"
 fi
 

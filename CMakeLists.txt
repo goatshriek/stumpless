@@ -681,6 +681,10 @@ configure_file(${PROJECT_SOURCE_DIR}/tools/portage/libstumpless.ebuild.in
   ${PROJECT_BINARY_DIR}/tools/portage/libstumpless-${PROJECT_VERSION}.ebuild
   @ONLY
 )
+configure_file(${PROJECT_SOURCE_DIR}/tools/portage/libstumpless.ebuild.in
+  ${PROJECT_BINARY_DIR}/tools/portage/libstumpless-9999.ebuild
+  @ONLY
+)
 
 
 # generating level header files

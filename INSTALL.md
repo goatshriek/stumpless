@@ -59,7 +59,7 @@ generated ebuild is in the `tools/portage` folder of the build directory.
 
 The generated ebuild will be named after the version of stumpless you have.
 If you want the latest commit instead of a release, you'll need to rename this
-to version `stumpless-9999.ebuild` to perform what Gentoo refers to as a
+to version `libstumpless-9999.ebuild` to perform what Gentoo refers to as a
 [live ebuild](https://wiki.gentoo.org/wiki/Ebuild#Live_ebuilds). If you have a
 commit in a release that hasn't been published yet and do not rename the ebuild,
 then the download of the source will fail.

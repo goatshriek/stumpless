@@ -3,7 +3,7 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: @PROJECT_NAME@
+Name: libstumpless
 Description: a fast and feature-rich C logging library
 Version: @PROJECT_VERSION@
 Libs: -L${libdir} -lstumpless
