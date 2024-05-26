@@ -1,0 +1,26 @@
+var config_8h =
+[
+    [ "STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH", "config_8h.html#ac8c91e9d5da4259ea5e2003c4ebb3b11", null ],
+    [ "STUMPLESS_CHAIN_TARGETS_SUPPORTED", "config_8h.html#a86e27a9192af3121fabfc249436f218d", null ],
+    [ "STUMPLESS_DEFAULT_FACILITY", "config_8h.html#aa309f1ace201a2d29178c1b599fa06cd", null ],
+    [ "STUMPLESS_DEFAULT_FILE", "config_8h.html#aeec1d6823df8d63d39928bedd7a83175", null ],
+    [ "STUMPLESS_DEFAULT_SEVERITY", "config_8h.html#ab5151e9defe16061a817188255b16606", null ],
+    [ "STUMPLESS_DEFAULT_SOCKET", "config_8h.html#ae37eeba5eda204c4bb3637e52aab3b13", null ],
+    [ "STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING", "config_8h.html#aa4edd4d3b08baf682b1d88e5754edd68", null ],
+    [ "STUMPLESS_DEPRECATION_WARNINGS_ENABLED", "config_8h.html#a3f8b1425789826a16f6f32ce5edd8a7d", null ],
+    [ "STUMPLESS_FALLBACK_PAGESIZE", "config_8h.html#a6ed0111426505fa8c9f5037ffaf1eb46", null ],
+    [ "STUMPLESS_JOURNALD_TARGETS_SUPPORTED", "config_8h.html#a8a6fa440f1f348268679eadc508eddbf", null ],
+    [ "STUMPLESS_LANGUAGE", "config_8h.html#a1f280cd91337c811c1140c628bdfcfd4", null ],
+    [ "STUMPLESS_MAJOR_VERSION", "config_8h.html#a08b8d3b494c3b0117fd8a7f2664d5eee", null ],
+    [ "STUMPLESS_MINOR_VERSION", "config_8h.html#add9d784358097bb7dcdb318148490601", null ],
+    [ "STUMPLESS_NETWORK_TARGETS_SUPPORTED", "config_8h.html#abdb62062b7f177295fe1a9760712009d", null ],
+    [ "STUMPLESS_PATCH_VERSION", "config_8h.html#aa732a24f731f1404f5ecc24a15d85306", null ],
+    [ "STUMPLESS_PUBLIC_FUNCTION", "config_8h.html#a7300d22c8f17091b752c8280928213ad", null ],
+    [ "STUMPLESS_SOCKET_TARGETS_SUPPORTED", "config_8h.html#ab2413bd6075a1f0b7bc15cd1ee9334f8", null ],
+    [ "STUMPLESS_SQLITE3_RETRY_MAX", "config_8h.html#a409a49a075c3d7dbc4068b9d7c8e9fa3", null ],
+    [ "STUMPLESS_SQLITE3_TARGETS_SUPPORTED", "config_8h.html#a7b866b048bee746718d17c0c865e8968", null ],
+    [ "STUMPLESS_SYSLOG_H_COMPATIBLE", "config_8h.html#ac586c95e2a313b66042830b2bad89712", null ],
+    [ "STUMPLESS_THREAD_SAFETY_SUPPORTED", "config_8h.html#acb1bc5c076ce6a6b7940fc799c8bb56d", null ],
+    [ "STUMPLESS_VERSION", "config_8h.html#a206a120f0880fed4e4e73ca6f7d13b4f", null ],
+    [ "STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED", "config_8h.html#a0a4acbb01959dc07e076df3cd2ea77d5", null ]
+];

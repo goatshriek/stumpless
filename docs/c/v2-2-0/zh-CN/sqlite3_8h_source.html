@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless/target/sqlite3.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">stumpless<span id="projectnumber">&#160;2.2.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('sqlite3_8h_source.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">sqlite3.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="sqlite3_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Copyright 2023 Joel E. Anderson</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#ifndef __STUMPLESS_TARGET_SQLITE3_H</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#define __STUMPLESS_TARGET_SQLITE3_H</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &lt;stumpless/config.h&gt;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &lt;<a class="code" href="entry_8h.html">stumpless/entry.h</a>&gt;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &lt;<a class="code" href="target_8h.html">stumpless/target.h</a>&gt;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="" data-end="">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a4b0cc21c20172786a71d98bcf7858b7c">   52</a></span><span class="preprocessor">#define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL \</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">&quot;INSERT INTO &quot; STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING &quot; &quot;                 \</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">&quot;( prival, version, timestamp, hostname, app_name, procid, msgid,&quot;             \</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">&quot;  structured_data, message ) &quot;                                                \</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">&quot;VALUES ( $prival, 1, $timestamp, $hostname, $app_name, $procid, $msgid, &quot;     \</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">         &quot;$structured_data, $message )&quot;</span></div>
+</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">typedef</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a08d6a3a2732b759a9eedf4df5b3bb73b">   71</a></span><span class="keywordtype">void</span> *</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>( *stumpless_sqlite3_prepare_func_t )( <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__entry.html">stumpless_entry</a> *entry,</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                                       <span class="keywordtype">void</span> *data,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                                       <span class="keywordtype">size_t</span> *count );</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keywordtype">bool</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a92184277ad50025d494ccee420a2bb3d">  105</a></span><a class="code hl_function" href="sqlite3_8h.html#a92184277ad50025d494ccee420a2bb3d">stumpless_close_sqlite3_target_and_db</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#adba7af83fa65444728364d7e834f1a01">  130</a></span><a class="code hl_function" href="sqlite3_8h.html#adba7af83fa65444728364d7e834f1a01">stumpless_close_sqlite3_target_only</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a88c434265f87bc9a1d6a08662d8fad50">  175</a></span><a class="code hl_function" href="sqlite3_8h.html#a88c434265f87bc9a1d6a08662d8fad50">stumpless_create_default_sqlite3_table</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">void</span> *</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a9247b3faa5610ed4a82d5f45c0ccd077">  206</a></span><a class="code hl_function" href="sqlite3_8h.html#a9247b3faa5610ed4a82d5f45c0ccd077">stumpless_get_sqlite3_db</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#afb3447ce731e2d9e618e6f4b029e2940">  235</a></span><a class="code hl_function" href="sqlite3_8h.html#afb3447ce731e2d9e618e6f4b029e2940">stumpless_get_sqlite3_insert_sql</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target );</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><a class="code hl_typedef" href="sqlite3_8h.html#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#ab9ee47a85041b779e695ecc25465cd15">  267</a></span><a class="code hl_function" href="sqlite3_8h.html#ab9ee47a85041b779e695ecc25465cd15">stumpless_get_sqlite3_prepare</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target,</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                               <span class="keywordtype">void</span> **data );</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#ad952d9bdd67793510649971baa7aeb36">  298</a></span><a class="code hl_function" href="sqlite3_8h.html#ad952d9bdd67793510649971baa7aeb36">stumpless_open_sqlite3_target</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a> );</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#a270fbc15a9165ed2d5516fb70616204a">  334</a></span><a class="code hl_function" href="sqlite3_8h.html#a270fbc15a9165ed2d5516fb70616204a">stumpless_open_sqlite3_target_from_db</a>( <span class="keywordtype">void</span> *db );</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#ad32680e4bd57937fdf0c338451028a63">  365</a></span><a class="code hl_function" href="sqlite3_8h.html#ad32680e4bd57937fdf0c338451028a63">stumpless_open_sqlite3_target_with_options</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">name</a>,</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                                            <span class="keywordtype">int</span> flags,</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>                                            <span class="keyword">const</span> <span class="keywordtype">char</span> *vfs );</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#ab0003c19d3a5bcfde20bc2c44212ab95">  398</a></span><a class="code hl_function" href="sqlite3_8h.html#ab0003c19d3a5bcfde20bc2c44212ab95">stumpless_set_sqlite3_insert_sql</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target,</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                                  <span class="keyword">const</span> <span class="keywordtype">char</span> *sql );</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#ac97536bc42025cdc3b2e626137a02826">  450</a></span><a class="code hl_function" href="sqlite3_8h.html#ac97536bc42025cdc3b2e626137a02826">stumpless_set_sqlite3_prepare</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__target.html">stumpless_target</a> *target,</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>                               <a class="code hl_typedef" href="sqlite3_8h.html#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a> preparer,</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>                               <span class="keywordtype">void</span> *data );</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
+<div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span><span class="keywordtype">void</span> *</div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno"><a class="line" href="sqlite3_8h.html#aea54111b87a263ef98b87d2f93c27448">  488</a></span><a class="code hl_function" href="sqlite3_8h.html#aea54111b87a263ef98b87d2f93c27448">stumpless_sqlite3_prepare</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__entry.html">stumpless_entry</a> *entry,</div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>                           <span class="keywordtype">void</span> *data,</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>                           <span class="keywordtype">size_t</span> *count );</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span> </div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span> </div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span><span class="preprocessor">#endif                          </span><span class="comment">/* __STUMPLESS_TARGET_SQLITE3_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>定义</b> config.h:31</div></div>
+<div class="ttc" id="aentry_8h_html"><div class="ttname"><a href="entry_8h.html">entry.h</a></div><div class="ttdoc">Types and functions for creating and modifying entries.</div></div>
+<div class="ttc" id="asqlite3_8h_html_a08d6a3a2732b759a9eedf4df5b3bb73b"><div class="ttname"><a href="sqlite3_8h.html#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a></div><div class="ttdeci">void *(* stumpless_sqlite3_prepare_func_t)(const struct stumpless_entry *entry, void *data, size_t *count)</div><div class="ttdoc">A function for generating SQLite3 prepared statements for a given entry.</div><div class="ttdef"><b>定义</b> sqlite3.h:72</div></div>
+<div class="ttc" id="asqlite3_8h_html_a270fbc15a9165ed2d5516fb70616204a"><div class="ttname"><a href="sqlite3_8h.html#a270fbc15a9165ed2d5516fb70616204a">stumpless_open_sqlite3_target_from_db</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_sqlite3_target_from_db(void *db)</div><div class="ttdoc">Opens a SQLite3 target with an already-open database handle.</div></div>
+<div class="ttc" id="asqlite3_8h_html_a88c434265f87bc9a1d6a08662d8fad50"><div class="ttname"><a href="sqlite3_8h.html#a88c434265f87bc9a1d6a08662d8fad50">stumpless_create_default_sqlite3_table</a></div><div class="ttdeci">struct stumpless_target * stumpless_create_default_sqlite3_table(struct stumpless_target *target)</div><div class="ttdoc">Creates a table in the target's database for use with the default SQLite3 insertion behavior.</div></div>
+<div class="ttc" id="asqlite3_8h_html_a92184277ad50025d494ccee420a2bb3d"><div class="ttname"><a href="sqlite3_8h.html#a92184277ad50025d494ccee420a2bb3d">stumpless_close_sqlite3_target_and_db</a></div><div class="ttdeci">bool stumpless_close_sqlite3_target_and_db(const struct stumpless_target *target)</div><div class="ttdoc">Closes a SQLite3 target and its database handle.</div></div>
+<div class="ttc" id="asqlite3_8h_html_a9247b3faa5610ed4a82d5f45c0ccd077"><div class="ttname"><a href="sqlite3_8h.html#a9247b3faa5610ed4a82d5f45c0ccd077">stumpless_get_sqlite3_db</a></div><div class="ttdeci">void * stumpless_get_sqlite3_db(const struct stumpless_target *target)</div><div class="ttdoc">Gets the SQLite3 database handle used by the target.</div></div>
+<div class="ttc" id="asqlite3_8h_html_ab0003c19d3a5bcfde20bc2c44212ab95"><div class="ttname"><a href="sqlite3_8h.html#ab0003c19d3a5bcfde20bc2c44212ab95">stumpless_set_sqlite3_insert_sql</a></div><div class="ttdeci">struct stumpless_target * stumpless_set_sqlite3_insert_sql(struct stumpless_target *target, const char *sql)</div><div class="ttdoc">Sets the SQL statement used to insert entries into the database.</div></div>
+<div class="ttc" id="asqlite3_8h_html_ab9ee47a85041b779e695ecc25465cd15"><div class="ttname"><a href="sqlite3_8h.html#ab9ee47a85041b779e695ecc25465cd15">stumpless_get_sqlite3_prepare</a></div><div class="ttdeci">stumpless_sqlite3_prepare_func_t stumpless_get_sqlite3_prepare(const struct stumpless_target *target, void **data)</div><div class="ttdoc">Gets the preparation function and data pointer used to prepare statements for insertion into the data...</div></div>
+<div class="ttc" id="asqlite3_8h_html_ac97536bc42025cdc3b2e626137a02826"><div class="ttname"><a href="sqlite3_8h.html#ac97536bc42025cdc3b2e626137a02826">stumpless_set_sqlite3_prepare</a></div><div class="ttdeci">struct stumpless_target * stumpless_set_sqlite3_prepare(struct stumpless_target *target, stumpless_sqlite3_prepare_func_t preparer, void *data)</div><div class="ttdoc">Set the function used to prepare statements for entries to this target.</div></div>
+<div class="ttc" id="asqlite3_8h_html_ad32680e4bd57937fdf0c338451028a63"><div class="ttname"><a href="sqlite3_8h.html#ad32680e4bd57937fdf0c338451028a63">stumpless_open_sqlite3_target_with_options</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_sqlite3_target_with_options(const char *name, int flags, const char *vfs)</div><div class="ttdoc">Opens a SQLite3 target with the provided options.</div></div>
+<div class="ttc" id="asqlite3_8h_html_ad952d9bdd67793510649971baa7aeb36"><div class="ttname"><a href="sqlite3_8h.html#ad952d9bdd67793510649971baa7aeb36">stumpless_open_sqlite3_target</a></div><div class="ttdeci">struct stumpless_target * stumpless_open_sqlite3_target(const char *name)</div><div class="ttdoc">Opens a SQLite3 target.</div></div>
+<div class="ttc" id="asqlite3_8h_html_adba7af83fa65444728364d7e834f1a01"><div class="ttname"><a href="sqlite3_8h.html#adba7af83fa65444728364d7e834f1a01">stumpless_close_sqlite3_target_only</a></div><div class="ttdeci">void stumpless_close_sqlite3_target_only(const struct stumpless_target *target)</div><div class="ttdoc">Closes a SQLite3 target, but does not touch the database handle.</div></div>
+<div class="ttc" id="asqlite3_8h_html_aea54111b87a263ef98b87d2f93c27448"><div class="ttname"><a href="sqlite3_8h.html#aea54111b87a263ef98b87d2f93c27448">stumpless_sqlite3_prepare</a></div><div class="ttdeci">void * stumpless_sqlite3_prepare(const struct stumpless_entry *entry, void *data, size_t *count)</div><div class="ttdoc">The default prepare function used for SQLite3 targets.</div></div>
+<div class="ttc" id="asqlite3_8h_html_afb3447ce731e2d9e618e6f4b029e2940"><div class="ttname"><a href="sqlite3_8h.html#afb3447ce731e2d9e618e6f4b029e2940">stumpless_get_sqlite3_insert_sql</a></div><div class="ttdeci">const char * stumpless_get_sqlite3_insert_sql(const struct stumpless_target *target)</div><div class="ttdoc">Gets the SQL statement used to insert entries into the database.</div></div>
+<div class="ttc" id="astructstumpless__entry_html"><div class="ttname"><a href="structstumpless__entry.html">stumpless_entry</a></div><div class="ttdoc">A log entry.</div><div class="ttdef"><b>定义</b> entry.h:60</div></div>
+<div class="ttc" id="astructstumpless__target_html"><div class="ttname"><a href="structstumpless__target.html">stumpless_target</a></div><div class="ttdoc">A target that log entries can be sent to.</div><div class="ttdef"><b>定义</b> target.h:140</div></div>
+<div class="ttc" id="astructstumpless__target_html_a2e00af9e00a7653b1a60b95549543c84"><div class="ttname"><a href="structstumpless__target.html#a2e00af9e00a7653b1a60b95549543c84">stumpless_target::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">The name of this target.</div><div class="ttdef"><b>定义</b> target.h:157</div></div>
+<div class="ttc" id="atarget_8h_html"><div class="ttname"><a href="target_8h.html">target.h</a></div><div class="ttdoc">General types and functions for working with all targets.</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_ba40c74cc7a9b9ece787ff31120c1693.html">stumpless</a></li><li class="navelem"><a class="el" href="dir_0349ce9a6f8a114f3b3d7011bee1d5bf.html">target</a></li><li class="navelem"><a class="el" href="sqlite3_8h.html">sqlite3.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

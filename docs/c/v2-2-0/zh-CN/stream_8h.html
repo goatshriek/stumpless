@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless/target/stream.h 文件参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">stumpless<span id="projectnumber">&#160;2.2.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('stream_8h.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">函数</a>  </div>
+  <div class="headertitle"><div class="title">stream.h 文件参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Functions for working with stream targets (that is, FILE pointers).  
+<a href="#details">更多...</a></p>
+
+<p><a href="stream_8h_source.html">浏览该文件的源代码.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+函数</h2></td></tr>
+<tr class="memitem:ae3d3a8d4d1d96d9b06dc27a74bc4d6d4" id="r_ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">stumpless_close_stream_target</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a stream target.  <br /></td></tr>
+<tr class="separator:ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfc094928ac7c37654b7f8d4ba5da3e0" id="r_acfc094928ac7c37654b7f8d4ba5da3e0"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfc094928ac7c37654b7f8d4ba5da3e0">stumpless_open_stderr_target</a> (const char *name)</td></tr>
+<tr class="memdesc:acfc094928ac7c37654b7f8d4ba5da3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a stream target for the stderr stream.  <br /></td></tr>
+<tr class="separator:acfc094928ac7c37654b7f8d4ba5da3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b2b8d8fd29d5e80a20ac8397407758a" id="r_a1b2b8d8fd29d5e80a20ac8397407758a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1b2b8d8fd29d5e80a20ac8397407758a">stumpless_open_stdout_target</a> (const char *name)</td></tr>
+<tr class="memdesc:a1b2b8d8fd29d5e80a20ac8397407758a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a stream target for the stdout stream.  <br /></td></tr>
+<tr class="separator:a1b2b8d8fd29d5e80a20ac8397407758a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b208f6f2cc60e70479a3179882c956" id="r_a17b208f6f2cc60e70479a3179882c956"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17b208f6f2cc60e70479a3179882c956">stumpless_open_stream_target</a> (const char *name, FILE *stream)</td></tr>
+<tr class="memdesc:a17b208f6f2cc60e70479a3179882c956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a stream target for the given stream.  <br /></td></tr>
+<tr class="separator:a17b208f6f2cc60e70479a3179882c956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>Functions for working with stream targets (that is, FILE pointers). </p>
+<p><b>Thread Safety: MT-Safe</b> Logging to stream targets is thread safe. A mutex is used to coordinate writes to the stream.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to stream targets is not signal safe, as a non-reentrant lock is used to coordinate writes to the stream.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to stream targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed. </p>
+</div><h2 class="groupheader">函数说明</h2>
+<a id="ae3d3a8d4d1d96d9b06dc27a74bc4d6d4" name="ae3d3a8d4d1d96d9b06dc27a74bc4d6d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d3a8d4d1d96d9b06dc27a74bc4d6d4">&#9670;&#160;</a></span>stumpless_close_stream_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_close_stream_target </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Closes a stream target. </p>
+<p>This function does NOT close the stream associated with the target. It does destroy all memory allocated for the target, including the target struct itself.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The stream target to close. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acfc094928ac7c37654b7f8d4ba5da3e0" name="acfc094928ac7c37654b7f8d4ba5da3e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfc094928ac7c37654b7f8d4ba5da3e0">&#9670;&#160;</a></span>stumpless_open_stderr_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_stderr_target </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a stream target for the stderr stream. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a1b2b8d8fd29d5e80a20ac8397407758a" name="a1b2b8d8fd29d5e80a20ac8397407758a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b2b8d8fd29d5e80a20ac8397407758a">&#9670;&#160;</a></span>stumpless_open_stdout_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_stdout_target </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a stream target for the stdout stream. </p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a17b208f6f2cc60e70479a3179882c956" name="a17b208f6f2cc60e70479a3179882c956"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b208f6f2cc60e70479a3179882c956">&#9670;&#160;</a></span>stumpless_open_stream_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_stream_target </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *</td>          <td class="paramname"><span class="paramname"><em>stream</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a stream target for the given stream. </p>
+<p>Events logged to this target will be separated by a newline, just as with a file target. In fact, a stream target is equivalent to a file target with the difference being that the file must be opened and closed by the caller.</p>
+<p>A stream target can also be useful for logging to other streams, such as stdout and stderr, which is not possible with a file target.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the target to open. This is only used for identification of the target.</td></tr>
+    <tr><td class="paramname">stream</td><td>The stream to log events to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_ba40c74cc7a9b9ece787ff31120c1693.html">stumpless</a></li><li class="navelem"><a class="el" href="dir_0349ce9a6f8a114f3b3d7011bee1d5bf.html">target</a></li><li class="navelem"><a class="el" href="stream_8h.html">stream.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

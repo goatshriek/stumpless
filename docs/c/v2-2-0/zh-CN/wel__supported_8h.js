@@ -1,0 +1,25 @@
+var wel__supported_8h =
+[
+    [ "stumpless_add_default_wel_event_source", "wel__supported_8h.html#a3e1aa6ac601b6152b452e393af93438c", null ],
+    [ "stumpless_add_wel_event_source", "wel__supported_8h.html#a916e18974a0639056d90cf11e29d331c", null ],
+    [ "stumpless_add_wel_event_source_w", "wel__supported_8h.html#aec957cef904b49e05269c2986a4c8cb6", null ],
+    [ "stumpless_get_wel_category", "wel__supported_8h.html#aa51c1bd1508649d064089a7e702faccb", null ],
+    [ "stumpless_get_wel_event_id", "wel__supported_8h.html#adf4554c9764831e40f39e8b81bfe373e", null ],
+    [ "stumpless_get_wel_insertion_param", "wel__supported_8h.html#a6ef9c7b66577ec243c8f47cff08f1f18", null ],
+    [ "stumpless_get_wel_insertion_string", "wel__supported_8h.html#ac5dbe29cd87a66a36954fc5b598c52a6", null ],
+    [ "stumpless_get_wel_insertion_string_w", "wel__supported_8h.html#a98221feb0b913336e3f5e1599ce2665b", null ],
+    [ "stumpless_get_wel_type", "wel__supported_8h.html#aa373b5e15728502511afa07b4891560a", null ],
+    [ "stumpless_remove_default_wel_event_source", "wel__supported_8h.html#ac08fe48deecc763ddb5a7f00588ee68b", null ],
+    [ "stumpless_remove_wel_event_source", "wel__supported_8h.html#a285f7ed84d4e39bdaeae84237081aaa8", null ],
+    [ "stumpless_remove_wel_event_source_w", "wel__supported_8h.html#a882420dea6d8e18516c9e87ff08c9430", null ],
+    [ "stumpless_set_wel_category", "wel__supported_8h.html#a04a5e0ce2bfcc50e5b6ebc3cd310b788", null ],
+    [ "stumpless_set_wel_event_id", "wel__supported_8h.html#a1b9d9ec122499adaab98cfe30370f8cb", null ],
+    [ "stumpless_set_wel_insertion_param", "wel__supported_8h.html#a7989ee66b314fa0f03f650ff6e14bbaa", null ],
+    [ "stumpless_set_wel_insertion_string", "wel__supported_8h.html#abaad51655a9d7172a203cfd7bbff34ad", null ],
+    [ "stumpless_set_wel_insertion_string_w", "wel__supported_8h.html#a22d5931ccb0fe2fc41e531f2413f4d24", null ],
+    [ "stumpless_set_wel_insertion_strings", "wel__supported_8h.html#ab7a2ddaf98ac5970ed01c52bea0834c7", null ],
+    [ "stumpless_set_wel_insertion_strings_w", "wel__supported_8h.html#a029201de74fbd0a4aa39e6aef95f45c3", null ],
+    [ "stumpless_set_wel_type", "wel__supported_8h.html#a50acdce495b758ac3e78b24d749aca38", null ],
+    [ "vstumpless_set_wel_insertion_strings", "wel__supported_8h.html#a38729f400ad914bb7768f9279f0193ae", null ],
+    [ "vstumpless_set_wel_insertion_strings_w", "wel__supported_8h.html#a1ac5572015eb8bba14cb15f2f0e63f55", null ]
+];

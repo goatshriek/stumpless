@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless/filter.h 文件参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">stumpless<span id="projectnumber">&#160;2.2.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('filter_8h.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">函数</a>  </div>
+  <div class="headertitle"><div class="title">filter.h 文件参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Filters that can be used to control which entries are sent to targets at runtime.  
+<a href="#details">更多...</a></p>
+
+<p><a href="filter_8h_source.html">浏览该文件的源代码.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+函数</h2></td></tr>
+<tr class="memitem:a14aebc3818fca7e6aea937e0a5a009c3" id="r_a14aebc3818fca7e6aea937e0a5a009c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14aebc3818fca7e6aea937e0a5a009c3">stumpless_mask_filter</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry)</td></tr>
+<tr class="memdesc:a14aebc3818fca7e6aea937e0a5a009c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the severity of the entry to the current mask of the target, and only passes the entry if the mask bit corresponding to the severity is set.  <br /></td></tr>
+<tr class="separator:a14aebc3818fca7e6aea937e0a5a009c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>Filters that can be used to control which entries are sent to targets at runtime. </p>
+<dl class="section since"><dt>自从</dt><dd>release v2.1.0 </dd></dl>
+</div><h2 class="groupheader">函数说明</h2>
+<a id="a14aebc3818fca7e6aea937e0a5a009c3" name="a14aebc3818fca7e6aea937e0a5a009c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14aebc3818fca7e6aea937e0a5a009c3">&#9670;&#160;</a></span>stumpless_mask_filter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool stumpless_mask_filter </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares the severity of the entry to the current mask of the target, and only passes the entry if the mask bit corresponding to the severity is set. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe. A mutex is used to coordinate changes to the target while it is being read.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked..</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.1.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target that the entry will be sent to if it passes.</td></tr>
+    <tr><td class="paramname">entry</td><td>The entry that is being submitted to the target.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>true if the severity of the entry is set in the target's mask, false otherwise. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_ba40c74cc7a9b9ece787ff31120c1693.html">stumpless</a></li><li class="navelem"><a class="el" href="filter_8h.html">filter.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

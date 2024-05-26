@@ -3,12 +3,13 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-redirect-from
   - jekyll-seo-tag
 
 header_pages:
   - roadmap.md
-  - docs/c/latest/index.html
-  - docs/cpp/latest/index.html
+  - docs/c/v2-2-0/en-US/index.html
+  - docs/cpp/v2-2-0/en-US/index.html
 
 exclude:
   - script_*

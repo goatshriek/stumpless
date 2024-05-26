@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless/element.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">stumpless<span id="projectnumber">&#160;2.2.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('element_8h_source.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">element.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="element_8h.html">浏览该文件的文档.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* SPDX-License-Identifier: Apache-2.0 */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Copyright 2018-2024 Joel E. Anderson</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#ifndef __STUMPLESS_ELEMENT_H</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#  define __STUMPLESS_ELEMENT_H</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#  include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#  include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#  include &lt;stumpless/config.h&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#  include &lt;<a class="code" href="entry_8h.html">stumpless/entry.h</a>&gt;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#  include &lt;<a class="code" href="param_8h.html">stumpless/param.h</a>&gt;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="element_8h.html#ada5fad826965fa8577e97395a2513ffd">   33</a></span><span class="preprocessor">#  define STUMPLESS_MAX_ELEMENT_NAME_LENGTH 32</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#  endif</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// this is required due to the circular dependency with the entry header.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__entry.html">stumpless_entry</a>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">typedef</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="element_8h.html#ac610c390facaa0990cae26ed645cf82e">   80</a></span>size_t</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>( *<a class="code hl_typedef" href="element_8h.html#ac610c390facaa0990cae26ed645cf82e">stumpless_element_namer_func_t</a> )( <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__entry.html">stumpless_entry</a> *entry,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                                     <span class="keywordtype">size_t</span> element_index,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                                     <span class="keywordtype">char</span> *destination,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                                     <span class="keywordtype">size_t</span> size );</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="};">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="structstumpless__element.html">   93</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">  114</a></span>  <span class="keywordtype">char</span> <a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a>[<a class="code hl_define" href="element_8h.html#ada5fad826965fa8577e97395a2513ffd">STUMPLESS_MAX_ELEMENT_NAME_LENGTH</a> + 1];</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">  116</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">name_length</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="structstumpless__element.html#adf8526b3149f1794ec85fe646680e157">  125</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__param.html">stumpless_param</a> **<a class="code hl_variable" href="structstumpless__element.html#adf8526b3149f1794ec85fe646680e157">params</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">  127</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">param_count</a>;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#ifdef STUMPLESS_JOURNALD_TARGETS_SUPPORTED</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552">  132</a></span>  <a class="code hl_typedef" href="element_8h.html#ac610c390facaa0990cae26ed645cf82e">stumpless_element_namer_func_t</a> <a class="code hl_variable" href="structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552">get_journald_name</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="structstumpless__element.html#a008161e9e4dd4d8403ea1bd7ca19a33a">  139</a></span>  <span class="keywordtype">void</span> *<a class="code hl_variable" href="structstumpless__element.html#a008161e9e4dd4d8403ea1bd7ca19a33a">mutex</a>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>};</div>
+</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="element_8h.html#a92b5c4af6341951dad54a9af788e2a14">  177</a></span><a class="code hl_function" href="element_8h.html#a92b5c4af6341951dad54a9af788e2a14">stumpless_add_new_param</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                         <span class="keyword">const</span> <span class="keywordtype">char</span> *param_name,</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                         <span class="keyword">const</span> <span class="keywordtype">char</span> *param_value );</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="element_8h.html#a36b39498f3b9bd6dd20d49d5fc16a99e">  207</a></span><a class="code hl_function" href="element_8h.html#a36b39498f3b9bd6dd20d49d5fc16a99e">stumpless_add_param</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                     <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__param.html">stumpless_param</a> *param );</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="element_8h.html#acf6b6d0c8682b7409d494850e990f2b3">  241</a></span><a class="code hl_function" href="element_8h.html#acf6b6d0c8682b7409d494850e990f2b3">stumpless_copy_element</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">  269</a></span><a class="code hl_function" href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">stumpless_destroy_element</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">  293</a></span><a class="code hl_function" href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">stumpless_destroy_element_and_contents</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *e );</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno"><a class="line" href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">  317</a></span><a class="code hl_function" href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">stumpless_destroy_element_only</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="keywordtype">bool</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">  347</a></span><a class="code hl_function" href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">stumpless_element_has_param</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                             <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a> );</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno"><a class="line" href="element_8h.html#af76334de05ecec6302acdd2b368c4dda">  377</a></span><a class="code hl_function" href="element_8h.html#af76334de05ecec6302acdd2b368c4dda">stumpless_element_to_string</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno"><a class="line" href="element_8h.html#aa6ad7dc6eb77d8beced2b0ce9462d159">  410</a></span><a class="code hl_function" href="element_8h.html#aa6ad7dc6eb77d8beced2b0ce9462d159">stumpless_get_element_name</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__param.html">stumpless_param</a> *</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno"><a class="line" href="element_8h.html#a0171fc80fbf9f4fa0e7ecae07bf93213">  438</a></span><a class="code hl_function" href="element_8h.html#a0171fc80fbf9f4fa0e7ecae07bf93213">stumpless_get_param_by_index</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>                              <span class="keywordtype">size_t</span> index );</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__param.html">stumpless_param</a> *</div>
+<div class="line"><a id="l00477" name="l00477"></a><span class="lineno"><a class="line" href="element_8h.html#a68a45b3e8de00bf01ae382b30bdc708d">  477</a></span><a class="code hl_function" href="element_8h.html#a68a45b3e8de00bf01ae382b30bdc708d">stumpless_get_param_by_name</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>                             <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__param.html#a53393a75b7ab234761bbdc61764f5002">name</a> );</div>
+<div class="line"><a id="l00479" name="l00479"></a><span class="lineno">  479</span> </div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span><span class="keywordtype">size_t</span></div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno"><a class="line" href="element_8h.html#a792f240cdec230073975f0e890a7cd80">  504</a></span><a class="code hl_function" href="element_8h.html#a792f240cdec230073975f0e890a7cd80">stumpless_get_param_count</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span> </div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span><span class="keywordtype">size_t</span></div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno"><a class="line" href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">  542</a></span><a class="code hl_function" href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">stumpless_get_param_index</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                           <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__param.html#a53393a75b7ab234761bbdc61764f5002">name</a> );</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span> </div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno"><a class="line" href="element_8h.html#a6da1a7539ed5de4453534a56ee47076e">  580</a></span><a class="code hl_function" href="element_8h.html#a6da1a7539ed5de4453534a56ee47076e">stumpless_get_param_name_by_index</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>                                   <span class="keywordtype">size_t</span> index );</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span><span class="keywordtype">size_t</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno"><a class="line" href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">  615</a></span><a class="code hl_function" href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">stumpless_get_param_name_count</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                                <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__param.html#a53393a75b7ab234761bbdc61764f5002">name</a> );</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span> </div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno"><a class="line" href="element_8h.html#ac026aa615608e7de8c72b1d34f966fdc">  653</a></span><a class="code hl_function" href="element_8h.html#ac026aa615608e7de8c72b1d34f966fdc">stumpless_get_param_value_by_index</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>                                    <span class="keywordtype">size_t</span> index );</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span><span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno"><a class="line" href="element_8h.html#a5ace76e27d8128316d1f202b61317d5b">  695</a></span><a class="code hl_function" href="element_8h.html#a5ace76e27d8128316d1f202b61317d5b">stumpless_get_param_value_by_name</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>                                   <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__param.html#a53393a75b7ab234761bbdc61764f5002">name</a> );</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span> </div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno"><a class="line" href="element_8h.html#aa68da53a7019a7c52566e9a2b9506557">  736</a></span><a class="code hl_function" href="element_8h.html#aa68da53a7019a7c52566e9a2b9506557">stumpless_load_element</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a> );</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span> </div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno"><a class="line" href="element_8h.html#a48f244f4d91593e5d0db599b9a43019b">  761</a></span><a class="code hl_function" href="element_8h.html#a48f244f4d91593e5d0db599b9a43019b">stumpless_new_element</a>( <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a> );</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span> </div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno"><a class="line" href="element_8h.html#ab2d508289a94ae629a268e709a761443">  792</a></span><a class="code hl_function" href="element_8h.html#ab2d508289a94ae629a268e709a761443">stumpless_set_element_name</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                            <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a> );</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span> </div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno"><a class="line" href="element_8h.html#a70b053bd1233da7fe6f4205007886b14">  831</a></span><a class="code hl_function" href="element_8h.html#a70b053bd1233da7fe6f4205007886b14">stumpless_set_param</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>                     <span class="keywordtype">size_t</span> index,</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>                     <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__param.html">stumpless_param</a> *param );</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span> </div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno"><a class="line" href="element_8h.html#a7ddc949f75a370cd8984f12234c1dd67">  866</a></span><a class="code hl_function" href="element_8h.html#a7ddc949f75a370cd8984f12234c1dd67">stumpless_set_param_value_by_index</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>                                    <span class="keywordtype">size_t</span> index,</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>                                    <span class="keyword">const</span> <span class="keywordtype">char</span> *value );</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span><span class="keyword">struct </span><a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno"><a class="line" href="element_8h.html#a054d9e16dd268df07e1de80d1ed19e95">  909</a></span><a class="code hl_function" href="element_8h.html#a054d9e16dd268df07e1de80d1ed19e95">stumpless_set_param_value_by_name</a>( <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element,</div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>                                   <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">name</a>,</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>                                   <span class="keyword">const</span> <span class="keywordtype">char</span> *value );</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span> </div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno"><a class="line" href="element_8h.html#aec6c8c935bc5a772ad9ac8db8729b638">  939</a></span><a class="code hl_function" href="element_8h.html#aec6c8c935bc5a772ad9ac8db8729b638">stumpless_unload_element_and_contents</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *e );</div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span> </div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span><a class="code hl_define" href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span><span class="keywordtype">void</span></div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno"><a class="line" href="element_8h.html#a2b65689f3a2c6ed3168aa1cc03fdc6d3">  968</a></span><a class="code hl_function" href="element_8h.html#a2b65689f3a2c6ed3168aa1cc03fdc6d3">stumpless_unload_element_only</a>( <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structstumpless__element.html">stumpless_element</a> *element );</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span> </div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span> </div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span><span class="preprocessor">#  ifdef __cplusplus</span></div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>}                               <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span><span class="preprocessor">#  endif</span></div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span><span class="preprocessor">#endif </span><span class="comment">/* __STUMPLESS_ELEMENT_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aconfig_8h_html_a7300d22c8f17091b752c8280928213ad"><div class="ttname"><a href="config_8h.html#a7300d22c8f17091b752c8280928213ad">STUMPLESS_PUBLIC_FUNCTION</a></div><div class="ttdeci">#define STUMPLESS_PUBLIC_FUNCTION</div><div class="ttdoc">Marks functions that are provided for use by the library.</div><div class="ttdef"><b>定义</b> config.h:31</div></div>
+<div class="ttc" id="aelement_8h_html_a0171fc80fbf9f4fa0e7ecae07bf93213"><div class="ttname"><a href="element_8h.html#a0171fc80fbf9f4fa0e7ecae07bf93213">stumpless_get_param_by_index</a></div><div class="ttdeci">struct stumpless_param * stumpless_get_param_by_index(const struct stumpless_element *element, size_t index)</div><div class="ttdoc">Returns the param in the given element at the specified index.</div></div>
+<div class="ttc" id="aelement_8h_html_a054d9e16dd268df07e1de80d1ed19e95"><div class="ttname"><a href="element_8h.html#a054d9e16dd268df07e1de80d1ed19e95">stumpless_set_param_value_by_name</a></div><div class="ttdeci">struct stumpless_element * stumpless_set_param_value_by_name(struct stumpless_element *element, const char *name, const char *value)</div><div class="ttdoc">Sets the value of the first param with the given name in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a26f6e8a9f3dc18d7dbffee19627fa331"><div class="ttname"><a href="element_8h.html#a26f6e8a9f3dc18d7dbffee19627fa331">stumpless_destroy_element_only</a></div><div class="ttdeci">void stumpless_destroy_element_only(const struct stumpless_element *element)</div><div class="ttdoc">Destroys an element, freeing any allocated memory.</div></div>
+<div class="ttc" id="aelement_8h_html_a2b65689f3a2c6ed3168aa1cc03fdc6d3"><div class="ttname"><a href="element_8h.html#a2b65689f3a2c6ed3168aa1cc03fdc6d3">stumpless_unload_element_only</a></div><div class="ttdeci">void stumpless_unload_element_only(const struct stumpless_element *element)</div><div class="ttdoc">Unloads an element, freeing any allocated memory.</div></div>
+<div class="ttc" id="aelement_8h_html_a36b39498f3b9bd6dd20d49d5fc16a99e"><div class="ttname"><a href="element_8h.html#a36b39498f3b9bd6dd20d49d5fc16a99e">stumpless_add_param</a></div><div class="ttdeci">struct stumpless_element * stumpless_add_param(struct stumpless_element *element, struct stumpless_param *param)</div><div class="ttdoc">Adds a param to an element.</div></div>
+<div class="ttc" id="aelement_8h_html_a48f244f4d91593e5d0db599b9a43019b"><div class="ttname"><a href="element_8h.html#a48f244f4d91593e5d0db599b9a43019b">stumpless_new_element</a></div><div class="ttdeci">struct stumpless_element * stumpless_new_element(const char *name)</div><div class="ttdoc">Creates a new element with the given name.</div></div>
+<div class="ttc" id="aelement_8h_html_a5ace76e27d8128316d1f202b61317d5b"><div class="ttname"><a href="element_8h.html#a5ace76e27d8128316d1f202b61317d5b">stumpless_get_param_value_by_name</a></div><div class="ttdeci">const char * stumpless_get_param_value_by_name(const struct stumpless_element *element, const char *name)</div><div class="ttdoc">Returns the value of the first param with the given name in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a68a45b3e8de00bf01ae382b30bdc708d"><div class="ttname"><a href="element_8h.html#a68a45b3e8de00bf01ae382b30bdc708d">stumpless_get_param_by_name</a></div><div class="ttdeci">struct stumpless_param * stumpless_get_param_by_name(const struct stumpless_element *element, const char *name)</div><div class="ttdoc">Returns the first occurrence of a param with the given name in element, if it is found.</div></div>
+<div class="ttc" id="aelement_8h_html_a6da1a7539ed5de4453534a56ee47076e"><div class="ttname"><a href="element_8h.html#a6da1a7539ed5de4453534a56ee47076e">stumpless_get_param_name_by_index</a></div><div class="ttdeci">const char * stumpless_get_param_name_by_index(const struct stumpless_element *element, size_t index)</div><div class="ttdoc">Gets the name of the param with the given index in this element.</div></div>
+<div class="ttc" id="aelement_8h_html_a70b053bd1233da7fe6f4205007886b14"><div class="ttname"><a href="element_8h.html#a70b053bd1233da7fe6f4205007886b14">stumpless_set_param</a></div><div class="ttdeci">struct stumpless_element * stumpless_set_param(struct stumpless_element *element, size_t index, struct stumpless_param *param)</div><div class="ttdoc">Puts the param at the given index in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a792f240cdec230073975f0e890a7cd80"><div class="ttname"><a href="element_8h.html#a792f240cdec230073975f0e890a7cd80">stumpless_get_param_count</a></div><div class="ttdeci">size_t stumpless_get_param_count(const struct stumpless_element *element)</div><div class="ttdoc">Returns the number of params in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a7ddc949f75a370cd8984f12234c1dd67"><div class="ttname"><a href="element_8h.html#a7ddc949f75a370cd8984f12234c1dd67">stumpless_set_param_value_by_index</a></div><div class="ttdeci">struct stumpless_element * stumpless_set_param_value_by_index(struct stumpless_element *element, size_t index, const char *value)</div><div class="ttdoc">Sets the value of the param at the given index in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a8fcc1fbe4d13fdcab7d7a16997f99b10"><div class="ttname"><a href="element_8h.html#a8fcc1fbe4d13fdcab7d7a16997f99b10">stumpless_get_param_index</a></div><div class="ttdeci">size_t stumpless_get_param_index(const struct stumpless_element *element, const char *name)</div><div class="ttdoc">Gives the index of the first occurrence of a param with the given name in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a92b5c4af6341951dad54a9af788e2a14"><div class="ttname"><a href="element_8h.html#a92b5c4af6341951dad54a9af788e2a14">stumpless_add_new_param</a></div><div class="ttdeci">struct stumpless_element * stumpless_add_new_param(struct stumpless_element *element, const char *param_name, const char *param_value)</div><div class="ttdoc">Creates a new param and adds it to the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_a96a1a0eaf93f5026f91824ff1292e71f"><div class="ttname"><a href="element_8h.html#a96a1a0eaf93f5026f91824ff1292e71f">stumpless_element_has_param</a></div><div class="ttdeci">bool stumpless_element_has_param(const struct stumpless_element *element, const char *name)</div><div class="ttdoc">True if the given element has a param with the given name, false otherwise.</div></div>
+<div class="ttc" id="aelement_8h_html_aa68da53a7019a7c52566e9a2b9506557"><div class="ttname"><a href="element_8h.html#aa68da53a7019a7c52566e9a2b9506557">stumpless_load_element</a></div><div class="ttdeci">struct stumpless_element * stumpless_load_element(struct stumpless_element *element, const char *name)</div><div class="ttdoc">Loads a provided element with the given name.</div></div>
+<div class="ttc" id="aelement_8h_html_aa6ad7dc6eb77d8beced2b0ce9462d159"><div class="ttname"><a href="element_8h.html#aa6ad7dc6eb77d8beced2b0ce9462d159">stumpless_get_element_name</a></div><div class="ttdeci">const char * stumpless_get_element_name(const struct stumpless_element *element)</div><div class="ttdoc">Returns the name of the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_ab2d508289a94ae629a268e709a761443"><div class="ttname"><a href="element_8h.html#ab2d508289a94ae629a268e709a761443">stumpless_set_element_name</a></div><div class="ttdeci">struct stumpless_element * stumpless_set_element_name(struct stumpless_element *element, const char *name)</div><div class="ttdoc">Sets the name of the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_ab3293ce2407142a896c6ece0089cac33"><div class="ttname"><a href="element_8h.html#ab3293ce2407142a896c6ece0089cac33">stumpless_destroy_element_and_contents</a></div><div class="ttdeci">void stumpless_destroy_element_and_contents(const struct stumpless_element *e)</div><div class="ttdoc">Destroys an element as well as all params that it contains, freeing any allocated memory.</div></div>
+<div class="ttc" id="aelement_8h_html_ac026aa615608e7de8c72b1d34f966fdc"><div class="ttname"><a href="element_8h.html#ac026aa615608e7de8c72b1d34f966fdc">stumpless_get_param_value_by_index</a></div><div class="ttdeci">const char * stumpless_get_param_value_by_index(const struct stumpless_element *element, size_t index)</div><div class="ttdoc">Returns the value of the param at the given index in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_ac610c390facaa0990cae26ed645cf82e"><div class="ttname"><a href="element_8h.html#ac610c390facaa0990cae26ed645cf82e">stumpless_element_namer_func_t</a></div><div class="ttdeci">size_t(* stumpless_element_namer_func_t)(const struct stumpless_entry *entry, size_t element_index, char *destination, size_t size)</div><div class="ttdoc">Gets the name to use for the journald field corresponding to this element.</div><div class="ttdef"><b>定义</b> element.h:81</div></div>
+<div class="ttc" id="aelement_8h_html_acf6b6d0c8682b7409d494850e990f2b3"><div class="ttname"><a href="element_8h.html#acf6b6d0c8682b7409d494850e990f2b3">stumpless_copy_element</a></div><div class="ttdeci">struct stumpless_element * stumpless_copy_element(const struct stumpless_element *element)</div><div class="ttdoc">Creates a copy of an element.</div></div>
+<div class="ttc" id="aelement_8h_html_ada5fad826965fa8577e97395a2513ffd"><div class="ttname"><a href="element_8h.html#ada5fad826965fa8577e97395a2513ffd">STUMPLESS_MAX_ELEMENT_NAME_LENGTH</a></div><div class="ttdeci">#define STUMPLESS_MAX_ELEMENT_NAME_LENGTH</div><div class="ttdoc">The maximum length of an element name, as specified by RFC 5424.</div><div class="ttdef"><b>定义</b> element.h:33</div></div>
+<div class="ttc" id="aelement_8h_html_ae61ef0406ba4d283baa8b2d7dc324779"><div class="ttname"><a href="element_8h.html#ae61ef0406ba4d283baa8b2d7dc324779">stumpless_get_param_name_count</a></div><div class="ttdeci">size_t stumpless_get_param_name_count(const struct stumpless_element *element, const char *name)</div><div class="ttdoc">Gives the number of params with the given name found in the given element.</div></div>
+<div class="ttc" id="aelement_8h_html_aec6c8c935bc5a772ad9ac8db8729b638"><div class="ttname"><a href="element_8h.html#aec6c8c935bc5a772ad9ac8db8729b638">stumpless_unload_element_and_contents</a></div><div class="ttdeci">void stumpless_unload_element_and_contents(const struct stumpless_element *e)</div><div class="ttdoc">Unloads an element as well as all params that it contains.</div></div>
+<div class="ttc" id="aelement_8h_html_af76334de05ecec6302acdd2b368c4dda"><div class="ttname"><a href="element_8h.html#af76334de05ecec6302acdd2b368c4dda">stumpless_element_to_string</a></div><div class="ttdeci">const char * stumpless_element_to_string(const struct stumpless_element *element)</div><div class="ttdoc">Returns name and params from element as a formatted string.</div></div>
+<div class="ttc" id="aelement_8h_html_afde32c8772ca89cce0d3ee638d8ed67b"><div class="ttname"><a href="element_8h.html#afde32c8772ca89cce0d3ee638d8ed67b">stumpless_destroy_element</a></div><div class="ttdeci">void stumpless_destroy_element(const struct stumpless_element *element)</div><div class="ttdoc">An alias for stumpless_destroy_element_and_contents.</div></div>
+<div class="ttc" id="aentry_8h_html"><div class="ttname"><a href="entry_8h.html">entry.h</a></div><div class="ttdoc">Types and functions for creating and modifying entries.</div></div>
+<div class="ttc" id="aparam_8h_html"><div class="ttname"><a href="param_8h.html">param.h</a></div><div class="ttdoc">Types and functions for creating and modifying params.</div></div>
+<div class="ttc" id="astructstumpless__element_html"><div class="ttname"><a href="structstumpless__element.html">stumpless_element</a></div><div class="ttdoc">An element of structured data.</div><div class="ttdef"><b>定义</b> element.h:93</div></div>
+<div class="ttc" id="astructstumpless__element_html_a008161e9e4dd4d8403ea1bd7ca19a33a"><div class="ttname"><a href="structstumpless__element.html#a008161e9e4dd4d8403ea1bd7ca19a33a">stumpless_element::mutex</a></div><div class="ttdeci">void * mutex</div><div class="ttdoc">A pointer to a mutex which protects all element fields.</div><div class="ttdef"><b>定义</b> element.h:139</div></div>
+<div class="ttc" id="astructstumpless__element_html_a0d2644df0008fef6083ab1599fa79552"><div class="ttname"><a href="structstumpless__element.html#a0d2644df0008fef6083ab1599fa79552">stumpless_element::get_journald_name</a></div><div class="ttdeci">stumpless_element_namer_func_t get_journald_name</div><div class="ttdoc">Gets the name to use for the journald field corresponding to this element.</div><div class="ttdef"><b>定义</b> element.h:132</div></div>
+<div class="ttc" id="astructstumpless__element_html_a70b0503b3b02e707af62010dd5082438"><div class="ttname"><a href="structstumpless__element.html#a70b0503b3b02e707af62010dd5082438">stumpless_element::name_length</a></div><div class="ttdeci">size_t name_length</div><div class="ttdoc">The number of characters in name.</div><div class="ttdef"><b>定义</b> element.h:116</div></div>
+<div class="ttc" id="astructstumpless__element_html_aa1c2c08d6d757751ef3cdcf13dc76f9e"><div class="ttname"><a href="structstumpless__element.html#aa1c2c08d6d757751ef3cdcf13dc76f9e">stumpless_element::name</a></div><div class="ttdeci">char name[32+1]</div><div class="ttdoc">The name of the element.</div><div class="ttdef"><b>定义</b> element.h:114</div></div>
+<div class="ttc" id="astructstumpless__element_html_aaecd8d2740361b7689c7973713c6164a"><div class="ttname"><a href="structstumpless__element.html#aaecd8d2740361b7689c7973713c6164a">stumpless_element::param_count</a></div><div class="ttdeci">size_t param_count</div><div class="ttdoc">The number of params in the array.</div><div class="ttdef"><b>定义</b> element.h:127</div></div>
+<div class="ttc" id="astructstumpless__element_html_adf8526b3149f1794ec85fe646680e157"><div class="ttname"><a href="structstumpless__element.html#adf8526b3149f1794ec85fe646680e157">stumpless_element::params</a></div><div class="ttdeci">struct stumpless_param ** params</div><div class="ttdoc">The parameters this element contains.</div><div class="ttdef"><b>定义</b> element.h:125</div></div>
+<div class="ttc" id="astructstumpless__entry_html"><div class="ttname"><a href="structstumpless__entry.html">stumpless_entry</a></div><div class="ttdoc">A log entry.</div><div class="ttdef"><b>定义</b> entry.h:60</div></div>
+<div class="ttc" id="astructstumpless__param_html"><div class="ttname"><a href="structstumpless__param.html">stumpless_param</a></div><div class="ttdoc">A parameter within a structured data element.</div><div class="ttdef"><b>定义</b> param.h:93</div></div>
+<div class="ttc" id="astructstumpless__param_html_a53393a75b7ab234761bbdc61764f5002"><div class="ttname"><a href="structstumpless__param.html#a53393a75b7ab234761bbdc61764f5002">stumpless_param::name</a></div><div class="ttdeci">char name[32+1]</div><div class="ttdoc">The name of the parameter.</div><div class="ttdef"><b>定义</b> param.h:108</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_ba40c74cc7a9b9ece787ff31120c1693.html">stumpless</a></li><li class="navelem"><a class="el" href="element_8h.html">element.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>

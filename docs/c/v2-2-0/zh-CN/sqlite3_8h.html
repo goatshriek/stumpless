@@ -1,0 +1,645 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>stumpless: stumpless/target/sqlite3.h 文件参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">stumpless<span id="projectnumber">&#160;2.2.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','搜索',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('sqlite3_8h.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">宏定义</a> &#124;
+<a href="#typedef-members">类型定义</a> &#124;
+<a href="#func-members">函数</a>  </div>
+  <div class="headertitle"><div class="title">sqlite3.h 文件参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>SQLite3 targets allow logs to be sent to a SQLite3 database.  
+<a href="#details">更多...</a></p>
+
+<p><a href="sqlite3_8h_source.html">浏览该文件的源代码.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+宏定义</h2></td></tr>
+<tr class="memitem:a4b0cc21c20172786a71d98bcf7858b7c" id="r_a4b0cc21c20172786a71d98bcf7858b7c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b0cc21c20172786a71d98bcf7858b7c">STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL</a></td></tr>
+<tr class="memdesc:a4b0cc21c20172786a71d98bcf7858b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default SQL statement used to insert entries into a SQLite3 database.  <br /></td></tr>
+<tr class="separator:a4b0cc21c20172786a71d98bcf7858b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+类型定义</h2></td></tr>
+<tr class="memitem:a08d6a3a2732b759a9eedf4df5b3bb73b" id="r_a08d6a3a2732b759a9eedf4df5b3bb73b"><td class="memItemLeft" align="right" valign="top">typedef void *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a>) (const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, void *data, size_t *count)</td></tr>
+<tr class="memdesc:a08d6a3a2732b759a9eedf4df5b3bb73b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function for generating SQLite3 prepared statements for a given entry.  <br /></td></tr>
+<tr class="separator:a08d6a3a2732b759a9eedf4df5b3bb73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+函数</h2></td></tr>
+<tr class="memitem:a92184277ad50025d494ccee420a2bb3d" id="r_a92184277ad50025d494ccee420a2bb3d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92184277ad50025d494ccee420a2bb3d">stumpless_close_sqlite3_target_and_db</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a92184277ad50025d494ccee420a2bb3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a SQLite3 target and its database handle.  <br /></td></tr>
+<tr class="separator:a92184277ad50025d494ccee420a2bb3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adba7af83fa65444728364d7e834f1a01" id="r_adba7af83fa65444728364d7e834f1a01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adba7af83fa65444728364d7e834f1a01">stumpless_close_sqlite3_target_only</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:adba7af83fa65444728364d7e834f1a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes a SQLite3 target, but does not touch the database handle.  <br /></td></tr>
+<tr class="separator:adba7af83fa65444728364d7e834f1a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88c434265f87bc9a1d6a08662d8fad50" id="r_a88c434265f87bc9a1d6a08662d8fad50"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88c434265f87bc9a1d6a08662d8fad50">stumpless_create_default_sqlite3_table</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a88c434265f87bc9a1d6a08662d8fad50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a table in the target's database for use with the default SQLite3 insertion behavior.  <br /></td></tr>
+<tr class="separator:a88c434265f87bc9a1d6a08662d8fad50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9247b3faa5610ed4a82d5f45c0ccd077" id="r_a9247b3faa5610ed4a82d5f45c0ccd077"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9247b3faa5610ed4a82d5f45c0ccd077">stumpless_get_sqlite3_db</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:a9247b3faa5610ed4a82d5f45c0ccd077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the SQLite3 database handle used by the target.  <br /></td></tr>
+<tr class="separator:a9247b3faa5610ed4a82d5f45c0ccd077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb3447ce731e2d9e618e6f4b029e2940" id="r_afb3447ce731e2d9e618e6f4b029e2940"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb3447ce731e2d9e618e6f4b029e2940">stumpless_get_sqlite3_insert_sql</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target)</td></tr>
+<tr class="memdesc:afb3447ce731e2d9e618e6f4b029e2940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the SQL statement used to insert entries into the database.  <br /></td></tr>
+<tr class="separator:afb3447ce731e2d9e618e6f4b029e2940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9ee47a85041b779e695ecc25465cd15" id="r_ab9ee47a85041b779e695ecc25465cd15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9ee47a85041b779e695ecc25465cd15">stumpless_get_sqlite3_prepare</a> (const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, void **data)</td></tr>
+<tr class="memdesc:ab9ee47a85041b779e695ecc25465cd15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the preparation function and data pointer used to prepare statements for insertion into the database.  <br /></td></tr>
+<tr class="separator:ab9ee47a85041b779e695ecc25465cd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad952d9bdd67793510649971baa7aeb36" id="r_ad952d9bdd67793510649971baa7aeb36"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad952d9bdd67793510649971baa7aeb36">stumpless_open_sqlite3_target</a> (const char *name)</td></tr>
+<tr class="memdesc:ad952d9bdd67793510649971baa7aeb36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a SQLite3 target.  <br /></td></tr>
+<tr class="separator:ad952d9bdd67793510649971baa7aeb36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a270fbc15a9165ed2d5516fb70616204a" id="r_a270fbc15a9165ed2d5516fb70616204a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a270fbc15a9165ed2d5516fb70616204a">stumpless_open_sqlite3_target_from_db</a> (void *db)</td></tr>
+<tr class="memdesc:a270fbc15a9165ed2d5516fb70616204a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a SQLite3 target with an already-open database handle.  <br /></td></tr>
+<tr class="separator:a270fbc15a9165ed2d5516fb70616204a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad32680e4bd57937fdf0c338451028a63" id="r_ad32680e4bd57937fdf0c338451028a63"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad32680e4bd57937fdf0c338451028a63">stumpless_open_sqlite3_target_with_options</a> (const char *name, int flags, const char *vfs)</td></tr>
+<tr class="memdesc:ad32680e4bd57937fdf0c338451028a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a SQLite3 target with the provided options.  <br /></td></tr>
+<tr class="separator:ad32680e4bd57937fdf0c338451028a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0003c19d3a5bcfde20bc2c44212ab95" id="r_ab0003c19d3a5bcfde20bc2c44212ab95"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0003c19d3a5bcfde20bc2c44212ab95">stumpless_set_sqlite3_insert_sql</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, const char *sql)</td></tr>
+<tr class="memdesc:ab0003c19d3a5bcfde20bc2c44212ab95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the SQL statement used to insert entries into the database.  <br /></td></tr>
+<tr class="separator:ab0003c19d3a5bcfde20bc2c44212ab95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac97536bc42025cdc3b2e626137a02826" id="r_ac97536bc42025cdc3b2e626137a02826"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac97536bc42025cdc3b2e626137a02826">stumpless_set_sqlite3_prepare</a> (struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *target, <a class="el" href="#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a> preparer, void *data)</td></tr>
+<tr class="memdesc:ac97536bc42025cdc3b2e626137a02826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the function used to prepare statements for entries to this target.  <br /></td></tr>
+<tr class="separator:ac97536bc42025cdc3b2e626137a02826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea54111b87a263ef98b87d2f93c27448" id="r_aea54111b87a263ef98b87d2f93c27448"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea54111b87a263ef98b87d2f93c27448">stumpless_sqlite3_prepare</a> (const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, void *data, size_t *count)</td></tr>
+<tr class="memdesc:aea54111b87a263ef98b87d2f93c27448"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default prepare function used for SQLite3 targets.  <br /></td></tr>
+<tr class="separator:aea54111b87a263ef98b87d2f93c27448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p>SQLite3 targets allow logs to be sent to a SQLite3 database. </p>
+<p>The database, tables, and fields can be left up to the defaults, or customized as needed.</p>
+<p><b>Thread Safety: MT-Safe</b> Logging to sqlite3 targets is thread safe. A mutex is used to coordinate transactions.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Logging to sqlite3 targets is not signal safe, as a non-reentrant lock is used to coordinate transactions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> Logging to sqlite3 targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0 </dd></dl>
+</div><h2 class="groupheader">宏定义说明</h2>
+<a id="a4b0cc21c20172786a71d98bcf7858b7c" name="a4b0cc21c20172786a71d98bcf7858b7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b0cc21c20172786a71d98bcf7858b7c">&#9670;&#160;</a></span>STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>值:</b><div class="fragment"><div class="line"><span class="stringliteral">&quot;INSERT INTO &quot;</span> <a class="code hl_define" href="config_8h.html#aa4edd4d3b08baf682b1d88e5754edd68">STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING</a> <span class="stringliteral">&quot; &quot;</span>                 \</div>
+<div class="line"><span class="stringliteral">&quot;( prival, version, timestamp, hostname, app_name, procid, msgid,&quot;</span>             \</div>
+<div class="line"><span class="stringliteral">&quot;  structured_data, message ) &quot;</span>                                                \</div>
+<div class="line"><span class="stringliteral">&quot;VALUES ( $prival, 1, $timestamp, $hostname, $app_name, $procid, $msgid, &quot;</span>     \</div>
+<div class="line">         <span class="stringliteral">&quot;$structured_data, $message )&quot;</span></div>
+<div class="ttc" id="aconfig_8h_html_aa4edd4d3b08baf682b1d88e5754edd68"><div class="ttname"><a href="config_8h.html#aa4edd4d3b08baf682b1d88e5754edd68">STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING</a></div><div class="ttdeci">#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING</div><div class="ttdoc">A string literal with the name of the table used by default for SQLite3 targets.</div><div class="ttdef"><b>定义</b> config.h:78</div></div>
+</div><!-- fragment -->
+<p>The default SQL statement used to insert entries into a SQLite3 database. </p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">类型定义说明</h2>
+<a id="a08d6a3a2732b759a9eedf4df5b3bb73b" name="a08d6a3a2732b759a9eedf4df5b3bb73b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08d6a3a2732b759a9eedf4df5b3bb73b">&#9670;&#160;</a></span>stumpless_sqlite3_prepare_func_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void *(* stumpless_sqlite3_prepare_func_t) (const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *entry, void *data, size_t *count)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A function for generating SQLite3 prepared statements for a given entry. </p>
+<p>See <a class="el" href="#ac97536bc42025cdc3b2e626137a02826">stumpless_set_sqlite3_prepare</a> for the semantics of writing and using a prepare function with SQLite3 targets.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">函数说明</h2>
+<a id="a92184277ad50025d494ccee420a2bb3d" name="a92184277ad50025d494ccee420a2bb3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92184277ad50025d494ccee420a2bb3d">&#9670;&#160;</a></span>stumpless_close_sqlite3_target_and_db()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool stumpless_close_sqlite3_target_and_db </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Closes a SQLite3 target and its database handle. </p>
+<p>This function can fail if the database handle cannot be closed. In this case, the target is not closed, and no resources are released.</p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The SQLite3 target to close.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>true if the target was closed, and false if not. An error code is set appropriately if the target could not be closed. </dd></dl>
+
+</div>
+</div>
+<a id="adba7af83fa65444728364d7e834f1a01" name="adba7af83fa65444728364d7e834f1a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adba7af83fa65444728364d7e834f1a01">&#9670;&#160;</a></span>stumpless_close_sqlite3_target_only()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stumpless_close_sqlite3_target_only </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Closes a SQLite3 target, but does not touch the database handle. </p>
+<p><b>Thread Safety: MT-Unsafe</b> This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock heap</b> This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The SQLite3 target to close. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a88c434265f87bc9a1d6a08662d8fad50" name="a88c434265f87bc9a1d6a08662d8fad50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88c434265f87bc9a1d6a08662d8fad50">&#9670;&#160;</a></span>stumpless_create_default_sqlite3_table()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_create_default_sqlite3_table </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a table in the target's database for use with the default SQLite3 insertion behavior. </p>
+<p>The schema of this table is described below. Note that the value of <code>STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING</code> is configurable and set at build time for the library.</p>
+<div class="fragment"><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING (</div>
+<div class="line">  log_id <span class="keywordtype">INTEGER</span> <span class="keyword">PRIMARY</span> KEY,</div>
+<div class="line">  prival <span class="keywordtype">INTEGER</span> <span class="keyword">NOT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  version <span class="keywordtype">INTEGER</span> <span class="keyword">NOT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  <span class="keywordtype">timestamp</span> TEXT,</div>
+<div class="line">  hostname TEXT,</div>
+<div class="line">  app_name TEXT,</div>
+<div class="line">  procid TEXT,</div>
+<div class="line">  msgid TEXT,</div>
+<div class="line">  structured_data TEXT,</div>
+<div class="line">  message TEXT</div>
+<div class="line">);</div>
+</div><!-- fragment --><p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate the table creation with other target modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to create the default table in.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The modified target if no error is encountered. If an error is encountered, then NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a9247b3faa5610ed4a82d5f45c0ccd077" name="a9247b3faa5610ed4a82d5f45c0ccd077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9247b3faa5610ed4a82d5f45c0ccd077">&#9670;&#160;</a></span>stumpless_get_sqlite3_db()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * stumpless_get_sqlite3_db </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the SQLite3 database handle used by the target. </p>
+<p>The database handle is used by stumpless sqlite3 routines, and serialized using an internal mutex. When you use this handle outside of the library, you must ensure that your operations are also thread safe without this mutex, for example by using the SQLITE_OPEN_NOMUTEX or SQLITE_OPEN_FULLMUTEX options.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate the retrieval of the handle with other target modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="section return"><dt>返回</dt><dd>The sqlite3 database handle for this target, a sqlite3 *. The return type is void * so that all users of stumpless do not have to have sqlite3 types defined in order to include the headers. </dd></dl>
+
+</div>
+</div>
+<a id="afb3447ce731e2d9e618e6f4b029e2940" name="afb3447ce731e2d9e618e6f4b029e2940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb3447ce731e2d9e618e6f4b029e2940">&#9670;&#160;</a></span>stumpless_get_sqlite3_insert_sql()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * stumpless_get_sqlite3_insert_sql </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the SQL statement used to insert entries into the database. </p>
+<p>See <a class="el" href="#ab0003c19d3a5bcfde20bc2c44212ab95">stumpless_set_sqlite3_insert_sql</a> to change this statement.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate the retrieval of the SQL statement with other target modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the insert SQL from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The current SQL used to insert entries into the database, as a UTF-8 encoded string. If an error occurs then NULL is returned and an error is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ab9ee47a85041b779e695ecc25465cd15" name="ab9ee47a85041b779e695ecc25465cd15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9ee47a85041b779e695ecc25465cd15">&#9670;&#160;</a></span>stumpless_get_sqlite3_prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a> stumpless_get_sqlite3_prepare </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the preparation function and data pointer used to prepare statements for insertion into the database. </p>
+<p>See <a class="el" href="#ac97536bc42025cdc3b2e626137a02826">stumpless_set_sqlite3_prepare</a> to change this function.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate the retrieval of the function with other target modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to get the prepare function from.</td></tr>
+    <tr><td class="paramname">data</td><td>A pointer to a variable where the data pointer should be written to. If this is NULL, then it is ignored.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The current prepare function for the target. If an error occurs then NULL is returned and an error is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ad952d9bdd67793510649971baa7aeb36" name="ad952d9bdd67793510649971baa7aeb36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad952d9bdd67793510649971baa7aeb36">&#9670;&#160;</a></span>stumpless_open_sqlite3_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_sqlite3_target </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a SQLite3 target. </p>
+<p>This is equivalent to calling <a class="el" href="#ad32680e4bd57937fdf0c338451028a63">stumpless_open_sqlite3_target_with_options</a> with SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE as the flags and NULL as the VFS module name.</p>
+<p><b>Thread Safety: MT-Safe race:name</b> This function is thread safe, of course assuming that name is not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the database to open.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="a270fbc15a9165ed2d5516fb70616204a" name="a270fbc15a9165ed2d5516fb70616204a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a270fbc15a9165ed2d5516fb70616204a">&#9670;&#160;</a></span>stumpless_open_sqlite3_target_from_db()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_sqlite3_target_from_db </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>db</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a SQLite3 target with an already-open database handle. </p>
+<p>This function allows a specialized database to be opened, or an existing handle to be used. For example, if an in-memory database is needed, it can be opened and then passed to this function for logging.</p>
+<p>Note that there are two close functions for SQLite3 targets: <a class="el" href="#a92184277ad50025d494ccee420a2bb3d">stumpless_close_sqlite3_target_and_db</a> and <a class="el" href="#adba7af83fa65444728364d7e834f1a01">stumpless_close_sqlite3_target_only</a>. Be sure to call the appropriate one depending on whether you want this handle to be closed when the target is closed.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">db</td><td>The database handle to use. This should be a sqlite3 *, though it is not declared as such so that sqlite3 headers are not required.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ad32680e4bd57937fdf0c338451028a63" name="ad32680e4bd57937fdf0c338451028a63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad32680e4bd57937fdf0c338451028a63">&#9670;&#160;</a></span>stumpless_open_sqlite3_target_with_options()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_open_sqlite3_target_with_options </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>flags</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>vfs</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opens a SQLite3 target with the provided options. </p>
+<p>The three parameters are passed directly to sqlite3_open_v2.</p>
+<p><b>Thread Safety: MT-Safe race:name race:vfs</b> This function is thread safe, of course assuming that name and vfs are not modified by any other threads during execution.</p>
+<p><b>Async Signal Safety: AS-Unsafe heap</b> This function is not safe to call from signal handlers due to the use of memory allocation functions.</p>
+<p><b>Async Cancel Safety: AC-Unsafe heap</b> This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the database to open.</td></tr>
+    <tr><td class="paramname">flags</td><td>Flags as defined for sqlite3_open_v2.</td></tr>
+    <tr><td class="paramname">vfs</td><td>The name of the VFS module to use as defined by sqlite3_open_v2.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The opened target if no error is encountered. In the event of an error, NULL is returned and an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ab0003c19d3a5bcfde20bc2c44212ab95" name="ab0003c19d3a5bcfde20bc2c44212ab95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0003c19d3a5bcfde20bc2c44212ab95">&#9670;&#160;</a></span>stumpless_set_sqlite3_insert_sql()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_set_sqlite3_insert_sql </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>sql</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the SQL statement used to insert entries into the database. </p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate the changes with other target modifications.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to set the insert SQL for.</td></tr>
+    <tr><td class="paramname">sql</td><td>The new SQL insertion statement to use for the target. This string must be valid for the duration of its use in the target, as a pointer to it is kept internally.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The modified target on success, or NULL on failure. In the event of failure an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="ac97536bc42025cdc3b2e626137a02826" name="ac97536bc42025cdc3b2e626137a02826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac97536bc42025cdc3b2e626137a02826">&#9670;&#160;</a></span>stumpless_set_sqlite3_prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> * stumpless_set_sqlite3_prepare </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstumpless__target.html">stumpless_target</a> *</td>          <td class="paramname"><span class="paramname"><em>target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a08d6a3a2732b759a9eedf4df5b3bb73b">stumpless_sqlite3_prepare_func_t</a></td>          <td class="paramname"><span class="paramname"><em>preparer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the function used to prepare statements for entries to this target. </p>
+<p>Preparation functions take three arguments: the entry that is being sent to the database target, a pointer provided when the function is set, and an output parameter where the number of prepared statements to use is written. The function should return a pointer to an array of prepared statements that should be committed to the database for the entry, or NULL if an error occurs. The default prepare function is <a class="el" href="#aea54111b87a263ef98b87d2f93c27448">stumpless_sqlite3_prepare</a>, which is a good place to look for an example.</p>
+<p>Note that the return type is a void * instead of the actual type of sqlite3_stmt **. This is so that the SQLite3 headers are not needed.</p>
+<p>Be careful when using a custom prepare function in builds where SQLite was directly embedded into Stumpless instead of dynamically linked. If this is the case, using a single databse handle in both SQLite functions compiled into Stumpless and SQLite functions compiled in a separate module may cause serious issues, for example due to static data structures. The example sqlite3_example.c does this, and is a good way to check if you are in this situation as it will fail in this scenario.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate accesses of the target structures.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The target to set the function for.</td></tr>
+    <tr><td class="paramname">preparer</td><td>The new prepare function to use in the target.</td></tr>
+    <tr><td class="paramname">data</td><td>A pointer that will be passed to the prepare function on each invocation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>The modified target on success, or NULL on failure. In the event of failure an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+<a id="aea54111b87a263ef98b87d2f93c27448" name="aea54111b87a263ef98b87d2f93c27448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea54111b87a263ef98b87d2f93c27448">&#9670;&#160;</a></span>stumpless_sqlite3_prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * stumpless_sqlite3_prepare </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structstumpless__entry.html">stumpless_entry</a> *</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *</td>          <td class="paramname"><span class="paramname"><em>count</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The default prepare function used for SQLite3 targets. </p>
+<p>This function will generate a single prepared statement based on the target's current insert SQL statement. See <a class="el" href="#ab0003c19d3a5bcfde20bc2c44212ab95">stumpless_set_sqlite3_insert_sql</a> for how to set the SQL used by this function.</p>
+<p><b>Thread Safety: MT-Safe</b> This function is thread safe as a mutex is used to coordinate accesses of the entry and target structures.</p>
+<p><b>Async Signal Safety: AS-Unsafe lock</b> Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses.</p>
+<p><b>Async Cancel Safety: AC-Unsafe lock</b> This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed.</p>
+<dl class="section since"><dt>自从</dt><dd>release v2.2.0</dd></dl>
+<dl class="params"><dt>参数</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The entry to prepare the statement based on.</td></tr>
+    <tr><td class="paramname">data</td><td>The internal SQLite3 target structure.</td></tr>
+    <tr><td class="paramname">count</td><td>A pointer to an output variable where the number of valid prepared statements will be written to.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>返回</dt><dd>A pointer to an array of sqlite3_stmt pointers on success, or NULL on failure. In the event of failure an error code is set appropriately. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_ba40c74cc7a9b9ece787ff31120c1693.html">stumpless</a></li><li class="navelem"><a class="el" href="dir_0349ce9a6f8a114f3b3d7011bee1d5bf.html">target</a></li><li class="navelem"><a class="el" href="sqlite3_8h.html">sqlite3.h</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0 </li>
+  </ul>
+</div>
+</body>
+</html>
