@@ -16,6 +16,7 @@ fixes, check out the
  - SQLite3 logging targets.
  - Target chains.
  - Support for `pkg-config`.
+ - `INSTALL_HEADERS` and `INSTALL_HTML` build options.
  - Localizations for:
     * Albanian (sq-AL :albania:)
     * Danish (da-DK :denmark:)
