@@ -9,7 +9,7 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
-## [2.2.0] - 2024-03-30
+## [2.2.0] - 2024-05-26
 ### Added 
  - @since format check enforcement in CI pipeline.
  - `single-file` target for rollup `.c` and `.h` files.

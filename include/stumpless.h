@@ -29,7 +29,7 @@
  * // if you're used to doing this:
  * syslog( LOG_INFO | LOG_USER, "My message #%d", count );
  *
- * // then you can start doing this:
+ * // then you can start by changing to this:
  * stumplog( LOG_INFO | LOG_USER, "My message #%d", count );
  * \endcode
  *
