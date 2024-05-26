@@ -13,6 +13,7 @@ if [[ ${PV} == *9999 ]]; then
 	SLOT="0"
 else
 	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz -> libstumpless-${PV}.tar.gz"
+	S="${WORKDIR}/stumpless-${PV}"
 	SLOT="$(ver_cut 1)/$(ver_cut 2)"
 fi
 
