@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ struct cache {
   void ( *entry_teardown ) ( void * );
   size_t entry_size;
   char **pages;
-  int page_count;
+  size_t page_count;
   size_t page_size;
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
   config_mutex_t mutex;

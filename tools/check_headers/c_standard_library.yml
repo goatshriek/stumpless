@@ -7,6 +7,9 @@
 "CRITICAL_SECTION":
   - "private/windows_wrapper.h"
   - "windows.h"
+"socket":
+  - "sys/socket.h"
+  - "winsock2.h"
 "size_t":
   - "stddef.h"
   - "stdio.h"
@@ -20,3 +23,4 @@
 "wchar_t":
   - "stddef.h"
   - "wchar.h"
+"WSAStartup": "winsock2.h"

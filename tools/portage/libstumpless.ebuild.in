@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,33 +8,38 @@ inherit cmake
 DESCRIPTION="a C logging library built for high performance and a rich feature set"
 HOMEPAGE="http://stumpless.goatshriek.com"
 if [[ ${PV} == *9999 ]]; then
-	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/heads/latest.tar.gz -> stumpless-${PV}.tar.gz"
+	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/heads/latest.tar.gz -> libstumpless-${PV}.tar.gz"
 	S="${WORKDIR}/stumpless-latest"
 	SLOT="0"
 else
-	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz -> stumpless-${PV}.tar.gz"
+	SRC_URI="https://github.com/goatshriek/stumpless/archive/refs/tags/v${PV}.tar.gz -> libstumpless-${PV}.tar.gz"
 	SLOT="$(ver_cut 1)/$(ver_cut 2)"
 fi
 
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64 ~x86"
-IUSE="doc examples sockets systemd test threads"
+IUSE="chain-targets doc examples man sockets sqlite systemd test threads"
 
 DEPEND="test? ( dev-cpp/gtest )
+	sqlite? ( dev-db/sqlite )
 	systemd? ( sys-apps/systemd )"
 RDEPEND="${DEPEND}"
-BDEPEND="doc? ( app-doc/doxygen )"
+BDEPEND="doc? ( app-text/doxygen )
+	man? ( app-text/doxygen )"
 
 # disable test phase if the test USE flag is disabled
 RESTRICT="!test? ( test )"
 
 src_configure() {
 	local mycmakeargs=(
+		-DENABLE_CHAIN_TARGETS="$(usex chain-targets)"
 		-DENABLE_NETWORK_TARGETS="$(usex sockets)"
 		-DENABLE_JOURNALD_TARGETS="$(usex systemd)"
+		-DENABLE_SQLITE3_TARGETS="$(usex sqlite)"
 		-DENABLE_THREAD_SAFETY="$(usex threads)"
 		-DINSTALL_EXAMPLES="$(usex examples)"
-		-DINSTALL_MANPAGES="$(usex doc)"
+		-DINSTALL_HTML="$(usex doc)"
+		-DINSTALL_MANPAGES="$(usex man)"
 	)
 	cmake_src_configure
 }
@@ -45,9 +50,10 @@ src_test() {
 	cmake_build "build-test"
 
 	# journald tests are unable to detect if journald isn't present
-	# because of this they fail in a sandbox without journald access
+	# because of this they fail without journald access
 	# so we exclude them from the test suite in the ebuild
-	# running the test suite yourself (outside of the ebuild sandbox) should pass
-	local myctestargs=( -E journald )
+	# running the test suite outside of the ebuild should pass
+	# we also exclude network tests to avoid generating any network traffic
+	local myctestargs=( --exclude-regex "journald|network|tcp|udp" )
 	cmake_src_test
 }

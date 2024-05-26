@@ -160,12 +160,14 @@ fail:
 
 const char *
 stumpless_get_target_type_string( enum stumpless_target_type target_type ){
-  size_t target_type_upper_bound =
-    sizeof target_type_enum_to_string / sizeof target_type_enum_to_string[0];
-  if ( target_type >= 0 && target_type < target_type_upper_bound ) {
+  size_t upper_bound;
+
+  upper_bound = sizeof( target_type_enum_to_string ) / sizeof( const char * );
+  if ( target_type >= 0 && target_type < cap_size_t_to_int( upper_bound ) ) {
     return target_type_enum_to_string[target_type];
+  } else {
+    return "NO_SUCH_TARGET_TYPE";
   }
-  return "NO_SUCH_TARGET_TYPE";
 }
 
 static

@@ -4,21 +4,23 @@ list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
 list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/have_wel_templates.yml)
 list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml)
 
-install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h
-  DESTINATION "include/stumpless/config"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/config/wel_supported.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/config"
+  )
 
-install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h
-  DESTINATION "include/stumpless/target"
-)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/target/wel.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
+  )
+endif()
 
-list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/wel.h.3)
+list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3)
 
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
-    ${PROJECT_BINARY_DIR}/docs/man/man3/wel.h.3
+    ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3
     RENAME stumpless_target_wel.h.3
     DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
   )

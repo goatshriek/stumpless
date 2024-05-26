@@ -126,7 +126,7 @@ file(MAKE_DIRECTORY ${CPP_LIB_BUILD_DIR})
 
 if(MSVC)
   add_custom_command(
-    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
     COMMAND call wrapture ${WRAPTURE_SPECS}
     COMMAND powershell ${PROJECT_SOURCE_DIR}/scripts/Repair-HeaderDllExports.ps1 -InputFileDir ${CPP_LIB_BUILD_DIR} -OutputFileDir ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
@@ -135,7 +135,7 @@ if(MSVC)
   )
 else()
   add_custom_command(
-    OUTPUT ${GENERATED_CPP_LIB_SOURCES}
+    OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
     COMMAND wrapture ${WRAPTURE_SPECS}
     COMMAND ruby ${PROJECT_SOURCE_DIR}/scripts/copy_headers.rb ${CMAKE_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
@@ -148,11 +148,11 @@ endif()
 # create the rollup header
 SET(cpp_rollup_header "${PROJECT_BINARY_DIR}/include/stumpless.hpp")
 FILE(WRITE ${cpp_rollup_header} "#ifndef __STUMPLESS_HPP\n")
-FILE(APPEND ${cpp_rollup_header} "#  define __STUMPLESS_HPP\n\n")
+FILE(APPEND ${cpp_rollup_header} "#define __STUMPLESS_HPP\n\n")
 
 foreach(header_path ${GENERATED_CPP_LIB_HEADERS})
   get_filename_component(header_filename ${header_path} NAME)
-  FILE(APPEND ${cpp_rollup_header} "#  include <stumpless/${header_filename}>\n")
+  FILE(APPEND ${cpp_rollup_header} "#include <stumpless/${header_filename}>\n")
 endforeach(header_path)
 
 FILE(APPEND ${cpp_rollup_header} "\n#endif /* __STUMPLESS_HPP */\n")
@@ -177,7 +177,6 @@ target_include_directories(stumplesscpp
 set_target_properties(stumplesscpp
   PROPERTIES
     VERSION ${PROJECT_VERSION}
-    PUBLIC_HEADER ${cpp_rollup_header}
 )
 
 if(WIN32)
@@ -271,14 +270,20 @@ add_custom_target(run-example-cpp
 install(TARGETS stumplesscpp
   RUNTIME DESTINATION "bin"
   LIBRARY DESTINATION "lib"
-  PUBLIC_HEADER DESTINATION "include"
   ARCHIVE DESTINATION "lib"
 )
 
-install(
-  FILES ${GENERATED_CPP_LIB_HEADERS}
-  DESTINATION "include/stumpless"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${cpp_rollup_header}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+  )
+
+  install(
+    FILES ${GENERATED_CPP_LIB_HEADERS}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless"
+  )
+endif()
 
 #documentation generation
 if(DOXYGEN_FOUND)

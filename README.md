@@ -26,7 +26,7 @@ Stumpless has lots of features that make logging in C fast and easy:
  * log to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
    journald, the Windows Event Log, sqlite, and more!
  * structured and unstructured logging to suit your needs
- * builds on Linux, Windows, Mac, MinGW, MSYS2, Cygwin, DOS, and more
+ * builds on Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS, and more!
  * thread safe
  * can be adjusted or removed during compilation for zero runtime cost
  * localized for multiple languages :albania: :brazil: :bulgaria: :cn:
@@ -45,11 +45,11 @@ a wide variety of log targets. This means you can focus on defining events
 and where you want them to go, without finding other SDKs or adding daemons
 and plugins to get them where you want. Stumpless can write logs to:
  * Simple character buffers
- * Files and Streams
+ * Files and streams
  * Unix sockets (such as a local syslog daemon)
- * Network Servers (IPv4 or IPv6, TCP or UDP)
- * Systemd Journald Service
- * Sqlite3 Databases
+ * Network servers (IPv4 or IPv6, TCP or UDP)
+ * Systemd Journald service
+ * Sqlite3 databases
  * Windows Event Log
  * Custom functions, for whatever else you may need!
 
@@ -95,7 +95,7 @@ replacement for the standard library's `syslog` function:
 // if you're used to doing this:
 syslog( LOG_INFO | LOG_USER, "My message #%d", count );
 
-// then you can start doing this:
+// then you can start by changing to this:
 stumplog( LOG_INFO | LOG_USER, "My message #%d", count );
 ```
 
@@ -235,6 +235,13 @@ contain and any other relevant information. The documentation for each function
 is also hosted on the
 [project website](https://goatshriek.github.io/stumpless/), for both the C
 library as well as the other language bindings like C++.
+
+Stumpless also includes documentation in local installations in the form of
+`man` pages. Once you've installed the library, you can check the documentation
+for any header file (and the functions it contains) by running man with the
+name of the header with directories replaced with underscores, for example
+`man stumpless_log.h` to see documentation for functions that log simple string
+messages.
 
 There are also plenty of ways that you can reach out to the project team and
 broader community for support.

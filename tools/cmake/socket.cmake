@@ -3,16 +3,18 @@ list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/socket_supported.
 
 list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/socket_target.yml)
 
-install(FILES
-  ${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h
-  DESTINATION "include/stumpless/target"
-)
+if(INSTALL_HEADERS)
+  install(
+    FILES "${PROJECT_SOURCE_DIR}/include/stumpless/target/socket.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/target"
+  )
+endif()
 
-list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/man/man3/socket.h.3)
+list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/socket.h.3)
 
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
-    ${PROJECT_BINARY_DIR}/docs/man/man3/socket.h.3
+    ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/socket.h.3
     RENAME stumpless_target_socket.h.3
     DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
   )

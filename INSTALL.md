@@ -10,6 +10,17 @@ Stumpless is not currently registered in any online package repositories such
 as Chocolatey or Debian. If you need the library in a location like this, please
 open an issue and the project team will see what we can do.
 
+The provided release packages contain all of the items in the following list.
+If you want a package with only a selection of these items, you'll need to build
+it yourself using `cpack` and the appropriate configuration.
+
+ * shared library
+ * header files
+ * `.pc` file for `pkg-config` implementations
+ * examples
+ * HTML documentation
+ * man pages
+
 
 ## Debian Package
 A `.deb` package is provided for use in environments that support them, like
@@ -17,7 +28,7 @@ Debian and Ubuntu. The package can be installed with the usual command:
 
 ```sh
 # you might need sudo (or root privileges) to install
-dpkg -i stumpless-2.2.0-amd64.deb
+dpkg -i libstumpless-2.2.0-amd64.deb
 ```
 
 
@@ -27,7 +38,17 @@ installed in the traditional way as well:
 
 ```sh
 # again, make sure you have the correct permissions
-rpm -i stumpless-2.2.0-x86_64.rpm
+rpm -i libstumpless-2.2.0-x86_64.rpm
+```
+
+
+## FreeBSD Package
+A `.pkg` package is provided for use in FreeBSD environments. Of course, it is
+installed just as any other pkg would be:
+
+```sh
+# permissions need to be correct, of course
+pkg add libstumpless-2.2.0-amd64.pkg
 ```
 
 
@@ -38,7 +59,7 @@ generated ebuild is in the `tools/portage` folder of the build directory.
 
 The generated ebuild will be named after the version of stumpless you have.
 If you want the latest commit instead of a release, you'll need to rename this
-to version `stumpless-9999.ebuild` to perform what Gentoo refers to as a
+to version `libstumpless-9999.ebuild` to perform what Gentoo refers to as a
 [live ebuild](https://wiki.gentoo.org/wiki/Ebuild#Live_ebuilds). If you have a
 commit in a release that hasn't been published yet and do not rename the ebuild,
 then the download of the source will fail.
@@ -47,7 +68,7 @@ In either case, you could install the ebuild by putting it into a repository and
 running ebuild ultimately as something like:
 
 ```sh
-ebuild stumpless-2.2.0.ebuild clean install merge
+ebuild libstumpless-2.2.0.ebuild clean manifest install merge
 ```
 
 USE flags and other customizations can be done here as well. Gentoo installs are
@@ -66,7 +87,7 @@ files.
 # you might need to do this with sudo!
 # make sure your permissions allow you to write to the install locations
 cd /usr
-./stumpless-2.2.0.sh
+./libstumpless-2.2.0.sh
 ```
 
 

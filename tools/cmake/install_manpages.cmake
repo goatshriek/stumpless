@@ -1,4 +1,4 @@
-set(MANPAGE_BUILD_DIR "${PROJECT_BINARY_DIR}/docs/man/man3")
+set(MANPAGE_BUILD_DIR "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3")
 
 # install the generated manpages
 # rename them so that they are globally unique
@@ -160,6 +160,12 @@ install(FILES
 install(FILES
   ${MANPAGE_BUILD_DIR}/buffer.h.3
   RENAME stumpless_target_buffer.h.3
+  DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
+)
+
+install(FILES
+  ${MANPAGE_BUILD_DIR}/chain.h.3
+  RENAME stumpless_target_chain.h.3
   DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
 )
 
