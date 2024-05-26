@@ -68,7 +68,7 @@ In either case, you could install the ebuild by putting it into a repository and
 running ebuild ultimately as something like:
 
 ```sh
-ebuild libstumpless-2.2.0.ebuild clean install merge
+ebuild libstumpless-2.2.0.ebuild clean manifest install merge
 ```
 
 USE flags and other customizations can be done here as well. Gentoo installs are

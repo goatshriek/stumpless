@@ -21,7 +21,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="chain-targets doc examples man sockets sqlite systemd test threads"
 
 DEPEND="test? ( dev-cpp/gtest )
-	sqlite? ( >=dev-db/sqlite )
+	sqlite? ( dev-db/sqlite )
 	systemd? ( sys-apps/systemd )"
 RDEPEND="${DEPEND}"
 BDEPEND="doc? ( app-text/doxygen )
