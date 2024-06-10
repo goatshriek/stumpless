@@ -110,14 +110,16 @@ To create your own feature or update, you should fork the repository and create
 a new branch based on the `latest` branch. Don't forget to update the ChangeLog
 with your changes, and when you're ready open a pull request against `latest`.
 
-It is unusual, but you may find that it is more appropriate to base your branch
-on the `release` branch instead of `latest`. Some examples of these types of
-changes are:
- * updates to project documentation that is relevant to the current version of
-   the project as well as the next
- * patches that need to be applied to the current version of the library in
-   order to fix broken functionality (note that this will require updating the
-   library to the next patch level, for example from 1.3.2 to 1.3.3)
+It is unusual, but you may find that it is best to base your work on the
+`release` branch instead of `latest`. This is a lot more work than using
+`latest` though, since the changes still need to be merged into `latest` which
+may have diverged enough to cause conflicts. It will also probably require
+cutting a new patch-level release with the changes. So don't do this unless
+it's truly necessary, as in these cases:
+ * patches need to be applied to the last release in order to fix broken
+   functionality
+ * critical updates to documentation that could cause serious misuse or breakage
+   if not corrected
 
 Be sure to check out the [dependencies](dependencies.md) list to make sure that
 your development environment has all of the necessary tools. More specifically,
