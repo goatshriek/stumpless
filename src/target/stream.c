@@ -18,7 +18,10 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <stumpless/target.h>
+#include <stumpless/severity.h>
+#include <stumpless/entry.h>
 #include <stumpless/target/stream.h>
 #include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/thread_safety.h"
@@ -48,12 +51,35 @@ stumpless_close_stream_target( const struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name ) {
-  return stumpless_open_stream_target( name, stderr );
+  struct stumpless_target *target = stumpless_open_stream_target( name, stderr );
+  
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_EMERG_VALUE  , STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR  );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT_VALUE  , STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR  );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_CRIT_VALUE   , STUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR   );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ERR_VALUE    , STUMPLESS_SEVERITY_ERR_DEFAULT_COLOR    );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_WARNING_VALUE, STUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR);
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_NOTICE_VALUE , STUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_INFO_VALUE   , STUMPLESS_SEVERITY_INFO_DEFAULT_COLOR   );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_DEBUG_VALUE  , STUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR  );
+
+  return target;
 }
 
 struct stumpless_target *
 stumpless_open_stdout_target( const char *name ) {
-  return stumpless_open_stream_target( name, stdout );
+  struct stumpless_target *target = stumpless_open_stream_target( name, stdout );
+
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_EMERG_VALUE  , STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR  );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT_VALUE  , STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR  );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_CRIT_VALUE   , STUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR   );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ERR_VALUE    , STUMPLESS_SEVERITY_ERR_DEFAULT_COLOR    );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_WARNING_VALUE, STUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR);
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_NOTICE_VALUE , STUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_INFO_VALUE   , STUMPLESS_SEVERITY_INFO_DEFAULT_COLOR   );
+  stumpless_set_severity_color(target, STUMPLESS_SEVERITY_DEBUG_VALUE  , STUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR  );
+
+
+  return target;
 }
 
 struct stumpless_target *
@@ -76,6 +102,9 @@ stumpless_open_stream_target( const char *name, FILE *stream ) {
     goto fail_id;
   }
 
+  for (unsigned short i = 0; i < 8; i++)
+    ((struct stream_target *)(target->id))->escape_codes[i][0] = 0;
+
   stumpless_set_current_target( target );
   return target;
 
@@ -84,6 +113,25 @@ fail_id:
 fail:
   return NULL;
 }
+
+void
+stumpless_set_severity_color( struct stumpless_target *target, enum stumpless_severity severity, const char *escape_code )
+{
+  if (severity > 7)
+    raise_index_out_of_bounds("Severity value must be part of 'stumpless_severity' enum (0-7)", severity);
+
+  if (target->type != STUMPLESS_STREAM_TARGET)
+    raise_target_unsupported("This function is only supported for stream targets");
+
+  struct stream_target *starget = (struct stream_target *)target->id;
+  lock_target(target);
+
+  strncpy(starget->escape_codes[severity], escape_code, 32);
+  starget->escape_codes[severity][31] = 0;
+
+  unlock_target(target);
+}
+
 
 /* private definitions */
 
@@ -111,11 +159,17 @@ new_stream_target( FILE *stream ) {
 int
 sendto_stream_target( struct stream_target *target,
                       const char *msg,
-                      size_t msg_length ) {
+                      size_t msg_length,
+                      const struct stumpless_entry *entry ) {
   size_t fwrite_result;
-
+  enum stumpless_severity severity = stumpless_get_entry_severity(entry);
+  const char *sev_code = target->escape_codes[severity];
+  const char *reset_code = "\33[0m";
+  
   config_lock_mutex( &target->stream_mutex );
+  fwrite_result = fwrite( sev_code, sizeof( char ), strlen( sev_code ), target->stream );
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  fwrite_result = fwrite( reset_code, sizeof( char ), strlen( reset_code ), target->stream );
   config_unlock_mutex( &target->stream_mutex );
 
   if( fwrite_result != msg_length ) {
