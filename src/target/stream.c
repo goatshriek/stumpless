@@ -52,6 +52,8 @@ stumpless_close_stream_target( const struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_stderr_target( const char *name ) {
   struct stumpless_target *target = stumpless_open_stream_target( name, stderr );
+
+  if (target == NULL) return NULL;
   
   stumpless_set_severity_color(target, STUMPLESS_SEVERITY_EMERG_VALUE  , STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR  );
   stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT_VALUE  , STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR  );
@@ -68,6 +70,8 @@ stumpless_open_stderr_target( const char *name ) {
 struct stumpless_target *
 stumpless_open_stdout_target( const char *name ) {
   struct stumpless_target *target = stumpless_open_stream_target( name, stdout );
+
+  if (target == NULL) return NULL;
 
   stumpless_set_severity_color(target, STUMPLESS_SEVERITY_EMERG_VALUE  , STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR  );
   stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT_VALUE  , STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR  );
