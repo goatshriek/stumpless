@@ -164,16 +164,37 @@ sendto_stream_target( struct stream_target *target,
   size_t fwrite_result;
   enum stumpless_severity severity = stumpless_get_entry_severity(entry);
   const char *sev_code = target->escape_codes[severity];
+  unsigned short sev_code_len = strlen(sev_code);
   const char *reset_code = "\33[0m";
+  unsigned short reset_code_len = strlen(sev_code);
   
-  config_lock_mutex( &target->stream_mutex );
-  fwrite_result = fwrite( sev_code, sizeof( char ), strlen( sev_code ), target->stream );
-  fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
-  fwrite_result = fwrite( reset_code, sizeof( char ), strlen( reset_code ), target->stream );
-  config_unlock_mutex( &target->stream_mutex );
+  if (sev_code_len != 0)
+  {
+    config_lock_mutex( &target->stream_mutex );
+    fwrite_result = fwrite( sev_code, sizeof( char ), sev_code_len, target->stream );
+    config_unlock_mutex( &target->stream_mutex );
 
+    if( fwrite_result != sev_code_len ) {
+      goto write_failure;
+    }
+  }
+
+  config_lock_mutex( &target->stream_mutex );
+  fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  config_unlock_mutex( &target->stream_mutex );
   if( fwrite_result != msg_length ) {
     goto write_failure;
+  }
+
+  if (sev_code_len != 0)
+  {
+    config_lock_mutex( &target->stream_mutex );
+    fwrite_result = fwrite( reset_code, sizeof( char ), reset_code_len, target->stream );
+    config_unlock_mutex( &target->stream_mutex );
+
+    if( fwrite_result != reset_code_len ) {
+      goto write_failure;
+    }
   }
 
   return cap_size_t_to_int( fwrite_result + 1 );
