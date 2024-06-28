@@ -1,9 +1,7 @@
 # options
 "header-alternates":
   "stumpless/.*\\.h": "stumpless.h"
-"deprecated-terms":
-  - "stumpless_destroy_element"
-  - "stumpless_destroy_entry"
+"deprecated-terms": []
 
 # terms
 "accept_tcp_connection": "test/helper/server.hpp"

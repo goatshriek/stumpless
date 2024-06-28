@@ -266,34 +266,6 @@ struct stumpless_entry *
 stumpless_copy_entry( const struct stumpless_entry *entry );
 
 /**
- * An alias for stumpless_destroy_entry_and_contents.
- *
- * **Thread Safety: MT-Unsafe**
- * This function is not thread safe as it destroys resources that other threads
- * would use if they tried to reference this struct.
- *
- * **Async Signal Safety: AS-Unsafe lock heap**
- * This function is not safe to call from signal handlers due to the destruction
- * of a lock that may be in use as well as the use of the memory deallocation
- * function to release memory.
- *
- * **Async Cancel Safety: AC-Unsafe lock heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, as the cleanup of the lock may not be completed, and the memory
- * deallocation function may not be AC-Safe itself.
- *
- * @deprecated This function has been deprecated in favor of the more
- * descriptive and deliberate stumpless_destroy_entry_and_contents and
- * stumpless_destroy_entry_only functions in order to avoid unintentional
- * memory leaks and use-after-free mistakes.
- *
- * @param entry The entry to destroy.
- */
-STUMPLESS_PUBLIC_FUNCTION
-void
-stumpless_destroy_entry( const struct stumpless_entry *entry );
-
-/**
  * Destroys an entry as well as all elements and params that it contains,
  * freeing any allocated memory.
  *

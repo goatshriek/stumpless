@@ -25,7 +25,6 @@
 #include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/thread_safety.h"
-#include "private/deprecate.h"
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
@@ -117,18 +116,6 @@ fail_param_copy:
 fail:
   unlock_element( element );
   return NULL;
-}
-
-void
-stumpless_destroy_element( const struct stumpless_element *element ) {
-  warn_of_deprecation( "stumpless_destroy_element has been deprecated in favor "
-                       "of the more descriptive and deliberate "
-                       "stumpless_destroy_element_and_contents and "
-                       "stumpless_destroy_element_only functions in order to "
-                       "avoid unintentional memory leaks and use-after-free "
-                       "mistakes" );
-
-  stumpless_destroy_element_and_contents( element );
 }
 
 void
