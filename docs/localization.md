@@ -54,7 +54,7 @@ value of the string must be equal to the `en-us` value as a fallback. The
 `scripts/check_l10n.rb` script can check this, and is run during integration
 tests on all headers.
 
-The `scripts/add_l10n_scripts.rb` provides a quick way to do all of this for new
+The `scripts/add_l10n_string.rb` provides a quick way to do all of this for new
 strings. Run it with the name of the new string and the english translation,
 and it will insert placeholders into all locale headers. Here's an example
 invocation:
@@ -62,7 +62,7 @@ invocation:
 ```sh
 # this will result in a string of L10N_TEST_STR being added to all locale
 # headers with the english translation of "this is a test string"
-ruby scripts/add_l10n_scripts.rb TEST_STR this is a test string
+ruby scripts/add_l10n_string.rb TEST_STR this is a test string
 ```
 
 
