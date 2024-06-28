@@ -40,7 +40,7 @@ jobs:
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
-        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
@@ -95,7 +95,7 @@ jobs:
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
-        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
@@ -290,7 +290,7 @@ jobs:
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Codecov Upload
-        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed # v4.3.0
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
