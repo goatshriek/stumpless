@@ -196,6 +196,7 @@
 #include <stumpless/memory.h>
 #include <stumpless/option.h>
 #include <stumpless/param.h>
+#include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
@@ -204,8 +205,6 @@
 #include <stumpless/target/sqlite3.h>
 #include <stumpless/target/stream.h>
 #include <stumpless/version.h>
-#include <stumpless/priority.h>
-#include <stumpless/prival.h>
 
 #ifdef STUMPLESS_CHAIN_TARGETS_SUPPORTED
 /** @example chain_example.c

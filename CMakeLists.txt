@@ -5,7 +5,7 @@ if(POLICY CMP0135)
 endif()
 
 project(stumpless
-  VERSION 2.2.0
+  VERSION 3.0.0
 )
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
@@ -226,6 +226,7 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/log.c
   ${PROJECT_SOURCE_DIR}/src/memory.c
   ${PROJECT_SOURCE_DIR}/src/param.c
+  ${PROJECT_SOURCE_DIR}/src/prival.c
   ${PROJECT_SOURCE_DIR}/src/severity.c
   ${PROJECT_SOURCE_DIR}/src/strbuilder.c
   ${PROJECT_SOURCE_DIR}/src/strhelper.c
@@ -236,8 +237,6 @@ set(STUMPLESS_SOURCES
   ${PROJECT_SOURCE_DIR}/src/target/stream.c
   ${PROJECT_SOURCE_DIR}/src/version.c
   ${PROJECT_SOURCE_DIR}/src/validate.c
-  ${PROJECT_SOURCE_DIR}/src/priority.c
-  ${PROJECT_SOURCE_DIR}/src/prival.c
 )
 
 
