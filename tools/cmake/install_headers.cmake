@@ -17,7 +17,6 @@ install(
     "${PROJECT_SOURCE_DIR}/include/stumpless/memory.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/option.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/param.h"
-    "${PROJECT_SOURCE_DIR}/include/stumpless/priority.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/prival.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/severity.h"
     "${PROJECT_SOURCE_DIR}/include/stumpless/target.h"
