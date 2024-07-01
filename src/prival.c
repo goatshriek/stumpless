@@ -58,9 +58,9 @@ stumpless_prival_from_string( const char *string ) {
   int prival;
   int severity;
   int facility;
-  char *param;
-  char *period;
-  char *sec_period;
+  const char *param;
+  const char *period;
+  const char *sec_period;
   size_t len;
   size_t slen;
 
@@ -117,7 +117,7 @@ stumpless_prival_from_string( const char *string ) {
   len = slen - len;
 
   // Copy the severity substring to the param buffer
-  param = copy_cstring_length( ++period, len );
+  param = copy_cstring_length( period + 1, len );
   if( !param ) {
     return -1;
   }
