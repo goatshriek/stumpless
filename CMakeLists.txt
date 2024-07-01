@@ -1080,10 +1080,6 @@ add_function_test(version
   SOURCES ${PROJECT_SOURCE_DIR}/test/function/version.cpp
 )
 
-add_function_test(priority
-  SOURCES ${PROJECT_SOURCE_DIR}/test/function/priority.cpp
-)
-
 add_function_test(prival
   SOURCES ${PROJECT_SOURCE_DIR}/test/function/prival.cpp
 )
@@ -1137,8 +1133,8 @@ add_performance_test(element
 SOURCES test/performance/element.cpp
 )
 
-add_performance_test(priority
-SOURCES test/performance/priority.cpp
+add_performance_test(prival
+  SOURCES "${PROJECT_SOURCE_DIR}/test/performance/prival.cpp"
 )
 
 add_performance_test(entry

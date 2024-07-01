@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2022 Joel E. Anderson
+ * Copyright 2020-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,18 @@
  */
 
 #include <benchmark/benchmark.h>
+#include <string>
 #include <stumpless.h>
 #include "test/helper/memory_counter.hpp"
-#include <string>
 
 NEW_MEMORY_COUNTER( prival_from_string )
 
 static void PrivalFromString(benchmark::State& state) {
   // Create a list of priorities.
-  std::vector<std::string> priority_list = {"191", "user.emerg", "uucp.err", "local7.debug"};
+  std::vector<std::string> priority_list = { "191",
+                                             "user.emerg",
+                                             "uucp.err",
+                                             "local7.debug" };
 
   INIT_MEMORY_COUNTER( prival_from_string );
 
