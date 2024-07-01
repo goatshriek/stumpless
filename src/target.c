@@ -54,6 +54,7 @@
 #include "private/inthelper.h"
 #include "private/memory.h"
 #include "private/param.h"
+#include "private/prival.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"

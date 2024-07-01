@@ -9,6 +9,11 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
+## [3.0.0] - 2024-06-30
+### Removed
+ - `stumpless/priority.h`, which was merged into `stumpless/prival.h`.
+
+
 ## [2.2.0] - 2024-05-26
 ### Added 
  - @since format check enforcement in CI pipeline.
