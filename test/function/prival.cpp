@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2024 Joel E. Anderson
+ * Copyright 2019-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,129 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include "test/helper/assert.hpp"
+#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
   class PrivalTest : public::testing::Test {};
+
+  TEST( GetPrivalFromString, NumValidPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "119" );
+    EXPECT_EQ( result, 119 );
+  }
+
+  TEST( GetPrivalFromString, NumTooHighPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "192" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, NumInvalidPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "119aa" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, UpperValidPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "USER.INFO" );
+    EXPECT_EQ( result, 14 );
+  }
+
+  TEST( GetPrivalFromString, LowerValidPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "user.info" );
+    EXPECT_EQ( result, 14 );
+  }
+
+  TEST( GetPrivalFromString, EmptyPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( GetPrivalFromString, NullPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( NULL );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( GetPrivalFromString, InvalidFacilityPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "umer.info" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, InvalidSeverityPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "user.imfo" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, InvalidNoPeriodPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "userinfo" );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, InvalidMorePeriodPriority ) {
+    int result;
+
+    result = stumpless_prival_from_string( "user.info." );
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
+  }
+
+  TEST( GetPrivalFromString, InvalidMemFacilityPriority ) {
+    int result;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_prival_from_string( "user.err" );
+    EXPECT_EQ( result, -1 );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST( GetPrivalFromString, InvalidMemSeverityPriority ) {
+    int result;
+    void * (*set_malloc_result)(size_t);
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 4 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_prival_from_string( "syslog.err" );
+    EXPECT_EQ( result, -1 );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
 
   TEST(GetPrivalString, ValidPrival) {
     int prival;

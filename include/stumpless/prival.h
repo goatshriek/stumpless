@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2024 Joel E. Anderson
+ * Copyright 2022-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
  */
 
 /** @file
- * Functions for working with privals.
+ * Functions for working with privals, which contain both facility and
+ * severity values.
  *
  * @since release v2.2.0
  */
@@ -30,6 +31,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /**
  * Gets the string representation of the given prival.
  *
@@ -56,6 +58,38 @@ extern "C" {
 STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_prival_string( int prival );
+
+/**
+ * Extract PRIVAL number (Facility and Severity) from the given string with
+ * the direct number or with two names divided with a period in the order:
+ * facility first, then severity ("<facility_descr>.<severity_descr>").
+ *
+ * In release v2.2.0 this function was in a separate header
+ * "stumpless/priority.h". This header was consolidated into
+ * "stumpless/prival.h" in release v3.0.0.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked..
+ *
+ * @since release v2.2.0
+ *
+ * @param string The string to extract the prival from.
+ *
+ * @return the PRIVAL number used for the severity and facility values of
+ * the logged entry, in the event of an error it returns -1.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_prival_from_string( const char *string );
 
 #ifdef __cplusplus
 } /* extern "C" */

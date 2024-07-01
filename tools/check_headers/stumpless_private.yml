@@ -69,6 +69,7 @@
 "get_category": "private/config/wel_supported.h"
 "get_event_id": "private/config/wel_supported.h"
 "get_journald_field_name": "private/target/journald.h"
+"get_prival": "private/prival.h"
 "get_type": "private/config/wel_supported.h"
 "getaddrinfo_int_connect": "private/config/have_getaddrinfo.h"
 "gethostbyname_int_connect": "private/config/gethostbyname_supported.h"

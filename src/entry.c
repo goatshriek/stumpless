@@ -38,6 +38,7 @@
 #include "private/entry.h"
 #include "private/error.h"
 #include "private/facility.h"
+#include "private/prival.h"
 #include "private/severity.h"
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
@@ -1205,12 +1206,6 @@ void
 entry_free_all( void ) {
   cache_destroy( entry_cache );
   entry_cache = NULL;
-}
-
-int
-get_prival( enum stumpless_facility facility,
-            enum stumpless_severity severity ) {
-  return facility | severity;
 }
 
 void
