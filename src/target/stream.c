@@ -172,38 +172,35 @@ sendto_stream_target( struct stream_target *target,
   const char *reset_code = "\33[0m";
   unsigned short reset_code_len = strlen(sev_code);
   
+  config_lock_mutex( &target->stream_mutex );
   if (sev_code_len != 0)
   {
-    config_lock_mutex( &target->stream_mutex );
     fwrite_result = fwrite( sev_code, sizeof( char ), sev_code_len, target->stream );
-    config_unlock_mutex( &target->stream_mutex );
 
     if( fwrite_result != sev_code_len ) {
       goto write_failure;
     }
   }
 
-  config_lock_mutex( &target->stream_mutex );
   fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
-  config_unlock_mutex( &target->stream_mutex );
   if( fwrite_result != msg_length ) {
     goto write_failure;
   }
 
   if (sev_code_len != 0)
   {
-    config_lock_mutex( &target->stream_mutex );
     fwrite_result = fwrite( reset_code, sizeof( char ), reset_code_len, target->stream );
-    config_unlock_mutex( &target->stream_mutex );
 
     if( fwrite_result != reset_code_len ) {
       goto write_failure;
     }
   }
 
+  config_unlock_mutex( &target->stream_mutex );
   return cap_size_t_to_int( fwrite_result + 1 );
 
 write_failure:
+  config_unlock_mutex( &target->stream_mutex );
   raise_stream_write_failure(  );
   return -1;
 }
