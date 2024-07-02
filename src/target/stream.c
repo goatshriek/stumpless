@@ -170,7 +170,7 @@ sendto_stream_target( struct stream_target *target,
   const char *sev_code = target->escape_codes[severity];
   unsigned short sev_code_len = strlen(sev_code);
   const char *reset_code = "\33[0m";
-  unsigned short reset_code_len = strlen(sev_code);
+  unsigned short reset_code_len = strlen(reset_code);
   
   config_lock_mutex( &target->stream_mutex );
   if (sev_code_len != 0)
