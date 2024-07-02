@@ -134,6 +134,7 @@ stumpless_set_severity_color( struct stumpless_target *target, enum stumpless_se
   starget->escape_codes[severity][31] = 0;
 
   unlock_target(target);
+  clear_error();
 }
 
 
