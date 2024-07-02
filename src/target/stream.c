@@ -31,6 +31,7 @@
 #include "private/target.h"
 #include "private/target/stream.h"
 #include "private/validate.h"
+#include "private/severity.h"
 
 void
 stumpless_close_stream_target( const struct stumpless_target *target ) {
