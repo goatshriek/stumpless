@@ -121,8 +121,8 @@ fail:
 void
 stumpless_set_severity_color( struct stumpless_target *target, enum stumpless_severity severity, const char *escape_code )
 {
-  if (severity > 7)
-    raise_index_out_of_bounds("Severity value must be part of 'stumpless_severity' enum (0-7)", severity);
+  if (severity_is_invalid(severity))
+    raise_invalid_severity(severity);
 
   if (target->type != STUMPLESS_STREAM_TARGET)
     raise_target_unsupported("This function is only supported for stream targets");
