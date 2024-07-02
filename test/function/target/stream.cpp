@@ -23,6 +23,8 @@
 #include <string>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/rfc5424.hpp"
@@ -246,6 +248,66 @@ namespace {
     target = stumpless_open_stdout_target( NULL );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST( StreamTargetStderrTest, ColoredStream ) {
+    struct stumpless_target *target;
+    size_t i;
+    const char *filename =  "streamtargetcoloredstderrtest.log";
+
+    target = stumpless_open_stderr_target( "stderr-target" );
+    ASSERT_NOT_NULL( target );
+
+    int save_stderr = dup(STDERR_FILENO);
+    for (i = 0; i < 8; i++)
+    {
+      save_stderr = dup(save_stderr);
+      freopen(filename, "a+", stderr);
+
+      stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
+
+      fclose(stderr);
+      stderr = fdopen(save_stderr, "w");
+    }
+
+    stumpless_close_stream_target(target);
+
+    std::ifstream infile( filename );
+    std::stringstream buf;
+    buf << infile.rdbuf();
+    std::string src = buf.str();
+
+    EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
+  }
+
+  TEST( StreamTargetStdoutTest, ColoredStream ) {
+    struct stumpless_target *target;
+    size_t i;
+    const char *filename =  "streamtargetcoloredstdouttest.log";
+
+    target = stumpless_open_stdout_target( "stdout-target" );
+    ASSERT_NOT_NULL( target );
+
+    int save_stdout = dup(STDOUT_FILENO);
+    for (i = 0; i < 8; i++)
+    {
+      save_stdout = dup(save_stdout);
+      freopen(filename, "a+", stdout);
+
+      stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
+
+      fclose(stdout);
+      stdout = fdopen(save_stdout, "w");
+    }
+
+    stumpless_close_stream_target(target);
+
+    std::ifstream infile( filename );
+    std::stringstream buf;
+    buf << infile.rdbuf();
+    std::string src = buf.str();
+
+    EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
   }
 
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
