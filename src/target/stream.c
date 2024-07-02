@@ -124,11 +124,11 @@ stumpless_set_severity_color( struct stumpless_target *target, enum stumpless_se
   if (severity_is_invalid(severity))
     raise_invalid_severity(severity);
 
+  lock_target(target);
   if (target->type != STUMPLESS_STREAM_TARGET)
     raise_target_unsupported("This function is only supported for stream targets");
 
   struct stream_target *starget = (struct stream_target *)target->id;
-  lock_target(target);
 
   strncpy(starget->escape_codes[severity], escape_code, 32);
   starget->escape_codes[severity][31] = 0;
