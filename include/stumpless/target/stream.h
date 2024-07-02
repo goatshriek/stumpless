@@ -156,20 +156,22 @@ struct stumpless_target *
 stumpless_open_stream_target( const char *name, FILE *stream );
 
 /**
- * Sets the ANSI code to be printed in a specific target when a log is made at some severity
+ * Sets the ANSI escape code (https://en.wikipedia.org/wiki/ANSI_escape_code) to 
+ * be printed in a specific target when a log is made at some severity.
  *
  * It should be used with stdout or stderr as targets, since it is only for aesthetic purposes.
  *
- * **Thread Safety: MT-Safe race:name**
+ * **Thread Safety: MT-Safe race:escape_code**
  * This function is thread safe, of course assuming that escape_code is not modified by
  * any other threads during execution.
  *
- * **Async Signal Safety: AS-Unsafe heap**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use.
  *
- * **Async Cancel Safety: AC-Unsafe heap**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed.
  *
  * @param target The name of the target for which to set the colors.
  *
