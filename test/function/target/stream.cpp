@@ -257,17 +257,29 @@ namespace {
 
     target = stumpless_open_stderr_target( "stderr-target" );
     ASSERT_NOT_NULL( target );
-
+#ifndef STDERR_FILENO
+    int save_stderr = _dup(_fileno(stderr));
+#else
     int save_stderr = dup(STDERR_FILENO);
+#endif
     for (i = 0; i < 8; i++)
     {
+#ifndef STDERR_FILENO
+      save_stderr = _dup(save_stderr);
+#else
       save_stderr = dup(save_stderr);
+#endif
       freopen(filename, "a+", stderr);
 
       stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
-
+      
+      
+#ifndef STDERR_FILENO
+      _dup2(save_stderr, _fileno(stderr));
+#else
       fclose(stderr);
       stderr = fdopen(save_stderr, "w");
+#endif
     }
 
     stumpless_close_stream_target(target);
@@ -287,17 +299,28 @@ namespace {
 
     target = stumpless_open_stdout_target( "stdout-target" );
     ASSERT_NOT_NULL( target );
-
+#ifndef STDOUT_FILENO
+    int save_stdout = _dup(_fileno(stdout));
+#else
     int save_stdout = dup(STDOUT_FILENO);
+#endif
     for (i = 0; i < 8; i++)
     {
+#ifndef STDOUT_FILENO
+      save_stdout = _dup(save_stdout);
+#else
       save_stdout = dup(save_stdout);
+#endif
       freopen(filename, "a+", stdout);
 
       stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
 
+#ifndef STDOUT_FILENO
+      _dup2(save_stdout, _fileno(stdout));
+#else
       fclose(stdout);
       stdout = fdopen(save_stdout, "w");
+#endif
     }
 
     stumpless_close_stream_target(target);
