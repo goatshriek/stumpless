@@ -284,12 +284,33 @@ namespace {
 
     stumpless_close_stream_target(target);
 
-    std::ifstream infile( filename );
+    std::ifstream infile(filename);
+#ifdef GTEST_USES_SIMPLE_RE
+    std::string line;
+    bool first = true;
+
+    while (std::getline(infile, line))
+    {
+        EXPECT_THAT(line, testing::Conditional(
+            first,
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            ),
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[0m\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m\33\\[0m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            )  
+        ));
+        if (first) first = false;
+    }
+#else
     std::stringstream buf;
     buf << infile.rdbuf();
     std::string src = buf.str();
-
     EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
+#endif
   }
 
   TEST( StreamTargetStdoutTest, ColoredStream ) {
@@ -325,12 +346,33 @@ namespace {
 
     stumpless_close_stream_target(target);
 
-    std::ifstream infile( filename );
+    std::ifstream infile(filename);
+#ifdef GTEST_USES_SIMPLE_RE
+    std::string line;
+    bool first = true;
+
+    while (std::getline(infile, line))
+    {
+        EXPECT_THAT(line, testing::Conditional(
+            first,
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            ),
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[0m\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m\33\\[0m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            )
+        ));
+        if (first) first = false;
+    }
+#else
     std::stringstream buf;
     buf << infile.rdbuf();
     std::string src = buf.str();
-
     EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
+#endif
   }
 
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
