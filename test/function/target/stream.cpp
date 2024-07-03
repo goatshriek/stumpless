@@ -404,4 +404,17 @@ namespace {
 
     remove( filename );
   }
+
+  TEST(StreamSetSeverityColorTest, InvalidSeverity) {
+    struct stumpless_target *target = stumpless_open_stdout_target("stdout");
+    stumpless_set_severity_color(target, (enum stumpless_severity) 15, "\33[0m");
+    EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_SEVERITY);
+  }
+
+  TEST(StreamSetSeverityColorTest, WrongTargetType) {
+    char buf;
+    struct stumpless_target *target = stumpless_open_buffer_target("buffer", &buf, 1);
+    stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT, "\33[0m");
+    EXPECT_ERROR_ID_EQ(STUMPLESS_TARGET_UNSUPPORTED);
+  }
 }
