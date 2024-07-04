@@ -22,6 +22,7 @@
 #  include <stddef.h>
 #  include <stdio.h>
 #  include <stumpless/config.h>
+#  include <stumpless/entry.h>
 #  include "private/config/wrapper/thread_safety.h"
 
 /**
@@ -30,6 +31,8 @@
 struct stream_target {
 /** The stream this target writes to. */
   FILE *stream;
+/** ANSI colors for different severities (when using ansi terminal) */
+  char escape_codes[8][32];
 #  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects stream. This mutex must be locked by a thread before it can write
@@ -61,6 +64,7 @@ new_stream_target( FILE *stream );
 int
 sendto_stream_target( struct stream_target *target,
                       const char *msg,
-                      size_t msg_length );
+                      size_t msg_length,
+		      const struct stumpless_entry *entry );
 
 #endif /* __STUMPLESS_PRIVATE_TARGET_STREAM_H */

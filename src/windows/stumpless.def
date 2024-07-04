@@ -246,3 +246,4 @@ EXPORTS
   stumpless_set_entry_message_str_w             @229
   
   stumpless_get_prival_string                   @230
+  stumpless_set_severity_color                  @231

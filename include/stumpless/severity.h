@@ -191,6 +191,20 @@ enum stumpless_severity {
 };
 
 /**
+ * The default stumpless ansi terminal color values
+ */
+#define STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR   "\33[31;1m"
+#define STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR   "\33[31;1m"
+#define STUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR    "\33[31m"
+#define STUMPLESS_SEVERITY_ERR_DEFAULT_COLOR     "\33[31m"
+#define STUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR "\33[33m"
+#define STUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR  "\33[32m"
+#define STUMPLESS_SEVERITY_INFO_DEFAULT_COLOR    "\33[37m"
+#define STUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR   "\33[0m"
+
+
+
+/**
  * Equivalent to the DEBUG severity. Trace level messages include extra
  * information, but do not have a distinct severity value in log entries.
  *
