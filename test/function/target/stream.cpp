@@ -282,7 +282,8 @@ namespace {
 #endif
     }
 
-    stumpless_close_stream_target(target);
+    stumpless_close_target(target);
+    stumpless_free_all();
 
     std::ifstream infile(filename);
 /*
@@ -353,7 +354,8 @@ namespace {
 #endif
     }
 
-    stumpless_close_stream_target(target);
+    stumpless_close_target(target);
+    stumpless_free_all();
 
     std::ifstream infile(filename);
 /* See comment in StreamTargetStderrTest.ColoredStream */
@@ -418,13 +420,21 @@ namespace {
   TEST(StreamSetSeverityColorTest, InvalidSeverity) {
     struct stumpless_target *target = stumpless_open_stdout_target("stdout");
     stumpless_set_severity_color(target, (enum stumpless_severity) 15, "\33[0m");
+
     EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_SEVERITY);
+
+    stumpless_close_target(target);
+    stumpless_free_all();
   }
 
   TEST(StreamSetSeverityColorTest, WrongTargetType) {
     char buf;
     struct stumpless_target *target = stumpless_open_buffer_target("buffer", &buf, 1);
     stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT, "\33[0m");
+
     EXPECT_ERROR_ID_EQ(STUMPLESS_TARGET_UNSUPPORTED);
+
+    stumpless_close_target(target);
+    stumpless_free_all();
   }
 }
