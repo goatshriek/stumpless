@@ -285,6 +285,15 @@ namespace {
     stumpless_close_stream_target(target);
 
     std::ifstream infile(filename);
+/*
+ * Google Test uses a more simplified regex engine for windows
+ * (see here: https://google.github.io/googletest/advanced.html#regular-expression-syntax) 
+ * which does not support things like conditionals, grouping or brackets.
+ * Hence we use the following preprocessor statement to use a different
+ * test when this is run on platforms with the simple regex, and hopefully 
+ * once a reasonably complex regex engine is implemented in all the major
+ * platforms this is not needed.
+ **/
 #ifdef GTEST_USES_SIMPLE_RE
     std::string line;
     bool first = true;
@@ -347,6 +356,7 @@ namespace {
     stumpless_close_stream_target(target);
 
     std::ifstream infile(filename);
+/* See comment in StreamTargetStderrTest.ColoredStream */
 #ifdef GTEST_USES_SIMPLE_RE
     std::string line;
     bool first = true;
