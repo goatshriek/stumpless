@@ -212,6 +212,10 @@ ARG_NAME " NULL idi"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "winsock2 soketi ile gönderme başarısız oldu"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "soket açılamadı"
 

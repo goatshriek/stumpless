@@ -206,6 +206,10 @@ ARG_NAME "이 NULL입니다"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "winsock2 소켓으로 send 호출에 실패"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "소켓 열기에 실패했습니다"
 
