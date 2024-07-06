@@ -217,6 +217,10 @@ ARG_NAME " NULL ছিল"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "একটি winsock2 সকেট দিয়ে পাঠাতে ব্যর্থ হয়েছে"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "একটি সকেট খুলতে ব্যর্থ"
 

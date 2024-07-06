@@ -213,6 +213,10 @@ ARG_NAME "是空的"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "sendfailed带有winsock2 socket"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "无法打开套接字"
 

@@ -215,6 +215,10 @@ ARG_NAME " ishte NULL"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "dërgimi dështoi me një prizë (socket) të tipit winsock2"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "dështoi hapja e një prize (socket-e)"
 

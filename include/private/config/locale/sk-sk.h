@@ -234,6 +234,10 @@ ARG_NAME " mal hodnotu NULL"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "odosielanie winsock2 socketu zlyhalo"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otvorenie socketu zlyhalo"
 

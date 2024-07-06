@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2024 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +129,8 @@ stumpless_set_severity_color( struct stumpless_target *target, enum stumpless_se
 
   lock_target(target);
   if (target->type != STUMPLESS_STREAM_TARGET) {
-    raise_target_unsupported("This function is only supported for stream targets");
+    raise_target_unsupported(
+      L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE );
     return;
   }
 
