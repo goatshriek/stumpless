@@ -208,6 +208,10 @@ ARG_NAME " NULL විය"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "winsock2 socket සමඟ යැවීම අසාර්ථක විය"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "සොකට් එකක් විවෘත කිරීමට අසමත් විය"
 

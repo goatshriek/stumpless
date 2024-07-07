@@ -207,6 +207,10 @@ ARG_NAME " శూన్యం"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "విన్సాక్2 సాకెట్తో పంపడం విఫలమైంది"
 
+// todo translate
+#  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
+"severity colors are only supported for stream targets"
+
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "సాకెట్ తెరవడంలో విఫలమైంది"
 

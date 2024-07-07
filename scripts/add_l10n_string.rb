@@ -50,7 +50,7 @@ define_lines = ["#  define #{define_name} \\\n", english_lines].flatten
 
 root_dir = File.expand_path('..', __dir__)
 locale_dir = File.join(root_dir, 'include', 'private', 'config', 'locale')
-Dir.new(locale_dir).each do |file|
+Dir.new(locale_dir).each_child do |file|
   new_file_lines = []
   line_buffer = []
   inserted = false

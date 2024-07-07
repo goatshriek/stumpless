@@ -23,6 +23,8 @@
 #include <string>
 #include <stumpless.h>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/rfc5424.hpp"
@@ -248,6 +250,143 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST( StreamTargetStderrTest, ColoredStream ) {
+    struct stumpless_target *target;
+    size_t i;
+    const char *filename =  "streamtargetcoloredstderrtest.log";
+
+    target = stumpless_open_stderr_target( "stderr-target" );
+    ASSERT_NOT_NULL( target );
+#ifndef STDERR_FILENO
+    int save_stderr = _dup(_fileno(stderr));
+#else
+    int save_stderr = dup(STDERR_FILENO);
+#endif
+    for (i = 0; i < 8; i++)
+    {
+#ifndef STDERR_FILENO
+      save_stderr = _dup(save_stderr);
+#else
+      save_stderr = dup(save_stderr);
+#endif
+      freopen(filename, "a+", stderr);
+
+      stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
+      
+      
+#ifndef STDERR_FILENO
+      _dup2(save_stderr, _fileno(stderr));
+#else
+      fclose(stderr);
+      stderr = fdopen(save_stderr, "w");
+#endif
+    }
+
+    stumpless_close_target(target);
+    stumpless_free_all();
+
+    std::ifstream infile(filename);
+/*
+ * Google Test uses a more simplified regex engine for windows
+ * (see here: https://google.github.io/googletest/advanced.html#regular-expression-syntax) 
+ * which does not support things like conditionals, grouping or brackets.
+ * Hence we use the following preprocessor statement to use a different
+ * test when this is run on platforms with the simple regex, and hopefully 
+ * once a reasonably complex regex engine is implemented in all the major
+ * platforms this is not needed.
+ **/
+#ifdef GTEST_USES_SIMPLE_RE
+    std::string line;
+    bool first = true;
+
+    while (std::getline(infile, line))
+    {
+        EXPECT_THAT(line, testing::Conditional(
+            first,
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            ),
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[0m\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m\33\\[0m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            )  
+        ));
+        if (first) first = false;
+    }
+#else
+    std::stringstream buf;
+    buf << infile.rdbuf();
+    std::string src = buf.str();
+    EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
+#endif
+  }
+
+  TEST( StreamTargetStdoutTest, ColoredStream ) {
+    struct stumpless_target *target;
+    size_t i;
+    const char *filename =  "streamtargetcoloredstdouttest.log";
+
+    target = stumpless_open_stdout_target( "stdout-target" );
+    ASSERT_NOT_NULL( target );
+#ifndef STDOUT_FILENO
+    int save_stdout = _dup(_fileno(stdout));
+#else
+    int save_stdout = dup(STDOUT_FILENO);
+#endif
+    for (i = 0; i < 8; i++)
+    {
+#ifndef STDOUT_FILENO
+      save_stdout = _dup(save_stdout);
+#else
+      save_stdout = dup(save_stdout);
+#endif
+      freopen(filename, "a+", stdout);
+
+      stumpless_add_log_str(target, i, stumpless_get_severity_string((enum stumpless_severity)i)); 
+
+#ifndef STDOUT_FILENO
+      _dup2(save_stdout, _fileno(stdout));
+#else
+      fclose(stdout);
+      stdout = fdopen(save_stdout, "w");
+#endif
+    }
+
+    stumpless_close_target(target);
+    stumpless_free_all();
+
+    std::ifstream infile(filename);
+/* See comment in StreamTargetStderrTest.ColoredStream */
+#ifdef GTEST_USES_SIMPLE_RE
+    std::string line;
+    bool first = true;
+
+    while (std::getline(infile, line))
+    {
+        EXPECT_THAT(line, testing::Conditional(
+            first,
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            ),
+            testing::AnyOf(
+                testing::MatchesRegex("\33\\[0m\33\\[3\\d;?1?m.*"),
+                testing::MatchesRegex("\33\\[0m\33\\[0m.*"),
+                testing::MatchesRegex("\33\\[0m.*")
+            )
+        ));
+        if (first) first = false;
+    }
+#else
+    std::stringstream buf;
+    buf << infile.rdbuf();
+    std::string src = buf.str();
+    EXPECT_THAT(src, testing::MatchesRegex("(\33\\[(0|3[0-7]);?1?m.*\n\33\\[0m)*"));
+#endif
+  }
+
   TEST( StreamTargetWriteTest, ReadOnlyStream ) {
     struct stumpless_target *target;
     struct stumpless_entry *basic_entry;
@@ -276,5 +415,26 @@ namespace {
     stumpless_close_stream_target( target );
 
     remove( filename );
+  }
+
+  TEST(StreamSetSeverityColorTest, InvalidSeverity) {
+    struct stumpless_target *target = stumpless_open_stdout_target("stdout");
+    stumpless_set_severity_color(target, (enum stumpless_severity) 15, "\33[0m");
+
+    EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_SEVERITY);
+
+    stumpless_close_target(target);
+    stumpless_free_all();
+  }
+
+  TEST(StreamSetSeverityColorTest, WrongTargetType) {
+    char buf;
+    struct stumpless_target *target = stumpless_open_buffer_target("buffer", &buf, 1);
+    stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT, "\33[0m");
+
+    EXPECT_ERROR_ID_EQ(STUMPLESS_TARGET_UNSUPPORTED);
+
+    stumpless_close_target(target);
+    stumpless_free_all();
   }
 }
