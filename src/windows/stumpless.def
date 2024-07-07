@@ -8,8 +8,14 @@ EXPORTS
   stumpless_add_entry                           @3
   stumpless_add_param                           @4
   stumpless_close_buffer_target                 @5
-  stumpless_destroy_element                     @6
+
+; formerly stumpless_destroy_element, replaced in 3.0.0
+  stumpless_set_severity_color                  @6
+
+; formerly stumpless_destroy_entry, replaced in 3.0.0
   stumpless_destroy_entry                       @7
+
+; added in v 1.5.0 and earlier
   stumpless_destroy_param                       @8
   stumpless_get_current_target                  @9
   stumpless_get_error                           @10
@@ -244,6 +250,4 @@ EXPORTS
   stumpless_get_chain_length                    @227
   stumpless_new_chain                           @228
   stumpless_set_entry_message_str_w             @229
-  
   stumpless_get_prival_string                   @230
-  stumpless_set_severity_color                  @231
