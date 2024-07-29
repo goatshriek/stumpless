@@ -22,6 +22,7 @@
 #include "test/helper/memory_counter.hpp"
 
 NEW_MEMORY_COUNTER( prival_from_string )
+NEW_MEMORY_COUNTER( get_prival_string )
 
 static void PrivalFromString(benchmark::State& state) {
   // Create a list of priorities.
@@ -44,4 +45,25 @@ static void PrivalFromString(benchmark::State& state) {
   SET_STATE_COUNTERS( state, prival_from_string );
 }
 
+static void GetPrivalString(benchmark::State& state) {
+  std::vector<int> prival_list =
+      { STUMPLESS_SEVERITY_ALERT | STUMPLESS_FACILITY_USER,
+        STUMPLESS_SEVERITY_CRIT | STUMPLESS_FACILITY_MAIL, 
+        STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_AUTH2,
+        STUMPLESS_SEVERITY_WARNING | STUMPLESS_FACILITY_FTP,
+        STUMPLESS_SEVERITY_NOTICE | STUMPLESS_FACILITY_NTP };
+
+  const char *result;
+  INIT_MEMORY_COUNTER( get_prival_string );
+
+  for (auto _ : state) {
+    for (auto prival: prival_list ) {
+      result = stumpless_get_prival_string( prival );
+    }
+  }
+  free( ( void * ) result );
+  SET_STATE_COUNTERS( state, get_prival_string );
+}
+
 BENCHMARK(PrivalFromString);
+BENCHMARK(GetPrivalString);
