@@ -1089,7 +1089,7 @@ add_custom_target(build-test
 )
 
 add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
+  COMMAND ${CMAKE_CTEST_COMMAND}
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
