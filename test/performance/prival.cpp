@@ -18,6 +18,7 @@
 
 #include <benchmark/benchmark.h>
 #include <string>
+#include <cstdlib>
 #include <stumpless.h>
 #include "test/helper/memory_counter.hpp"
 
@@ -59,9 +60,9 @@ static void GetPrivalString(benchmark::State& state) {
   for (auto _ : state) {
     for (auto prival: prival_list ) {
       result = stumpless_get_prival_string( prival );
+      free( ( void * ) result );
     }
   }
-  free( ( void * ) result );
   SET_STATE_COUNTERS( state, get_prival_string );
 }
 
