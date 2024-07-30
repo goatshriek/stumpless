@@ -35,7 +35,7 @@ jobs:
           - "sk_SK.UTF-8"
           - "sq_AL.UTF-8"
           - "sv_SE.UTF-8"
-          - "sw-KE.UTF-8"
+          - "sw_KE.UTF-8"
           - "te_IN.UTF-8"
           - "tr_TR.UTF-8"
           - "zh_CN.UTF-8"
