@@ -1,4 +1,17 @@
 # Installing a Stumpless package
+
+```sh {"id":"01J422CD3C27ZJ8NQAT8E1RX2K"}
+
+```
+
+```sh {"id":"01J422C4B48NQ2B2HK2VAJP6D5"}
+
+```
+
+```sh {"id":"01J422C2RF3Z013S2KB4CK0TZF"}
+
+```
+
 If you just want to use stumpless and aren't looking to modify or otherwise
 develop it, the easiest path is to use one of the release packages. These are
 available for a few common platforms, and are attached to each
@@ -14,45 +27,45 @@ The provided release packages contain all of the items in the following list.
 If you want a package with only a selection of these items, you'll need to build
 it yourself using `cpack` and the appropriate configuration.
 
- * shared library
- * header files
- * `.pc` file for `pkg-config` implementations
- * examples
- * HTML documentation
- * man pages
-
+* shared library
+* header files
+* `.pc` file for `pkg-config` implementations
+* examples
+* HTML documentation
+* man pages
 
 ## Debian Package
+
 A `.deb` package is provided for use in environments that support them, like
 Debian and Ubuntu. The package can be installed with the usual command:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4NPAMM2KC"}
 # you might need sudo (or root privileges) to install
 dpkg -i libstumpless-2.2.0-amd64.deb
 ```
 
-
 ## RPM Package
+
 A `.rpm` package is provided for use in Red Hat Linux environments. It can be
 installed in the traditional way as well:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4NS5C4QP9"}
 # again, make sure you have the correct permissions
 rpm -i libstumpless-2.2.0-x86_64.rpm
 ```
 
-
 ## FreeBSD Package
+
 A `.pkg` package is provided for use in FreeBSD environments. Of course, it is
 installed just as any other pkg would be:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4NT2V6ED2"}
 # permissions need to be correct, of course
 pkg add libstumpless-2.2.0-amd64.pkg
 ```
 
-
 ## Gentoo ebuild
+
 A `.ebuild` package is provided with each release version of the library, and
 is also generated during the configuration stage of the build by cmake. The
 generated ebuild is in the `tools/portage` folder of the build directory.
@@ -67,7 +80,7 @@ then the download of the source will fail.
 In either case, you could install the ebuild by putting it into a repository and
 running ebuild ultimately as something like:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4NVK9KB8V"}
 ebuild libstumpless-2.2.0.ebuild clean manifest install merge
 ```
 
@@ -75,37 +88,37 @@ USE flags and other customizations can be done here as well. Gentoo installs are
 more nuanced than can be discussed here; start with the relevant
 [handbook page](https://wiki.gentoo.org/wiki/Ebuild) if you want to learn more.
 
-
 ## Generic Shell Installer
+
 CMake generates a shell script that can be used to install the library on
 systems lacking a more traditional package manager, for example Cygwin. Simply
 execute the script from the prefix where you want to install the library. The
 script is a self-extracting TGZ archive that provides the headers and library
 files.
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4NYVWNAHW"}
 # you might need to do this with sudo!
 # make sure your permissions allow you to write to the install locations
 cd /usr
 ./libstumpless-2.2.0.sh
 ```
 
-
 ## Windows Installer
+
 A simple `.msi` installer is provided that puts the DLL, `.lib`, and include
 headers into a Program Files folder. Note that you may need to update search
 paths to locate these resources after installation, as the installer does not
 currently handle this.
 
-
 ## C++ Installers
+
 For each provided package, there is also a C++ package (`stumpless-cpp`)
 that includes the C++ library. These packages also include the C library, so
 if you think you might need the C++ library at some point down the road you
 can use this one to install it at the same time as the base library.
 
-
 ## Single File Builds
+
 The `single-file` build target will generate the `stumpless.c` and
 `include/single_file/stumpless.h` files in the build directory, which can be
 used as single-file dropins. These can be compiled into other programs to
@@ -119,16 +132,16 @@ these files is not insignificant, and the files are relatively large and
 contain significant duplicate code. This option is included to provide a fast
 and easy way to use the library by giving up some efficiency.
 
-
 # Building Stumpless from the source
+
 In order to compile Stumpless you will at a bare minimum cmake and a compatible
 build system such as the GNU toolchain or Microsoft Visual Studio. While the
 source itself can be downloaded using a number of tools (wget, a browser, etc.)
 git is the recommended way to do this if you need to get specific release tags,
 branches, or make any changes yourself.
 
-
 ## Prepping your System
+
 Since there are so many possible ways to set up an environment, stumpless does
 not provide any single way to do this. However, here are some snippets that
 can get everything installed for you in some common environments.
@@ -147,7 +160,7 @@ immediately install/use it, you will only need cmake and a C toolchain.
 For Linux systems with a package manager like `apt`, you can install the needed
 tools (for a GNU toolchain) with something like the following:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4P2C16MY6"}
 # for distributions using apt, such as Ubuntu or Debian:
 sudo apt-get install cmake make gcc g++ doxygen
 
@@ -168,17 +181,17 @@ be installed using the setup script. You can install the needed packages in the
 GUI, or if you want to just do it via command line, you can do something like
 this:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4P5QSMSEF"}
 setup-x86_64.exe -q -P cmake,make,gcc-core,gcc-g++,doxygen
 ```
 
-
 ## Building
+
 Once all of the build dependencies are available, actually building the library
 is straightforward. The examples below show how to do this in an environment
 using `make` from a fresh clone.
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4P9M82E9N"}
 # cloning the latest version of the source tree
 # if you don't want to use git, you can download a zip of the sources from
 # github
@@ -207,7 +220,7 @@ situations, you'll likely want to specify a
 during the configuration stage. Sticking with the MinGW case, this might look
 like this:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4PCHYQDY0"}
 # run within the MinGW shell, in our fresh build directory
 cmake -G "MinGW Makefiles" ../stumpless
 ```
@@ -218,7 +231,7 @@ cmake can run these commands for you if you invoke it in
 This is especially handy in environments like Visual Studio or MinGW, where the
 build toolchain might require prefixes and/or options to work properly.
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4PGBMN299"}
 # build the default target ("all") using whatever toolchain cmake detected
 # during the configuration stage
 # the argument to the `--build` parameter is the root of the folder where we
@@ -233,7 +246,7 @@ cmake --build . --target check
 The type of build can be changed at configuration time by defining the
 `CMAKE_BUILD_TYPE` symbol during configuration.
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4PKBRYZ0R"}
 # benchmark testing should always be done using Release builds
 cmake -DCMAKE_BUILD_TYPE=Release ../stumpless
 ```
@@ -243,7 +256,7 @@ to be passed in during build steps. In the above example, builds would still use
 the default build type, effectively ignoring the configuration step. To specify
 the build type you will need to provide a config to use during build:
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4PPX71BC0"}
 # explicitly use the Release configuration we have in our toolchain
 cmake --build . --config x64-Release --target bench
 ```
@@ -259,26 +272,26 @@ The rest of this documentation uses make commands for simplicity, but for any
 target you can build it using cmake build mode if you need truly portable
 command line invocation.
 
-
 ## Building Documentation
+
 The documentation for the library can be built using the `docs` target. Note
 that this target will only be available if doxygen was detected during the
 configuration of the system.
 
-```sh
+```sh {"id":"01J4213JJ43AWA39G4PS81CXZE"}
 # the resulting documentation will appear in a folder named docs in the build
 # directory
 make docs
 ```
 
-
 ## Verifying your Build
+
 If you want to run the test suite on the library during development or as a
 sanity check before installation, you can use the `check` target to run all
 tests and display the results. If you're concerned that the build may not work
 on your architecture, then this is the best way to verify.
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8JZQFYYTCN"}
 make check
 ```
 
@@ -289,16 +302,16 @@ If you're curious about how the library will perform on your system, use the
 `bench` target to run the performance benchmarks. Like the `check` target, this
 will download and build the Google Benchmark library in order to run.
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8JZQK81HKM"}
 make bench
 ```
 
-
 ## Installing your Build
+
 You can use the install target to install the library on your machine after the
 build.
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8JZTP6BW5E"}
 make install
 
 # if the above doesn't work, you might need sudo to install files into the
@@ -311,7 +324,7 @@ compile one of the examples without using the built-in targets. If the target
 builds but your own compilation doesn't, then there is something wrong with
 your install.
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8JZYC7M98N"}
 # first we use the build target to make sure it works
 make example-entry && ./example-entry
 
@@ -335,7 +348,7 @@ to modify this, use the `CMAKE_INSTALL_PREFIX` definition during the
 configuration step of the build. You can always re-run cmake to update this in
 an existing build tree if you need to change it.
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8JZYP994AW"}
 # our initial build installed to /usr/local locations, which we didn't want
 cat install_manifest.txt
 # /usr/local/include/stumpless/target/network.h
@@ -365,8 +378,8 @@ cat install_manifest.txt
 Some tools, such as Visual Studio, will run the installation step for you. In
 Visual Studio 2022 for example, this is in the `Build->Install stumpless` menu.
 
-
 ### Uninstalling
+
 There is currently no uninstall target supported, so removal of the library
 and its include files must be done manually if it is no longer needed. Please
 submit an issue on the project's Github site if you feel that you need a build
@@ -374,12 +387,12 @@ target providing this feature. If you are on a Linux system, you can run the
 contents of the `install_manifest.txt` file (generated during the install)
 through `rm` like this:
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8K00A30373"}
 xargs rm < install_manifest.txt
 ```
 
-
 ## C++ Library
+
 If you want to build, test, and install the C++ bindings for stumpless as well,
 you will need to modify the above steps slightly.
 
@@ -396,7 +409,7 @@ manager's distribution of ruby, or RubyInstaller (for Windows).
 After you have a ruby environment and wrapture is available, building and
 testing the C++ library can be done like this:
 
-```sh
+```sh {"id":"01J4213JJ547VBTN8K03PP832D"}
 # in the build directory, modify the cmake to enable c++
 # this will emit a warning and leave c++ disabled if wrapture cannot be found
 cmake -DENABLE_CPP=ON ../stumpless

@@ -11,59 +11,65 @@
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
+```sh {"id":"01J420QG577AXN8QPH5BER8BTA"}
 
-[简体中文](./l10n/zh-cn/自述.md)
+```
 
+```sh {"id":"01J420QFYAR71EDYYZ9V7C847V"}
+iiiiiiiii
+```
 
 [Key Features](#key-features) |
 [Build and Install](#quick-build-and-install) |
 [Basic Usage](#basic-usage) |
 [Contributing](#contributing)
 
-
 ## Key Features
+
 Stumpless has lots of features that make logging in C fast and easy:
- * log to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
+
+* log to [lots of things](#what-can-it-log-to) like Splunk, rsyslog,
    journald, the Windows Event Log, sqlite, and more!
- * structured and unstructured logging to suit your needs
- * builds on Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS, and more!
- * thread safe
- * can be adjusted or removed during compilation for zero runtime cost
- * localized for multiple languages 🇦🇱 🇧🇷 🇧🇬 🇨🇳 🇨🇿 🇩🇪 🇩🇰 🇪🇸 🇫🇷 🇬🇷 🇭🇺 🇮🇳 🇮🇱 🇮🇹
+* structured and unstructured logging to suit your needs
+* builds on Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS, and more!
+* thread safe
+* can be adjusted or removed during compilation for zero runtime cost
+* localized for multiple languages 🇦🇱 🇧🇷 🇧🇬 🇨🇳 🇨🇿 🇩🇪 🇩🇰 🇪🇸 🇫🇷 🇬🇷 🇭🇺 🇮🇳 🇮🇱 🇮🇹
    🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
- * easy-access
+* easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
    and [support](https://gitter.im/stumpless/community).
 
-
 ### What can it log to?
+
 A primary goal of this library is to provide a consistent logging interface to
 a wide variety of log targets. This means you can focus on defining events
 and where you want them to go, without finding other SDKs or adding daemons
 and plugins to get them where you want. Stumpless can write logs to:
- * Simple character buffers
- * Files and streams
- * Unix sockets (such as a local syslog daemon)
- * Network servers (IPv4 or IPv6, TCP or UDP)
- * Systemd Journald service
- * Sqlite3 databases
- * Windows Event Log
- * Custom functions, for whatever else you may need!
+
+* Simple character buffers
+* Files and streams
+* Unix sockets (such as a local syslog daemon)
+* Network servers (IPv4 or IPv6, TCP or UDP)
+* Systemd Journald service
+* Sqlite3 databases
+* Windows Event Log
+* Custom functions, for whatever else you may need!
 
 Don't see what you need? Create an
 [issue](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)
 with your request and we'll work it into our
 [roadmap](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)!
 
-
 ## Quick Build and Install
+
 Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
 or Visual Studio) to build. For a system using the standard GNU make toolchain,
 you can simply do:
 
-```sh
+```sh {"id":"01J420KDM0JY3J0XXZC7PMH1RJ"}
 # cloning the latest version of the source tree
 git clone git@github.com:goatshriek/stumpless.git
 
@@ -85,12 +91,12 @@ Check out the [Installation Instructions](INSTALL.md) for more detail on
 building and installing stumpless in different environments and/or with other
 toolchains.
 
-
 ## Basic Usage
+
 The simplest way to get started is to use the `stumplog` function as a direct
 replacement for the standard library's `syslog` function:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZC82Q5ZZQ"}
 // if you're used to doing this:
 syslog( LOG_INFO | LOG_USER, "My message #%d", count );
 
@@ -108,14 +114,14 @@ If you want an even shorter function call, you can use the `stump` function
 to send a message to the current target. You can also use format specifiers just
 as you would with `printf`:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCBSWW0D0"}
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
 If you don't need format specifiers, use one of the `_str` variants:
 it's both faster and safer!
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCE414DZ7"}
 stump_str( "Login failure! See structured data for info." );
 ```
 
@@ -123,7 +129,7 @@ If you want to open a specific target rather than using the default, then just
 open the one you need and start sending messages. For example, to log to
 a file named `example.log`:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCEH0JWFQ"}
 target = stumpless_open_file_target( "example.log" );
 
 // uses the last opened target by default
@@ -133,7 +139,7 @@ stump( "Login attempt failure #%d for user %s", count, username );
 Sending messages over the network to something like Splunk or rsyslog is just
 as easy:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCGX3KDN1"}
 target = stumpless_open_udp4_target( "send-to-splunk-example",
                                      "mylogserver.com" ); // or use an IP
 stump( "Login attempt failure #%d for user %s", count, username );
@@ -142,27 +148,27 @@ stump( "Login attempt failure #%d for user %s", count, username );
 If you have multiple targets, you can send messages to a chosen target like
 this:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCK6BWD07"}
 stumpless_add_message( target,
                        "Login attempt failure #%d for user %s",
                        count,
                        username );
 ```
 
-
 ### Severity Shorthand
+
 It's common to specify severity levels directly in logging calls, so stumpless
 provides some macro functions to make this less verbose and more efficient. For
 example, to log messages with a severity of INFO, you can do this:
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCPV3Y1WG"}
 stump_i( "this gets logged as an info message" );
 ```
 
 And if you want to also see source file, line number, and function name info in
 each message you can use `_t` (the 't' is for trace):
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCRKJJAWY"}
 stump_t( "this includes source info" );
 ```
 
@@ -172,7 +178,7 @@ compile time by simply defining the `STUMPLESS_ENABLE_UPTO` or
 between builds, for example to have prod and debug versions without differences
 in their source code.
 
-```c
+```c {"id":"01J420KDM0JY3J0XXZCRX189CG"}
 // be sure to define this before stumpless.h gets included
 #define STUMPLESS_ENABLE_UPTO_INFO
 
@@ -191,15 +197,15 @@ to see the full list of severity shorthand functions, or the
 [severity level example](https://github.com/goatshriek/stumpless/tree/latest/docs/examples/severity_level)
 to see a complete program in action.
 
-
 ### Even more examples
+
 For more detailed examples of the above scenarios, usage of specific target
 types, how to handle more complicated message structures, and more check out the
 [examples](docs/examples). These include annoted example code files to compile,
 run, and modify to get you started.
 
-
 ## Contributing
+
 Notice a problem or have a feature request? Just create an issue using one of
 the templates, and we will respond as quickly as we can. You can also look at
 the project's [Contribution Guidelines](docs/CONTRIBUTING.md) for more details
@@ -224,8 +230,8 @@ If an item catches your interest, drop a comment in the existing issue or open
 a new one if it doesn't exist yet and state your intent to work on it so that
 others will have a way to know it is underway.
 
-
 ## Documentation and Community
+
 If you're curious about how something in stumpless works that isn't explained
 here, you can check the appropriate section of the documentation, stored in the
 [docs](https://github.com/goatshriek/stumpless/blob/latest/docs/) folder.
@@ -244,16 +250,17 @@ messages.
 
 There are also plenty of ways that you can reach out to the project team and
 broader community for support.
- * [Issues](https://github.com/goatshriek/stumpless/issues) and
+
+* [Issues](https://github.com/goatshriek/stumpless/issues) and
    [discussions](https://github.com/goatshriek/stumpless/discussions) on Github
    are good ways to get a response if you have a specific question or
    suggestion.
- * There is a persistent chat on [gitter](https://gitter.im/stumpless/community)
+* There is a persistent chat on [gitter](https://gitter.im/stumpless/community)
    where you can find announcements and ask questions.
- * News about the project are typically announced on Twitter as well by
+* News about the project are typically announced on Twitter as well by
    [goatshriek](https://twitter.com/goatshriek), using
    [#StumplessLib](https://twitter.com/search?q=%23StumplessLib).
- * You can reach the primary maintainer via [email](mailto:joel@goatshriek.com)
+* You can reach the primary maintainer via [email](mailto:joel@goatshriek.com)
    if you want private communication. This is the preferred method for
    [notifying](https://github.com/goatshriek/stumpless/blob/latest/docs/SECURITY.md#reporting-a-vulnerability)
    us of security issues with the project, so that we can address them as
