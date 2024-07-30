@@ -116,9 +116,8 @@ include the new header.
 The last step is to add new CI builds for the new locale to make sure that
 there are no immediate problems and catch any future ones that arise. This is
 done by updating the `.github/workflows/locale.yml` configuration file with a
-build profile for the new language. This is relatively simple: just copy one of
-the existing jobs (for example `linux-es-es`) and update it to use your new
-locale.
+build profile for the new language. This is relatively simple: just make a new
+line in the build matrix with the new language.
 
 Finally, add a flag for the new locale to the project README (in the Key
 Features section) to show off your hard work to everyone else!
