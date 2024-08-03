@@ -43,13 +43,19 @@ stumpless_get_prival_string( int prival ) {
 
   severity = stumpless_get_severity_string( get_severity( prival ) );
   facility = stumpless_get_facility_string( get_facility( prival ) );
+   
+  size_t len_severity = strlen(severity); // to not call strlen() mutiples times, unsure about impact
+  size_t len_facility = strlen(facility);
 
   // +3 for formatting, +1 for termination
-  prival_string_size = ( strlen( severity ) + strlen( facility ) + 4);
+  prival_string_size = ( len_severity + len_facility + 4);
   prival_string = alloc_mem( prival_string_size );
-
-  snprintf( prival_string, prival_string_size, "%s | %s", severity, facility );
-
+  
+  memcpy( prival_string, severity , len_severity); 
+  memcpy( prival_string + len_severity, " | ", 3); // 3 is the size of " | "
+  memcpy( prival_string + len_severity + 3, facility, len_facility);
+  memcpy( prival_string + len_severity + 3 + len_facility, "\0", 1);
+  
   return prival_string;
 }
 
