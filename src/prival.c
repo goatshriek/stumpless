@@ -31,7 +31,6 @@
 #include "private/memory.h"
 #include "private/prival.h"
 #include "private/severity.h"
-#include "private/strhelper.h"
 #include "private/validate.h"
 
 const char *
