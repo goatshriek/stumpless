@@ -64,7 +64,6 @@ stumpless_prival_from_string( const char *string ) {
   int prival;
   int severity;
   int facility;
-  const char *param;
   const char *period;
   const char *sec_period;
   size_t len;
@@ -103,15 +102,7 @@ stumpless_prival_from_string( const char *string ) {
   // Calculate the facility length, up to the first period character
   len = period - string;
 
-  // Copy the facility substring to the param buffer
-  param = copy_cstring_length( string, len );
-  if( !param ) {
-    return -1;
-  }
-
-  facility = stumpless_get_facility_enum( param );
-
-  free_mem( param );
+  facility = stumpless_get_facility_enum_from_buffer( string, len );
 
   if( facility < 0 ) {
     raise_invalid_param(  );
@@ -122,15 +113,7 @@ stumpless_prival_from_string( const char *string ) {
   len++;
   len = slen - len;
 
-  // Copy the severity substring to the param buffer
-  param = copy_cstring_length( period + 1, len );
-  if( !param ) {
-    return -1;
-  }
-
-  severity = stumpless_get_severity_enum( param );
-
-  free_mem( param );
+  severity = stumpless_get_severity_enum_from_buffer( period + 1, len );
 
   if( severity < 0 ) {
     raise_invalid_param(  );
