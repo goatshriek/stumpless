@@ -44,12 +44,11 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
   size_t i;
   char *severity_name;
   const int str_offset = 19; // to ommit "STUMPLESS_SEVERITY_"
-  size_t buf_length;
 
   severity_bound = sizeof( severity_enum_to_string ) /
                      sizeof( severity_enum_to_string[0] );
 
-  severity_name = copy_cstring_with_length( severity_buffer, &buf_length );
+  severity_name = copy_cstring_length( severity_buffer, severity_buffer_length );
   if( !severity_name ) {
     return -1;
   }

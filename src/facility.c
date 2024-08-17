@@ -46,12 +46,11 @@ stumpless_get_facility_enum_from_buffer(const char *facility_buffer, size_t faci
  size_t i;
  char *facility_name;
  const int str_offset = 19; // to ommit "STUMPLESS_FACILITY_"
- size_t buf_length;
 
  facility_bound = sizeof( facility_enum_to_string ) /
            sizeof( facility_enum_to_string[0] );
 
- facility_name = copy_cstring_with_length(facility_buffer, &buf_length);
+ facility_name = copy_cstring_length(facility_buffer, facility_buffer_length);
  if( !facility_name ) {
   return -1;
  }
