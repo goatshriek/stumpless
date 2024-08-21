@@ -114,7 +114,7 @@ stumpless_prival_from_string( const char *string ) {
 
   severity = stumpless_get_severity_enum_from_buffer( period + 1, len );
 
-  if( severity < 0 ) {
+  if( severity < 0 && !stumpless_has_error()) {
     raise_invalid_param(  );
     return -1;
   }
