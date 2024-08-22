@@ -24,6 +24,7 @@
 #include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
+#include <stumpless/error.h>
 #include "private/config.h"
 #include "private/config/wrapper/locale.h"
 #include "private/error.h"
