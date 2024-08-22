@@ -44,38 +44,27 @@ enum stumpless_facility
 stumpless_get_facility_enum_from_buffer(const char *facility_buffer, size_t facility_buffer_length) {
  size_t facility_bound;
  size_t i;
- char *facility_name;
  const int str_offset = 19; // to ommit "STUMPLESS_FACILITY_"
 
  facility_bound = sizeof( facility_enum_to_string ) /
            sizeof( facility_enum_to_string[0] );
 
- facility_name = copy_cstring_length(facility_buffer, facility_buffer_length);
- if( !facility_name ) {
-  return -1;
- }
-
- to_upper_case(facility_name);
  for( i = 0; i < facility_bound; i++ ) {
-  if( strcmp( facility_name, facility_enum_to_string[i] + str_offset ) == 0 ) {
-   free_mem( facility_name );
+  if( strncasecmp( facility_buffer, facility_enum_to_string[i] + str_offset, facility_buffer_length ) == 0 ) {
    return i << 3;
   }
  }
 
  // exeption, for 'security' return 'auth' enum value
-  if( strcmp( facility_name, "SECURITY" ) == 0 ) {
-  free_mem( facility_name );
+  if( strncasecmp( facility_buffer, "SECURITY", facility_buffer_length ) == 0 ) {
   return STUMPLESS_FACILITY_AUTH_VALUE;
  }
 
  // exeption, for 'authpriv' not presented in enum list
-  if( strcmp( facility_name, "AUTHPRIV" ) == 0 ) {
-  free_mem( facility_name );
+  if( strncasecmp( facility_buffer, "AUTHPRIV", facility_buffer_length ) == 0 ) {
   return STUMPLESS_FACILITY_AUTH2_VALUE;
  }
 
- free_mem( facility_name );
  return -1;
 }
 
