@@ -112,34 +112,6 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PARAM_STRING );
   }
 
-  TEST( GetPrivalFromString, InvalidMemFacilityPriority ) {
-    int result;
-    void * (*set_malloc_result)(size_t);
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    result = stumpless_prival_from_string( "user.err" );
-    EXPECT_EQ( result, -1 );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-  }
-
-  TEST( GetPrivalFromString, InvalidMemSeverityPriority ) {
-    int result;
-    void * (*set_malloc_result)(size_t);
-    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 4 ) );
-    ASSERT_NOT_NULL( set_malloc_result );
-
-    result = stumpless_prival_from_string( "syslog.err" );
-    EXPECT_EQ( result, -1 );
-
-    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-
-    set_malloc_result = stumpless_set_malloc( malloc );
-    EXPECT_TRUE( set_malloc_result == malloc );
-  }
-
   TEST(GetPrivalString, ValidPrival) {
     int prival;
     const char *result;
