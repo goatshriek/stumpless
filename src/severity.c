@@ -21,7 +21,6 @@
 #include <stumpless/severity.h>
 #include "private/severity.h"
 #include "private/strhelper.h"
-#include "private/memory.h"
 
 static char *severity_enum_to_string[] = {
   STUMPLESS_FOREACH_SEVERITY( GENERATE_STRING )
