@@ -24,7 +24,6 @@
 #include <stumpless/prival.h>
 #include <stumpless/severity.h>
 #include <stumpless/facility.h>
-#include <stumpless/error.h>
 #include "private/config.h"
 #include "private/config/wrapper/locale.h"
 #include "private/facility.h"
@@ -32,6 +31,7 @@
 #include "private/prival.h"
 #include "private/severity.h"
 #include "private/validate.h"
+#include "private/error.h"
 
 const char *
 stumpless_get_prival_string( int prival ) {
