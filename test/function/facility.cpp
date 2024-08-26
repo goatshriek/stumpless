@@ -20,7 +20,6 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
-#include "test/helper/memory_allocation.hpp"
 
 namespace {
 
