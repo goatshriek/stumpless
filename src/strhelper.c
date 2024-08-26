@@ -79,3 +79,16 @@ to_upper_case( char *str ) {
     str[i] = toupper( str[i] );
   }
 }
+
+int
+strncasecmp_custom( const char *s1, const char *s2, size_t n ) {
+  if (n != 0) {
+    do {
+      if (tolower(*s1) != tolower(*s2++))
+        return tolower(*s1) - tolower(*--s2);
+      if (*s1++ == '\0')
+        break;
+    } while (--n != 0);
+  }
+  return 0;
+}

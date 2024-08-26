@@ -49,18 +49,18 @@ stumpless_get_facility_enum_from_buffer(const char *facility_buffer, size_t faci
            sizeof( facility_enum_to_string[0] );
 
  for( i = 0; i < facility_bound; i++ ) {
-  if( strncasecmp( facility_buffer, facility_enum_to_string[i] + str_offset, facility_buffer_length ) == 0 ) {
+  if( strncasecmp_custom( facility_buffer, facility_enum_to_string[i] + str_offset, facility_buffer_length ) == 0 ) {
    return i << 3;
   }
  }
 
  // exeption, for 'security' return 'auth' enum value
-  if( strncasecmp( facility_buffer, "SECURITY", facility_buffer_length ) == 0 ) {
+  if( strncasecmp_custom( facility_buffer, "SECURITY", facility_buffer_length ) == 0 ) {
   return STUMPLESS_FACILITY_AUTH_VALUE;
  }
 
  // exeption, for 'authpriv' not presented in enum list
-  if( strncasecmp( facility_buffer, "AUTHPRIV", facility_buffer_length ) == 0 ) {
+  if( strncasecmp_custom( facility_buffer, "AUTHPRIV", facility_buffer_length ) == 0 ) {
   return STUMPLESS_FACILITY_AUTH2_VALUE;
  }
 
