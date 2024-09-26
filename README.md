@@ -60,8 +60,7 @@ with your request and we'll work it into our
 
 ## Quick Build and Install
 Stumpless only requires cmake and a cmake-supported build toolchain (like GCC
-or Visual Studio) to build. For a system using the standard GNU make toolchain,
-you can simply do:
+or Visual Studio) to build.
 
 ```sh
 # cloning the latest version of the source tree
@@ -75,10 +74,10 @@ cd build
 cmake ../stumpless
 
 # building stumpless (with 4 threads - adjust as desired)
-make -j 4 all
+cmake --build . --parallel 4
 
 # install the library (you probably need sudo to do this)
-sudo make install
+sudo cmake --install .
 ```
 
 Check out the [Installation Instructions](INSTALL.md) for more detail on

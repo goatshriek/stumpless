@@ -192,7 +192,7 @@ cd build
 cmake ../stumpless
 
 # building the library itself
-make all
+cmake --build .
 ```
 
 Other environments should be built according to their normal style. For example
@@ -268,7 +268,7 @@ configuration of the system.
 ```sh
 # the resulting documentation will appear in a folder named docs in the build
 # directory
-make docs
+cmake --build . --target docs
 ```
 
 
@@ -279,7 +279,7 @@ tests and display the results. If you're concerned that the build may not work
 on your architecture, then this is the best way to verify.
 
 ```sh
-make check
+cmake --build . --target check
 ```
 
 The `check` target will download and build the Google Test library in the build
@@ -290,20 +290,22 @@ If you're curious about how the library will perform on your system, use the
 will download and build the Google Benchmark library in order to run.
 
 ```sh
-make bench
+cmake --build . --target bench
 ```
 
 
 ## Installing your Build
 You can use the install target to install the library on your machine after the
-build.
+build. This example uses the cmake `--install` command, but you could also use
+the `install` build target for your specific build system, for example
+`make install` in a GNU make build.
 
 ```sh
-make install
+cmake --install .
 
 # if the above doesn't work, you might need sudo to install files into the
 # correct system folders
-sudo make install
+sudo cmake --install .
 ```
 
 A simple way to make sure that your install is working as you expected is to
@@ -313,7 +315,7 @@ your install.
 
 ```sh
 # first we use the build target to make sure it works
-make example-entry && ./example-entry
+cmake --build . --target run-example-entry
 
 # next, we compile the same example manually
 gcc docs/examples/entry/entry_example.c -lstumpless -omanual_entry_example
@@ -333,7 +335,8 @@ the environment variable `LIBRARY_PATH` in Cygwin.
 If you find that stumpless has installed to unexpected locations and you want
 to modify this, use the `CMAKE_INSTALL_PREFIX` definition during the
 configuration step of the build. You can always re-run cmake to update this in
-an existing build tree if you need to change it.
+an existing build tree if you need to change it, or supply the `--prefix` option
+to `cmake --install` to change it at install time.
 
 ```sh
 # our initial build installed to /usr/local locations, which we didn't want
@@ -345,11 +348,8 @@ cat install_manifest.txt
 # /usr/local/include/stumpless.h
 # <output truncated>
 
-# re-run the configuration
-cmake -DCMAKE_INSTALL_PREFIX=/usr ../stumpless
-
-# re-do the install
-sudo make install
+# re-do the install with a different prefix
+sudo cmake --install . --prefix /usr
 
 # now we see things in the right place!
 cat install_manifest.txt
@@ -401,14 +401,14 @@ testing the C++ library can be done like this:
 # this will emit a warning and leave c++ disabled if wrapture cannot be found
 cmake -DENABLE_CPP=ON ../stumpless
 
-# the all target will now include the stumpless c++ library
-make all
+# the default target will now include the stumpless c++ library
+cmake --build .
 
 # to test the library, use the `check-cpp` target
-make check-cpp
+cmake --build . --target check-cpp
 
 # when enabled, the C++ bindings are installed along with the library itself
 # so the following command will install the c++ headers and library in addition
 # to the c headers and library
-make install
+cmake --install .
 ```
