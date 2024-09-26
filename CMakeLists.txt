@@ -1088,10 +1088,17 @@ add_custom_target(build-test
   DEPENDS ${STUMPLESS_FUNCTION_TESTS}
 )
 
-add_custom_target(check
-  COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE}
-  DEPENDS ${STUMPLESS_FUNCTION_TESTS}
-)
+if(CMAKE_CONFIGURATION_TYPES)
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIG>
+    DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+  )
+else()
+  add_custom_target(check
+    COMMAND ${CMAKE_CTEST_COMMAND}
+    DEPENDS ${STUMPLESS_FUNCTION_TESTS}
+  )
+endif()
 
 
 # examples
