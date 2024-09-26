@@ -320,13 +320,13 @@ cmake -DGTEST_PATH=../gtest -DBENCHMARK_PATH=../benchmark ../stumpless
 
 # in this build Google Test and Benchmark will be downloaded and built since
 # the paths we provided don't have anything in them
-make check
-make bench
+cmake --build . --target check
+cmake --build . --target bench
 
 # to build the libraries and put them in the path for future builds, we just
 # execute these two targets:
-make export-gtest
-make export-benchmark
+cmake --build . --target export-gtest
+cmake --build . --target export-benchmark
 
 # these list commands show that the folders are now populated!
 ls ../gtest
@@ -349,8 +349,8 @@ cmake -DGTEST_PATH=../gtest -DBENCHMARK_PATH=../benchmark ../stumpless
 # running the test suite or benchmark suite won't download the libraries this
 # time - it will go straight to compiling the tests and linking them against
 # the libraries in the PATH variables
-make check
-make bench
+cmake --build . --target check
+cmake --build . --target bench
 ```
 
 
