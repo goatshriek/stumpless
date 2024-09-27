@@ -8,11 +8,10 @@ Stumpless is configured using the popular [CMake](https://cmake.org/) build
 platform. In order to build it from the source you will need this tool
 available, as well as any of a number of supported build systems.
 [GNU Make](https://www.gnu.org/software/make/) is one of the most well-known
-ones, and so most if not all examples you will find in stumpless
-documentation use it. If you prefer to use something else, there is plenty of
-support for CMake in other build systems. For example, Visual Studio has CMake
-support built in so that you can build targets in a CMake project easily within
-the IDE itself.
+ones, and many examples you will find online use it. If you prefer to use
+something else, there is plenty of support for CMake in other build systems.
+For example, Visual Studio has CMake support built in so that you can build
+targets in a CMake project easily within the IDE itself.
 
 The `CMakeLists.txt` file contains the build specification for stumpless, and is
 worth browsing through if you are curious about where configuration checks,
