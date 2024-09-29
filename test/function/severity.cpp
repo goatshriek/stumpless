@@ -113,4 +113,22 @@ namespace {
     EXPECT_EQ( result, -1 );
   }
 
+  TEST( GetSeverityEnumFromBuffer, IncompleteSeverity ) {
+    int result;
+
+    result = stumpless_get_severity_enum_from_buffer( "not", 14 );
+    EXPECT_EQ( result, -1 );
+
+    result = stumpless_get_severity_enum_from_buffer( "war", 14 );
+    EXPECT_EQ( result, -1 );
+
+    result = stumpless_get_severity_enum_from_buffer( "pa", 14 );
+    EXPECT_EQ( result, -1 );
+
+    result = stumpless_get_severity_enum_from_buffer( "e", 14 );
+    EXPECT_EQ( result, -1 ); 
+  }	
+
+
+
 }
