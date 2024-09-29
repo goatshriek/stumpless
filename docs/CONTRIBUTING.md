@@ -156,6 +156,20 @@ forever if something gets closed! We just want to keep our active work nice
 and tidy for everyone to quickly see what we're doing (and what we aren't).
 
 
+## A note on AI
+Contributions to this project are judged primarily on quality. If you use an
+AI tool while you work, you are free to do this, of course provided that you
+have enough ownership over the result to contribute it freely.
+
+However if you use AI to generate a pull request, issue, or discussion response
+of low quality, it will be the same as if you submitted low-quality work that
+you made yourself. That is, the maintainers may begin to go through the
+[enforcement guidelines](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md#enforcement-guidelines)
+of the Code of Conduct to correct the behavior. Be considerate of everyone's
+time and take the time to review your work and interactions before submitting,
+and you are unlikely to run into problems.
+
+
 ## Thanks!
 And no matter how you contribute, thanks for giving back to the community!
 
