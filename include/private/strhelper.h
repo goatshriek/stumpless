@@ -34,12 +34,6 @@ copy_cstring( const char *str );
 char *
 copy_cstring_with_length( const char *str, size_t *length );
 
-char *
-copy_cstring_length( const char *str, size_t length );
-
-void
-to_upper_case( char *str );
-
 int
 strncasecmp_custom( const char *s1, const char *s2, size_t n );
 
