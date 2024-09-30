@@ -85,10 +85,11 @@ strncasecmp_custom( const char *s1, const char *s2, size_t n ) {
   if (n != 0) {
     do {
       if (tolower(*s1) != tolower(*s2++))
-        return tolower(*s1) - tolower(*--s2);
+        return tolower(*--s2) - tolower(*s1);
       if (*s1++ == '\0')
         break;
     } while (--n != 0);
+    if(*s2 != '\0') return tolower(*s1) - tolower(*s2);
   }
   return 0;
 }
