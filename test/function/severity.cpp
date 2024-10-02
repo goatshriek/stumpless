@@ -113,4 +113,28 @@ namespace {
     EXPECT_EQ( result, -1 );
   }
 
+  TEST( GetSeverityEnumFromBuffer, IncompleteSeverity ) {
+    enum stumpless_severity result = stumpless_get_severity_enum( "war" );
+    EXPECT_EQ( result, -1 );
+    
+    result = stumpless_get_severity_enum( "not" );
+    EXPECT_EQ( result, -1 );
+  }	
+
+
+  TEST( GetSeverityEnumFromBuffer, OverextendedSeverity ) {
+    enum stumpless_severity result = stumpless_get_severity_enum( "warnings are neat" );
+    EXPECT_EQ( result, -1 );
+    
+    result = stumpless_get_severity_enum( "notices are bad" );
+    EXPECT_EQ( result, -1 );
+
+    result = stumpless_get_severity_enum( "panic you should not" );
+    EXPECT_EQ( result, -1 );
+
+  }	
+
+
+
+
 }
