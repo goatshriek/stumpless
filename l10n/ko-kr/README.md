@@ -74,6 +74,7 @@ cd build
 cmake ../stumpless
 ```
 
-타겟을 열지 않으면, 이 메시지는 플랫폼의 기본 타겟에 기록됩니다: Linux에서는 `/dev/log`, Mac 시스템에서는 `/var/run/syslog`, Windows에서는 Windows Event Log에 기록됩니다. 타겟을 열거나 몇 개 열어둔 후에 `stumplog`를 호출하면, 가장 최근에 열린 타겟으로 로그가 전송됩니다.  
+타겟을 열지 않으면, 이 메시지는 플랫폼의 기본 타겟에 기록됩니다:  
+Linux에서는 `/dev/log`, Mac 시스템에서는 `/var/run/syslog`, Windows에서는 Windows Event Log에 기록됩니다. 타겟을 열거나 몇 개 열어둔 후에 `stumplog`를 호출하면, 가장 최근에 열린 타겟으로 로그가 전송됩니다.  
   
-stumple한 함수 호출을 원하신다면, `stump` 함수를 사용하여 현재 타겟에 메시지를 보낼 수 있습니다. `printf`와 마찬가지로 형식 지정자도 사용할 수 있습니다:
+더 간단한 함수 호출을 원하신다면, `stump` 함수를 사용하여 현재 타겟에 메시지를 보낼 수 있습니다. `printf`와 마찬가지로 형식 지정자도 사용할 수 있습니다:
