@@ -58,6 +58,31 @@ stumpless_get_prival_string( int prival ) {
   return prival_string;
 }
 
+const char *
+stumpless_get_priority_string( int prival ) {
+  const char *severity;
+  const char *facility;
+  size_t priority_string_size;
+  char* priority_string;
+
+  severity = stumpless_get_severity_string( get_severity( prival ) );
+  facility = stumpless_get_facility_string( get_facility( prival ) );
+   
+  size_t len_severity = strlen(severity);
+  size_t len_facility = strlen(facility);
+
+  // +1 for '.' formatting, +1 for termination
+  priority_string_size = ( len_severity + len_facility + 2);
+  priority_string = alloc_mem( priority_string_size );
+
+  memcpy( priority_string, severity , len_severity); 
+  memcpy( priority_string + len_severity, ".", 1); 
+  memcpy( priority_string + len_severity + 1, facility, len_facility);
+  memcpy( priority_string + len_severity + 1 + len_facility, "\0", 1);
+
+  return priority_string;
+}
+
 int
 stumpless_prival_from_string( const char *string ) {
   int prival;

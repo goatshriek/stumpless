@@ -121,4 +121,15 @@ namespace {
 
     free( ( void * ) result );
   }
+
+  TEST(GetPriorityString, ValidPrival) {
+    int prival;
+    const char *result;
+
+    prival = STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER;
+    result = stumpless_get_priority_string( prival );
+    EXPECT_STREQ( result, "STUMPLESS_SEVERITY_ERR.STUMPLESS_FACILITY_USER" );
+
+    free( ( void * ) result );
+  }
 }
