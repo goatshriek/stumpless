@@ -89,7 +89,8 @@ stump( "Login attempt failure #%d for user %s", count, username );
 stump_str( "Login failure! See structured data for info." );
 ```
   
-기본값 대신 특정 타겟을 열고 싶다면, 필요한 타겟을 열고 메시지를 보내기 시작하세요. 예를 들어, `example.log`라는 파일에 로그를 기록하려면:
+기본값 대신 특정 타겟을 열고 싶다면, 필요한 타겟을 열고 메시지를 보내기 시작하세요.   
+예를 들어, `example.log`라는 파일에 로그를 기록하려면:  
   
 ```c
 target = stumpless_open_file_target( "example.log" );
