@@ -100,7 +100,7 @@ target = stumpless_open_file_target( "example.log" );
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
-Splunk 또는 rsyslog와 같은 네트워크를 통해 메시지를 보내는 것도 매우 쉽습니다:  
+Splunk 또는 rsyslog와 같은 네트워크를 통해 메시지를 보내는 것도 매우 간단합니다:  
 
 ```c
 target = stumpless_open_udp4_target( "send-to-splunk-example",
