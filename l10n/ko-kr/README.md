@@ -1,6 +1,6 @@
 ![Stumpless logo](./자원/로고와이름.svg)
 
-**A C logging library built for high performance and a rich feature set.**
+**고성능과 다양한 기능을 갖춘 C 언어 로깅 라이브러리입니다.**
 
 [![Linux Builds](https://github.com/goatshriek/stumpless/actions/workflows/linux.yml/badge.svg)](https://github.com/goatshriek/stumpless/actions/workflows/linux.yml)
 [![Windows Builds](https://github.com/goatshriek/stumpless/actions/workflows/windows.yml/badge.svg)](https://github.com/goatshriek/stumpless/actions/workflows/windows.yml)
