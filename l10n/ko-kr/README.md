@@ -162,5 +162,18 @@ stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
 
 첫 번째 옵션은 [good first issue](https://github.com/goatshriek/stumpless/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)라는 레이블이 붙은 이슈 목록을 탐색하는 것입니다. 이 이슈들은 간단하지만 의미 있는 이슈입니다. 각 이슈는 해당 이슈를 해결하기 위한 일반적인 접근 방법을 제공합니다. 또한, 해당 이슈에 대한 세부 정보도 포함하고 있습니다. 이 프로젝트나 오픈 소스에 처음 기여를 시도해 보고 싶다면 좋은 출발점이 될 것입니다.
 
-경험이 더 많은 개발자는 프로젝트의 전체 이슈 목록과 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)을 살펴보는 것을 추천드립다. 관심 있는 항목이 있다면 기존 이슈에 댓글을 남겨주세요. 해당 항목이 아직 존재하지 않는 경우 새 이슈를 열고 작업 의사를 밝혀 다른 사람들에게 진행 중임을 알려 주세요.
+경험이 더 많은 개발자는 프로젝트의 전체 이슈 목록과 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)을 살펴보는 것을 추천드립다. 관심 있는 항목이 있다면 기존 이슈에 댓글을 남겨주세요. 해당 항목이 아직 존재하지 않는 경우 새 이슈를 열고 작업 의사를 밝혀 다른 사람들에게 진행 중임을 알려 주세요.   
+  
+## 문서화 및 커뮤니티
+Stumpless에 대해 이 README.md에서 설명되지 않은 부분이 궁금하다면, 관련 문서를 확인해주세요. 문서는 [docs](https://github.com/goatshriek/stumpless/blob/latest/docs/) 폴더에 저장되어 있습니다. 저장소의 폴더에는 각 폴더가 포함하고 있는 내용과 관련 정보를 자세히 설명하는 README 파일이 포함되어 있습니다. 각 함수에 대한 문서도 [프로젝트 웹사이트](https://goatshriek.github.io/stumpless/)에서 호스팅되며, C 라이브러리와 C++와 같은 다른 언어 바인딩에 대한 문서도 포함되어 있습니다.
+
+Stumpless는 로컬 설치에 대해서도 `man` 페이지 형태로 문서를 제공합니다. 라이브러리를 설치한 후, 헤더 파일의 이름을 언더스코어로 대체하여 man 명령어를 실행하면 해당 헤더 파일의 문서와 포함된 함수들을 확인할 수 있습니다. 예를 들어 `man stumpless_log.h`를 입력하면 간단한 문자열 메시지를 로그하는 함수에 대한 문서를 볼 수 있습니다.
+
+프로젝트 팀 및 더 넓은 커뮤니티에 도움을 요청할 수 있는 방법도 많이 있습니다.
+ * [Issues](https://github.com/goatshriek/stumpless/issues) 및
+   [discussions](https://github.com/goatshriek/stumpless/discussions)에서 구체적인 질문이나 제안을 통해 반응을 얻을 수 있습니다.
+ * [gitter](https://gitter.im/stumpless/community)에는 지속적인 채팅이 있어 발표 내용을 확인하고 질문할 수 있습니다.
+ * 프로젝트에 대한 뉴스는 일반적으로 [goatshriek](https://twitter.com/goatshriek)의 트위터를 통해 발표되며,
+   [#StumplessLib](https://twitter.com/search?q=%23StumplessLib) 해시태그를 사용합니다.
+ * 사적인 소통을 원하신다면 [이메일](mailto:joel@goatshriek.com)로 주요 유지 관리자에게 연락할 수 있습니다. 이는 프로젝트의 보안 문제를 [알리기](https://github.com/goatshriek/stumpless/blob/latest/docs/SECURITY.md#reporting-a-vulnerability)에 선호되는 방법으로, 가능한 빨리 문제를 해결하여 악용될 가능을 줄일 수 있습니다.
 
