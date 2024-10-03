@@ -36,7 +36,7 @@ Stumpless에는 C 로그를 빠르고 쉽게 만드는 많은 기능이 있습�
 * 런타임 비용을 전혀 발생시키지 않도록, 컴파일 시 조정하거나 해당 기능을 제거할 수 있습니다.
 * 다양 언어로 번역되었습니다. 🇦🇱 🇧🇷 🇧🇬 🇨🇳 🇨🇿 🇩🇪 🇩🇰 🇪🇸 🇫🇷 🇬🇷 🇭🇺 🇮🇳 🇮🇱 🇮🇹
   🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸
-  ([번역 언어*다양한 기능을 갖춘 고성능 C 언어 로깅 라이브러리입니다.**
+  ([여러분이 사용하는 언어로 번역해 주세요!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
 
 [![Linux Builds](https://github.com/goatshriek/stumpless/actions/workflows/linux.yml/badge.svg)](https://github.com/goatshriek/stumpless/actions/workflows/linux.yml)
 [![Windows Builds](https://github.com/goatshriek/stumpless/actions/workflows/windows.yml/badge.svg)](https://github.com/goatshriek/stumpless/actions/workflows/windows.yml)
