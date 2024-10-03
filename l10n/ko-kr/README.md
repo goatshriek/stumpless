@@ -58,4 +58,25 @@ stumpless에는 C 로그를 빠르고 쉽게 만드는 많은 기능이 있습�
 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)에 포함하겠습니다!
 
 
+## 빠른 빌드 및 설치  
+Stumpless는 빌드를 위해 cmake와 cmake를 지원하는 빌드 도구 체인(GCC 또는 Visual Studio 등)만 필요합니다. 표준 GNU make 도구 체인을 사용하는 시스템에서는 다음의 단계를 통해 쉽게 설치할 수 있습니다:
+
+
+```sh
+# 소스 트리의 최신 버전 클론
+git clone git@github.com:goatshriek/stumpless.git
+
+# 새로운 빌드 디렉토리 생성
+mkdir build
+cd build
+
+# 새로운 빌드 구성
+cmake ../stumpless
+
+# stumpless 빌드 (4개의 스레드 사용 - 원하는 대로 조정 가능)
+make -j 4 all
+
+# 라이브러리 설치 (이 작업을 위해 sudo 권한이 필요할 수 있습니다)
+sudo make install
+```
 
