@@ -29,7 +29,7 @@
 
 ## 주요 특징  
 Stumpless에는 C 언어에 대한 로그를 빠르고 쉽게 만드는 많은 기능이 있습니다:
-* Splunk, rsyslog, journald, Windows 이벤트 로그, sqlite 등과 같은
+* Splunk, rsyslog, journald, Windows Event Log, sqlite 등과 같은
   [다양한 대상](#어디에-로그를-기록할-수-있나요?)에 로그를 기록할 수 있습니다!
 * 사용자 요구에 맞는 구조화된 로그와 비구조화된 로그 지원
 * Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS 등에서 빌드 가능!
