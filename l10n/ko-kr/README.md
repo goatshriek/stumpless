@@ -78,3 +78,39 @@ cmake ../stumpless
 Linux에서는 `/dev/log`, Mac 시스템에서는 `/var/run/syslog`, Windows에서는 Windows Event Log에 기록됩니다. 타겟을 열거나 몇 개 열어둔 후에 `stumplog`를 호출하면, 가장 최근에 열린 타겟으로 로그가 전송됩니다.  
   
 더 간단한 함수 호출을 원하신다면, `stump` 함수를 사용하여 현재 타겟에 메시지를 보낼 수 있습니다. `printf`와 마찬가지로 형식 지정자도 사용할 수 있습니다:
+  
+```c
+stump( "Login attempt failure #%d for user %s", count, username );
+```
+
+형식 지정자가 필요 없다면, `_str` 변형 중 하나를 사용하세요: 더 빠르고 안전합니다!  
+
+```c
+stump_str( "Login failure! See structured data for info." );
+```
+  
+기본값 대신 특정 타겟을 열고 싶다면, 필요한 타겟을 열고 메시지를 보내기 시작하세요. 예를 들어, `example.log`라는 파일에 로그를 기록하려면:
+  
+```c
+target = stumpless_open_file_target( "example.log" );
+
+// 마지막에 열린 타겟을 기본적으로 사용합니다
+stump( "Login attempt failure #%d for user %s", count, username );
+```
+
+Splunk 또는 rsyslog와 같은 네트워크를 통해 메시지를 보내는 것도 매우 쉽습니다:  
+
+```c
+target = stumpless_open_udp4_target( "send-to-splunk-example",
+                                     "mylogserver.com" ); // 또는 IP 주소를 사용하세요
+stump( "Login attempt failure #%d for user %s", count, username );
+```
+
+여러 개의 타겟이 있는 경우, 선택한 타겟으로 메시지를 보내려면 다음과 같이 하세요:  
+
+```c
+stumpless_add_message( target,
+                       "Login attempt failure #%d for user %s",
+                       count,
+                       username );
+```
