@@ -170,8 +170,8 @@ Stumpless에 대해 이 README.md에서 설명되지 않은 부분이 궁금하�
 Stumpless는 로컬 설치에 대해서도 `man` 페이지 형태로 문서를 제공합니다. 라이브러리를 설치한 후, 헤더 파일의 이름을 언더스코어로 대체하여 man 명령어를 실행하면 해당 헤더 파일의 문서와 포함된 함수들을 확인할 수 있습니다. 예를 들어 `man stumpless_log.h`를 입력하면 간단한 문자열 메시지를 로그하는 함수에 대한 문서를 볼 수 있습니다.
 
 프로젝트 팀 및 더 큰 커뮤니티에 도움을 요청할 수 있는 방법도 많이 있습니다.
- * [Issues](https://github.com/goatshriek/stumpless/issues) 및
-   [discussions](https://github.com/goatshriek/stumpless/discussions)에서 구체적인 질문이나 제안을 통해 반응을 얻을 수 있습니다.
+ * [이슈](https://github.com/goatshriek/stumpless/issues) 및
+   [토론](https://github.com/goatshriek/stumpless/discussions)에서 구체적인 질문이나 제안을 통해 반응을 얻을 수 있습니다.
  * [gitter](https://gitter.im/stumpless/community)에는 지속적인 채팅이 있어 발표 내용을 확인하고 질문할 수 있습니다.
  * 프로젝트에 대한 뉴스는 일반적으로 [goatshriek](https://twitter.com/goatshriek)의 트위터를 통해 발표되며,
    [#StumplessLib](https://twitter.com/search?q=%23StumplessLib) 해시태그를 사용합니다.
