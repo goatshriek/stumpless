@@ -1,4 +1,4 @@
-![Stumpless logo](../assets/logo-and-name.svg)
+![Stumpless logo](./자원/로고와이름.svg)
 
 **A C logging library built for high performance and a rich feature set.**
 
