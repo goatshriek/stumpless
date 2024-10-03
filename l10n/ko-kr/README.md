@@ -18,3 +18,13 @@
 [한국어](#한국어)  
 
 
+## 주요 특징  
+stumpless에는 C 로그를 빠르고 쉽게 만드는 많은 기능이 있습니다:
+* 스레드 안전성
+* 쉽게 접근할 수 있는
+  [문서](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
+  [예제](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
+  [지원](https://gitter.im/stumpless/community)입니다.
+
+
+
