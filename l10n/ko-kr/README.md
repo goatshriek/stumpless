@@ -80,4 +80,4 @@ make -j 4 all
 sudo make install
 ```
 
-다양한 환경 또는 도구 체인으로 Stumpless를 빌드하고 설치하는 방법에 대한 자세한 내용은 [설치 지침](INSTALL.md)을 확인하세요.
+다양한 환경 또는 도구 체인으로 Stumpless를 빌드하고 설치하는 방법에 대한 자세한 내용은 [설치 지침](./../../INSTALL.md)을 확인하세요.
