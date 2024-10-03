@@ -115,3 +115,36 @@ stumpless_add_message( target,
                        count,
                        username );
 ```
+
+
+### 로그 레벨(Severity) 단축 명령어  
+로그 호출에서 직접적으로 로그 레벨을 지정하는 것이 일반적이므로, Stumpless는 이를 덜 번거롭고 더 효율적으로 만들기 위한 매크로 함수를 제공합니다.  
+예를 들어, INFO 수준으로 메시지를 기록하려면 다음과 같이 할 수 있습니다:  
+
+```c
+stump_i( "this gets logged as an info message" );
+```
+
+또한 각 메시지에 소스 파일, 줄 번호, 함수 이름 정보를 포함하고 싶다면 _t (여기서 't'는 추적을 의미합니다)를 사용할 수 있습니다:  
+
+```c
+stump_t( "this includes source info" );
+```
+
+이 함수들을 사용하면 `STUMPLESS_ENABLE_UPTO` 또는 `STUMPLESS_DISABLE_DOWNTO` 기호를 정의하여,  
+로그 메시지를 생성하는 호출을 컴파일 시 쉽게 제거할 수 있다는 추가적인 이점이 있습니다.  
+이를 통해 소스 코드의 차이 없이 프로덕션과 디버그 버전 간에 로그 레벨을 변경할 수 있습니다.  
+
+```c
+// stumpless.h를 포함(#include)하기 전에 반드시 이 변수를 정의해야 합니다
+#define STUMPLESS_ENABLE_UPTO_INFO
+
+// ...
+
+// 이 로그는 정상적으로 통과합니다
+stump_i( "당신이 요청한 일을 하고 있습니다" );
+
+// 이 디버깅 메시지는 완전히 제거됩니다: 런타임에 아무런 영향이 없습니다
+stump_d( "DEBUG 정보: %d, %d, %s", thing_1, thing_2, stringy_thingy );
+```
+  
