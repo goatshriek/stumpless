@@ -142,9 +142,9 @@ stump_t( "this includes source info" );
 // ...
 
 // 이 로그는 정상적으로 통과합니다
-stump_i( "당신이 요청한 일을 하고 있습니다" );
+stump_i( "I'm doing that thing you asked" );
 
 // 이 디버깅 메시지는 완전히 제거됩니다: 런타임에 아무런 영향이 없습니다
-stump_d( "DEBUG 정보: %d, %d, %s", thing_1, thing_2, stringy_thingy );
+stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
 ```
   
