@@ -73,7 +73,7 @@ cd build
 # 새로운 빌드 구성
 cmake ../stumpless
 
-# stumpless 빌드 (4개의 스레드 사용 - 원하는 대로 조정 가능)
+# stumpless 빌드 (4개의 스레드 사용 - 원하는 대로 개수 조정 가능)
 make -j 4 all
 
 # 라이브러리 설치 (이 작업을 위해 sudo 권한이 필요할 수 있습니다)
