@@ -60,7 +60,7 @@ Stumpless에는 C 언어에 대한 로그를 빠르고 쉽게 만드는 많은 �
 
 
 ## 빠른 빌드 및 설치  
-Stumpless는 빌드를 위해 cmake와 cmake를 지원하는 빌드 도구 체인(GCC 또는 Visual Studio 등)만 필요합니다. 표준 GNU make 도구 체인을 사용하는 시스템에서는 다음의 단계를 통해 쉽게 설치할 수 있습니다:
+Stumpless는 빌드를 위해 cmake와 cmake를 지원하는 빌드 도구 체인(GCC 또는 Visual Studio 등)만 필요합니다. 표준 GNU make 도구 체인을 사용하는 시스템에서는 다음 단계를 통해 쉽게 설치할 수 있습니다:
 
 
 ```sh
