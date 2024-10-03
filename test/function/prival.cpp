@@ -128,7 +128,7 @@ namespace {
 
     prival = STUMPLESS_SEVERITY_ERR | STUMPLESS_FACILITY_USER;
     result = stumpless_get_priority_string( prival );
-    EXPECT_STREQ( result, "STUMPLESS_SEVERITY_ERR.STUMPLESS_FACILITY_USER" );
+    EXPECT_STREQ( result, "STUMPLESS_FACILITY_USER.STUMPLESS_SEVERITY_ERR" );
 
     free( ( void * ) result );
   }

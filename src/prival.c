@@ -75,10 +75,10 @@ stumpless_get_priority_string( int prival ) {
   priority_string_size = ( len_severity + len_facility + 2);
   priority_string = alloc_mem( priority_string_size );
 
-  memcpy( priority_string, severity , len_severity); 
-  memcpy( priority_string + len_severity, ".", 1); 
-  memcpy( priority_string + len_severity + 1, facility, len_facility);
-  memcpy( priority_string + len_severity + 1 + len_facility, "\0", 1);
+  memcpy( priority_string, facility , len_facility); 
+  priority_string[len_severity] = '.';
+  memcpy( priority_string + len_facility + 1, severity, len_severity);
+  priority_string[priority_string_size-1] = "\0";
 
   return priority_string;
 }
