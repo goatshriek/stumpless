@@ -133,6 +133,7 @@ stump_t( "this includes source info" );
 
 이 함수들을 사용하면 `STUMPLESS_ENABLE_UPTO` 또는 `STUMPLESS_DISABLE_DOWNTO` 기호를 정의하여,  
 로그 메시지를 생성하는 호출을 컴파일 시 쉽게 제거할 수 있다는 추가적인 이점이 있습니다.  
+  
 이를 통해 소스 코드의 차이 없이 프로덕션과 디버그 버전 간에 로그 레벨을 변경할 수 있습니다.  
 
 ```c
@@ -147,4 +148,8 @@ stump_i( "I'm doing that thing you asked" );
 // 이 디버깅 메시지는 완전히 제거됩니다: 런타임에 아무런 영향이 없습니다
 stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
 ```
-  
+
+[stumpless/level](https://github.com/goatshriek/stumpless/tree/latest/include/stumpless/level)에서 로그 레벨 단축 명령어의 전체 목록을 확인하거나, [severity level example](https://github.com/goatshriek/stumpless/tree/latest/docs/examples/severity_level)에서 작동 중인 전체 프로그램을 확인해보세요.  
+
+
+### Even more examples  
