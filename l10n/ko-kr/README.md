@@ -12,13 +12,13 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)  
 
   
-[간체 중국어](./l10n/zh-cn/自述.md)
-
-  
 [주요 기능](#주요-기능) |
 [빌드 및 설치](#빠른-빌드-및-설치) |
 [기본 사용법](#기본-사용법) |
-[기여하기](#기여하기)
+[기여하기](#기여하기)  
+
+[간체 중국어](./l10n/zh-cn/自述.md)
+  
 
 [English](./../../README.md)
 
