@@ -73,11 +73,4 @@ cd build
 # 새로운 빌드 구성
 cmake ../stumpless
 
-# stumpless 빌드 (4개의 스레드 사용 - 원하는 대로 개수 조정 가능)
-make -j 4 all
-
-# 라이브러리 설치 (이 작업을 위해 sudo 권한이 필요할 수 있습니다)
-sudo make install
-```
-
-Stumpless를 다양한 환경이나 도구 체인을 사용하여 빌드하고 설치하는 방법에 대한 자세한 내용은 [설치 지침](./../../INSTALL.md)을 참고하세요.
+# stumple한 함수 호출을 원하신다면, stump 함수를 사용하여 현재 타겟에 메시지를 보낼 수 있습니다. printf와 마찬가지로 형식 지정자도 사용할 수 있습니다:
