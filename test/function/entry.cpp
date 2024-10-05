@@ -66,6 +66,7 @@ namespace {
       struct stumpless_param *param_1_1 = NULL;
       struct stumpless_entry *nil_entry = NULL;
 	  struct stumpless_entry *large_entry = NULL;
+	  size_t large_entry_ec;
 
       virtual void
       SetUp( void ) {
@@ -91,12 +92,15 @@ namespace {
                                                basic_app_name,
                                                basic_msgid,
                                                basic_message );
+		large_entry_ec = large_entry->element_count;
 		large_entry->element_count = SIZE_MAX;
       }
 
       virtual void
       TearDown( void ){
         stumpless_destroy_entry_and_contents( basic_entry );
+		large_entry->element_count = large_entry_ec;
+		stumpless_destroy_entry_and_contents(large_entry);
         stumpless_destroy_entry_only( nil_entry );
         stumpless_free_all(  );
       }
