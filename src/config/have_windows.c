@@ -65,7 +65,7 @@ windows_copy_cstring_to_lpwstr( LPCSTR str, int *copy_length ) {
     return NULL;
   }
 
-  str_copy = alloc_mem( needed_wchar_length * sizeof( WCHAR ) );
+  str_copy = alloc_array( needed_wchar_length, sizeof( WCHAR ) );
   if( !str_copy ) {
     return NULL;
   }
@@ -113,7 +113,7 @@ windows_copy_wstring_to_cstring( const wchar_t *str, int *copy_size ){
     return NULL;
   }
 
-  str_copy = alloc_mem( needed_size * sizeof( char ) );
+  str_copy = alloc_array( needed_size, sizeof( char ) );
   if( !str_copy ) {
     return NULL;
   }

@@ -1898,7 +1898,7 @@ copy_param_value_to_lpwstr( const struct stumpless_param *param ) {
   }
 
   needed_wchar_count = ( ( size_t ) needed_wchar_length ) + 1;
-  str_copy = alloc_mem( needed_wchar_count * sizeof( WCHAR ) );
+  str_copy = alloc_array( needed_wchar_count, sizeof( WCHAR ) );
   if( !str_copy ) {
     goto fail;
   }
@@ -1952,12 +1952,12 @@ copy_wel_data( struct stumpless_entry *destination,
 
 
   if( source_data->insertion_count > 0 ) {
-    dest_data->insertion_params = alloc_mem( sizeof( struct stumpless_param * ) * source_data->insertion_count );
+    dest_data->insertion_params = alloc_array( source_data->insertion_count, sizeof( struct stumpless_param ) );
     if( !dest_data->insertion_params) {
       goto fail;
     }
 
-    dest_data->insertion_strings = alloc_mem( sizeof( LPCSTR ) * source_data->insertion_count );
+    dest_data->insertion_strings = alloc_array( source_data->insertion_count, sizeof( LPCSTR ) );
     if( !dest_data->insertion_strings) {
       goto fail_strings;
     }
