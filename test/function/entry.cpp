@@ -65,6 +65,7 @@ namespace {
       const char *param_1_1_value = "basic-value";
       struct stumpless_param *param_1_1 = NULL;
       struct stumpless_entry *nil_entry = NULL;
+	  struct stumpless_entry *large_entry = NULL;
 
       virtual void
       SetUp( void ) {
@@ -84,6 +85,13 @@ namespace {
         stumpless_add_element( basic_entry, element_2 );
 
         nil_entry = create_nil_entry();
+
+        large_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                               STUMPLESS_SEVERITY_INFO,
+                                               basic_app_name,
+                                               basic_msgid,
+                                               basic_message );
+		large_entry->element_count = SIZE_MAX;
       }
 
       virtual void
@@ -357,6 +365,14 @@ namespace {
 
     set_malloc_result = stumpless_set_malloc( malloc );
     EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( EntryTest, CopyMallocFailureOnSizeOverflow ) {
+	  const struct stumpless_entry *result;
+
+	  result = stumpless_copy_entry( large_entry );
+	  EXPECT_NULL( result );
+	  EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
   }
 
   TEST_F( EntryTest, CopyReallocFailure ) {
