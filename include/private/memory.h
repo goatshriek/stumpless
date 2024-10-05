@@ -25,5 +25,6 @@ void *alloc_mem( size_t size );
 void free_mem( const void *mem );
 size_t get_paged_size( size_t size );
 void *realloc_mem( const void *mem, size_t size );
+void *alloc_array( size_t item_count, size_t item_size );
 
 #endif /* __STUMPLESS_PRIVATE_MEMORY_H */
