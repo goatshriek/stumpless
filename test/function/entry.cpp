@@ -65,8 +65,6 @@ namespace {
       const char *param_1_1_value = "basic-value";
       struct stumpless_param *param_1_1 = NULL;
       struct stumpless_entry *nil_entry = NULL;
-	  struct stumpless_entry *large_entry = NULL;
-	  size_t large_entry_ec;
 
       virtual void
       SetUp( void ) {
@@ -87,20 +85,12 @@ namespace {
 
         nil_entry = create_nil_entry();
 
-        large_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
-                                               STUMPLESS_SEVERITY_INFO,
-                                               basic_app_name,
-                                               basic_msgid,
-                                               basic_message );
-		large_entry_ec = large_entry->element_count;
-		large_entry->element_count = SIZE_MAX;
+        
       }
 
       virtual void
       TearDown( void ){
         stumpless_destroy_entry_and_contents( basic_entry );
-		large_entry->element_count = large_entry_ec;
-		stumpless_destroy_entry_and_contents(large_entry);
         stumpless_destroy_entry_only( nil_entry );
         stumpless_free_all(  );
       }
@@ -371,13 +361,6 @@ namespace {
     EXPECT_TRUE( set_malloc_result == malloc );
   }
 
-  TEST_F( EntryTest, CopyMallocFailureOnSizeOverflow ) {
-	  const struct stumpless_entry *result;
-
-	  result = stumpless_copy_entry( large_entry );
-	  EXPECT_NULL( result );
-	  EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
-  }
 
   TEST_F( EntryTest, CopyReallocFailure ) {
     const struct stumpless_entry *result;
@@ -2911,4 +2894,26 @@ namespace {
     stumpless_unload_entry_only( NULL );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
+
+  TEST( CopyEntry, MallocFailureOnSizeOverflow ) {
+    const struct stumpless_entry *result;
+    struct stumpless_entry *large_entry = NULL;
+	size_t large_entry_ec;
+
+    large_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+			STUMPLESS_SEVERITY_INFO,
+			"large-app-name",
+			"large-msgid",
+			"large message" );
+	large_entry_ec = large_entry->element_count;
+	large_entry->element_count = SIZE_MAX;
+
+	result = stumpless_copy_entry( large_entry );
+	EXPECT_NULL( result );
+	EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    large_entry->element_count = large_entry_ec;
+    stumpless_destroy_entry_and_contents(large_entry);
+  }
+
 }
