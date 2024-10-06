@@ -157,9 +157,10 @@ and tidy for everyone to quickly see what we're doing (and what we aren't).
 
 
 ## A note on AI
-Contributions to this project are judged primarily on quality. If you use an
-AI tool while you work, you are free to do this, of course provided that you
-have enough ownership over the result to contribute it freely.
+Contributions to this project are judged primarily on quality. You are free to
+use whatever tools you like including LLMs or some other generative AI, of
+course provided that you have enough ownership over the result to contribute it
+freely.
 
 However if you use AI to generate a pull request, issue, or discussion response
 of low quality, it will be the same as if you submitted low-quality work that
