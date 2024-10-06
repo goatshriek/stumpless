@@ -1176,6 +1176,13 @@ add_performance_test(version
   SOURCES ${PROJECT_SOURCE_DIR}/test/performance/version.cpp
 )
 
+
+add_performance_test(buffer
+  SOURCES ${PROJECT_SOURCE_DIR}/test/performance/buffer.cpp
+)
+
+
+
 add_custom_target(bench
   DEPENDS ${STUMPLESS_PERFORMANCE_TEST_RUNNERS}
 )
