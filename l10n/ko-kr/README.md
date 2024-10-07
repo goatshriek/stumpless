@@ -174,5 +174,5 @@ Stumpless는 로컬 설치에 대해서도 `man` 페이지 형태로 문서를 �
  * [gitter](https://gitter.im/stumpless/community)에는 지속적인 채팅이 있어 발표 내용을 확인하고 질문할 수 있습니다.
  * 프로젝트에 대한 뉴스는 일반적으로 [goatshriek](https://twitter.com/goatshriek)의 트위터를 통해 발표되며,
    [#StumplessLib](https://twitter.com/search?q=%23StumplessLib) 해시태그를 사용합니다.
- * 사적인 소통을 원하신다면 [이메일](mailto:joel@goatshriek.com)로 주요 유지 관리자에게 연락할 수 있습니다. 이는 프로젝트의 보안 문제를 [알리는는](https://github.com/goatshriek/stumpless/blob/latest/docs/SECURITY.md#reporting-a-vulnerability) 방법으로, 가능한 빨리 문제를 해결하여 악용될 가능을 줄일 수 있습니다.
+ * 사적인 소통을 원하신다면 [이메일](mailto:joel@goatshriek.com)로 주요 유지 관리자에게 연락할 수 있습니다. 이는 프로젝트의 보안 문제를 [알리는](https://github.com/goatshriek/stumpless/blob/latest/docs/SECURITY.md#reporting-a-vulnerability) 방법으로, 가능한 빨리 문제를 해결하여 악용될 가능을 줄일 수 있습니다.
 
