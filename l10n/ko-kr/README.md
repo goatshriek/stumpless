@@ -33,17 +33,17 @@ Stumpless에는 C 언어에 대한 로그를 빠르고 쉽게 만드는 많은 �
 * 사용자 요구에 맞는 구조화된 로그와 비구조화된 로그 지원
 * Linux, Windows, Mac, FreeBSD, MinGW, MSYS2, Cygwin, DOS 등에서 빌드 가능!
 * 스레드 안전성
-* 런타임 비용을 전혀 발생시키지 않도록, 컴파일 시 조정하거나 해당 기능을 제거할 수 있습니다.
+* 런타임 비용이 발생하지 않도록, 컴파일 시 조정하거나 해당 기능을 제거할 수 있습니다.
 * 다양한 언어로 번역되었습니다. 🇦🇱 🇧🇷 🇧🇬 🇨🇳 🇨🇿 🇩🇪 🇩🇰 🇪🇸 🇫🇷 🇬🇷 🇭🇺 🇮🇳 🇮🇱 🇮🇹
   🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸
   ([여러분이 사용하는 언어로 번역해 주세요!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
-* 쉽게 접근할 수 있는
+* 아래 자료를 통해 쉽게 사용 방법을 터득할 수 있습니다.
   [문서](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
   [예제](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
   및 [지원](https://gitter.im/stumpless/community).
   
 ### 어디에 로그를 기록할 수 있나요?
-이 라이브러리의 주요 목표는 다양한 로그 대상에 대해 일관된 로그 인터페이스를 제공하는 것입니다. 이를 통해 사용자는 이벤트를 정의하고 해당 이벤트가 어디로 전송될지를 쉽게 결정할 수 있습니다. 다른 SDK를 찾거나 데몬 및 플러그인을 추가하여 원하는 위치로 로그를 보내는 작업을 하지 않아도 됩니다. Stumpless는 다음에 대한 로그를 기록할 수 있습니다:
+이 라이브러리의 주요 목표는 다양한 로그 대상에 대해 일관된 로그 인터페이스를 제공하는 것입니다. 이 라이브러리를 통해 사용자는 이벤트를 정의하고 해당 이벤트가 어디로 전송될지를 쉽게 결정할 수 있습니다. 이 라이브러리를 사용한다면, 다른 SDK를 찾거나 데몬 및 플러그인을 추가하여 원하는 곳으로 로그를 보내는 작업을 하지 않아도 됩니다. Stumpless는 다음에 대한 로그를 기록할 수 있습니다:
 * 간단한 문자 버퍼
 * 파일 및 스트림
 * 유닉스 소켓(예: 로컬 syslog 데몬)
@@ -54,7 +54,7 @@ Stumpless에는 C 언어에 대한 로그를 빠르고 쉽게 만드는 많은 �
 * 필요한 기타 모든 것에 대한 사용자 정의 함수!
 
 필요한 것이 없나요? 요청 사항과 함께
-[이슈](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)를 생성해 주시면, 저희의
+[이슈](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)를 만들어 주시면면, 저희의
 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)에 포함하겠습니다!
 
 
@@ -99,7 +99,7 @@ target = stumpless_open_file_target( "example.log" );
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
-Splunk 또는 rsyslog와 같은 네트워크를 통해 메시지를 보내는 것도 매우 간단합니다:  
+Splunk 또는 rsyslog와 같은 네트워크를 통해 메시지를 보내는 것도 간단하게 할 수 있습니다:  
 
 ```c
 target = stumpless_open_udp4_target( "send-to-splunk-example",
@@ -130,7 +130,7 @@ stump_i( "this gets logged as an info message" );
 stump_t( "this includes source info" );
 ```
 
-이 함수들을 사용하면 `STUMPLESS_ENABLE_UPTO` 또는 `STUMPLESS_DISABLE_DOWNTO` 기호를 정의하여,  
+이 함수를를 사용하면 `STUMPLESS_ENABLE_UPTO` 또는 `STUMPLESS_DISABLE_DOWNTO` 기호를 정의하여,  
 로그 메시지를 생성하는 호출을 컴파일 시 쉽게 제거할 수 있다는 추가적인 이점이 있습니다.  
   
 이를 통해 소스 코드의 차이 없이 프로덕션과 디버그 버전 간에 로그 레벨을 변경할 수 있습니다.  
@@ -155,13 +155,13 @@ stump_d( "DEBUG info: %d, %d, %s", thing_1, thing_2, stringy_thingy );
 위의 시나리오, 특정 타겟 유형의 사용, 더 복잡한 메시지 구조를 처리하는 방법 등에 대한 자세한 예제를 보려면 [예제](./../../docs/examples)를 확인하세요. 이곳에는 컴파일하고 실행하며 수정할 수 있는 주석이 달린 예제 코드 파일이 포함되어 있습니다.
 
 ## 기여하기
-문제를 발견했거나 기능 요청이 있으신가요? 템플릿 중 하나를 사용하여 이슈를 생성해 주시면 가능한 빨리 답변드리겠습니다. 프로젝트의 [기여 지침](./../../docs/CONTRIBUTING.md)에서 오픈 소스 커뮤니티에 기여할 수 있는 다양한 방법에 관한 자세한 내용을 확인할 수 있습니다!
+문제를 발견했거나 기능 추가 요청을 하고 싶은가요? 템플릿 중 하나를 사용하여 이슈를 생성해 주시면 가능한 빨리 답변드리겠습니다. 프로젝트의 [기여 지침](./../../docs/CONTRIBUTING.md)에서 오픈 소스 커뮤니티에 기여할 수 있는 다양한 방법에 관한 자세한 내용을 확인할 수 있습니다!
 
-코드를 작성하거나 직접 업데이트하고 싶으시다면, [개발 가이드](./../../docs/development.md)를 참고하세요. 기여 수준과 경에 따라 몇 가지 옵션이 있습니다.
+코드를 작성하거나 직접 업데이트하고 싶으시다면, [개발 가이드](./../../docs/development.md)를 참고하세요. 기여 경험에 따른 선택지가 있습니다.
 
-첫 번째 옵션은 [good first issue](https://github.com/goatshriek/stumpless/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)라는 레이블이 붙은 이슈 목록을 탐색하는 것입니다. 이 이슈들은 간단하지만 의미 있는 이슈입니다. 각 이슈는 해당 이슈를 해결하기 위한 일반적인 접근 방법을 제공합니다. 또한, 해당 이슈에 대한 세부 정보도 포함하고 있습니다. 이 프로젝트나 오픈 소스에 처음 기여를 시도해 보고 싶다면 좋은 출발점이 될 것입니다.
+첫 번째 선택지는 [good first issue](https://github.com/goatshriek/stumpless/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)라는 레이블이 붙은 이슈 목록을 탐색하는 것입니다. 이 이슈들은 간단하지만 의미 있는 이슈입니다. 각 이슈는 해당 이슈를 해결하기 위한 일반적인 접근 방법을 제공합니다. 또한, 해당 이슈에 대한 세부 정보도 포함하고 있습니다. 이 프로젝트나 오픈 소스에 처음 기여를 시도해 보고 싶다면 좋은 출발점이 될 것입니다.
 
-경험이 더 많은 개발자는 프로젝트의 전체 이슈 목록과 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)을 살펴보는 것을 추천드립다. 관심 있는 항목이 있다면 기존 이슈에 댓글을 남겨주세요. 해당 항목이 아직 존재하지 않는 경우 새 이슈를 열고 작업 의사를 밝혀 다른 사람들에게 진행 중임을 알려 주세요.   
+경험이 더 많은 개발자는 프로젝트의 전체 이슈 목록과 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)을 살펴보는 것을 추천드립니다. 관심 있는 항목이 있다면 기존 이슈에 댓글을 남겨주세요. 해당 항목이 아직 존재하지 않는 경우 새 이슈를 열고 작업 의사를 밝혀 다른 사람들에게 진행 중임을 알려 주세요.   
   
 ## 문서화 및 커뮤니티
 Stumpless에 대해 이 README.md에서 설명되지 않은 부분이 궁금하다면, 관련 문서를 확인해주세요. 문서는 [docs](https://github.com/goatshriek/stumpless/blob/latest/docs/) 폴더에 저장되어 있습니다. 저장소의 폴더에는 각 폴더가 포함하고 있는 내용과 관련 정보를 자세히 설명하는 README 파일이 포함되어 있습니다. 각 함수에 대한 문서도 [프로젝트 웹사이트](https://goatshriek.github.io/stumpless/)에서 호스팅되며, C 라이브러리와 C++와 같은 다른 언어 바인딩에 대한 문서도 포함되어 있습니다.
