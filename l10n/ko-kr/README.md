@@ -13,7 +13,7 @@
 
   
 
-[간체 중국어](./l10n/zh-cn/自述.md)
+[简体中文](./l10n/zh-cn/自述.md)
   
 
 [English](./../../README.md)
