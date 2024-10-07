@@ -107,7 +107,7 @@ target = stumpless_open_udp4_target( "send-to-splunk-example",
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
-여러 개의 타겟이 있는 경우, 선택한 타겟으로 메시지를 보내려면 다음과 같이 하세요:  
+여러 개의 타겟이 있는 경우, 선택한 타겟으로 메시지를 보내려면 다음과 같이 하면 됩니다다:  
 
 ```c
 stumpless_add_message( target,
