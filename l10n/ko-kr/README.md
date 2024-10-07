@@ -54,7 +54,7 @@ Stumpless에는 C 언어에 대한 로그를 빠르고 쉽게 만드는 많은 �
 * 필요한 기타 모든 것에 대한 사용자 정의 함수!
 
 필요한 것이 없나요? 요청 사항과 함께
-[이슈](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)를 만들어 주시면면, 저희의
+[이슈](https://github.com/goatshriek/stumpless/issues/new?template=feature_request.md)를 만들어 주시면, 저희의
 [로드맵](https://github.com/goatshriek/stumpless/blob/latest/docs/roadmap.md)에 포함하겠습니다!
 
 
