@@ -109,7 +109,8 @@
 "Ungültiger " INDEXED_THING " index"
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"Ein MULTI_SZ Eintrag war nicht leer und wurde nicht mit zwei NULL Zeichen beendet"
+"Ein MULTI_SZ Eintrag war nicht leer und wurde nicht mit zwei NULL " \
+"Zeichen beendet"
 
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "Der String entspricht nicht dem name=\"value\" Format"
@@ -144,11 +145,11 @@
 "Das Ergebnis von GetLastError nach dem letztem fehlgeschlagenem Aufruf"
 
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"Der gegebene multibyte String konnte nicht zu einem wide char string umgewandelt " \
-"werden"
+"Der gegebene multibyte String konnte nicht zu einem wide char string " \
+"umgewandelt werden"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"Ein Speicherzuweisungaufruf ist fehlgeschlagen"
+"Ein Speicherzuweisungsaufruf ist fehlgeschlagen"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "Die Größe der Nachricht, die versucht wurde, gesendet zu werden"
@@ -196,10 +197,12 @@ ARG_NAME " war NULL"
 "sendto mti einem Unix-Socket fehlgeschlagen"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"Es wurde versucht einen Eintrag an einen nicht unterstützten Zieltyp zu senden"
+"Es wurde versucht einen Eintrag an einen nicht unterstützten Zieltyp" \
+" zu senden"
 
 #  define L10N_SEND_MESSAGE_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"Es wurde versucht eine Nachricht an einen nicht unterstützen Zieltyp zu senden"
+"Es wurde versucht eine Nachricht an einen nicht unterstützen Zieltyp" \
+" zu senden"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
 "Senden mit einem sys/socket.h-Socket fehlgeschlagen"
@@ -277,7 +280,8 @@ ARG_NAME " war NULL"
 "Der Windows Event Log konnte nicht geöffnet werden"
 
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"Der gegebene wide char string konnte nicht zu einem multibyte string umgewandelt werden"
+"Der gegebene wide char string konnte nicht zu einem multibyte string" \
+" umgewandelt werden"
 
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
 "Der Windows Fehler Code der beim fehlgeschlagenem Aufruf zurückgegeben wurde"
@@ -286,7 +290,7 @@ ARG_NAME " war NULL"
 "Windows Socket Fehler Code"
 
 #  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"Das Ergebnis von GetLastError nachdem der Aufruf fehlschlug"
+"Das Ergebnis von GetLastError nachdem der Aufruf fehlgeschlagen ist"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
 "Es konnte kein winsock2-Socket geöffnet werden"
