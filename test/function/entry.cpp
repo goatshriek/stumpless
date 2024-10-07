@@ -1866,6 +1866,48 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST(NewEntryTest, MallocFailureAfterCacheFill) {
+    struct stumpless_entry *entries[2000];
+    size_t i,j;
+    const char *app_name = "test-app-name";
+    const char *msgid = "test-msgid";
+    void *(*set_malloc_result)(size_t);
+
+    // create an entry to initialize the cache
+    entries[0] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                      STUMPLESS_SEVERITY_INFO,
+                                      app_name,
+                                      msgid,
+                                      NULL );
+    EXPECT_NOT_NULL(entries[0]);
+
+    set_malloc_result = stumpless_set_malloc(MALLOC_FAIL);
+    ASSERT_NOT_NULL(set_malloc_result);
+
+    for (i = 1; i < 2000; i++) {
+      entries[i] = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                        STUMPLESS_SEVERITY_INFO,
+                                        app_name,
+                                        msgid,
+                                        NULL );
+
+      if (!entries[i]) {
+        EXPECT_ERROR_ID_EQ(STUMPLESS_MEMORY_ALLOCATION_FAILURE);
+        break;
+      }
+    }
+
+    EXPECT_NE(i, 2000);
+
+    set_malloc_result = stumpless_set_malloc(malloc);
+    EXPECT_TRUE(set_malloc_result == malloc);
+
+    for (j = 0; j < i; j++) {
+        stumpless_destroy_entry_and_contents(entries[j]);
+    }
+    stumpless_free_all();
+  }
+
   TEST( NewEntryTest, MallocFailureOnMsgid ) {
     void *(*set_malloc_result)(size_t);
     const char *app_name = "test-app-name";
