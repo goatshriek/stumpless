@@ -1868,7 +1868,6 @@ namespace {
 
   TEST(NewEntryTest, MallocFailureAfterCacheFill) {
     struct stumpless_entry *entries[2000];
-    struct stumpless_entry *entry;
     size_t i,j;
     const char *app_name = "test-app-name";
     const char *msgid = "test-msgid";
