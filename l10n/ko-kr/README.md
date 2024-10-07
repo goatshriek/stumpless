@@ -89,7 +89,7 @@ stump( "Login attempt failure #%d for user %s", count, username );
 stump_str( "Login failure! See structured data for info." );
 ```
   
-기본값 대신 특정 타겟을 열고 싶다면, 필요한 타겟을 열고 메시지를 보내기 시작하세요.   
+기본값 대신 특정 타겟을 열고 싶다면, 필요한 타겟을 열고 메시지를 보내 보세요.   
 예를 들어, `example.log`라는 파일에 로그를 기록하려면:  
   
 ```c
@@ -107,7 +107,7 @@ target = stumpless_open_udp4_target( "send-to-splunk-example",
 stump( "Login attempt failure #%d for user %s", count, username );
 ```
 
-여러 개의 타겟이 있는 경우, 선택한 타겟으로 메시지를 보내려면 다음과 같이 하면 됩니다다:  
+여러 개의 타겟이 있는 경우, 선택한 타겟으로 메시지를 보내려면 다음과 같이 하면 됩니다:  
 
 ```c
 stumpless_add_message( target,
