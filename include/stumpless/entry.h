@@ -125,11 +125,8 @@ struct stumpless_entry {
 
 /**
  * Returns the entry as a formatted string.
- * The character buffer should be freed when no longer is needed by the caller.
- *
- * Note that duplicate elements are not allowed in RFC 5424, and as such
- * attempts to add an element to an entry already having one with the same name
- * will result in a STUMPLESS_DUPLICATE_ELEMENT error.
+ * The character buffer should be freed when no longer is needed by the caller
+ * to avoid memory leaks.
  *
  * **Thread Safety: MT-Safe**
  * This function is thread safe. A mutex is used to coordinate changes to the
@@ -147,7 +144,7 @@ struct stumpless_entry {
  *
  * @param entry The entry whose string is returned.
  *
- * @return The string if not error was encountered. If an error is
+ * @return The string if no error was encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
