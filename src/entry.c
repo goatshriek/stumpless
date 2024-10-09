@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -50,43 +51,118 @@ static struct cache *entry_cache = NULL;
 
 const char * 
 stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
+  
   VALIDATE_ARG_NOT_NULL ( entry );
   lock_entry ( entry );
 
-  size_t entry_string_size = 0;
-
-  char buf[20];
+  //Converting prival of the entry to string beforehand
+  char privalbuf[20];
   size_t prival_length = 0;
   int prival = entry -> prival;
   while ( prival ) {
-    buf[ prival_length ] = '0' + prival % 10;
+    privalbuf[ prival_length ] = '0' + prival % 10;
     prival_length++;
     prival = prival / 10;
   }
-  buf[prival_length] = '\0';
+  privalbuf[prival_length] = '\0';
   for (int i = 0; i < prival_length / 2 ; i++ ){
-    char t = buf[i];
-    buf[i] = buf[prival_length - i - 1];
-    buf[prival_length - i - 1] = t;
+    char t = privalbuf[i];
+    privalbuf[i] = privalbuf[prival_length - i - 1];
+    privalbuf[prival_length - i - 1] = t;
   }
-  entry_string_size = entry_string_size + strlen(buf);
+
+  //Will get all strings into an array of strings.
+  //For each field we have 3 strings. For each elemenet field as well we have 4 substrings
+  const char **arrayofstrings;
+  size_t numberofStrings = 18 + (entry -> element_count) * 5;
+  arrayofstrings = (const char **) malloc(numberofStrings * sizeof(char *));
+
+  //Get all the strings
+  arrayofstrings[0] = "prival=\"";
+  arrayofstrings[1] = privalbuf;
+  arrayofstrings[2] = "\", ";
+  arrayofstrings[3] = "hostname=\"";
+  arrayofstrings[4] = entry -> hostname;
+  arrayofstrings[5] = "\", ";
+  arrayofstrings[6] = "app_name=\"";
+  arrayofstrings[7] = entry -> app_name;
+  arrayofstrings[8] = "\", ";
+  arrayofstrings[9] = "procid=\"";
+  arrayofstrings[10] = entry -> procid;
+  arrayofstrings[11] = "\", ";
+
+  if (entry -> msgid != NULL)
+  {
+    arrayofstrings[12] = "msgid=\"";
+    arrayofstrings[13] = entry -> msgid;
+    arrayofstrings[14] = "\", ";
+  }
+  else 
+  {
+    arrayofstrings[12] = "";
+    arrayofstrings[13] = "";
+    arrayofstrings[14] = "";
+  }
+
+  arrayofstrings[15 + (entry -> element_count) * 5] = "message=\"";
+  arrayofstrings[16 + (entry -> element_count) * 5] = entry -> message;
+  arrayofstrings[17 + (entry -> element_count) * 5] = "\"";
+
+  char element_indices_strings[entry -> element_count][20]; 
+  for (size_t element_index = 0; element_index < (entry -> element_count) ; element_index++)
+  {
+    size_t curstrindex = 15 + element_index * 5;
+    arrayofstrings[curstrindex] = "element-";
+    arrayofstrings[curstrindex + 2] = "=";
+    arrayofstrings[curstrindex + 3] = stumpless_element_to_string((entry -> elements)[ element_index ]);
+    arrayofstrings[curstrindex + 4] = ", ";
+
+    size_t element_index_str_length = 0;
+    int element_index_int = element_index + 1;
+    while ( element_index_int ) {
+      element_indices_strings[element_index][ element_index_str_length ] = 
+                '0' + element_index_int % 10;
+      element_index_str_length++;
+      element_index_int = element_index_int / 10;
+    }
+    element_indices_strings[element_index][element_index_str_length] = '\0';
+    for (int i = 0; i < element_index_str_length / 2 ; i++ ){
+      char t = element_indices_strings[element_index][i];
+      element_indices_strings[element_index][i] = element_indices_strings[element_index][element_index_str_length - i - 1];
+      element_indices_strings[element_index][element_index_str_length - i - 1] = t;
+    }
+
+    arrayofstrings[curstrindex + 1] = element_indices_strings[element_index];
+  }
 
   //time="2003-10-11T22:14:15.003Z", prival="165", 
   //hostname="example.com", app_name="test-suite", 
   //procid="6", msgid="yellow", element-1=[param="val"], message="test message
 
+  //Now calculate the size of total entry string
+  size_t entry_string_size = 0;
+  for (int str_index = 0; str_index < numberofStrings ; str_index++ )
+  {
+    entry_string_size = entry_string_size + strlen(arrayofstrings[str_index]);
+  }
+
+  //Allocate memory for the final string to return
   char *entry_string = alloc_mem( entry_string_size );
   if ( !entry_string ) {
     goto fail;
   }
-  memcpy( entry_string, buf, entry_string_size);
-  
-  //memcpy( prival_string, severity , len_severity); 
-  //memcpy( prival_string + len_severity, " | ", 3); // 3 is the size of " | "
-  //memcpy( prival_string + len_severity + 3, facility, len_facility);
-  //memcpy( prival_string + len_severity + 3 + len_facility, "\0", 1);
+
+  //Copy the individual substrings into the final string
+  size_t cur_index_in_final_str = 0;
+  for (int str_index = 0; str_index < numberofStrings ; str_index++ )
+  {
+    memcpy(entry_string + cur_index_in_final_str, 
+        arrayofstrings[str_index], strlen(arrayofstrings[str_index]));
+    cur_index_in_final_str = cur_index_in_final_str + strlen(arrayofstrings[str_index]);
+  }
 
   unlock_entry ( entry );
+  clear_error(); //not sure about what this does
   return entry_string;
 
 fail:
