@@ -74,7 +74,7 @@ stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
   //Will get all strings into an array of strings.
   //For each field we have 3 strings. For each elemenet field as well we have 4 substrings
   const char **arrayofstrings;
-  size_t numberofStrings = 18 + (entry -> element_count) * 5;
+  size_t numberofStrings = 18 + (entry -> element_count) * 2;
   arrayofstrings = (const char **) malloc(numberofStrings * sizeof(char *));
 
   //Get all the strings
@@ -104,35 +104,16 @@ stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
     arrayofstrings[14] = "";
   }
 
-  arrayofstrings[15 + (entry -> element_count) * 5] = "message=\"";
-  arrayofstrings[16 + (entry -> element_count) * 5] = entry -> message;
-  arrayofstrings[17 + (entry -> element_count) * 5] = "\"";
+  arrayofstrings[15 + (entry -> element_count) * 2] = "message=\"";
+  arrayofstrings[16 + (entry -> element_count) * 2] = entry -> message;
+  arrayofstrings[17 + (entry -> element_count) * 2] = "\"";
 
   char element_indices_strings[entry -> element_count][20]; 
   for (size_t element_index = 0; element_index < (entry -> element_count) ; element_index++)
   {
-    size_t curstrindex = 15 + element_index * 5;
-    arrayofstrings[curstrindex] = "element-";
-    arrayofstrings[curstrindex + 2] = "=";
-    arrayofstrings[curstrindex + 3] = stumpless_element_to_string((entry -> elements)[ element_index ]);
-    arrayofstrings[curstrindex + 4] = ", ";
-
-    size_t element_index_str_length = 0;
-    int element_index_int = element_index + 1;
-    while ( element_index_int ) {
-      element_indices_strings[element_index][ element_index_str_length ] = 
-                '0' + element_index_int % 10;
-      element_index_str_length++;
-      element_index_int = element_index_int / 10;
-    }
-    element_indices_strings[element_index][element_index_str_length] = '\0';
-    for (int i = 0; i < element_index_str_length / 2 ; i++ ){
-      char t = element_indices_strings[element_index][i];
-      element_indices_strings[element_index][i] = element_indices_strings[element_index][element_index_str_length - i - 1];
-      element_indices_strings[element_index][element_index_str_length - i - 1] = t;
-    }
-
-    arrayofstrings[curstrindex + 1] = element_indices_strings[element_index];
+    size_t curstrindex = 15 + element_index * 2;
+    arrayofstrings[curstrindex] = stumpless_element_to_string((entry -> elements)[ element_index ]);
+    arrayofstrings[curstrindex + 1] = ", ";
   }
 
   //time="2003-10-11T22:14:15.003Z", prival="165", 
