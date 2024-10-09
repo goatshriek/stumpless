@@ -96,6 +96,35 @@ namespace {
       }
   };
 
+  TEST_F( EntryTest, SimpleTestToString ) {
+    struct stumpless_entry *
+    stump_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         basic_app_name,
+                                         basic_msgid,
+                                         basic_message );
+    int prival_int = stump_entry -> prival;
+    char privalbuf[20];
+    snprintf(privalbuf, sizeof(privalbuf), "%d", prival_int);
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+
+    //printf("%s\n", stump_as_str);
+    //printf("%s\n",privalbuf);
+    EXPECT_STREQ(stump_as_str, privalbuf);
+
+    free ( (void *) stump_as_str );
+    stumpless_destroy_entry_and_contents( stump_entry );
+  }
+
+  TEST_F( EntryTest, NullEntryToString ) {
+    struct stumpless_entry *
+    stump_entry = NULL;
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL(stump_as_str);
+  }  
+
   TEST_F( EntryTest, AddElement ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;

@@ -48,6 +48,52 @@
 
 static struct cache *entry_cache = NULL;
 
+const char * 
+stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
+  VALIDATE_ARG_NOT_NULL ( entry );
+  lock_entry ( entry );
+
+  size_t entry_string_size = 0;
+
+  char buf[20];
+  size_t prival_length = 0;
+  int prival = entry -> prival;
+  while ( prival ) {
+    buf[ prival_length ] = '0' + prival % 10;
+    prival_length++;
+    prival = prival / 10;
+  }
+  buf[prival_length] = '\0';
+  for (int i = 0; i < prival_length / 2 ; i++ ){
+    char t = buf[i];
+    buf[i] = buf[prival_length - i - 1];
+    buf[prival_length - i - 1] = t;
+  }
+  entry_string_size = entry_string_size + strlen(buf);
+
+  //time="2003-10-11T22:14:15.003Z", prival="165", 
+  //hostname="example.com", app_name="test-suite", 
+  //procid="6", msgid="yellow", element-1=[param="val"], message="test message
+
+  char *entry_string = alloc_mem( entry_string_size );
+  if ( !entry_string ) {
+    goto fail;
+  }
+  memcpy( entry_string, buf, entry_string_size);
+  
+  //memcpy( prival_string, severity , len_severity); 
+  //memcpy( prival_string + len_severity, " | ", 3); // 3 is the size of " | "
+  //memcpy( prival_string + len_severity + 3, facility, len_facility);
+  //memcpy( prival_string + len_severity + 3 + len_facility, "\0", 1);
+
+  unlock_entry ( entry );
+  return entry_string;
+
+fail:
+  unlock_entry ( entry );
+  return NULL;  //Change this before commit
+}
+
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
                        struct stumpless_element *element ) {
