@@ -247,3 +247,4 @@ EXPORTS
   
   stumpless_get_prival_string                   @230
   stumpless_set_severity_color                  @231
+  stumpless_get_priority_string                 @232

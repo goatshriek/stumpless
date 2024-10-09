@@ -59,6 +59,33 @@ STUMPLESS_PUBLIC_FUNCTION
 const char *
 stumpless_get_prival_string( int prival );
 
+/** 
+ * Gets the string representation of the given prival in the format
+ * "facility.level".
+ * 
+ * The string returned must be freed by the caller when it is no longer
+ * needed to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of memory management functions.
+ * 
+ * @param prival int to get the string from.
+ * 
+ * @return The string representation of the given prival.
+ * 
+*/
+STUMPLESS_PUBLIC_FUNCTION
+const char *
+stumpless_get_priority_string( int prival );
+
 /**
  * Extract PRIVAL number (Facility and Severity) from the given string with
  * the direct number or with two names divided with a period in the order:
