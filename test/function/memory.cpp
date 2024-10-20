@@ -19,12 +19,25 @@
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
-#include <stumpless.h>
+#include <stumpless/memory.h>
 #include "test/helper/assert.hpp"
 
 namespace {
 
-  class MemoryTest : public ::testing::Test {};
+  class MemoryTest : public ::testing::Test {
+  protected:
+    void SetUp() override {
+        stumpless_set_malloc(nullptr);
+        stumpless_set_free(nullptr);
+        stumpless_set_realloc(nullptr);
+    }
+
+    void TearDown() override {
+        stumpless_set_malloc(nullptr);
+        stumpless_set_free(nullptr);
+        stumpless_set_realloc(nullptr);
+    }
+  };
 
   TEST( FreeAllTest, SimpleCall ) {
     stumpless_free_all(  );
@@ -79,25 +92,28 @@ namespace {
     EXPECT_EQ(realloc_function, realloc);
   }
 
-  TEST(MemoryFunctionsTest, GetMalloc_NullFunction) {
-    stumpless_set_malloc(NULL);
+  TEST(MemoryFunctionsTest, GetMalloc_CustomFunction) {
+    auto custom_malloc = [](size_t size) -> void* { return malloc(size); };
+    stumpless_set_malloc(custom_malloc);
+    
     auto malloc_function = stumpless_get_malloc();
-    EXPECT_EQ(malloc_function, nullptr);
-    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+    EXPECT_EQ(malloc_function, custom_malloc);
   }
 
-  TEST(MemoryFunctionsTest, GetFree_NullFunction) {
-    stumpless_set_free(NULL);
+  TEST(MemoryFunctionsTest, GetFree_CustomFunction) {
+    auto custom_free = [](void* ptr) { free(ptr); };
+    stumpless_set_free(custom_free);
+
     auto free_function = stumpless_get_free();
-    EXPECT_EQ(free_function, nullptr);
-    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+    EXPECT_EQ(free_function, custom_free);
   }
 
-  TEST(MemoryFunctionsTest, GetRealloc_NullFunction) {
-    stumpless_set_realloc(NULL);
+  TEST(MemoryFunctionsTest, GetRealloc_CustomFunction) {
+    auto custom_realloc = [](void* ptr, size_t size) -> void* { return realloc(ptr, size); };
+    stumpless_set_realloc(custom_realloc);
+
     auto realloc_function = stumpless_get_realloc();
-    EXPECT_EQ(realloc_function, nullptr);
-    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+    EXPECT_EQ(realloc_function, custom_realloc);
   }
 
 }

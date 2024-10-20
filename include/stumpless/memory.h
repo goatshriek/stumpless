@@ -184,10 +184,6 @@ void *
 ( *stumpless_set_realloc( void * ( *realloc_func ) ( void *, size_t) ) )
 ( void *, size_t );
 
-#  ifdef __cplusplus
-}                               /* extern "C" */
-#  endif
-
 /**
  * Retrieves the current malloc function used by the library.
  *
@@ -247,5 +243,9 @@ void (*stumpless_get_free(void))(void *ptr);
  */
 STUMPLESS_PUBLIC_FUNCTION
 void *(*stumpless_get_realloc(void))(void *ptr, size_t size);
+
+#  ifdef __cplusplus
+}                               /* extern "C" */
+#  endif
 
 #endif                          /* __STUMPLESS_MEMORY_H */

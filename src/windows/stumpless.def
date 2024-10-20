@@ -247,3 +247,7 @@ EXPORTS
   
   stumpless_get_prival_string                   @230
   stumpless_set_severity_color                  @231
+
+  stumpless_get_malloc                          @232
+  stumpless_get_free                            @233
+  stumpless_get_realloc                         @234

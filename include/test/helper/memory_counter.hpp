@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <stumpless.h>
+#include <stumpless/memory.h>
 
 struct memory_counter {
   size_t malloc_count;
