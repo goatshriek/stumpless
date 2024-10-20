@@ -24,20 +24,7 @@
 
 namespace {
 
-  class MemoryTest : public ::testing::Test {
-  protected:
-    void SetUp() override {
-        stumpless_set_malloc(nullptr);
-        stumpless_set_free(nullptr);
-        stumpless_set_realloc(nullptr);
-    }
-
-    void TearDown() override {
-        stumpless_set_malloc(nullptr);
-        stumpless_set_free(nullptr);
-        stumpless_set_realloc(nullptr);
-    }
-  };
+  class MemoryTest : public ::testing::Test {};
 
   TEST( FreeAllTest, SimpleCall ) {
     stumpless_free_all(  );
