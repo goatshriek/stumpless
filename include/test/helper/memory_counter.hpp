@@ -106,17 +106,5 @@ PREFIX##_memory_counter_free( void *mem ) {                                    \
 #define ASSERT_NO_LEAK( PREFIX )                                               \
 ASSERT_EQ( PREFIX##_memory_counter.alloc_total,                                \
            PREFIX##_memory_counter.free_total )
-           
-static void* PREFIX##_get_current_malloc() {
-    return PREFIX##_memory_counter.previous_malloc;
-}
-
-static void* PREFIX##_get_current_realloc() {
-    return PREFIX##_memory_counter.previous_realloc;
-}
-
-static void PREFIX##_get_current_free() {
-    return PREFIX##_memory_counter.previous_free;
-}
 
 #endif /* __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP */
