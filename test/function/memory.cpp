@@ -64,4 +64,19 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
+  TEST(MemoryFunctionsTest, GetMalloc) {
+    auto malloc_function = stumpless_get_malloc();
+    EXPECT_EQ(malloc_function, malloc);
+  }
+
+  TEST(MemoryFunctionsTest, GetFree) {
+    auto free_function = stumpless_get_free();
+    EXPECT_EQ(free_function, free);
+  }
+
+  TEST(MemoryFunctionsTest, GetRealloc) {
+    auto realloc_function = stumpless_get_realloc();
+    EXPECT_EQ(realloc_function, realloc);
+  }
+
 }

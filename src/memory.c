@@ -135,3 +135,15 @@ alloc_array( size_t item_count, size_t item_size ) {
   }
   return alloc_mem(item_count * item_size);
 }
+
+malloc_func_t stumpless_get_malloc(void) {
+    return stumpless_malloc;
+}
+
+free_func_t stumpless_get_free(void) {
+    return stumpless_free;
+}
+
+realloc_func_t stumpless_get_realloc(void) {
+    return stumpless_realloc;
+}

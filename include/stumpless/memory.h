@@ -188,4 +188,64 @@ void *
 }                               /* extern "C" */
 #  endif
 
+/**
+ * Retrieves the current malloc function used by the library.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it does not modify any global state.
+ * It simply retrieves a pointer to the current memory allocation function.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers since it does not
+ * cause any side effects or modify state.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled as it does not perform any blocking operations.
+ *
+ * @return A pointer to the current malloc function.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void *(*stumpless_get_malloc(void))(size_t size);
+
+/**
+ * Retrieves the current free function used by the library.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it does not modify any global state.
+ * It simply retrieves a pointer to the current memory deallocation function.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers since it does not
+ * cause any side effects or modify state.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled as it does not perform any blocking operations.
+ *
+ * @return A pointer to the current free function.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void (*stumpless_get_free(void))(void *ptr);
+
+/**
+ * Retrieves the current realloc function used by the library.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread-safe as it does not modify any global state.
+ * It simply retrieves a pointer to the current memory reallocation function.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers since it does not
+ * cause any side effects or modify state.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled as it does not perform any blocking operations.
+ *
+ * @return A pointer to the current realloc function.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void *(*stumpless_get_realloc(void))(void *ptr, size_t size);
+
 #endif                          /* __STUMPLESS_MEMORY_H */

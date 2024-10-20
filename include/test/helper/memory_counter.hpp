@@ -41,9 +41,9 @@ PREFIX##_memory_counter.alloc_total = 0;                                       \
 PREFIX##_memory_counter.realloc_count = 0;                                     \
 PREFIX##_memory_counter.free_count = 0;                                        \
 PREFIX##_memory_counter.free_total = 0;                                        \
-PREFIX##_memory_counter.previous_malloc = malloc;                              \
-PREFIX##_memory_counter.previous_realloc = realloc;                            \
-PREFIX##_memory_counter.previous_free = free;                                  \
+PREFIX##_memory_counter.previous_malloc = stumpless_get_malloc();              \
+PREFIX##_memory_counter.previous_realloc = stumpless_get_realloc();            \
+PREFIX##_memory_counter.previous_free = stumpless_get_free();                  \
 stumpless_set_malloc( PREFIX##_memory_counter_malloc );                        \
 stumpless_set_realloc( PREFIX##_memory_counter_realloc );                      \
 stumpless_set_free( PREFIX##_memory_counter_free );
@@ -106,5 +106,17 @@ PREFIX##_memory_counter_free( void *mem ) {                                    \
 #define ASSERT_NO_LEAK( PREFIX )                                               \
 ASSERT_EQ( PREFIX##_memory_counter.alloc_total,                                \
            PREFIX##_memory_counter.free_total )
+           
+static void* PREFIX##_get_current_malloc() {
+    return PREFIX##_memory_counter.previous_malloc;
+}
+
+static void* PREFIX##_get_current_realloc() {
+    return PREFIX##_memory_counter.previous_realloc;
+}
+
+static void PREFIX##_get_current_free() {
+    return PREFIX##_memory_counter.previous_free;
+}
 
 #endif /* __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP */
