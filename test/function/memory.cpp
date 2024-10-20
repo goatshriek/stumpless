@@ -79,4 +79,25 @@ namespace {
     EXPECT_EQ(realloc_function, realloc);
   }
 
+  TEST(MemoryFunctionsTest, GetMalloc_NullFunction) {
+    stumpless_set_malloc(NULL);
+    auto malloc_function = stumpless_get_malloc();
+    EXPECT_EQ(malloc_function, nullptr);
+    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+  }
+
+  TEST(MemoryFunctionsTest, GetFree_NullFunction) {
+    stumpless_set_free(NULL);
+    auto free_function = stumpless_get_free();
+    EXPECT_EQ(free_function, nullptr);
+    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+  }
+
+  TEST(MemoryFunctionsTest, GetRealloc_NullFunction) {
+    stumpless_set_realloc(NULL);
+    auto realloc_function = stumpless_get_realloc();
+    EXPECT_EQ(realloc_function, nullptr);
+    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+  }
+
 }
