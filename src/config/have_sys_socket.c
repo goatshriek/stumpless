@@ -201,10 +201,21 @@ sys_socket_sendto_tcp_target( struct network_target *target,
       break;
     }
 
+/*
+ * MacOS does not support the flag MSG_NOSIGNAL but have an equivalent SO_NOSIGPIPE that prevents SIGPIPE from being
+ * raised when a write fails on a socket.
+ */
+#if defined(__APPLE__)
+    send_result = send( target->handle,
+                            msg,
+                            msg_size - sent_bytes,
+                            SO_NOSIGPIPE );
+#else
     send_result = send( target->handle,
                         msg,
                         msg_size - sent_bytes,
                         MSG_NOSIGNAL );
+#endif
 
     if( unlikely( send_result == -1 ) ){
       raise_socket_send_failure( L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE,
@@ -228,10 +239,19 @@ sys_socket_sendto_udp_target( const struct network_target *target,
   ssize_t send_result;
 
   lock_network_target( target );
+
+#if defined(__APPLE__)
   send_result = send( target->handle,
                       msg,
                       msg_size,
-                      MSG_NOSIGNAL );
+                      SO_NOSIGPIPE );
+#else
+  send_result = send( target->handle,
+                    msg,
+                    msg_size,
+                    MSG_NOSIGNAL );
+#endif
+
 
   if( unlikely( send_result == -1 ) ){
     unlock_network_target( target );
