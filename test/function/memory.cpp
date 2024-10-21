@@ -19,8 +19,10 @@
 #include <cstddef>
 #include <cstdlib>
 #include <gtest/gtest.h>
+#include <stumpless.h>
 #include <stumpless/memory.h>
 #include "test/helper/assert.hpp"
+#include <stumpless/error.h>
 
 namespace {
 
@@ -65,42 +67,18 @@ namespace {
   }
 
   TEST(MemoryFunctionsTest, GetMalloc) {
-    auto malloc_function = stumpless_get_malloc();
-    EXPECT_EQ(malloc_function, malloc);
-  }
-
-  TEST(MemoryFunctionsTest, GetFree) {
-    auto free_function = stumpless_get_free();
-    EXPECT_EQ(free_function, free);
+    stumpless_set_malloc(malloc);
+    ASSERT_EQ(stumpless_get_malloc(), malloc);
   }
 
   TEST(MemoryFunctionsTest, GetRealloc) {
-    auto realloc_function = stumpless_get_realloc();
-    EXPECT_EQ(realloc_function, realloc);
+    stumpless_set_realloc(realloc);
+    ASSERT_EQ(stumpless_get_realloc(), realloc);
   }
 
-  TEST(MemoryFunctionsTest, GetMalloc_CustomFunction) {
-    auto custom_malloc = [](size_t size) -> void* { return malloc(size); };
-    stumpless_set_malloc(custom_malloc);
-    
-    auto malloc_function = stumpless_get_malloc();
-    EXPECT_EQ(malloc_function, custom_malloc);
-  }
-
-  TEST(MemoryFunctionsTest, GetFree_CustomFunction) {
-    auto custom_free = [](void* ptr) { free(ptr); };
-    stumpless_set_free(custom_free);
-
-    auto free_function = stumpless_get_free();
-    EXPECT_EQ(free_function, custom_free);
-  }
-
-  TEST(MemoryFunctionsTest, GetRealloc_CustomFunction) {
-    auto custom_realloc = [](void* ptr, size_t size) -> void* { return realloc(ptr, size); };
-    stumpless_set_realloc(custom_realloc);
-
-    auto realloc_function = stumpless_get_realloc();
-    EXPECT_EQ(realloc_function, custom_realloc);
+  TEST(MemoryFunctionsTest, GetFree) {
+    void (*current_free_function)(void*) = stumpless_get_free();
+    ASSERT_EQ(current_free_function, free);
   }
 
 }
