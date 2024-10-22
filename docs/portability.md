@@ -42,7 +42,7 @@ certain target types are support is also available, for example if the
 `STUMPLESS_SOCKET_TARGETS_SUPPORTED` symbol is defined, then Unix sockets are
 available in this build. A complete list of the symbols in this header can be
 found in the
-[documentation](https://goatshriek.github.io/stumpless/docs/c/latest/config_8h.html).
+[documentation](https://goatshriek.github.io/stumpless/docs/c/latest/).
 
 However, this header does not include information needed to make some internal
 code decisions. For example, the public header will not indicate whether a
