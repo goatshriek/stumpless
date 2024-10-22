@@ -13,7 +13,7 @@ EXPORTS
   stumpless_set_severity_color                  @6
 
 ; formerly stumpless_destroy_entry, replaced in 3.0.0
-  stumpless_destroy_entry                       @7
+  stumpless_get_malloc                          @7
 
 ; added in v 1.5.0 and earlier
   stumpless_destroy_param                       @8
@@ -251,3 +251,7 @@ EXPORTS
   stumpless_new_chain                           @228
   stumpless_set_entry_message_str_w             @229
   stumpless_get_prival_string                   @230
+
+; added in v3.0.0
+  stumpless_get_free                            @231
+  stumpless_get_realloc                         @232

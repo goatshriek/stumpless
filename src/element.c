@@ -93,7 +93,7 @@ stumpless_copy_element( const struct stumpless_element *element ) {
     goto fail;
   }
 
-  copy->params = alloc_mem( element->param_count * sizeof( param_copy ) );
+  copy->params = alloc_array( element->param_count, sizeof( param_copy ) );
   if( !copy->params ) {
     goto fail_param_copy;
   }
@@ -199,7 +199,7 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     // acc total format size
     format_len = name_len;
 
-    params_format = alloc_mem(sizeof(char*) * param_count);
+    params_format = alloc_array( param_count, sizeof(char*) );
     for( i = 0; i < param_count; i++ ) {
       params_format[i] = stumpless_param_to_string(params[i]);
       // does not count '\0' on purpose

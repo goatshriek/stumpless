@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <stumpless.h>
+#include <stumpless/memory.h>
 
 struct memory_counter {
   size_t malloc_count;
@@ -41,9 +42,9 @@ PREFIX##_memory_counter.alloc_total = 0;                                       \
 PREFIX##_memory_counter.realloc_count = 0;                                     \
 PREFIX##_memory_counter.free_count = 0;                                        \
 PREFIX##_memory_counter.free_total = 0;                                        \
-PREFIX##_memory_counter.previous_malloc = malloc;                              \
-PREFIX##_memory_counter.previous_realloc = realloc;                            \
-PREFIX##_memory_counter.previous_free = free;                                  \
+PREFIX##_memory_counter.previous_malloc = stumpless_get_malloc();              \
+PREFIX##_memory_counter.previous_realloc = stumpless_get_realloc();            \
+PREFIX##_memory_counter.previous_free = stumpless_get_free();                  \
 stumpless_set_malloc( PREFIX##_memory_counter_malloc );                        \
 stumpless_set_realloc( PREFIX##_memory_counter_realloc );                      \
 stumpless_set_free( PREFIX##_memory_counter_free );
