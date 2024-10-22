@@ -71,6 +71,7 @@ add_page( struct cache *c ) {
   if( !new_pages ) {
     return -1;
   }
+  c->pages = new_pages;
 
   new_page = alloc_mem( c->page_size );
   if( !new_page ) {
@@ -80,7 +81,6 @@ add_page( struct cache *c ) {
   new_page_index = c->page_count;
   c->page_count++;
 
-  c->pages = new_pages;
   c->pages[new_page_index] = new_page;
   init_page( c, new_page_index );
 

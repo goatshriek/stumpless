@@ -20,7 +20,9 @@
 #include <cstdlib>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <stumpless/memory.h>
 #include "test/helper/assert.hpp"
+#include <stumpless/error.h>
 
 namespace {
 
@@ -62,6 +64,21 @@ namespace {
     result = stumpless_set_realloc( NULL );
     ASSERT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST(MemoryFunctionsTest, GetMalloc) {
+    stumpless_set_malloc(malloc);
+    ASSERT_EQ(stumpless_get_malloc(), malloc);
+  }
+
+  TEST(MemoryFunctionsTest, GetRealloc) {
+    stumpless_set_realloc(realloc);
+    ASSERT_EQ(stumpless_get_realloc(), realloc);
+  }
+
+  TEST(MemoryFunctionsTest, GetFree) {
+    void (*current_free_function)(void*) = stumpless_get_free();
+    ASSERT_EQ(current_free_function, free);
   }
 
 }

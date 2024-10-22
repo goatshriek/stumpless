@@ -126,3 +126,24 @@ realloc_mem( const void *mem, size_t size ) {
 
   return new_mem;
 }
+
+void *
+alloc_array( size_t item_count, size_t item_size ) {
+  if (item_count && item_count >= (size_t)-1/item_size) {
+    raise_memory_allocation_failure();
+    return NULL;
+  }
+  return alloc_mem(item_count * item_size);
+}
+
+malloc_func_t stumpless_get_malloc(void) {
+    return stumpless_malloc ? stumpless_malloc : NULL;
+}
+
+free_func_t stumpless_get_free(void) {
+    return stumpless_free ? stumpless_free : NULL;
+}
+
+realloc_func_t stumpless_get_realloc(void) {
+    return stumpless_realloc ? stumpless_realloc : NULL;
+}
