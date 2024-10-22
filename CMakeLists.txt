@@ -294,6 +294,14 @@ endif()
 
 
 # configuration-specific source files
+
+# we don't check for win32 as on win32 socket operations are handled directly through return values
+if(APPLE) # MacOS, iOS
+  set(SUPPORT_DISALLOW_SIGNAL_DURING_SENDING TRUE)
+elseif(UNIX) # Linux/BSD/other UNIX-like systems
+  set(SUPPORT_DISALLOW_SIGNAL_DURING_SENDING TRUE)
+endif()
+
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
   set(SUPPORT_ABSTRACT_SOCKET_NAMES TRUE)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_supported.c)
