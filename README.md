@@ -33,7 +33,7 @@ Stumpless has lots of features that make logging in C fast and easy:
    🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
-   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/index.html),
+   [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/),
    [examples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples),
    and [support](https://gitter.im/stumpless/community).
 
