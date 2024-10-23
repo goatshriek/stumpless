@@ -55,96 +55,49 @@ stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
   VALIDATE_ARG_NOT_NULL ( entry );
   lock_entry ( entry );
 
-  //Converting prival of the entry to string beforehand
-  char privalbuf[20];
-  size_t prival_length = 0;
-  int prival = entry -> prival;
-  while ( prival ) {
-    privalbuf[ prival_length ] = '0' + prival % 10;
-    prival_length++;
-    prival = prival / 10;
-  }
-  privalbuf[prival_length] = '\0';
-  for (int i = 0; i < prival_length / 2 ; i++ ){
-    char t = privalbuf[i];
-    privalbuf[i] = privalbuf[prival_length - i - 1];
-    privalbuf[prival_length - i - 1] = t;
-  }
-
-  //Will get all strings into an array of strings.
-  //For each field we have 3 strings. For each elemenet field as well we have 4 substrings
-  const char **arrayofstrings;
-  size_t numberofStrings = 18 + (entry -> element_count) * 2;
-  arrayofstrings = (const char **) malloc(numberofStrings * sizeof(char *));
-
-  //Get all the strings
-  arrayofstrings[0] = "prival=\"";
-  arrayofstrings[1] = privalbuf;
-  arrayofstrings[2] = "\", ";
-  arrayofstrings[3] = "hostname=\"";
-  arrayofstrings[4] = entry -> hostname;
-  arrayofstrings[5] = "\", ";
-  arrayofstrings[6] = "app_name=\"";
-  arrayofstrings[7] = entry -> app_name;
-  arrayofstrings[8] = "\", ";
-  arrayofstrings[9] = "procid=\"";
-  arrayofstrings[10] = entry -> procid;
-  arrayofstrings[11] = "\", ";
-
-  if (entry -> msgid != NULL)
-  {
-    arrayofstrings[12] = "msgid=\"";
-    arrayofstrings[13] = entry -> msgid;
-    arrayofstrings[14] = "\", ";
-  }
-  else 
-  {
-    arrayofstrings[12] = "";
-    arrayofstrings[13] = "";
-    arrayofstrings[14] = "";
-  }
-
-  arrayofstrings[15 + (entry -> element_count) * 2] = "message=\"";
-  arrayofstrings[16 + (entry -> element_count) * 2] = entry -> message;
-  arrayofstrings[17 + (entry -> element_count) * 2] = "\"";
-
-  char element_indices_strings[entry -> element_count][20]; 
+  struct strbuilder* entry_string_strbuilder = strbuilder_new ();
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "prival=\"", 8);
+  entry_string_strbuilder = strbuilder_append_positive_int(entry_string_strbuilder, entry->prival);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "hostname=\"", 10);
+  if ( entry->hostname_length > 0 )
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->hostname , entry->hostname_length);
+  else
+    entry_string_strbuilder = strbuilder_append_char(entry_string_strbuilder, '-');
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "app_name=\"", 10);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->app_name, entry->app_name_length );
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "procid=\"", 8);
+  if (entry -> procid_length > 0)
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->procid , strlen( entry->procid ) );
+  else
+    entry_string_strbuilder = strbuilder_append_procid( entry_string_strbuilder );
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "msgid=\"", 7);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->msgid, entry->msgid_length);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  
   for (size_t element_index = 0; element_index < (entry -> element_count) ; element_index++)
   {
-    size_t curstrindex = 15 + element_index * 2;
-    arrayofstrings[curstrindex] = stumpless_element_to_string((entry -> elements)[ element_index ]);
-    arrayofstrings[curstrindex + 1] = ", ";
+    const char* element_str = stumpless_element_to_string ( entry->elements[element_index] );
+    entry_string_strbuilder = strbuilder_append_buffer (entry_string_strbuilder, element_str, strlen(element_str));
+    entry_string_strbuilder = strbuilder_append_buffer (entry_string_strbuilder, ", ", 2);
+    free_mem ( element_str );
   }
 
-  //time="2003-10-11T22:14:15.003Z", prival="165", 
-  //hostname="example.com", app_name="test-suite", 
-  //procid="6", msgid="yellow", element-1=[param="val"], message="test message
-
-  //Now calculate the size of total entry string
-  size_t entry_string_size = 0;
-  for (int str_index = 0; str_index < numberofStrings ; str_index++ )
+  if ( entry->message  != NULL )
   {
-    entry_string_size = entry_string_size + strlen(arrayofstrings[str_index]);
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "message=\"", 9);
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->message, entry->message_length);
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
   }
 
-  //Allocate memory for the final string to return
-  char *entry_string = alloc_mem( entry_string_size );
-  if ( !entry_string ) {
-    goto fail;
-  }
-
-  //Copy the individual substrings into the final string
-  size_t cur_index_in_final_str = 0;
-  for (int str_index = 0; str_index < numberofStrings ; str_index++ )
-  {
-    memcpy(entry_string + cur_index_in_final_str, 
-        arrayofstrings[str_index], strlen(arrayofstrings[str_index]));
-    cur_index_in_final_str = cur_index_in_final_str + strlen(arrayofstrings[str_index]);
-  }
-
+  const char* final_entry_string = strbuilder_to_string( entry_string_strbuilder );
+  strbuilder_destroy( entry_string_strbuilder );
   unlock_entry ( entry );
   clear_error(); //not sure about what this does
-  return entry_string;
+  return final_entry_string;
 
 fail:
   unlock_entry ( entry );
