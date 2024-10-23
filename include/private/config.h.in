@@ -43,10 +43,12 @@
 #cmakedefine HAVE_VSNPRINTF_S 1
 #cmakedefine HAVE_WCSRTOMBS_S 1
 #cmakedefine HAVE_WCSTOMBS_S 1
+#cmakedefine HAVE_SO_NOSIGPIPE 1
+#cmakedefine HAVE_MSG_NOSIGNAL 1
+
 
 /* function support checks */
 #cmakedefine SUPPORT_ABSTRACT_SOCKET_NAMES 1
-#cmakedefine HAVE_DISALLOW_SIGNAL_DURING_SENDING 1
 #cmakedefine SUPPORT_GETHOSTBYNAME 1
 #cmakedefine SUPPORT_UNISTD_SYSCONF_GETPAGESIZE 1
 #cmakedefine SUPPORT_WINDOWS_GET_NOW 1

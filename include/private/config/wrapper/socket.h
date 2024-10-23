@@ -41,14 +41,10 @@
 #    define config_get_local_socket_name no_abstract_socket_names_get_local_socket_name
 #  endif
 
-#  ifdef HAVE_DISALLOW_SIGNAL_DURING_SENDING
-#    if defined(__APPLE__)
-#          define config_disallow_signal_during_sending_flag SO_NOSIGPIPE
-#    elif defined(__linux__)
-#          define config_disallow_signal_during_sending_flag MSG_NOSIGNAL
-#    elif defined(unix) || defined(__unix__)
-#          define config_disallow_signal_during_sending_flag MSG_NOSIGNAL
-#    endif
+#  ifdef HAVE_SO_NOSIGPIPE
+#    define config_disallow_signal_during_sending_flag SO_NOSIGPIPE
+#  elif defined(HAVE_MSG_NOSIGNAL)
+#    define config_disallow_signal_during_sending_flag MSG_NOSIGNAL
 #  endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_SOCKET_H */
