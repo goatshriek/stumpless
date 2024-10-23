@@ -72,14 +72,12 @@ static void CopyElement(benchmark::State& state){
   stumpless_set_realloc( copy_element_memory_counter_realloc );
   stumpless_set_free( copy_element_memory_counter_free );
 
-  element = stumpless_new_element( "copy-element-perf" );
-  stumpless_add_new_param( element, "param-1", "value-1" );
-  stumpless_add_new_param( element, "param-2", "value-2" );
+  element = create_entry();
 
   for(auto _ : state){
     result = stumpless_copy_element( element );
     if( result <= 0 ) {
-      state.SkipWithError( "could not send an entry to the target" );
+      state.SkipWithError("the element copy failed");
     } else {
       stumpless_destroy_element_and_contents( result );
     }
