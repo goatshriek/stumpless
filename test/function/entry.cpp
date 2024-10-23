@@ -96,6 +96,84 @@ namespace {
       }
   };
 
+  TEST_F( EntryTest, SimpleTestToString ) {
+    struct stumpless_entry *
+    stump_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         basic_app_name,
+                                         basic_msgid,
+                                         basic_message );
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+    const char* basic_stump_str = 
+          "prival=\"14\", hostname=\"\", app_name=\"basic-app-name\", procid=\"\", msgid=\"basic-msgid\", message=\"basic message\"";
+
+    EXPECT_STREQ(stump_as_str, basic_stump_str);
+    free ( (void *) stump_as_str );
+    stumpless_destroy_entry_and_contents( stump_entry );
+  }
+
+  TEST_F( EntryTest, ToStringAddOneElement ) {
+    struct stumpless_entry *
+    stump_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         basic_app_name,
+                                         basic_msgid,
+                                         basic_message );
+    struct stumpless_element *
+      element = stumpless_new_element( "test-new-element" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( element );
+
+    stump_entry =  stumpless_add_element( stump_entry, element );
+
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+    const char* basic_stump_str = 
+          "prival=\"14\", hostname=\"\", app_name=\"basic-app-name\", procid=\"\", msgid=\"basic-msgid\", test-new-element, message=\"basic message\"";
+
+    EXPECT_STREQ(stump_as_str, basic_stump_str);
+    free ( (void *) stump_as_str );
+    stumpless_destroy_entry_and_contents( stump_entry );
+  }
+
+  TEST_F( EntryTest, ToStringAddOneElementWithParams ) {
+    struct stumpless_entry *
+    stump_entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                         STUMPLESS_SEVERITY_INFO,
+                                         basic_app_name,
+                                         basic_msgid,
+                                         basic_message );
+    struct stumpless_element *
+      element_with_params = stumpless_new_element( "element-with-params" );
+    EXPECT_NO_ERROR;
+    ASSERT_NOT_NULL( element_with_params );
+    struct stumpless_param *
+      param_1 = stumpless_new_param( "param1", "val1" );
+    struct stumpless_param *
+      param_2 = stumpless_new_param( "param2", "val2" );
+
+    stumpless_add_param( element_with_params, param_1 );
+    stumpless_add_param( element_with_params, param_2 );
+
+    stump_entry =  stumpless_add_element( stump_entry, element_with_params );
+
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+    const char* basic_stump_str = 
+          "prival=\"14\", hostname=\"\", app_name=\"basic-app-name\", procid=\"\", msgid=\"basic-msgid\", element-with-params=[param1=\"val1\",param2=\"val2\"], message=\"basic message\"";
+
+    EXPECT_STREQ(stump_as_str, basic_stump_str);
+    free ( (void *) stump_as_str );
+    stumpless_destroy_entry_and_contents( stump_entry );
+  }
+
+  TEST_F( EntryTest, NullEntryToString ) {
+    struct stumpless_entry *
+    stump_entry = NULL;
+    const char* stump_as_str = stumpless_entry_to_string( stump_entry );
+
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+    EXPECT_NULL(stump_as_str);
+  }  
+
   TEST_F( EntryTest, AddElement ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;

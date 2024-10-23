@@ -124,6 +124,34 @@ struct stumpless_entry {
 };
 
 /**
+ * Returns the entry as a formatted string.
+ * The character buffer should be freed when no longer is needed by the caller
+ * to avoid memory leaks.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * entry while it is being modified.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate changes and the use of memory management
+ * functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @param entry The entry whose string is returned.
+ *
+ * @return The string if no error was encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+const char * 
+stumpless_entry_to_string ( const struct stumpless_entry *entry );
+
+/**
  * Adds an element to an entry. The element is appended to the end of the list
  * of elements in this entry.
  *

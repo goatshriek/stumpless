@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -47,6 +48,61 @@
 #include "private/validate.h"
 
 static struct cache *entry_cache = NULL;
+
+const char * 
+stumpless_entry_to_string ( const struct stumpless_entry* entry ) {
+  
+  VALIDATE_ARG_NOT_NULL ( entry );
+  lock_entry ( entry );
+
+  struct strbuilder* entry_string_strbuilder = strbuilder_new ();
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "prival=\"", 8);
+  entry_string_strbuilder = strbuilder_append_positive_int(entry_string_strbuilder, entry->prival);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "hostname=\"", 10);
+  if ( entry->hostname_length > 0 )
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->hostname , entry->hostname_length);
+  else
+    entry_string_strbuilder = strbuilder_append_char(entry_string_strbuilder, '-');
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "app_name=\"", 10);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->app_name, entry->app_name_length );
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "procid=\"", 8);
+  if (entry -> procid_length > 0)
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->procid , strlen( entry->procid ) );
+  else
+    entry_string_strbuilder = strbuilder_append_procid( entry_string_strbuilder );
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "msgid=\"", 7);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->msgid, entry->msgid_length);
+  entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  
+  for (size_t element_index = 0; element_index < (entry -> element_count) ; element_index++)
+  {
+    const char* element_str = stumpless_element_to_string ( entry->elements[element_index] );
+    entry_string_strbuilder = strbuilder_append_buffer (entry_string_strbuilder, element_str, strlen(element_str));
+    entry_string_strbuilder = strbuilder_append_buffer (entry_string_strbuilder, ", ", 2);
+    free_mem ( element_str );
+  }
+
+  if ( entry->message  != NULL )
+  {
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "message=\"", 9);
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, entry->message, entry->message_length);
+    entry_string_strbuilder = strbuilder_append_buffer(entry_string_strbuilder, "\", ", 3);
+  }
+
+  const char* final_entry_string = strbuilder_to_string( entry_string_strbuilder );
+  strbuilder_destroy( entry_string_strbuilder );
+  unlock_entry ( entry );
+  clear_error(); //not sure about what this does
+  return final_entry_string;
+
+fail:
+  unlock_entry ( entry );
+  return NULL;  //Change this before commit
+}
 
 struct stumpless_entry *
 stumpless_add_element( struct stumpless_entry *entry,
