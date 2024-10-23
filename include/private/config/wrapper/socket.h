@@ -41,7 +41,7 @@
 #    define config_get_local_socket_name no_abstract_socket_names_get_local_socket_name
 #  endif
 
-#  ifdef SUPPORT_DISALLOW_SIGNAL_DURING_SENDING
+#  ifdef HAVE_DISALLOW_SIGNAL_DURING_SENDING
 #    if defined(__APPLE__)
 #          define config_disallow_signal_during_sending_flag SO_NOSIGPIPE
 #    elif defined(__linux__)

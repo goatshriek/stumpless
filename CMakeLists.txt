@@ -296,10 +296,14 @@ endif()
 # configuration-specific source files
 
 # we don't check for win32 as on win32 socket operations are handled directly through return values
-if(APPLE) # MacOS, iOS
-  set(SUPPORT_DISALLOW_SIGNAL_DURING_SENDING TRUE)
-elseif(UNIX) # Linux/BSD/other UNIX-like systems
-  set(SUPPORT_DISALLOW_SIGNAL_DURING_SENDING TRUE)
+# Check if SO_NOSIGPIPE exists
+check_symbol_exists(SO_NOSIGPIPE "sys/socket.h" HAVE_SO_NOSIGPIPE)
+
+# Check if MSG_NOSIGNAL exists
+check_symbol_exists(MSG_NOSIGNAL "sys/socket.h" HAVE_MSG_NOSIGNAL)
+
+if(HAVE_SO_NOSIGPIPE OR HAVE_MSG_NOSIGNAL)
+  set(HAVE_DISALLOW_SIGNAL_DURING_SENDING TRUE)
 endif()
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
