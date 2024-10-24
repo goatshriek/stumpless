@@ -20,6 +20,7 @@
 #  define __STUMPLESS_PRIVATE_CONFIG_HAVE_SYS_SOCKET_H
 
 #  include <stddef.h>
+#  include <sys/socket.h>
 #  include "private/target/network.h"
 
 void
