@@ -23,6 +23,12 @@
 #  include <sys/socket.h>
 #  include "private/target/network.h"
 
+#  ifdef HAVE_SO_NOSIGPIPE
+#    define config_disallow_signal_during_sending_flag SO_NOSIGPIPE
+#  elif defined(HAVE_MSG_NOSIGNAL)
+#    define config_disallow_signal_during_sending_flag MSG_NOSIGNAL
+#  endif
+
 void
 sys_socket_close_network_target( const struct network_target *target );
 
