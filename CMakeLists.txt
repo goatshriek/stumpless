@@ -1156,6 +1156,12 @@ add_performance_test(function
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
+add_performance_test(buffer
+  SOURCES
+    ${PROJECT_SOURCE_DIR}/test/performance/target/buffer.cpp
+    $<TARGET_OBJECTS:test_helper_fixture>
+)
+
 add_performance_test(log
   SOURCES test/performance/log.cpp
 )
