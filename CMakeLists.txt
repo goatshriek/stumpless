@@ -294,6 +294,14 @@ endif()
 
 
 # configuration-specific source files
+
+# we don't check for win32 as on win32 socket operations are handled directly through return values
+# Check if SO_NOSIGPIPE exists
+check_symbol_exists(SO_NOSIGPIPE "sys/socket.h" HAVE_SO_NOSIGPIPE)
+
+# Check if MSG_NOSIGNAL exists
+check_symbol_exists(MSG_NOSIGNAL "sys/socket.h" HAVE_MSG_NOSIGNAL)
+
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
   set(SUPPORT_ABSTRACT_SOCKET_NAMES TRUE)
   list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/abstract_socket_names_supported.c)

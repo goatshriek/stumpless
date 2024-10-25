@@ -43,6 +43,9 @@
 #cmakedefine HAVE_VSNPRINTF_S 1
 #cmakedefine HAVE_WCSRTOMBS_S 1
 #cmakedefine HAVE_WCSTOMBS_S 1
+#cmakedefine HAVE_SO_NOSIGPIPE 1
+#cmakedefine HAVE_MSG_NOSIGNAL 1
+
 
 /* function support checks */
 #cmakedefine SUPPORT_ABSTRACT_SOCKET_NAMES 1
