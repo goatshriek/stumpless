@@ -28,6 +28,10 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "无法绑定到本地unix socket"
 
+// todo translate
+#  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
+"buffer used to store the message"
+
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "缓冲区对于给定消息太小"
 

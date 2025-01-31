@@ -23,6 +23,10 @@
 "স্থানীয় ইউনিক্স সকেটের"\
  "সাথে আবদ্ধ করা যায়নি"
 
+// todo translate
+#  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
+"buffer used to store the message"
+
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "প্রদত্ত বার্তার জন্য"\
  "বাফারটি খুবই ছোট"

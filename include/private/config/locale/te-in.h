@@ -26,6 +26,10 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "స్థానిక యునిక్స్ సాకెట్కు బంధించబడలేదు"
 
+// todo translate
+#  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
+"buffer used to store the message"
+
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "ఇచ్చిన సందేశానికి బఫర్ చాలా చిన్నది"
 

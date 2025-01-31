@@ -156,7 +156,13 @@ extern "C" {
  *
  * @since release v2.2.0
  */\
-  ERROR( STUMPLESS_NETWORK_CLOSED, 33 )
+  ERROR( STUMPLESS_NETWORK_CLOSED, 33 ) \
+/** 
+ * A provided argument was too big, for example maximum alloted buffer size. 
+ * 
+ * @since release v3.0.0
+ */\
+  ERROR(STUMPLESS_ARGUMENT_TOO_SMALL, 34)	
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.

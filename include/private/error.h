@@ -53,6 +53,12 @@ raise_argument_too_big( const char *message,
 
 COLD_FUNCTION
 void
+raise_argument_too_small( const char *message,
+                        size_t arg_size,
+                        const char *arg_type );
+
+COLD_FUNCTION
+void
 raise_duplicate_element( void );
 
 COLD_FUNCTION

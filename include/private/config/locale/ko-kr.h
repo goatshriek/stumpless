@@ -26,6 +26,10 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "로컬 UNIX 소켓에 바인딩할 수 없습니다"
 
+// todo translate
+#  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
+"buffer used to store the message"
+
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "주어진 메시지에 대한 버퍼가 너무 작습니다"
 

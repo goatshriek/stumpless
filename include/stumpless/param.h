@@ -448,6 +448,35 @@ const char *
 stumpless_param_to_string( const struct stumpless_param *param );
 
 /**
+ * Copies the name and the value from param to a buffer string.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate the read of the
+ * param with other accesses and modifications.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate access and the use of memory management
+ * functions to create the result.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked as well as
+ * memory management functions.
+ *
+ * @since release v3.0.0
+ *
+ * @param param The param to get the name and the value from.
+ *
+ * @return The size written to the buffer string if no error is
+ * encountered. If an error is encountered, then minimum required size of
+ * the buffer is returned.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+size_t
+stumpless_param_into_string( const struct stumpless_param *param, char *str, size_t max_size );
+
+/**
  * Unloads a param.
  *
  * Either this function, stumpless_unload_element_and_contents, or

@@ -22,6 +22,10 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "स्थानीय यूनिक्स सॉकेट से नहीं जुड़ सका"
 
+// todo translate
+#  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
+"buffer used to store the message"
+
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "दिए गए संदेश के लिए बफ़र बहुत छोटा है"
 

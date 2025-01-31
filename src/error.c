@@ -158,6 +158,16 @@ raise_argument_too_big( const char *message,
 }
 
 void
+raise_argument_too_small( const char *message,
+                        size_t arg_size,
+                        const char *arg_type ) {
+  raise_error( STUMPLESS_ARGUMENT_TOO_SMALL,
+               message,
+               cap_size_t_to_int( arg_size ),
+               arg_type );
+}
+
+void
 raise_duplicate_element( void ) {
   raise_error( STUMPLESS_DUPLICATE_ELEMENT,
                L10N_DUPLICATE_ELEMENT_ERROR_MESSAGE,

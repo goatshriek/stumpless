@@ -318,6 +318,48 @@ fail:
     return NULL;
 }
 
+size_t
+stumpless_param_into_string( const struct stumpless_param *param, char *str, size_t max_size ) {
+  const char *name;
+  const char *value;
+  size_t value_len;
+  size_t name_len;
+  size_t min_buff_size;
+
+  VALIDATE_ARG_NOT_NULL( param );
+
+  lock_param( param );
+
+  name  = param->name;
+  value = param->value;
+  name_len = param->name_length;
+  value_len = param->value_length;
+
+  min_buff_size = name_len + value_len + 4;
+  if ( min_buff_size > max_size ) {
+    raise_argument_too_small( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
+                              max_size,
+                              L10N_BUFFER_SIZE_ERROR_CODE_TYPE );
+    goto fail;
+  }
+
+  memcpy(str, name, name_len);
+  memcpy(str + name_len + 2, value, value_len);
+
+  unlock_param( param );
+
+  str[name_len ] = '=';
+  str[name_len + 1] = '\"';
+  str[name_len + value_len + 2] = '\"';
+  str[name_len + value_len + 3] = '\0';
+
+  return min_buff_size;
+
+fail:
+  unlock_param( param );
+  return min_buff_size;
+}
+
 void
 stumpless_unload_param( const struct stumpless_param *param ) {
   if( !param ) {
