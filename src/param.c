@@ -326,7 +326,7 @@ stumpless_param_into_string( const struct stumpless_param *param, char *str, siz
   size_t name_len;
   size_t min_buff_size;
 
-  VALIDATE_ARG_NOT_NULL( param );
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( param );
 
   lock_param( param );
 

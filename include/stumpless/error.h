@@ -162,7 +162,7 @@ extern "C" {
  * 
  * @since release v3.0.0
  */\
-  ERROR(STUMPLESS_ARGUMENT_TOO_SMALL, 34)	
+  ERROR( STUMPLESS_ARGUMENT_TOO_SMALL, 34 )	
 
 /**
  * An (enum) identifier of the types of errors that might be encountered.
