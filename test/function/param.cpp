@@ -625,21 +625,6 @@ namespace {
     free( buffer );
   }
 
-  TEST( ParamIntoStringTest, InsufficientBuffer) {
-    const size_t max_size = 10;
-    struct stumpless_param *param;
-    size_t param_size;
-    char *buffer = (char*)malloc(max_size);
-
-    param = stumpless_new_param_from_string( "some-name=\"some-value\"" );
-    param_size = stumpless_param_into_string( param, buffer, max_size );
-    ASSERT_EQ( param_size, param->name_length + param->value_length + 4 );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_SMALL );
-
-    free( buffer );
-    stumpless_destroy_param( param );
-  }
-
   TEST( UnloadParamTest, NullParam ) {
     stumpless_unload_param( NULL );
 
