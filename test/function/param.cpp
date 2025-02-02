@@ -205,6 +205,8 @@ namespace {
     ASSERT_EQ( param_size, (&basic_param)->name_length + (&basic_param)->value_length + 4 );
     EXPECT_STREQ( buffer, "basic-name=\"basic-value\"" );
     EXPECT_NO_ERROR;
+    
+    free( buffer );
   }
 
   TEST_F( ParamTest, ParamIntoStringInsufficientBuffer) {
