@@ -256,3 +256,4 @@ EXPORTS
   stumpless_get_free                            @231
   stumpless_get_realloc                         @232
   stumpless_get_priority_string                 @233
+  stumpless_param_into_string                   @234
