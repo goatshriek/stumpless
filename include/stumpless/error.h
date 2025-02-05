@@ -158,7 +158,7 @@ extern "C" {
  */\
   ERROR( STUMPLESS_NETWORK_CLOSED, 33 ) \
 /** 
- * A provided argument was too big, for example maximum alloted buffer size. 
+ * A provided argument was too small, for example maximum allotted buffer size. 
  * 
  * @since release v3.0.0
  */\

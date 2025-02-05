@@ -469,8 +469,9 @@ stumpless_param_to_string( const struct stumpless_param *param );
  * @param param The param to get the name and the value from.
  *
  * @return The size written to the buffer string if no error is
- * encountered. If an error is encountered, then minimum required size of
- * the buffer is returned.
+ * encountered. If error code 'STUMPLESS_ARGUMENT_TOO_SMALL' is encountered, 
+ * then minimum required size of the buffer is returned. If a NULL argument is 
+ * encountered, 0 is returned.
  */
 STUMPLESS_PUBLIC_FUNCTION
 size_t

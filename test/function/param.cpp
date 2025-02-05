@@ -209,6 +209,15 @@ namespace {
     free( buffer );
   }
 
+  TEST_F( ParamTest, ParamIntoStringNullBuffer) {
+    const size_t max_size = 100;
+    size_t param_size;
+
+    param_size = stumpless_param_into_string( &basic_param, NULL, max_size );
+    ASSERT_EQ( param_size, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
   TEST_F( ParamTest, ParamIntoStringInsufficientBuffer) {
     const size_t max_size = 10;
     size_t param_size;
