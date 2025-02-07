@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
@@ -47,6 +48,26 @@ namespace {
 
     result = stumpless_get_severity_string( wrong_severity );
     EXPECT_STREQ( result, "NO_SUCH_SEVERITY" );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
+  }
+
+  TEST( GetSeverityString, ClearError ) {
+    int severity_count = 0;
+    const char *result;
+    const char *version;
+    
+    version = stumpless_version_to_string( NULL );
+    EXPECT_NULL( version );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    #define COUNT_SEVERITY( STRING, ENUM ) ++severity_count;
+    STUMPLESS_FOREACH_SEVERITY( COUNT_SEVERITY )
+
+    stumpless_severity correct_severity =
+        static_cast<stumpless_severity>(severity_count - 1);
+
+    result = stumpless_get_severity_string( correct_severity );
+    EXPECT_NO_ERROR;
   }
 
   TEST( GetSeverityEnum, EachValidSeverity ) {
@@ -104,6 +125,20 @@ namespace {
 
     result = stumpless_get_severity_enum( "an_invalid_severity" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
+  }
+
+  TEST( GetSeverityEnum, ClearError ) {
+    int severity_count = 0;
+    int result;
+    const char *version;
+    
+    version = stumpless_version_to_string( NULL );
+    EXPECT_NULL( version );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+
+    result = stumpless_get_severity_enum( "EMERG" );
+    EXPECT_NO_ERROR;
   }
 
   TEST( GetSeverityEnumFromBuffer, NoSuchSeverity ) {
@@ -116,9 +151,11 @@ namespace {
   TEST( GetSeverityEnumFromBuffer, IncompleteSeverity ) {
     enum stumpless_severity result = stumpless_get_severity_enum( "war" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
     
     result = stumpless_get_severity_enum( "not" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
   }	
 
 
@@ -128,13 +165,25 @@ namespace {
     
     result = stumpless_get_severity_enum( "notices are bad" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
 
     result = stumpless_get_severity_enum( "panic you should not" );
     EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_SEVERITY );
 
   }	
 
+  TEST( GetSeverityEnumFromBuffer, ClearError ) {
+    int result;
+    const char *version;
+    
+    version = stumpless_version_to_string( NULL );
+    EXPECT_NULL( version );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
 
+    result = stumpless_get_severity_enum_from_buffer( "EMERG", 5 );
+    EXPECT_NO_ERROR;
+  }
 
 
 }

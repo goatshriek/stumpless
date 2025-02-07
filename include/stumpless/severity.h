@@ -229,7 +229,8 @@ enum stumpless_severity {
  *
  * @param severity The severity to get the string from.
  *
- * @return The string representation of the given severity.
+ * @return The string representation of the given severity. An error code
+ * STUMPLESS_INVALID_SEVERITY is raised if the given severity is not valid.
  */
 STUMPLESS_PUBLIC_FUNCTION
 const char *
@@ -253,7 +254,8 @@ stumpless_get_severity_string( enum stumpless_severity severity );
  * @param severity_string The severity name to get the enum from.
  *
  * @return The enum integer corresponding to the given severity or -1 if
- * the string is not a valid severity name.
+ * the string is not a valid severity name. An error code STUMPLESS_INVALID_SEVERITY
+ * is raised if the string is not a valid severity name.
  */
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_severity
@@ -279,7 +281,8 @@ stumpless_get_severity_enum( const char *severity_string );
  * @param length The length of the buffer.
  *
  * @return The enum integer corresponding to the given severity or -1 if
- * the string is not a valid severity name.
+ * the string is not a valid severity name. An error code STUMPLESS_INVALID_SEVERITY
+ * is raised if the string is not a valid severity name.
  */
 STUMPLESS_PUBLIC_FUNCTION
 enum stumpless_severity

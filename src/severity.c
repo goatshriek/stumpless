@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/severity.h>
+#include "private/error.h"
 #include "private/severity.h"
 #include "private/strhelper.h"
 
@@ -29,13 +30,22 @@ static char *severity_enum_to_string[] = {
 const char *
 stumpless_get_severity_string( enum stumpless_severity severity ) {
   if ( !severity_is_invalid( severity ) ) {
+    clear_error(  ); 
     return severity_enum_to_string[severity];
   }
+
+  raise_invalid_severity( severity );
   return "NO_SUCH_SEVERITY";
 }
 
 enum stumpless_severity stumpless_get_severity_enum(const char *severity_string) {
-  return stumpless_get_severity_enum_from_buffer(severity_string, strlen(severity_string));
+  enum stumpless_severity severity_val = stumpless_get_severity_enum_from_buffer(severity_string, strlen(severity_string));
+  if ( severity_is_invalid( severity_val ) ) {
+    raise_invalid_severity( severity_val );
+  } else {
+    clear_error(  );
+  }
+  return severity_val;
 }
 
 enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *severity_buffer, size_t severity_buffer_length) {
@@ -43,6 +53,8 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
   size_t i;
   const int str_offset = 19; // to ommit "STUMPLESS_SEVERITY_"
 
+  clear_error(  );
+  
   severity_bound = sizeof( severity_enum_to_string ) /
                      sizeof( severity_enum_to_string[0] );
 
@@ -64,6 +76,7 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
     return STUMPLESS_SEVERITY_WARNING_VALUE;
   }
 
+  raise_invalid_severity( -1 );
   return -1;
 }
 
