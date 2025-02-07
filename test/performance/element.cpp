@@ -32,9 +32,7 @@ static void CopyElement(benchmark::State& state){
 
   INIT_MEMORY_COUNTER( copy_element );
 
-  element = stumpless_new_element( "copy-element-perf" );
-  stumpless_add_new_param( element, "param-1", "value-1" );
-  stumpless_add_new_param( element, "param-2", "value-2" );
+  element = create_entry("copy-element-perf", {{"param-1", "value-1"}, {"param-2", "value-2"}});
 
   for(auto _ : state){
     result = stumpless_copy_element( element );
@@ -50,6 +48,7 @@ static void CopyElement(benchmark::State& state){
 
   SET_STATE_COUNTERS( state, copy_element );
 }
+
 
 static void LoadElement(benchmark::State& state){
   const char *element_name = "new-element-perf";
