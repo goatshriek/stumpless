@@ -43,8 +43,6 @@
 "copy_cstring_with_length": "private/strhelper.h"
 "copy_wel_data": "private/config/wel_supported.h"
 "create_entry": "test/helper/fixture.hpp"
-"copy_cstring_length": "private/strhelper.h"
-"to_upper_case": "private/strhelper.h"
 "destroy_buffer_target": "private/target/buffer.h"
 "destroy_file_target": "private/target/file.h"
 "destroy_network_target": "private/target/network.h"
