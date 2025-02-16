@@ -56,31 +56,7 @@ stumpless_close_wel_target( struct stumpless_target *target ) {
 
 struct stumpless_target *
 stumpless_open_local_wel_target( const char *name ) {
-  struct stumpless_target *target;
-
-  clear_error(  );
-
-  VALIDATE_ARG_NOT_NULL( name );
-
-  target = new_target( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, name );
-
-  if( !target ) {
-    goto fail;
-  }
-
-  target->id = new_wel_target( NULL, name );
-
-  if( !target->id ) {
-    goto fail_id;
-  }
-
-  stumpless_set_current_target( target );
-  return target;
-
-fail_id:
-  destroy_target( target );
-fail:
-  return NULL;
+  return stumpless_open_remote_wel_target( NULL, name );
 }
 
 
