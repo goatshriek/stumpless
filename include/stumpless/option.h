@@ -47,7 +47,21 @@
 #    define STUMPLESS_OPTION_CONS   (1<<1)
 #  endif
 
-/** Not currently supported. */
+/** For all applicable targets, NDELAY semantics is the
+ * default behavior.
+ * 
+ * NDELAY definition for each target:
+ * 1. Buffer - Buffer created and passed by the user. Not applicable.
+ * 2. File - Open the file in append mode.
+ * 3. Function - Function created and passed by the user. Not applicable.
+ * 4. Journald - Unix socket to journald opened by sd_journal_sendv. Not applicable.
+ * 5. Network - Establish network connection with the destination.
+ * 6. Socket - Open and bind the socket.
+ * 7. Stream - Stream created and passed by the user. Not applicable.
+ * 8. WEL - Execute RegisterEventSource.
+ * 9. SQLITE3 - Connect to the database.
+ * 10. Chain - Each target in the chain will have their own definition.
+ */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_OPTION_NDELAY LOG_NDELAY
 #  else
