@@ -16,6 +16,7 @@
   - "stdlib.h"
   - "string.h"
   - "time.h"
+"tolower": "ctype.h"
 "true": "stdbool.h"
 "va_end": "stdarg.h"
 "va_list": "stdarg.h"
