@@ -44,6 +44,11 @@ stdatomic_read_bool( atomic_bool *b ) {
   return ( bool ) atomic_load( b );
 }
 
+int
+stdatomic_read_int( atomic_int *i ) {
+  return ( int ) atomic_load( i );
+}
+
 void *
 stdatomic_read_ptr( atomic_uintptr_t *p ) {
   return ( void * ) atomic_load( p );
@@ -52,6 +57,11 @@ stdatomic_read_ptr( atomic_uintptr_t *p ) {
 void
 stdatomic_write_bool( atomic_bool *b, bool replacement ) {
   atomic_store( b, replacement );
+}
+
+void
+stdatomic_write_int( atomic_int *i, int replacement ) {
+  atomic_store( i, replacement );
 }
 
 void

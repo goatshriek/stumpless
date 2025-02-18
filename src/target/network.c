@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stumpless/target.h>
+#include <stumpless/option.h>
 #include <stumpless/target/network.h>
 #include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/network_supported.h"
@@ -798,6 +799,7 @@ open_new_network_target( const char *destination,
                          enum stumpless_transport_protocol transport ) {
   struct network_target *target;
   const struct network_target *open_result;
+  int options;
 
   target = new_network_target( network, transport );
   if( !target ) {
@@ -809,9 +811,12 @@ open_new_network_target( const char *destination,
     goto fail_open;
   }
 
-  open_result = open_private_network_target( target );
-  if( !open_result ) {
-    goto fail_open;
+  options = stumpless_get_default_option(  );
+  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
+    open_result = open_private_network_target( target );
+    if( !open_result ) {
+      goto fail_open;
+    }
   }
 
   return target;
@@ -828,6 +833,14 @@ sendto_network_target( struct network_target *target,
                        size_t msg_length ) {
   // leave off the newline
   msg_length--;
+  struct network_target *open_result;
+
+  if ( target->handle == -1 ) {
+    open_result = open_private_network_target( target );
+    if( !open_result ) {
+      goto fail_open;
+    }
+  } 
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
      return sendto_udp_target( target, msg, msg_length );
@@ -836,6 +849,10 @@ sendto_network_target( struct network_target *target,
      return sendto_tcp_target( target, msg, msg_length );
 
   }
+
+fail_open:
+  destroy_network_target( target );
+  return -1;
 }
 
 void

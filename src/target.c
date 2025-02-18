@@ -69,6 +69,7 @@
 static const char *target_type_enum_to_string[] = {
   STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
 };
+static config_atomic_int_t default_option = config_atomic_int_default;
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;
@@ -252,7 +253,7 @@ stumpless_add_entry( struct stumpless_target *target,
       break;
 
     case STUMPLESS_FILE_TARGET:
-      result = sendto_file_target( target->id, buffer, builder_length );
+      result = sendto_file_target( target, buffer, builder_length );
       break;
 
     case STUMPLESS_NETWORK_TARGET:
@@ -467,6 +468,11 @@ stumpless_get_current_target( void ) {
 }
 
 int
+stumpless_get_default_option( void ) {
+  return config_read_int( &default_option );
+}
+
+int
 stumpless_get_default_facility( const struct stumpless_target *target ) {
   int prival;
 
@@ -655,6 +661,11 @@ void
 stumpless_set_current_target( struct stumpless_target *target ) {
   clear_error(  );
   config_write_ptr( &current_target, target );
+}
+
+void
+stumpless_set_default_option( int option ) {
+  config_write_int( &default_option, option );
 }
 
 struct stumpless_target *
@@ -1082,6 +1093,7 @@ lock_target( const struct stumpless_target *target ) {
 struct stumpless_target *
 new_target( enum stumpless_target_type type, const char *name ) {
   struct stumpless_target *target;
+  int options;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
@@ -1098,8 +1110,11 @@ new_target( enum stumpless_target_type type, const char *name ) {
     goto fail_mutex;
   }
 
+  options = stumpless_get_default_option(  );
+
+  target->id = NULL;
   target->type = type;
-  target->options = STUMPLESS_OPTION_NONE;
+  target->options = STUMPLESS_OPTION_NONE | options;
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
   target->default_app_name[0] = '-';

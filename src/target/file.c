@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stumpless/config.h>
+#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/file.h>
 #include "private/config/wrapper/locale.h"
@@ -51,6 +52,7 @@ stumpless_close_file_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_file_target( const char *name ) {
   struct stumpless_target *target;
+  int options;
 
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -60,9 +62,12 @@ stumpless_open_file_target( const char *name ) {
     goto fail;
   }
 
-  target->id = new_file_target( name );
-  if( !target->id ) {
-    goto fail_id;
+  options = stumpless_get_default_option(  );
+  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
+    target->id = new_file_target( name );
+    if( !target->id ) {
+      goto fail_id;
+    }
   }
 
   stumpless_set_current_target( target );
@@ -114,14 +119,26 @@ fail:
 }
 
 int
-sendto_file_target( struct file_target *target,
+sendto_file_target( struct stumpless_target *target,
                     const char *msg,
                     size_t msg_length ) {
   size_t fwrite_result;
+  struct file_target *ftarget;
 
-  config_lock_mutex( &target->stream_mutex );
-  fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
-  config_unlock_mutex( &target->stream_mutex );
+  if ( !target->id ) {
+    lock_target( target );
+    target->id = new_file_target( target->name );
+    if ( !target->id ) {
+      unlock_target( target );
+      goto fail;
+    }
+    unlock_target( target );
+  }
+  ftarget = target->id;
+
+  config_lock_mutex( &ftarget->stream_mutex );
+  fwrite_result = fwrite( msg, sizeof( char ), msg_length, ftarget->stream );
+  config_unlock_mutex( &ftarget->stream_mutex );
 
   if( fwrite_result != msg_length ) {
     goto write_failure;
@@ -131,5 +148,6 @@ sendto_file_target( struct file_target *target,
 
 write_failure:
   raise_file_write_failure(  );
+fail:
   return -1;
 }

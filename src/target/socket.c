@@ -21,6 +21,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <stumpless/option.h>
 #include <stumpless/target.h>
 #include <stumpless/target/socket.h>
 #include "private/config/wrapper/locale.h"
@@ -105,25 +106,10 @@ destroy_socket_target( const struct socket_target *trgt ) {
 }
 
 struct socket_target *
-new_socket_target( const char *dest,
-                   size_t dest_len,
-                   const char *source,
-                   size_t source_len ) {
-  struct socket_target *target;
+open_bind_socket( struct socket_target *target ) {
   int bind_result;
 
-  target = alloc_mem( sizeof( *target ) );
-  if( !target ) {
-    goto fail;
-  }
-
-  target->target_addr.sun_family = AF_UNIX;
-  memcpy( &target->target_addr.sun_path, dest, dest_len );
-  target->target_addr.sun_path[dest_len] = '\0';
-
-  target->local_addr.sun_family = AF_UNIX;
-  memcpy( &target->local_addr.sun_path, source, source_len );
-  target->local_addr.sun_path[source_len] = '\0';
+  clear_error(  );
 
   target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
   if( target->local_socket < 0 ) {
@@ -144,27 +130,66 @@ new_socket_target( const char *dest,
     goto fail_bind;
   }
 
-  target->target_addr_len = sizeof( target->target_addr );
-
   return target;
 
 fail_bind:
   close( target->local_socket );
 fail_socket:
   free_mem( target );
+}
+
+struct socket_target *
+new_socket_target( const char *dest,
+                   size_t dest_len,
+                   const char *source,
+                   size_t source_len ) {
+  struct socket_target *target;
+  int options;
+
+  target = alloc_mem( sizeof( *target ) );
+  if( !target ) {
+    goto fail;
+  }
+
+  target->target_addr.sun_family = AF_UNIX;
+  memcpy( &target->target_addr.sun_path, dest, dest_len );
+  target->target_addr.sun_path[dest_len] = '\0';
+
+  target->local_addr.sun_family = AF_UNIX;
+  memcpy( &target->local_addr.sun_path, source, source_len );
+  target->local_addr.sun_path[source_len] = '\0';
+
+  target->target_addr_len = sizeof( target->target_addr );
+  target->local_socket = -1;
+
+  options = stumpless_get_default_option(  );
+  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
+    target = open_bind_socket( target );
+  }
+
+  return target;
+
 fail:
   return NULL;
 }
 
 int
-sendto_socket_target( const struct socket_target *target,
+sendto_socket_target( struct socket_target *target,
                       const char *msg, size_t msg_length ) {
   int result;
 
   // leave off the newline
   msg_length--;
 
- result = sendto( target->local_socket,
+  if ( target->local_socket < 0 ) {
+    target = open_bind_socket( target );
+    if ( stumpless_has_error(  ) ) {
+      result = -1;
+      goto fail;
+    }
+  }
+
+  result = sendto( target->local_socket,
                   msg,
                   msg_length,
                   0,
@@ -177,5 +202,6 @@ sendto_socket_target( const struct socket_target *target,
                                L10N_ERRNO_ERROR_CODE_TYPE );
   }
 
+fail:
   return result;
 }

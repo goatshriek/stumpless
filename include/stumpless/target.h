@@ -519,6 +519,30 @@ struct stumpless_target *
 stumpless_get_current_target( void );
 
 /**
+ * Gets the options to be used while initializing a target.
+ *
+ * If no options are set for atomic variable default_option, it will default
+ * to 0.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic operations are used to work with the
+ * default option.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers as it only consists of
+ * an atomic read.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled, as it only consists of an atomic read.
+ *
+ * @return Value store in atomic variable default_option
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_get_default_option( void );
+
+/**
  * Gets the default facility of a target.
  *
  * **Thread Safety: MT-Safe**
@@ -854,6 +878,31 @@ stumpless_set_cons_stream( FILE *stream );
 STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_set_current_target( struct stumpless_target *target );
+
+/**
+ * Sets the default options to be used for all new targets created.
+ *
+ * If a target is created without calling this function, STUMPLESS_OPTION_NONE 
+ * will be used as default. Using this function will not affect options for 
+ * targets already created.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. Atomic operations are used to work with the
+ * default target.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers as it only consists of
+ * an atomic read.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled, as it only consists of an atomic read.
+ *
+ * @param option The bitwise 'or' of all options to be set as default.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void
+stumpless_set_default_option( int option );
 
 /**
  * Sets the default facility of a target.

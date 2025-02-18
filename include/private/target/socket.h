@@ -38,7 +38,7 @@ new_socket_target( const char *dest, size_t dest_len,
                    const char *source, size_t source_len );
 
 int
-sendto_socket_target( const struct socket_target *target,
+sendto_socket_target( struct socket_target *target,
                       const char *msg,
                       size_t msg_length );
 

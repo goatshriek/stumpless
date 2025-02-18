@@ -68,7 +68,10 @@
 #    define STUMPLESS_OPTION_NDELAY (1<<2)
 #  endif
 
-/** Not currently supported. */
+/** Definitions for ODELAY remains the same for all targets as defined in NDELAY
+ * with the only difference being that they will be executed when the first
+ * message is logged.
+ */
 #  ifdef STUMPLESS_SYSLOG_H_COMPATIBLE
 #    define STUMPLESS_OPTION_ODELAY LOG_ODELAY
 #  else
