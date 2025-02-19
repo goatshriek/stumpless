@@ -116,7 +116,7 @@ open_bind_socket( struct socket_target *target ) {
     raise_socket_failure( L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                           errno,
                           L10N_ERRNO_ERROR_CODE_TYPE );
-    goto fail_socket;
+    return NULL;
   }
 
   bind_result= bind( target->local_socket,
@@ -134,8 +134,7 @@ open_bind_socket( struct socket_target *target ) {
 
 fail_bind:
   close( target->local_socket );
-fail_socket:
-  free_mem( target );
+  return NULL;
 }
 
 struct socket_target *
@@ -162,32 +161,29 @@ new_socket_target( const char *dest,
   target->target_addr_len = sizeof( target->target_addr );
   target->local_socket = -1;
 
-  options = stumpless_get_default_option(  );
-  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
+  options = stumpless_get_default_options(  );
+  if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
     target = open_bind_socket( target );
+    if ( !target ) {
+      goto fail_socket;
+    }
   }
 
   return target;
 
+fail_socket:
+  free_mem( target );
 fail:
   return NULL;
 }
 
 int
-sendto_socket_target( struct socket_target *target,
+sendto_socket_target( const struct socket_target *target,
                       const char *msg, size_t msg_length ) {
   int result;
 
   // leave off the newline
   msg_length--;
-
-  if ( target->local_socket < 0 ) {
-    target = open_bind_socket( target );
-    if ( stumpless_has_error(  ) ) {
-      result = -1;
-      goto fail;
-    }
-  }
 
   result = sendto( target->local_socket,
                   msg,
@@ -202,6 +198,5 @@ sendto_socket_target( struct socket_target *target,
                                L10N_ERRNO_ERROR_CODE_TYPE );
   }
 
-fail:
   return result;
 }

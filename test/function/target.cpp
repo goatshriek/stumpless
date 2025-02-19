@@ -608,7 +608,7 @@ namespace {
   TEST( GetDefaultOption, DefaultValue ) {
     int option;
 
-    option = stumpless_get_default_option(  );
+    option = stumpless_get_default_options(  );
     EXPECT_EQ( option, 0 );
   }
 
@@ -1169,9 +1169,9 @@ namespace {
     char buffer[100];
     int option;
 
-    stumpless_set_default_option( STUMPLESS_OPTION_ODELAY );
+    stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
-    option = stumpless_get_default_option(  );
+    option = stumpless_get_default_options(  );
     ASSERT_EQ( option, STUMPLESS_OPTION_ODELAY );
 
     target = stumpless_open_buffer_target( "test target",
@@ -1184,7 +1184,7 @@ namespace {
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );
 
-    stumpless_set_default_option( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
   }
 
   TEST( WithCons, ConsDisabled ) {

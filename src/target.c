@@ -43,6 +43,7 @@
 #include "private/config/wrapper/wel.h"
 #include "private/config/wrapper/journald.h"
 #include "private/config/wrapper/network_supported.h"
+#include "private/config/wrapper/fopen.h"
 #include "private/config/wrapper/socket.h"
 #include "private/config/wrapper/sqlite3.h"
 #include "private/config/wrapper/thread_safety.h"
@@ -62,6 +63,7 @@
 #include "private/target/buffer.h"
 #include "private/target/file.h"
 #include "private/target/function.h"
+#include "private/target/socket.h"
 #include "private/target/stream.h"
 #include "private/validate.h"
 
@@ -190,13 +192,24 @@ stumpless_add_entry( struct stumpless_target *target,
   int result;
   FILE *current_cons_stream;
   bool locked;
+  int options;
 
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
-  if( target->type != STUMPLESS_FILE_TARGET && unlikely( !target->id ) ) {
+  if( unlikely( !target->id ) ) {
     raise_invalid_id(  );
     return -1;
+  }
+
+  options = target->options;
+  if ( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) {
+    if ( !stumpless_target_is_open( target ) ) {
+      target = stumpless_open_target( target );
+      if ( !target ) {
+        return -1;
+      }
+    }
   }
 
   filter = stumpless_get_target_filter( target );
@@ -253,7 +266,7 @@ stumpless_add_entry( struct stumpless_target *target,
       break;
 
     case STUMPLESS_FILE_TARGET:
-      result = sendto_file_target( target, buffer, builder_length );
+      result = sendto_file_target( target->id, buffer, builder_length );
       break;
 
     case STUMPLESS_NETWORK_TARGET:
@@ -468,7 +481,7 @@ stumpless_get_current_target( void ) {
 }
 
 int
-stumpless_get_default_option( void ) {
+stumpless_get_default_options( void ) {
   return config_read_int( &default_option );
 }
 
@@ -639,16 +652,42 @@ stumpless_open_target( struct stumpless_target *target ) {
   clear_error(  );
 
   lock_target( target );
-  if( target->type != STUMPLESS_NETWORK_TARGET ) {
-    unlock_target( target );
-    raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
-    return NULL;
-  }
+  switch ( target->type ) {
+    case STUMPLESS_FILE_TARGET:
+      ( ( struct file_target * )target->id )->stream = config_fopen( target->name, "a" );
+      if ( !( ( struct file_target * )target->id )->stream ) {
+        goto fail;
+      }
+      break;
 
-  result = config_open_network_target( target );
+    case STUMPLESS_NETWORK_TARGET:
+      result = config_open_network_target( target );
+      if ( !result ) {
+        goto fail;
+      }
+      break;
+
+    case STUMPLESS_SOCKET_TARGET:
+      target->id = open_bind_socket( target->id );
+      if ( !target->id ) {
+        goto fail;
+      }
+      break;
+    
+    default:
+      raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
+      result = NULL;
+      break;
+  }
+  
   unlock_target( target );
 
   return result;
+
+fail:
+  unlock_target( target );
+  free_mem( target );
+  return NULL;
 }
 
 void
@@ -664,7 +703,7 @@ stumpless_set_current_target( struct stumpless_target *target ) {
 }
 
 void
-stumpless_set_default_option( int option ) {
+stumpless_set_default_options( int option ) {
   config_write_int( &default_option, option );
 }
 
@@ -778,8 +817,21 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
   clear_error(  );
 
   lock_target( target );
-  if( target->type == STUMPLESS_NETWORK_TARGET ) {
-    is_open = config_network_target_is_open( target );
+  switch ( target->type ) {
+    case STUMPLESS_FILE_TARGET:
+      is_open = ( ( (struct file_target *) target->id )->stream  != NULL );
+      break;
+
+    case STUMPLESS_NETWORK_TARGET:
+      is_open = config_network_target_is_open( target );
+      break;
+
+    case STUMPLESS_SOCKET_TARGET:
+      is_open = ( ( (struct socket_target *) target->id )->local_socket != -1 );
+      break;
+    
+    default:
+      break;
   }
   unlock_target( target );
 
@@ -1110,7 +1162,7 @@ new_target( enum stumpless_target_type type, const char *name ) {
     goto fail_mutex;
   }
 
-  options = stumpless_get_default_option(  );
+  options = stumpless_get_default_options(  );
 
   target->id = NULL;
   target->type = type;

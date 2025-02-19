@@ -540,7 +540,7 @@ stumpless_get_current_target( void );
  */
 STUMPLESS_PUBLIC_FUNCTION
 int
-stumpless_get_default_option( void );
+stumpless_get_default_options( void );
 
 /**
  * Gets the default facility of a target.
@@ -902,7 +902,7 @@ stumpless_set_current_target( struct stumpless_target *target );
  */
 STUMPLESS_PUBLIC_FUNCTION
 void
-stumpless_set_default_option( int option );
+stumpless_set_default_options( int option );
 
 /**
  * Sets the default facility of a target.

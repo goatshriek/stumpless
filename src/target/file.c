@@ -52,7 +52,6 @@ stumpless_close_file_target( struct stumpless_target *target ) {
 struct stumpless_target *
 stumpless_open_file_target( const char *name ) {
   struct stumpless_target *target;
-  int options;
 
   VALIDATE_ARG_NOT_NULL( name );
 
@@ -62,12 +61,9 @@ stumpless_open_file_target( const char *name ) {
     goto fail;
   }
 
-  options = stumpless_get_default_option(  );
-  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
-    target->id = new_file_target( name );
-    if( !target->id ) {
-      goto fail_id;
-    }
+  target->id = new_file_target( name );
+  if( !target->id ) {
+    goto fail_id;
   }
 
   stumpless_set_current_target( target );
@@ -96,16 +92,21 @@ file_open_default_target( void ) {
 struct file_target *
 new_file_target( const char *filename ) {
   struct file_target *target;
+  int options;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
 
-  target->stream = config_fopen( filename, "a" );
-  if( !target->stream ) {
-    raise_file_open_failure(  );
-    goto fail_stream;
+  options = stumpless_get_default_options(  );
+  target->stream = NULL;
+  if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
+    target->stream = config_fopen( filename, "a" );
+    if( !target->stream ) {
+      raise_file_open_failure(  );
+      goto fail_stream;
+    }
   }
 
   config_init_mutex( &target->stream_mutex );
@@ -119,26 +120,14 @@ fail:
 }
 
 int
-sendto_file_target( struct stumpless_target *target,
+sendto_file_target( struct file_target *target,
                     const char *msg,
                     size_t msg_length ) {
   size_t fwrite_result;
-  struct file_target *ftarget;
 
-  if ( !target->id ) {
-    lock_target( target );
-    target->id = new_file_target( target->name );
-    if ( !target->id ) {
-      unlock_target( target );
-      goto fail;
-    }
-    unlock_target( target );
-  }
-  ftarget = target->id;
-
-  config_lock_mutex( &ftarget->stream_mutex );
-  fwrite_result = fwrite( msg, sizeof( char ), msg_length, ftarget->stream );
-  config_unlock_mutex( &ftarget->stream_mutex );
+  config_lock_mutex( &target->stream_mutex );
+  fwrite_result = fwrite( msg, sizeof( char ), msg_length, target->stream );
+  config_unlock_mutex( &target->stream_mutex );
 
   if( fwrite_result != msg_length ) {
     goto write_failure;
@@ -148,6 +137,5 @@ sendto_file_target( struct stumpless_target *target,
 
 write_failure:
   raise_file_write_failure(  );
-fail:
   return -1;
 }

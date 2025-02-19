@@ -811,8 +811,8 @@ open_new_network_target( const char *destination,
     goto fail_open;
   }
 
-  options = stumpless_get_default_option(  );
-  if ( !((options & STUMPLESS_OPTION_ODELAY) && !(options & STUMPLESS_OPTION_NDELAY)) ) {
+  options = stumpless_get_default_options(  );
+  if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
     open_result = open_private_network_target( target );
     if( !open_result ) {
       goto fail_open;
@@ -833,14 +833,6 @@ sendto_network_target( struct network_target *target,
                        size_t msg_length ) {
   // leave off the newline
   msg_length--;
-  struct network_target *open_result;
-
-  if ( target->handle == -1 ) {
-    open_result = open_private_network_target( target );
-    if( !open_result ) {
-      goto fail_open;
-    }
-  } 
 
   if( target->transport == STUMPLESS_UDP_TRANSPORT_PROTOCOL ) {
      return sendto_udp_target( target, msg, msg_length );
@@ -849,10 +841,6 @@ sendto_network_target( struct network_target *target,
      return sendto_tcp_target( target, msg, msg_length );
 
   }
-
-fail_open:
-  destroy_network_target( target );
-  return -1;
 }
 
 void

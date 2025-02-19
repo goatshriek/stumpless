@@ -189,12 +189,12 @@ namespace {
     size_t line_count = 3;
     size_t i;
 
-    stumpless_set_default_option( STUMPLESS_OPTION_ODELAY );
+    stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
     target = stumpless_open_file_target( filename );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
-    EXPECT_NULL( target->id );
+    EXPECT_NOT_NULL( target->id );
 
     entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
                                  STUMPLESS_SEVERITY_INFO,
@@ -221,6 +221,6 @@ namespace {
     TestRFC5424File( filename, line_count );
     remove( filename );
 
-    stumpless_set_default_option( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
   }
 }

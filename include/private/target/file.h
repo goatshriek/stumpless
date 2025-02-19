@@ -63,7 +63,7 @@ new_file_target( const char *filename );
  * cancelled, due to the use of a lock that could be left locked.
  */
 int
-sendto_file_target( struct stumpless_target *target,
+sendto_file_target( struct file_target *target,
                     const char *msg,
                     size_t msg_length );
 
