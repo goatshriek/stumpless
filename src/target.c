@@ -194,7 +194,7 @@ stumpless_add_entry( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
-  if( target->type != STUMPLESS_FILE_TARGET && ( !target->id ) ) {
+  if( target->type != STUMPLESS_FILE_TARGET && unlikely( !target->id ) ) {
     raise_invalid_id(  );
     return -1;
   }
