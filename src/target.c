@@ -658,6 +658,7 @@ stumpless_open_target( struct stumpless_target *target ) {
       if ( !( ( struct file_target * )target->id )->stream ) {
         goto fail;
       }
+      result = target;
       break;
 
     case STUMPLESS_NETWORK_TARGET:
@@ -672,6 +673,7 @@ stumpless_open_target( struct stumpless_target *target ) {
       if ( !target->id ) {
         goto fail;
       }
+      result = target;
       break;
     
     default:

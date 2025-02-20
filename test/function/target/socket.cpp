@@ -229,6 +229,30 @@ namespace {
     EXPECT_TRUE( result == malloc );
   }
 
+  TEST( SocketTargetOpenTest, Odelay ) {
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    int result;
+
+    stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
+
+    target = stumpless_open_socket_target( "odelay-target", NULL );
+    EXPECT_NO_ERROR;
+    EXPECT_NOT_NULL( target );
+    EXPECT_NULL( stumpless_target_is_open( target ) );
+
+    entry = create_entry(  );
+    EXPECT_NOT_NULL( entry );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_NOT_NULL( stumpless_target_is_open( target ) );
+
+    stumpless_close_socket_target( target );
+    EXPECT_NO_ERROR;
+
+    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+  }
+
   TEST( SocketTargetAddTest, NullId ) {
     struct stumpless_target *target;
     struct stumpless_entry *entry;

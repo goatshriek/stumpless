@@ -134,6 +134,7 @@ open_bind_socket( struct socket_target *target ) {
 
 fail_bind:
   close( target->local_socket );
+  free_mem( target );
   return NULL;
 }
 
@@ -165,14 +166,12 @@ new_socket_target( const char *dest,
   if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
     target = open_bind_socket( target );
     if ( !target ) {
-      goto fail_socket;
+      goto fail;
     }
   }
 
   return target;
 
-fail_socket:
-  free_mem( target );
 fail:
   return NULL;
 }
