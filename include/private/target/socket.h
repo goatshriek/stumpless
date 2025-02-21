@@ -33,6 +33,9 @@ struct socket_target {
 void
 destroy_socket_target( const struct socket_target *trgt );
 
+struct stumpless_target *
+open_socket_target( struct stumpless_target *target);
+
 struct socket_target *
 open_bind_socket( struct socket_target *target );
 

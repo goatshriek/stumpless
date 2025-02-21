@@ -105,6 +105,18 @@ destroy_socket_target( const struct socket_target *trgt ) {
   free_mem( trgt );
 }
 
+struct stumpless_target *
+open_socket_target( struct stumpless_target *target) {
+  const struct socket_target *result;
+
+  result = open_bind_socket( target->id );
+  if ( !result ) {
+    return NULL;
+  }
+
+  return target;
+}
+
 struct socket_target *
 open_bind_socket( struct socket_target *target ) {
   int bind_result;
