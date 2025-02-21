@@ -63,7 +63,6 @@
 #include "private/target/buffer.h"
 #include "private/target/file.h"
 #include "private/target/function.h"
-#include "private/target/socket.h"
 #include "private/target/stream.h"
 #include "private/validate.h"
 
@@ -669,11 +668,10 @@ stumpless_open_target( struct stumpless_target *target ) {
       break;
 
     case STUMPLESS_SOCKET_TARGET:
-      target->id = open_bind_socket( target->id );
+      result = config_open_socket_target( target );
       if ( !target->id ) {
         goto fail;
       }
-      result = target;
       break;
     
     default:
@@ -688,7 +686,7 @@ stumpless_open_target( struct stumpless_target *target ) {
 
 fail:
   unlock_target( target );
-  free_mem( target );
+  stumpless_close_target( target );
   return NULL;
 }
 
@@ -829,7 +827,7 @@ stumpless_target_is_open( const struct stumpless_target *target ) {
       break;
 
     case STUMPLESS_SOCKET_TARGET:
-      is_open = ( ( (struct socket_target *) target->id )->local_socket != -1 );
+      is_open = config_socket_target_is_open( target );
       break;
     
     default:

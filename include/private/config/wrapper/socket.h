@@ -26,11 +26,15 @@
 #    include <stumpless/target/socket.h>
 #    include "private/target/socket.h"
 #    define config_close_socket_target stumpless_close_socket_target
+#    define config_open_socket_target open_socket_target
 #    define config_sendto_socket_target sendto_socket_target
+#    define config_socket_target_is_open socket_target_is_open
 #  else
 #    include "private/target.h"
 #    define config_close_socket_target close_unsupported_target
+#    define config_open_socket_target open_unsupported_target
 #    define config_sendto_socket_target sendto_unsupported_target
+#    define config_socket_target_is_open unsupported_target_is_open
 #  endif
 
 #  ifdef SUPPORT_ABSTRACT_SOCKET_NAMES
