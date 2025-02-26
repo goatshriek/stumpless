@@ -212,6 +212,42 @@ namespace {
     unlink( local_socket_name );
   }
 
+  TEST( SocketTargetOpenTest, LocalSocketAlreadyExistsWithOdelay ) {
+    struct sockaddr_un local_socket_addr;
+    struct stumpless_target *target;
+    struct stumpless_entry *entry;
+    const struct stumpless_error *error;
+    const char *local_socket_name = "taken";
+    int local_socket;
+    int result;
+
+    stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    local_socket_addr.sun_family = AF_UNIX;
+    memcpy(&local_socket_addr.sun_path, local_socket_name, strlen(local_socket_name)+1);
+    local_socket = socket(local_socket_addr.sun_family, SOCK_DGRAM, 0);
+    bind(local_socket, (struct sockaddr *) &local_socket_addr, sizeof(local_socket_addr));
+
+    target = stumpless_open_socket_target( "socket-taken-test",
+                                           local_socket_name );
+    EXPECT_NOT_NULL( target );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_LT( result, 0 );
+    EXPECT_EQ( stumpless_get_current_target(  ),
+               stumpless_get_default_target(  ) );
+
+    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+
+    close( local_socket );
+    unlink( local_socket_name );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
   TEST( SocketTargetOpenTest, MemoryFailure ) {
     const struct stumpless_error *error;
     struct stumpless_target *target;
@@ -251,6 +287,8 @@ namespace {
     EXPECT_NO_ERROR;
 
     stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+
+    stumpless_destroy_entry_and_contents( entry );
   }
 
   TEST( SocketTargetAddTest, NullId ) {

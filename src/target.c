@@ -202,7 +202,7 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   options = target->options;
-  if ( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) {
+  if ( ( options & STUMPLESS_OPTION_ODELAY ) ) {
     if ( !stumpless_target_is_open( target ) ) {
       target = stumpless_open_target( target );
       if ( !target ) {
@@ -669,7 +669,7 @@ stumpless_open_target( struct stumpless_target *target ) {
 
     case STUMPLESS_SOCKET_TARGET:
       result = config_open_socket_target( target );
-      if ( !target->id ) {
+      if ( !result ) {
         goto fail;
       }
       break;

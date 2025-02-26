@@ -812,7 +812,7 @@ open_new_network_target( const char *destination,
   }
 
   options = stumpless_get_default_options(  );
-  if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
+  if ( !( options & STUMPLESS_OPTION_ODELAY ) ) {
     open_result = open_private_network_target( target );
     if( !open_result ) {
       goto fail_open;

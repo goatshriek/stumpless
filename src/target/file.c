@@ -101,7 +101,7 @@ new_file_target( const char *filename ) {
 
   options = stumpless_get_default_options(  );
   target->stream = NULL;
-  if ( !( ( options & STUMPLESS_OPTION_ODELAY ) && !( options & STUMPLESS_OPTION_NDELAY ) ) ) {
+  if ( !( options & STUMPLESS_OPTION_ODELAY ) ) {
     target->stream = config_fopen( filename, "a" );
     if( !target->stream ) {
       raise_file_open_failure(  );
