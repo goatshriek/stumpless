@@ -21,6 +21,7 @@
 #include <stumpless.h>
 #include <gtest/gtest.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
 #include "test/helper/rfc5424.hpp"
 
@@ -188,6 +189,9 @@ namespace {
     struct stumpless_param *param;
     size_t line_count = 3;
     size_t i;
+    int default_options;
+
+    default_options = stumpless_get_default_options(  );
 
     stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
@@ -196,17 +200,8 @@ namespace {
     EXPECT_NOT_NULL( target );
     EXPECT_NOT_NULL( target->id );
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                "stumpless-unit-test",
-                                "basic-entry",
-                                "basic test message" );
-
-    element = stumpless_new_element( "basic-element" );
-    stumpless_add_element( entry, element );
-
-    param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-    stumpless_add_param( element, param );
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
 
     for( i = 0; i < line_count; i++ ) {
       stumpless_add_entry( target, entry );
@@ -221,6 +216,6 @@ namespace {
     TestRFC5424File( filename, line_count );
     remove( filename );
 
-    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( default_options );
   }
 }

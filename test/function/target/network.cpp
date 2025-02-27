@@ -336,6 +336,9 @@ namespace {
     struct stumpless_entry *entry;
     const char *hostname = "localhost";
     int result;
+    int default_options;
+
+    default_options = stumpless_get_default_options(  );
 
     stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
@@ -359,7 +362,7 @@ namespace {
 
     }
 
-    stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
+    stumpless_set_default_options( default_options );
   }
 
   TEST( NetworkTargetSetDestination, BadTargetType ) {

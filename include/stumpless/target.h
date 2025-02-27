@@ -892,11 +892,11 @@ stumpless_set_current_target( struct stumpless_target *target );
  *
  * **Async Signal Safety: AS-Safe**
  * This function is safe to call from signal handlers as it only consists of
- * an atomic read.
+ * an atomic write.
  *
  * **Async Cancel Safety: AC-Safe**
  * This function is safe to call from threads that may be asynchronously
- * cancelled, as it only consists of an atomic read.
+ * cancelled, as it only consists of an atomic write.
  *
  * @param option The bitwise 'or' of all options to be set as default.
  */

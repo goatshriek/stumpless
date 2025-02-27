@@ -33,7 +33,6 @@ typedef void * config_atomic_ptr_t;
 #    define config_assign_cached_mutex( MUTEX ) ( ( void ) 0 )
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true
-#    define config_atomic_int_default 0
 #    define config_atomic_ptr_initializer NULL
 #    define config_check_mutex_valid( MUTEX ) ( true )
 #    define config_compare_exchange_bool no_thread_safety_compare_exchange_bool
@@ -67,7 +66,6 @@ typedef pthread_mutex_t config_mutex_t;
 ( MUTEX = thread_safety_new_mutex(  ) )
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true
-#    define config_atomic_int_default 0
 #    define config_atomic_ptr_initializer ( uintptr_t ) NULL
 #    define config_check_mutex_valid( MUTEX ) ( MUTEX != NULL )
 #    define config_compare_exchange_bool stdatomic_compare_exchange_bool
@@ -99,7 +97,6 @@ typedef CRITICAL_SECTION config_mutex_t;
 ( MUTEX = thread_safety_new_mutex(  ) )
 #    define config_atomic_bool_false false
 #    define config_atomic_bool_true true
-#    define config_atomic_int_default 0
 #    define config_atomic_ptr_initializer NULL
 #    define config_check_mutex_valid( MUTEX ) ( MUTEX != NULL )
 #    define config_compare_exchange_bool windows_compare_exchange_bool

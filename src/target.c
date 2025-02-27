@@ -70,7 +70,7 @@
 static const char *target_type_enum_to_string[] = {
   STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
 };
-static config_atomic_int_t default_option = config_atomic_int_default;
+static config_atomic_int_t default_option = STUMPLESS_OPTION_NDELAY;
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;
@@ -203,11 +203,9 @@ stumpless_add_entry( struct stumpless_target *target,
 
   options = target->options;
   if ( ( options & STUMPLESS_OPTION_ODELAY ) ) {
-    if ( !stumpless_target_is_open( target ) ) {
-      target = stumpless_open_target( target );
-      if ( !target ) {
-        return -1;
-      }
+    target = stumpless_open_target( target );
+    if ( !target ) {
+      return -1;
     }
   }
 
@@ -650,43 +648,47 @@ stumpless_open_target( struct stumpless_target *target ) {
   VALIDATE_ARG_NOT_NULL( target );
   clear_error(  );
 
-  lock_target( target );
-  switch ( target->type ) {
-    case STUMPLESS_FILE_TARGET:
-      ( ( struct file_target * )target->id )->stream = config_fopen( target->name, "a" );
-      if ( !( ( struct file_target * )target->id )->stream ) {
-        goto fail;
-      }
-      result = target;
-      break;
-
-    case STUMPLESS_NETWORK_TARGET:
-      result = config_open_network_target( target );
-      if ( !result ) {
-        goto fail;
-      }
-      break;
-
-    case STUMPLESS_SOCKET_TARGET:
-      result = config_open_socket_target( target );
-      if ( !result ) {
-        goto fail;
-      }
-      break;
+  if ( !stumpless_target_is_open( target ) ) {
+    lock_target( target );
     
-    default:
-      raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
-      result = NULL;
-      break;
+    switch ( target->type ) {
+      case STUMPLESS_FILE_TARGET:
+        ( ( struct file_target * )target->id )->stream = config_fopen( target->name, "a" );
+        if ( !( ( struct file_target * )target->id )->stream ) {
+          goto fail;
+        }
+        result = target;
+        break;
+
+      case STUMPLESS_NETWORK_TARGET:
+        result = config_open_network_target( target );
+        if ( !result ) {
+          goto fail;
+        }
+        break;
+
+      case STUMPLESS_SOCKET_TARGET:
+        result = config_open_socket_target( target );
+        if ( !result ) {
+          goto fail;
+        }
+        break;
+      
+      default:
+        raise_target_incompatible( L10N_TARGET_ALWAYS_OPEN_ERROR_MESSAGE );
+        result = NULL;
+        break;
+    }
+
+    unlock_target( target );
+  } else {
+    result = target;
   }
-  
-  unlock_target( target );
 
   return result;
 
 fail:
   unlock_target( target );
-  stumpless_close_target( target );
   return NULL;
 }
 
@@ -1145,7 +1147,6 @@ lock_target( const struct stumpless_target *target ) {
 struct stumpless_target *
 new_target( enum stumpless_target_type type, const char *name ) {
   struct stumpless_target *target;
-  int options;
 
   target = alloc_mem( sizeof( *target ) );
   if( !target ) {
@@ -1162,11 +1163,9 @@ new_target( enum stumpless_target_type type, const char *name ) {
     goto fail_mutex;
   }
 
-  options = stumpless_get_default_options(  );
-
   target->id = NULL;
   target->type = type;
-  target->options = STUMPLESS_OPTION_NONE | options;
+  target->options = stumpless_get_default_options(  );
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
   target->default_app_name[0] = '-';

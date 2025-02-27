@@ -609,7 +609,7 @@ namespace {
     int option;
 
     option = stumpless_get_default_options(  );
-    EXPECT_EQ( option, 0 );
+    EXPECT_EQ( option, STUMPLESS_OPTION_NDELAY );
   }
 
   TEST( OpenTarget, AlreadyOpenTarget ) {
@@ -623,8 +623,8 @@ namespace {
     ASSERT_NOT_NULL( target );
 
     result = stumpless_open_target( target );
-    EXPECT_NULL( result );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
+    EXPECT_NOT_NULL( result );
+    EXPECT_NO_ERROR;
 
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );
@@ -1168,6 +1168,9 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
     int option;
+    int default_options;
+
+    default_options = stumpless_get_default_options(  );
 
     stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
@@ -1184,7 +1187,7 @@ namespace {
     stumpless_close_buffer_target( target );
     stumpless_free_all(  );
 
-    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( default_options );
   }
 
   TEST( WithCons, ConsDisabled ) {

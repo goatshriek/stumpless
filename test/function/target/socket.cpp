@@ -220,6 +220,9 @@ namespace {
     const char *local_socket_name = "taken";
     int local_socket;
     int result;
+    int default_options;
+
+    default_options = stumpless_get_default_options(  );
 
     stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
@@ -240,10 +243,12 @@ namespace {
     EXPECT_EQ( stumpless_get_current_target(  ),
                stumpless_get_default_target(  ) );
 
-    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( default_options );
 
     close( local_socket );
     unlink( local_socket_name );
+
+    stumpless_close_target( target );
 
     stumpless_destroy_entry_and_contents( entry );
   }
@@ -269,6 +274,9 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
     int result;
+    int default_options;
+
+    default_options = stumpless_get_default_options(  );
 
     stumpless_set_default_options( STUMPLESS_OPTION_ODELAY );
 
@@ -286,7 +294,7 @@ namespace {
     stumpless_close_socket_target( target );
     EXPECT_NO_ERROR;
 
-    stumpless_set_default_options( STUMPLESS_OPTION_NONE );
+    stumpless_set_default_options( default_options );
 
     stumpless_destroy_entry_and_contents( entry );
   }

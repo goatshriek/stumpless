@@ -894,6 +894,7 @@ add_function_test(file
   SOURCES
     test/function/target/file.cpp
     $<TARGET_OBJECTS:test_helper_rfc5424>
+    $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_function_test(filter
