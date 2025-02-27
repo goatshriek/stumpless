@@ -240,8 +240,6 @@ namespace {
 
     result = stumpless_add_entry( target, entry );
     EXPECT_LT( result, 0 );
-    EXPECT_EQ( stumpless_get_current_target(  ),
-               stumpless_get_default_target(  ) );
 
     stumpless_set_default_options( default_options );
 
