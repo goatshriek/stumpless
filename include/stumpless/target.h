@@ -491,6 +491,10 @@ stumpless_get_cons_stream( void );
  * to stumpless_set_current_target(), or the default target if neither of the
  * former exists.
  *
+ * The current target will still be the last target that was opened even if the
+ * target was opened with STUMPLESS_OPTION_ODELAY option and is not yet
+ * connected for logging.
+ *
  * If the target that is designated as the current target is closed, then the
  * current target will be reset to the default target until another target is
  * opened.
