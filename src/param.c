@@ -278,37 +278,22 @@ fail:
 const char *
 stumpless_param_to_string( const struct stumpless_param *param ) {
     char *format;
-    const char *name;
-    const char *value;
-    size_t value_len;
-    size_t name_len;
+    size_t len;
 
     VALIDATE_ARG_NOT_NULL( param );
 
     lock_param( param );
 
-    name  = param->name;
-    value = param->value;
-    name_len = param->name_length;
-    value_len = param->value_length;
+    len = locked_get_param_string_size( param );
 
-    /* name="value"*/
-    format = alloc_mem( value_len + name_len + 4 );
+    format = alloc_mem( len );
     if( !format ) {
       goto fail;
     }
-
-  
-    memcpy(format, name, name_len);
-    memcpy(format + name_len + 2, value, value_len);
+    
+    (void)locked_param_into_buffer( param, format, len );
 
     unlock_param( param );
-
-    format[name_len ] = '=';
-    format[name_len + 1] = '\"';
-    format[name_len + value_len + 2] = '\"';
-    format[name_len + value_len + 3] = '\0';
-
 
     clear_error( );
     return format;
@@ -410,6 +395,7 @@ fail_value:
 
 size_t
 locked_get_param_string_size( const struct stumpless_param *param ) {
+  /* name="value" */
   return param->name_length + param->value_length + 4;
 }
 
