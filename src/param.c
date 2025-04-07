@@ -413,16 +413,14 @@ locked_param_into_buffer( const struct stumpless_param *param,
   name_len = param->name_length;
   value_len = param->value_length;
 
-  memcpy( buffer, name, name_len );
+  memcpy( &buffer[written], name, name_len );
   written += name_len;
-  memcpy( buffer + name_len + 2, value, value_len );
+  buffer[written++] = '=';
+  buffer[written++] = '\"';
+  memcpy( &buffer[written], value, value_len );
   written += value_len;
-
-  buffer[name_len ] = '=';
-  buffer[name_len + 1] = '\"';
-  buffer[name_len + value_len + 2] = '\"';
-  buffer[name_len + value_len + 3] = '\0';
-  written += 4U;
+  buffer[written++] = '\"';
+  buffer[written++] = '\0';
 
   return written;
 }
