@@ -109,6 +109,8 @@
 "locked_get_element_by_index": "private/entry.h"
 "locked_get_element_by_name": "private/entry.h"
 "locked_get_param_by_index": "private/element.h"
+"locked_get_param_string_size": "private/param.h"
+"locked_param_into_buffer": "private/param.h"
 "locked_swap_wel_insertion_string": "private/config/wel_supported.h"
 "new_entry": "private/entry.h"
 "new_chain_target": "private/target/chain.h"
