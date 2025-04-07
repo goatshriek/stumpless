@@ -408,6 +408,39 @@ fail_value:
   return NULL;
 }
 
+size_t
+locked_get_param_string_size( const struct stumpless_param *param ) {
+  return param->name_length + param->value_length + 4;
+}
+
+size_t
+locked_param_into_buffer( const struct stumpless_param *param,
+                        char *buffer, size_t buffer_size ) {
+  size_t written = 0U;
+  const char *name;
+  const char *value;
+  size_t value_len;
+  size_t name_len;
+
+  name  = param->name;
+  value = param->value;
+  name_len = param->name_length;
+  value_len = param->value_length;
+
+  memcpy( buffer, name, name_len );
+  written += name_len;
+  memcpy( buffer + name_len + 2, value, value_len );
+  written += value_len;
+
+  buffer[name_len ] = '=';
+  buffer[name_len + 1] = '\"';
+  buffer[name_len + value_len + 2] = '\"';
+  buffer[name_len + value_len + 3] = '\0';
+  written += 4U;
+
+  return written;
+}
+
 void
 unlock_param( const struct stumpless_param *param ) {
   config_unlock_mutex( param->mutex );

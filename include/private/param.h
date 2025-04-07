@@ -64,6 +64,55 @@ unchecked_load_param( struct stumpless_param *param,
                       size_t name_length,
                       const char *value );
 
+/**
+ * Retrieves the size required to store the parameter as a string.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization
+ * or locking mechanisms while accessing shared resources.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ *
+ * @param param The param to retrieve the size required to store the 
+ * parameter as a string.
+ *
+ * @return The size required to store the parameter as a string.
+ */
+size_t
+locked_get_param_string_size( const struct stumpless_param *param );
+
+/**
+ * Writes the parameter as a string into the buffer provided.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it doesn't use any synchronization
+ * or locking mechanisms while accessing shared resources.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the use of
+ * memory functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of memory functions that could leave the
+ * memory in undefined state.
+ *
+ * @param entry The param to write as a string.
+ *
+ * @param buffer The buffer to write in.
+ *
+ * @param buffer_size The size of the buffer.
+ *
+ * @return The number of bytes written in the buffer.
+ */
+size_t
+locked_param_into_buffer( const struct stumpless_param *param,
+                        char *buffer, size_t buffer_size );
+
 void
 unlock_param( const struct stumpless_param *param );
 
