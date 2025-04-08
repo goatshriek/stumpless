@@ -286,14 +286,14 @@ stumpless_param_to_string( const struct stumpless_param *param ) {
 
     len = locked_get_param_string_size( param );
 
+    unlock_param( param );
+
     format = alloc_mem( len );
     if( !format ) {
       goto fail;
     }
     
-    (void)locked_param_into_buffer( param, format, len );
-
-    unlock_param( param );
+    (void)stumpless_param_into_string( param, format, len );
 
     clear_error( );
     return format;
@@ -321,23 +321,17 @@ stumpless_param_into_string( const struct stumpless_param *param, char *str, siz
   name_len = param->name_length;
   value_len = param->value_length;
 
-  min_buff_size = name_len + value_len + 4;
+  min_buff_size = locked_get_param_string_size( param );
   if ( min_buff_size > max_size ) {
     raise_argument_too_small( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
                               max_size,
                               L10N_BUFFER_SIZE_ERROR_CODE_TYPE );
     goto fail;
   }
-
-  memcpy(str, name, name_len);
-  memcpy(str + name_len + 2, value, value_len);
+  
+  min_buff_size = locked_param_into_buffer( param, str, max_size );
 
   unlock_param( param );
-
-  str[name_len ] = '=';
-  str[name_len + 1] = '\"';
-  str[name_len + value_len + 2] = '\"';
-  str[name_len + value_len + 3] = '\0';
 
   return min_buff_size;
 
