@@ -28,6 +28,7 @@
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/validate.h"
 
 struct stumpless_element *
