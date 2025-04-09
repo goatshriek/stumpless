@@ -20,6 +20,9 @@ fixes, check out the
  - Other new functions:
     * `stumpless_get_priority_string`
 
+### Changed
+ - Update localization for French (fr-FR :fr:)
+
 ### Fixed
  - Strings that are a case-insensitive prefix of a valid severity string are
    no longer accepted by severity from string functions.
