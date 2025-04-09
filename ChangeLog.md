@@ -20,6 +20,12 @@ fixes, check out the
  - Other new functions:
     * `stumpless_get_priority_string`
 
+### Changed
+ - Refactor:
+   * `stumpless_param_to_string`
+   * `stumpless_param_into_string`
+   * `stumpless_element_to_string`
+
 ### Fixed
  - Strings that are a case-insensitive prefix of a valid severity string are
    no longer accepted by severity from string functions.
