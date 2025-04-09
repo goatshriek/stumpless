@@ -305,21 +305,12 @@ fail:
 
 size_t
 stumpless_param_into_string( const struct stumpless_param *param, char *str, size_t max_size ) {
-  const char *name;
-  const char *value;
-  size_t value_len;
-  size_t name_len;
   size_t min_buff_size;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( param );
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( str );
 
   lock_param( param );
-
-  name  = param->name;
-  value = param->value;
-  name_len = param->name_length;
-  value_len = param->value_length;
 
   min_buff_size = locked_get_param_string_size( param );
   if ( min_buff_size > max_size ) {
