@@ -286,14 +286,14 @@ stumpless_param_to_string( const struct stumpless_param *param ) {
 
     len = locked_get_param_string_size( param );
 
-    unlock_param( param );
-
     format = alloc_mem( len );
     if( !format ) {
       goto fail;
     }
     
-    (void)stumpless_param_into_string( param, format, len );
+    (void)locked_param_into_buffer( param, format, len );
+
+    unlock_param( param );
 
     clear_error( );
     return format;
