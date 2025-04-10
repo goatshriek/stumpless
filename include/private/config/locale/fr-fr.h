@@ -209,7 +209,8 @@ ARG_NAME " a été NULL"
 "envoi échoué avec un socket winsock2"
 
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"les couleurs de sévérité sont uniquement supportées pour les cibles de type stream"
+"les couleurs de sévérité sont uniquement supportées pour " \
+"les cibles de type stream"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "échec d'ouverture d'un socket"
@@ -226,7 +227,6 @@ L"enregistrement Stumpless de Windows Event Log Source"
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
 "n'a pas pu fermer la base de données sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
 "une callback personnalisée pour la préparation a échoué"
 
