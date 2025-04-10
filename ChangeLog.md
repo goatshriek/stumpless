@@ -21,6 +21,10 @@ fixes, check out the
     * `stumpless_get_priority_string`
 
 ### Changed
+ - Refactor:
+   * `stumpless_param_to_string`
+   * `stumpless_param_into_string`
+   * `stumpless_element_to_string`
  - Update localization for French (fr-FR :fr:)
 
 ### Fixed

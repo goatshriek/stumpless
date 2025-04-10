@@ -18,7 +18,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install doxygen libsystemd-dev valgrind
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
@@ -40,7 +40,7 @@ jobs:
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
-        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
@@ -73,7 +73,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install doxygen libsystemd-dev valgrind
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug .
@@ -95,7 +95,7 @@ jobs:
           sudo ./function-test-udp6
           sudo ./function-test-udp6_leak
       - name: Codecov Upload
-        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
@@ -122,7 +122,7 @@ jobs:
     name: "linux, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
@@ -164,7 +164,7 @@ jobs:
     name: "linux, release, static library"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF .
@@ -206,7 +206,7 @@ jobs:
     name: "linux, release, single file library"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
@@ -236,7 +236,7 @@ jobs:
     env:
       CFLAGS: "-D_ANSI_SOURCE -pedantic -Wall -std=c99"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
@@ -278,7 +278,7 @@ jobs:
     name: "linux, all features disabled, debug"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug -DENABLE_CHAIN_TARGETS=OFF -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
@@ -290,7 +290,7 @@ jobs:
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
       - name: Codecov Upload
-        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
         with:
           disable_file_fixes: true
           fail_ci_if_error: true
@@ -306,7 +306,7 @@ jobs:
     name: "linux, all features disabled, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_NETWORK_TARGETS=OFF -DENABLE_SOCKET_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF -DENABLE_WINDOWS_EVENT_LOG_TARGETS=OFF -DENABLE_THREAD_SAFETY=OFF .
@@ -327,8 +327,8 @@ jobs:
     name: "linux, with c++, debug"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-      - uses: ruby/setup-ruby@2654679fe7f7c29875c669398a8ec0791b8a64a1 # v1.215.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ruby/setup-ruby@354a1ad156761f5ee2b7b13fa8e09943a5e8d252 # v1.229.0
         with:
           ruby-version: '3.2'
       - name: Install Prereqs
@@ -361,8 +361,8 @@ jobs:
     name: "linux, with c++, release"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-      - uses: ruby/setup-ruby@2654679fe7f7c29875c669398a8ec0791b8a64a1 # v1.215.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ruby/setup-ruby@354a1ad156761f5ee2b7b13fa8e09943a5e8d252 # v1.229.0
         with:
           ruby-version: '3.2'
       - name: Install Packages
@@ -395,7 +395,7 @@ jobs:
     name: "linux, fuzzer build"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
           cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DFUZZ=ON .

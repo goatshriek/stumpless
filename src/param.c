@@ -278,37 +278,22 @@ fail:
 const char *
 stumpless_param_to_string( const struct stumpless_param *param ) {
     char *format;
-    const char *name;
-    const char *value;
-    size_t value_len;
-    size_t name_len;
+    size_t len;
 
     VALIDATE_ARG_NOT_NULL( param );
 
     lock_param( param );
 
-    name  = param->name;
-    value = param->value;
-    name_len = param->name_length;
-    value_len = param->value_length;
+    len = locked_get_param_string_size( param );
 
-    /* name="value"*/
-    format = alloc_mem( value_len + name_len + 4 );
+    format = alloc_mem( len );
     if( !format ) {
       goto fail;
     }
-
-  
-    memcpy(format, name, name_len);
-    memcpy(format + name_len + 2, value, value_len);
+    
+    (void)locked_param_into_buffer( param, format, len );
 
     unlock_param( param );
-
-    format[name_len ] = '=';
-    format[name_len + 1] = '\"';
-    format[name_len + value_len + 2] = '\"';
-    format[name_len + value_len + 3] = '\0';
-
 
     clear_error( );
     return format;
@@ -320,10 +305,6 @@ fail:
 
 size_t
 stumpless_param_into_string( const struct stumpless_param *param, char *str, size_t max_size ) {
-  const char *name;
-  const char *value;
-  size_t value_len;
-  size_t name_len;
   size_t min_buff_size;
 
   VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( param );
@@ -331,28 +312,17 @@ stumpless_param_into_string( const struct stumpless_param *param, char *str, siz
 
   lock_param( param );
 
-  name  = param->name;
-  value = param->value;
-  name_len = param->name_length;
-  value_len = param->value_length;
-
-  min_buff_size = name_len + value_len + 4;
+  min_buff_size = locked_get_param_string_size( param );
   if ( min_buff_size > max_size ) {
     raise_argument_too_small( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
                               max_size,
                               L10N_BUFFER_SIZE_ERROR_CODE_TYPE );
     goto fail;
   }
-
-  memcpy(str, name, name_len);
-  memcpy(str + name_len + 2, value, value_len);
+  
+  min_buff_size = locked_param_into_buffer( param, str, max_size );
 
   unlock_param( param );
-
-  str[name_len ] = '=';
-  str[name_len + 1] = '\"';
-  str[name_len + value_len + 2] = '\"';
-  str[name_len + value_len + 3] = '\0';
 
   return min_buff_size;
 
@@ -406,6 +376,38 @@ fail_mutex:
 
 fail_value:
   return NULL;
+}
+
+size_t
+locked_get_param_string_size( const struct stumpless_param *param ) {
+  /* name="value" */
+  return param->name_length + param->value_length + 4;
+}
+
+size_t
+locked_param_into_buffer( const struct stumpless_param *param,
+                        char *buffer, size_t buffer_size ) {
+  size_t written = 0U;
+  const char *name;
+  const char *value;
+  size_t value_len;
+  size_t name_len;
+
+  name  = param->name;
+  value = param->value;
+  name_len = param->name_length;
+  value_len = param->value_length;
+
+  memcpy( &buffer[written], name, name_len );
+  written += name_len;
+  buffer[written++] = '=';
+  buffer[written++] = '\"';
+  memcpy( &buffer[written], value, value_len );
+  written += value_len;
+  buffer[written++] = '\"';
+  buffer[written++] = '\0';
+
+  return written;
 }
 
 void

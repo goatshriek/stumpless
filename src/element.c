@@ -28,6 +28,7 @@
 #include "private/element.h"
 #include "private/error.h"
 #include "private/memory.h"
+#include "private/param.h"
 #include "private/validate.h"
 
 struct stumpless_element *
@@ -176,11 +177,10 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     const char *name;
     size_t name_len;
     size_t format_len;
-    const char **params_format;
     size_t i;
     size_t param_count;
+    size_t written = 0U;
     struct stumpless_param **params;
-    size_t pos_offset;
 
     VALIDATE_ARG_NOT_NULL( element );
 
@@ -194,19 +194,18 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     // acc total format size
     format_len = name_len;
 
-    params_format = alloc_array( param_count, sizeof(char*) );
     for( i = 0; i < param_count; i++ ) {
-      params_format[i] = stumpless_param_to_string(params[i]);
-      // does not count '\0' on purpose
-      format_len += strlen(params_format[i]);
+      lock_param( params[i] );
+      // do not count '\0'
+      format_len += locked_get_param_string_size( params[i] ) - 1;
     }
 
     if( param_count != 0 ) {
-      // extra param list chars and commas
-      format_len += 4 + param_count ;
+      // extra param list chars (=[...]) and commas
+      format_len += 4 + param_count - 1 ;
     } else {
-      // no params, just name
-      format_len += 3;
+      // no params, just name with '\0'
+      format_len += 1;
     }
 
     format = alloc_mem( format_len );
@@ -215,37 +214,31 @@ stumpless_element_to_string( const struct stumpless_element *element ) {
     }
 
     memcpy( format, name, name_len );
+    written += name_len;
 
-    // build params list "param_1_to_string,param_2_to_string, ..."
-    pos_offset = name_len + 2;
-    for( i = 0; i < param_count; i++) {
-      // replace '\0' with ',' at the end of each string
-      memcpy( format + pos_offset, params_format[i], strlen(params_format[i]));
-      pos_offset += strlen(params_format[i]);
-      if( i < param_count - 1 ) {
-        format[pos_offset++] = ',';
+    if (param_count != 0U ) {
+      format[written++] = '=';
+      format[written++] = '[';
+
+      for( i = 0; i < param_count; i++ ) {
+        // remove 1 to discard '\0' automatically by locked_param_into_buffer
+        written += locked_param_into_buffer( params[i], &format[written], format_len - written ) - 1;
+        unlock_param( params[i] );
+        if( i < param_count - 1 ) {
+          format[written++] = ',';
+        }
       }
-      free_mem(params_format[i]);
+
+      format[written++] = ']';
     }
-    free_mem(params_format);
+    
+    format[written] = '\0';
 
     unlock_element( element );
 
-    if (param_count != 0 ) {
-      // name=[param_1_to_string,param_2_to_string,etc.] (with params)
-      format[name_len ] = '=';
-      format[name_len + 1] = '[';
-      format[pos_offset] = ']';
-    } else {
-      // name (no params)
-      // pos_offset is name_len + 2 here
-      pos_offset -= 3;
-    }
-
-    format[pos_offset + 1] = '\0';
-
     clear_error( );
     return format;
+
 fail:
     unlock_element( element );
     return NULL;
