@@ -1,4 +1,4 @@
-enable_testing()
+include(tools/cmake/gtest.cmake)
 
 if(MSVC)
   # the benefit of simple test code outweighs the burden of writing
@@ -30,8 +30,7 @@ function(private_add_function_test)
 
   target_link_libraries(function-test-${FUNCTION_TEST_ARG_NAME}
     stumpless
-    libgtest
-    libgtestmain
+    GTest::gtest_main
     ${FUNCTION_TEST_ARG_LIBRARIES}
   )
 
@@ -72,8 +71,7 @@ function(private_add_single_file_function_test)
   )
 
   target_link_libraries(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
-    libgtest
-    libgtestmain
+    GTest::gtest_main
     ${FUNCTION_TEST_ARG_LIBRARIES}
   )
 
@@ -117,8 +115,7 @@ function(private_add_thread_safety_test)
 
   target_link_libraries(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     stumpless
-    libgtest
-    libgtestmain
+    GTest::gtest_main
     ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
   )
 
@@ -305,7 +302,7 @@ set_target_properties(test_helper_fixture
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_fixture libgtest)
+add_dependencies(test_helper_fixture GTest::gtest)
 
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   target_link_libraries(test_helper_fixture
@@ -329,7 +326,7 @@ set_target_properties(test_helper_network
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_network libgtest)
+add_dependencies(test_helper_network GTest::gtest)
 
 target_include_directories(test_helper_network
     PRIVATE
@@ -362,7 +359,7 @@ set_target_properties(test_helper_rfc5424
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_rfc5424 libgtest)
+add_dependencies(test_helper_rfc5424 GTest::gtest)
 
 target_include_directories(test_helper_rfc5424
     PRIVATE
@@ -397,7 +394,7 @@ set_target_properties(test_helper_usage
 )
 
 target_link_libraries(test_helper_usage
-  libgtest
+  GTest::gtest
 )
 
 target_include_directories(test_helper_usage

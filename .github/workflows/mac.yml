@@ -191,7 +191,7 @@ jobs:
           gem install wrapture
       - name: Configure
         run: |
-          cmake -DENABLE_CPP=ON .
+          cmake -DBUILD_CPP=ON .
       - name: Build
         run: |
           make all

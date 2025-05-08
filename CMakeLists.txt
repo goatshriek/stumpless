@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.9...3.31)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if(POLICY CMP0135)
-  cmake_policy(SET CMP0135 NEW)
+  cmake_policy(SET CMP0135 NEW) # CMake version 3.24
 endif()
 
 project(stumpless
@@ -13,133 +13,7 @@ project(stumpless
 )
 set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
-
-string(CONCAT enable_cpp_help_string
-  "Build the C++ language binding library. The library will be added to the "
-  "'all' target and will be installed via the 'install' target, alongside the "
-  "C library. Other targets (such as 'docs' and 'check') will have a '-cpp' "
-  "version that takes the same action for the C++ library. For example, build "
-  "the 'check-cpp' target to build and run the test suite for the C++ library."
-)
-option(ENABLE_CPP ${enable_cpp_help_string} OFF)
-option(BUILD_PYTHON "include the python libary" OFF)
-
-option(ENABLE_THREAD_SAFETY "support thread-safe functionality" ON)
-
-option(ENABLE_CHAIN_TARGETS "support chain targets" ON)
-option(ENABLE_JOURNALD_TARGETS "support systemd journald service targets" ON)
-option(ENABLE_NETWORK_TARGETS "support network targets" ON)
-option(ENABLE_SOCKET_TARGETS "support unix domain socket targets" ON)
-option(ENABLE_SQLITE3_TARGETS "support sqlite3 targets" ON)
-option(ENABLE_WINDOWS_EVENT_LOG_TARGETS "support windows event log targets" ON)
-
-option(INSTALL_EXAMPLES "install examples" ON)
-option(INSTALL_HEADERS "install header files" ON)
-option(INSTALL_HTML "install html documentation" ON)
-option(INSTALL_MANPAGES "install generated manpages" ON)
-
-option(COVERAGE "Include coverage information" OFF)
-option(FUZZ "Support fuzzing with libFuzzer" OFF)
-
-string(CONCAT enable_deprecation_warnings_help_string
-  "Print warnings to the standard output when deprecated functionality is used."
-)
-option(ENABLE_DEPRECATION_WARNINGS ${enable_deprecation_warnings_help_string} ON)
-
-
-# default settings
-set(CHAIN_TARGET_ARRAY_LENGTH 4
-  CACHE STRING "the chain target static array size"
-)
-
-string(CONCAT default_facility_help_string
-  "The facility code to use for messages where one is not explicitly provided."
-)
-set(DEFAULT_FACILITY "STUMPLESS_FACILITY_USER"
-  CACHE STRING ${default_facility_help_string}
-)
-
-string(CONCAT default_file_help_string
-  "The name of the file opened if the default target is to a file."
-)
-set(DEFAULT_FILE "stumpless-default.log"
-  CACHE STRING "${default_file_help_string}"
-)
-
-string(CONCAT default_severity_help_string
-  "The severity code to use for messages where one is not explicitly provided."
-)
-set(DEFAULT_SEVERITY "STUMPLESS_SEVERITY_INFO"
-  CACHE STRING ${default_severity_help_string}
-)
-
-set(FALLBACK_PAGESIZE 4096
-  CACHE STRING "the memory page size to use if it cannot be detected at runtime"
-)
-
-string(CONCAT sqlite3_src_path_help_string
-  "The path to a SQLite3 source file, referred to as an 'amalgamation' in "
-  "SQLite documentation. If this variable is set, it is used to link SQLite3 "
-  "statically with Stumpless, instead of the default dynamic linking."
-)
-set(SQLITE3_SRC_PATH ""
-  CACHE FILEPATH ${sqlite3_src_path_help_string}
-)
-
-string(CONCAT sqlite3_include_path_help_string
-  "The path to the sqlite3.h header matching the source file provided in "
-  "SQLITE3_SRC_PATH. If the header is already in the include directores, this "
-  "does not need to be specified."
-)
-set(SQLITE3_INCLUDE_PATH ""
-  CACHE FILEPATH ${sqlite3_include_path_help_string}
-)
-
-set(SQLITE3_DEFAULT_TABLE_NAME "logs"
-  CACHE STRING "the name of the table used by default for SQLite3 targets"
-)
-
-set(SQLITE3_RETRY_MAX 3
-  CACHE STRING "the maximum number of retries on SQLite3 operations"
-)
-
-string(CONCAT benchmark_path_help_string
-  "A directory with a build of google benchmark that can be used instead of "
-  "downloading and building the library during build. "
-  "In order for this to be used the directory must include ALL of the "
-  "following at configuration time: the benchmark and benchmark_main "
-  "libraries, and the benchmark/benchmark.h header. "
-  "If the necessary files are not found, the benchmark library will be "
-  "downloaded and built when it is needed, and the export-benchmark target "
-  "can be used to populate the provided directory for future builds."
-)
-set(BENCHMARK_PATH ${PROJECT_BINARY_DIR}
-  CACHE PATH ${benchmark_path_help_string}
-)
-
-string(CONCAT gtest_path_help_string
-  "A directory with a build of google test that can be used instead of "
-  "downloading and building the library during build. "
-  "In order for this to be used the directory must include ALL of the "
-  "following at configuration time: the gtest, gtest_main, and gmock "
-  "libraries, the gtest/gtest.h header, and the gmock/gmock.h header. "
-  "If the necessary files are not found, the gtest library will be "
-  "downloaded and built when it is needed, and the export-gtest target "
-  "can be used to populate the provided directory for future builds."
-)
-set(GTEST_PATH ${PROJECT_BINARY_DIR}
-  CACHE PATH ${gtest_path_help_string}
-)
-
-string(CONCAT locale_help_string
-  "The locale used for strings passed by the library, for example error "
-  "messages. If this is not set it will use the LANG environment variable "
-  "of the build system."
-)
-set(LOCALE $ENV{LANG}
-  CACHE STRING ${locale_help_string}
-)
+include(tools/cmake/options.cmake)
 
 
 # single file build paths
@@ -151,22 +25,37 @@ set(SINGLE_HEADER_FILE "${SINGLE_INCLUDE_DIR}/stumpless.h")
 # load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
-include(ExternalProject)
+include(CTest)
 include(FindDoxygen QUIET)
 include(GNUInstallDirs)
 
+if(BUILD_TESTING OR BUILD_BENCHMARKING)
+  include(FetchContent)
+endif()
 
-# load utilities
-include(tools/cmake/google_libs.cmake)
-include(tools/cmake/add_found_library.cmake)
+if(BUILD_PYTHON)
+  include(ExternalProject)
+endif()
+
+
+# find and/or get external dependencies
+if(BUILD_TESTING)
+  include(tools/cmake/test.cmake)
+endif()
+
+if(BUILD_BENCHMARKING)
+  include(tools/cmake/benchmark.cmake)
+endif()
+
+# include(tools/cmake/google_libs.cmake)
+# include(tools/cmake/add_found_library.cmake)
 # the above two need to be before benchmark and gtest
 
-include(tools/cmake/benchmark.cmake)
 include(tools/cmake/example.cmake)
-include(tools/cmake/gtest.cmake)
+# include(tools/cmake/gtest.cmake)
 include(tools/cmake/l10n.cmake)
 include(tools/cmake/swig.cmake)
-include(tools/cmake/test.cmake)
+
 
 
 # building configuration
@@ -1226,8 +1115,8 @@ endif()
 include(tools/cmake/single_file.cmake)
 
 
-# c++ support
-if(ENABLE_CPP)
+# c++ library build
+if(BUILD_CPP)
   if(HAVE_WRAPTURE)
     include(tools/cmake/cpp.cmake)
   else()

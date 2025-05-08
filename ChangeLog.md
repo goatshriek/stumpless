@@ -19,6 +19,10 @@ fixes, check out the
     * `stumpless_get_realloc`
  - Other new functions:
     * `stumpless_get_priority_string`
+ - `BUILD_TESTING` Cmake option controls the building of functionality and
+   thread safety tests (default is ON).
+ - `BUILD_BENCHMARKING` CMake option controls the building of the performance
+   tests (default is OFF).
 
 ### Changed
  - Refactor:
@@ -26,6 +30,8 @@ fixes, check out the
    * `stumpless_param_into_string`
    * `stumpless_element_to_string`
  - Update localization for French (fr-FR :fr:)
+ - `ENABLE_CPP` CMake option has been renamed to `BUILD_CPP` to align with other
+   build options for shared libraries and testing.
 
 ### Fixed
  - Strings that are a case-insensitive prefix of a valid severity string are

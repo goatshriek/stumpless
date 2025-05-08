@@ -399,7 +399,7 @@ testing the C++ library can be done like this:
 ```sh
 # in the build directory, modify the cmake to enable c++
 # this will emit a warning and leave c++ disabled if wrapture cannot be found
-cmake -DENABLE_CPP=ON ../stumpless
+cmake -DBUILD_CPP=ON ../stumpless
 
 # the default target will now include the stumpless c++ library
 cmake --build .

@@ -340,7 +340,7 @@ jobs:
           gem install wrapture
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_CPP=ON .
+          cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_CPP=ON .
       - name: Build
         run: |
           make all
@@ -374,7 +374,7 @@ jobs:
           gem install wrapture
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_CPP=ON .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_CPP=ON .
       - name: Build
         run: |
           make all
