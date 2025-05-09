@@ -25,23 +25,26 @@ add_function_test(socket
     test/function/target/socket.cpp
     $<TARGET_OBJECTS:test_helper_rfc5424>
     $<TARGET_OBJECTS:test_helper_fixture>
+  LIBRARIES GTest::gmock
 )
 
 add_function_test(socket_add_malloc_failure
-  SOURCES test/function/startup/target/socket_add_malloc_failure.cpp
+  SOURCES
+    "${PROJECT_SOURCE_DIR}/test/function/startup/target/socket_add_malloc_failure.cpp"
+  LIBRARIES GTest::gmock
 )
 
 add_function_test(socket_supported
-  SOURCES test/function/config/socket_supported.cpp
+  SOURCES "${PROJECT_SOURCE_DIR}/test/function/config/socket_supported.cpp"
 )
 
 add_thread_safety_test(socket
   SOURCES
-    test/thread_safety/target/socket.cpp
+    "${PROJECT_SOURCE_DIR}/test/thread_safety/target/socket.cpp"
     $<TARGET_OBJECTS:test_helper_usage>
     $<TARGET_OBJECTS:test_helper_rfc5424>
 )
 
 add_example(socket
-  ${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c
+  "${PROJECT_SOURCE_DIR}/docs/examples/socket/socket_example.c"
 )

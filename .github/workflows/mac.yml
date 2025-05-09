@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON .
       - name: Build
         run: |
           make all
@@ -98,7 +98,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DBUILD_SHARED_LIBS=OFF .
       - name: Build
         run: |
           make all
@@ -136,7 +136,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON .
       - name: Test
         run: |
           make check-single-file

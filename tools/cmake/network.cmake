@@ -41,7 +41,7 @@ add_function_test(network
   SOURCES
     ${PROJECT_SOURCE_DIR}/test/function/target/network.cpp
     $<TARGET_OBJECTS:test_helper_resolve>
-  LIBRARIES ${network_libraries}
+  LIBRARIES ${network_libraries} GTest::gmock
 )
 
 add_function_test(tcp4
@@ -72,7 +72,7 @@ add_function_test(udp4
     $<TARGET_OBJECTS:test_helper_resolve>
     $<TARGET_OBJECTS:test_helper_rfc5424>
     $<TARGET_OBJECTS:test_helper_server>
-  LIBRARIES ${network_libraries}
+  LIBRARIES ${network_libraries} GTest::gmock
 )
 
 add_function_test(udp6
@@ -83,7 +83,7 @@ add_function_test(udp6
     $<TARGET_OBJECTS:test_helper_resolve>
     $<TARGET_OBJECTS:test_helper_rfc5424>
     $<TARGET_OBJECTS:test_helper_server>
-  LIBRARIES ${network_libraries}
+  LIBRARIES ${network_libraries} GTest::gmock
 )
 
 add_function_test(network_leak

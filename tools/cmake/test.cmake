@@ -159,16 +159,14 @@ function(private_add_performance_test)
   if(MSVC OR MINGW)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
-      libbenchmark
-      libbenchmarkmain
+      benchmark::benchmark_main
       Shlwapi.lib
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   else()
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
-      libbenchmark
-      libbenchmarkmain
+      benchmark::benchmark_main
       pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
@@ -206,15 +204,13 @@ function(private_add_single_file_performance_test)
 
   if(MSVC OR MINGW)
     target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
-      libbenchmark
-      libbenchmarkmain
+      benchmark::benchmark_main
       Shlwapi.lib
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   else()
     target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
-      libbenchmark
-      libbenchmarkmain
+      benchmark::benchmark_main
       pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
@@ -247,6 +243,8 @@ macro(add_performance_test name)
   list(APPEND STUMPLESS_SINGLE_FILE_TARGETS performance-test-single-file-${name})
   list(APPEND STUMPLESS_BENCH_SINGLE_FILE_RUNNERS run-performance-test-single-file-${name})
 endmacro(add_performance_test)
+
+set(FUZZ_CORPORA_DIR "${PROJECT_SOURCE_DIR}/test/corpora")
 
 function(private_add_fuzz_test)
   set(single_val_args NAME CORPUS_NAME)
@@ -302,7 +300,7 @@ set_target_properties(test_helper_fixture
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_fixture GTest::gtest)
+target_link_libraries(test_helper_fixture GTest::gtest)
 
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   target_link_libraries(test_helper_fixture
@@ -326,7 +324,7 @@ set_target_properties(test_helper_network
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_network GTest::gtest)
+target_link_libraries(test_helper_network GTest::gtest)
 
 target_include_directories(test_helper_network
     PRIVATE
@@ -359,7 +357,7 @@ set_target_properties(test_helper_rfc5424
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-add_dependencies(test_helper_rfc5424 GTest::gtest)
+target_link_libraries(test_helper_rfc5424 GTest::gtest)
 
 target_include_directories(test_helper_rfc5424
     PRIVATE
@@ -393,9 +391,7 @@ set_target_properties(test_helper_usage
   COMPILE_FLAGS "${function_test_compile_flags}"
 )
 
-target_link_libraries(test_helper_usage
-  GTest::gtest
-)
+target_link_libraries(test_helper_usage GTest::gtest)
 
 target_include_directories(test_helper_usage
     PRIVATE

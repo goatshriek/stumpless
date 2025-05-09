@@ -125,7 +125,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DCMAKE_INSTALL_PREFIX=/usr .
       - name: Build
         run: |
           make all
@@ -167,7 +167,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=OFF -DENABLE_JOURNALD_TARGETS=OFF -DENABLE_SQLITE3_TARGETS=OFF .
       - name: Build
         run: |
           make all
@@ -209,7 +209,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DCMAKE_INSTALL_PREFIX=/usr .
       - name: Test
         run: |
           make check-single-file
@@ -239,7 +239,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Configure
         run: |
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DCMAKE_INSTALL_PREFIX=/usr .
       - name: Build
         run: |
           make all
