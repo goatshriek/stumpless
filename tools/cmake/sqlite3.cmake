@@ -1,6 +1,12 @@
 list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/target/sqlite3.c")
-list(APPEND WRAPTURE_SPECS "${PROJECT_SOURCE_DIR}/tools/wrapture/sqlite3_target.yml")
-list(APPEND DOXYGEN_MANPAGES "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/sqlite3.h.3")
+list(
+  APPEND WRAPTURE_SPECS
+  "${PROJECT_SOURCE_DIR}/tools/wrapture/sqlite3_target.yml"
+)
+list(
+  APPEND DOXYGEN_MANPAGES
+  "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/sqlite3.h.3"
+)
 
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
@@ -20,28 +26,34 @@ else()
   set(SQLITE3_LINK_NAME "sqlite3")
 endif()
 
-add_function_test(sqlite3
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/function/target/sqlite3.cpp"
-    $<TARGET_OBJECTS:test_helper_fixture>
-    $<TARGET_OBJECTS:test_helper_rfc5424>
-  LIBRARIES
-    "${SQLITE3_LINK_NAME}"
-)
+if(BUILD_TESTING)
+  add_function_test(sqlite3
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/target/sqlite3.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
+    LIBRARIES
+      "${SQLITE3_LINK_NAME}"
+  )
+endif()
 
-add_performance_test(sqlite3
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/performance/target/sqlite3.cpp"
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
+if(BUILD_BENCHMARKING)
+  add_performance_test(sqlite3
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/performance/target/sqlite3.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
 
-add_thread_safety_test(sqlite3
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/thread_safety/target/sqlite3.cpp"
-    $<TARGET_OBJECTS:test_helper_usage>
-  LIBRARIES
-    "${SQLITE3_LINK_NAME}"
-)
+if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
+  add_thread_safety_test(sqlite3
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/thread_safety/target/sqlite3.cpp"
+      $<TARGET_OBJECTS:test_helper_usage>
+    LIBRARIES
+      "${SQLITE3_LINK_NAME}"
+  )
+endif()
 
 add_example(sqlite3
   "${PROJECT_SOURCE_DIR}/docs/examples/sqlite3/sqlite3_example.c"

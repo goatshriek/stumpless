@@ -18,29 +18,33 @@ if(INCLUDE_MANPAGES_IN_INSTALL)
   )
 endif()
 
-add_function_test(chain
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/function/target/chain.cpp"
-    $<TARGET_OBJECTS:test_helper_fixture>
-    $<TARGET_OBJECTS:test_helper_rfc5424>
-  LIBRARIES GTest::gmock
-)
+if(BUILD_TESTING)
+  add_function_test(chain
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/target/chain.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+      $<TARGET_OBJECTS:test_helper_rfc5424>
+    LIBRARIES GTest::gmock
+  )
 
-add_performance_test(chain
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/performance/target/chain.cpp"
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
-
-add_example(chain
-  "${PROJECT_SOURCE_DIR}/docs/examples/chain/chain_example.c"
-)
-
-if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
+  if(STUMPLESS_THREAD_SAFETY_SUPPORTED)
   add_thread_safety_test(chain
     SOURCES
       "${PROJECT_SOURCE_DIR}/test/thread_safety/target/chain.cpp"
       $<TARGET_OBJECTS:test_helper_rfc5424>
       $<TARGET_OBJECTS:test_helper_usage>
   )
+  endif()
 endif()
+
+if(BUILD_BENCHMARKING)
+  add_performance_test(chain
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/performance/target/chain.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
+
+add_example(chain
+  "${PROJECT_SOURCE_DIR}/docs/examples/chain/chain_example.c"
+)
