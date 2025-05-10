@@ -80,12 +80,14 @@ function(private_add_single_file_performance_test)
 
   if(MSVC OR MINGW)
     target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+      GTest::gtest
       benchmark::benchmark_main
       Shlwapi.lib
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   else()
     target_link_libraries(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+      GTest::gtest
       benchmark::benchmark_main
       pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
@@ -96,7 +98,7 @@ function(private_add_single_file_performance_test)
     PROPERTIES
     BUILD_RPATH "${PROJECT_BINARY_DIR}"
     COMPILE_FLAGS "${performance_test_compile_flags}"
-    OUTPUT_NAME performance-test-single-file-${FUNCTION_PERF_ARG_NAME}
+    OUTPUT_NAME "performance-test-single-file-${FUNCTION_PERF_ARG_NAME}"
   )
 
   target_include_directories(performance-test-single-file-${FUNCTION_PERF_ARG_NAME}

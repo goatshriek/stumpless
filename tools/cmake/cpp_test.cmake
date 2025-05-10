@@ -25,16 +25,15 @@ function(private_add_cpp_test)
 
   target_link_libraries(cpp-test-${CPP_TEST_ARG_NAME}
     stumplesscpp
-    libgtest
-    libgtestmain
+    GTest::gtest_main
     ${CPP_TEST_ARG_LIBRARIES}
   )
 
   target_include_directories(cpp-test-${CPP_TEST_ARG_NAME}
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_BINARY_DIR}/include
-    ${CMAKE_BINARY_DIR}/cpp-lib
+    "${PROJECT_SOURCE_DIR}/include"
+    "${PROJECT_BINARY_DIR}/include"
+    "${PROJECT_BINARY_DIR}/cpp-lib"
   )
 
   add_custom_target(run-cpp-test-${CPP_TEST_ARG_NAME}

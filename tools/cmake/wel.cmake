@@ -109,6 +109,7 @@ if(BUILD_TESTING)
     SOURCES
       "${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp"
       "${PROJECT_BINARY_DIR}/events.rc"
+    LIBRARIES GTest::gmock
   )
   add_dependencies(function-test-wel events)
   target_compile_definitions(function-test-wel
