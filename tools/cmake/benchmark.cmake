@@ -1,9 +1,19 @@
 # Google Benchmark dependency
-FetchContent_Declare(
-  googlebenchmark
-  FIND_PACKAGE_ARGS NAMES benchmark
-  URL https://github.com/google/benchmark/archive/299e5928955cc62af9968370293b916f5130916f.zip # v1.9.3
-)
+set(BENCHMARK_URL https://github.com/google/benchmark/archive/299e5928955cc62af9968370293b916f5130916f.zip) # v1.9.3
+if(CMAKE_VERSION VERSION_LESS "3.24")
+  # FIND_PACKAGE_ARGS is not available before 3.24, but for now we don't require
+  # the higher version just for it
+  FetchContent_Declare(
+    googlebenchmark
+    URL ${BENCHMARK_URL}
+  )
+else()
+  FetchContent_Declare(
+    googlebenchmark
+    URL ${BENCHMARK_URL}
+    FIND_PACKAGE_ARGS NAMES benchmark
+  )
+endif()
 FetchContent_MakeAvailable(googlebenchmark)
 
 # performance test output directory
