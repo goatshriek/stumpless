@@ -1,8 +1,8 @@
 # Google Benchmark dependency
 FetchContent_Declare(
   googlebenchmark
-  URL https://github.com/google/benchmark/archive/299e5928955cc62af9968370293b916f5130916f.zip # v1.9.3
   FIND_PACKAGE_ARGS NAMES benchmark
+  URL https://github.com/google/benchmark/archive/299e5928955cc62af9968370293b916f5130916f.zip # v1.9.3
 )
 FetchContent_MakeAvailable(googlebenchmark)
 
@@ -23,6 +23,7 @@ function(private_add_performance_test)
   if(MSVC OR MINGW)
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
+      GTest::gtest
       benchmark::benchmark_main
       Shlwapi.lib
       ${FUNCTION_PERF_ARG_LIBRARIES}
@@ -30,6 +31,7 @@ function(private_add_performance_test)
   else()
     target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
       stumpless
+      GTest::gtest
       benchmark::benchmark_main
       pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
