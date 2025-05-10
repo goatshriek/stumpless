@@ -25,6 +25,7 @@ function(private_add_cpp_test)
 
   target_link_libraries(cpp-test-${CPP_TEST_ARG_NAME}
     stumplesscpp
+    GTest::gtest
     GTest::gtest_main
     ${CPP_TEST_ARG_LIBRARIES}
   )

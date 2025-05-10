@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14...3.31)
+cmake_minimum_required(VERSION 3.21...3.31)
 
 if(POLICY CMP0135)
   # for ExternalProject_Add and FetchContent_Declare()

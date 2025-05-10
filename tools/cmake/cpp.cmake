@@ -175,8 +175,8 @@ target_link_libraries(stumplesscpp
 target_include_directories(stumplesscpp
   PRIVATE
   ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_BINARY_DIR}/include
-  ${CMAKE_BINARY_DIR}/include/stumpless
+  ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_BINARY_DIR}/include/stumpless
 )
 
 set_target_properties(stumplesscpp

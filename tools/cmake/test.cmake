@@ -3,10 +3,7 @@ include("${PROJECT_SOURCE_DIR}/tools/cmake/gtest.cmake")
 if(MSVC)
   # the benefit of simple test code outweighs the burden of writing
   # platform-dependent code, such as the _s functions, just for tests
-  set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
-else()
-  set(function_test_compile_flags "-std=gnu++17 -DGTEST_LINKED_AS_SHARED_LIBRARY=1")
-  set(performance_test_compile_flags "-std=gnu++17")
+  set(function_test_compile_flags "-D_CRT_SECURE_NO_WARNINGS")
 endif(MSVC)
 set(fuzz_test_compile_flags "-g -O1 -fsanitize=fuzzer,address")
 
@@ -30,6 +27,7 @@ function(private_add_function_test)
 
   target_link_libraries(function-test-${FUNCTION_TEST_ARG_NAME}
     stumpless
+    GTest::gtest
     GTest::gtest_main
     ${FUNCTION_TEST_ARG_LIBRARIES}
   )
@@ -39,6 +37,11 @@ function(private_add_function_test)
       stdc++fs
     )
   endif()
+
+  add_custom_command(TARGET function-test-${FUNCTION_TEST_ARG_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:function-test-${FUNCTION_TEST_ARG_NAME}> $<TARGET_FILE_DIR:function-test-${FUNCTION_TEST_ARG_NAME}>
+    COMMAND_EXPAND_LISTS
+  )
 
   target_include_directories(function-test-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
@@ -71,6 +74,7 @@ function(private_add_single_file_function_test)
   )
 
   target_link_libraries(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
+    GTest::gtest
     GTest::gtest_main
     ${FUNCTION_TEST_ARG_LIBRARIES}
   )
@@ -115,6 +119,7 @@ function(private_add_thread_safety_test)
 
   target_link_libraries(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
     stumpless
+    GTest::gtest
     GTest::gtest_main
     ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
   )
