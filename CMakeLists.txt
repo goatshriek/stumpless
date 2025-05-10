@@ -9,8 +9,9 @@ endif()
 project(stumpless
   VERSION 3.0.0
   DESCRIPTION "a fast and feature-rich logging library for C"
+  HOMEPAGE_URL "https://goatshriek.github.io/stumpless/"
+  LANGUAGES C
 )
-set(CMAKE_PROJECT_HOMEPAGE_URL "https://goatshriek.github.io/stumpless/")
 
 include("${PROJECT_SOURCE_DIR}/tools/cmake/options.cmake")
 
@@ -32,6 +33,7 @@ if(BUILD_TESTING OR BUILD_BENCHMARKING)
   include(FetchContent)
 
   # C++ is required for testing and benchmarking
+  enable_language(CXX)
   set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
 endif()

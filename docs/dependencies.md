@@ -13,8 +13,8 @@ do not need if you just want to build and install the library.
 
 ## Testing
 The test suite for the project is written using the Google Test suite. It will
-be downloaded and built on the system automatically if the test suites are run,
-but if the build fails for some reason then test suites will not be available.
+be found and/or downloaded and built on the system automatically if testing is
+enabled, which it is by default.
 
 More information on the Google Test framework may be found on the project
 [Github page](https://github.com/google/googletest).
@@ -24,8 +24,8 @@ than C then you will need the language environment installed in order to run the
 tests.
 
 The performance test suite for the project uses the Google Benchmark suite. Like
-the Google Test suite, build targets will automatically download and build the
-library if it is needed.
+the Google Test suite, it will automatically be found and/or downloaded and
+built if benchmarking is enabled.
 
 More information on the Google Benchmark framework may be found on the project
 [Github page](https://github.com/google/benchmark).

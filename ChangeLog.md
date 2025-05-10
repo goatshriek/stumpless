@@ -32,6 +32,8 @@ fixes, check out the
  - Update localization for French (fr-FR :fr:)
  - `ENABLE_CPP` CMake option has been renamed to `BUILD_CPP` to align with other
    build options for shared libraries and testing.
+ - C++ is no longer required to build the project if testing and benchmarking
+   are disabled.
 
 ### Fixed
  - Strings that are a case-insensitive prefix of a valid severity string are
@@ -41,6 +43,10 @@ fixes, check out the
 
 ### Removed
  - `stumpless/priority.h`, which was merged into `stumpless/prival.h`.
+ - `export-gtest` and `export-benchmark` CMake targets, and the related
+   `GTEST_PATH` and `BENCHMARK_PATH` CMake options. These libraries are now
+   provided using CMake `FetchContent` with `FIND_PACKAGE_ARGS` to search for
+   an existing installation.
 
 
 ## [2.2.0] - 2024-05-26
