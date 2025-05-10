@@ -48,6 +48,13 @@ function(private_add_performance_test)
     )
   endif()
 
+  if($<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}>)
+    add_custom_command(TARGET performance-test-${FUNCTION_PERF_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}> $<TARGET_FILE_DIR:performance-test-${FUNCTION_PERF_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
+
   set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
     PROPERTIES
     BUILD_RPATH "${PROJECT_BINARY_DIR}"
@@ -91,6 +98,13 @@ function(private_add_single_file_performance_test)
       benchmark::benchmark_main
       pthread
       ${FUNCTION_PERF_ARG_LIBRARIES}
+    )
+  endif()
+
+  if($<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}>)
+    add_custom_command(TARGET performance-test-${FUNCTION_PERF_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}> $<TARGET_FILE_DIR:performance-test-${FUNCTION_PERF_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
     )
   endif()
 

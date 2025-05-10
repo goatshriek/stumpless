@@ -38,10 +38,12 @@ function(private_add_function_test)
     )
   endif()
 
-  add_custom_command(TARGET function-test-${FUNCTION_TEST_ARG_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:function-test-${FUNCTION_TEST_ARG_NAME}> $<TARGET_FILE_DIR:function-test-${FUNCTION_TEST_ARG_NAME}>
-    COMMAND_EXPAND_LISTS
-  )
+  if($<TARGET_RUNTIME_DLLS:function-test-${FUNCTION_TEST_ARG_NAME}>)
+    add_custom_command(TARGET function-test-${FUNCTION_TEST_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:function-test-${FUNCTION_TEST_ARG_NAME}> $<TARGET_FILE_DIR:function-test-${FUNCTION_TEST_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
 
   target_include_directories(function-test-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
@@ -78,6 +80,13 @@ function(private_add_single_file_function_test)
     GTest::gtest_main
     ${FUNCTION_TEST_ARG_LIBRARIES}
   )
+
+  if($<TARGET_RUNTIME_DLLS:function-test-single-file-${FUNCTION_TEST_ARG_NAME}>)
+    add_custom_command(TARGET function-test-single-file-${FUNCTION_TEST_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:function-test-single-file-${FUNCTION_TEST_ARG_NAME}> $<TARGET_FILE_DIR:function-test-single-file-${FUNCTION_TEST_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
 
   target_include_directories(function-test-single-file-${FUNCTION_TEST_ARG_NAME}
     PRIVATE
@@ -124,6 +133,13 @@ function(private_add_thread_safety_test)
     ${THREAD_SAFETY_TEST_ARG_LIBRARIES}
   )
 
+  if($<TARGET_RUNTIME_DLLS:thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}>)
+    add_custom_command(TARGET thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}> $<TARGET_FILE_DIR:thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
+
   if(NOT HAVE_WINDOWS_H)
     target_link_libraries(thread-safety-test-${THREAD_SAFETY_TEST_ARG_NAME}
       pthread
@@ -165,6 +181,13 @@ function(private_add_fuzz_test)
     "-fsanitize=fuzzer,address"
     ${FUNCTION_FUZZ_ARG_LIBRARIES}
   )
+
+  if($<TARGET_RUNTIME_DLLS:fuzz-test-${FUNCTION_FUZZ_ARG_NAME}>)
+    add_custom_command(TARGET fuzz-test-${FUNCTION_FUZZ_ARG_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:fuzz-test-${FUNCTION_FUZZ_ARG_NAME}> $<TARGET_FILE_DIR:fuzz-test-${FUNCTION_FUZZ_ARG_NAME}>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
 
   set_target_properties(fuzz-test-${FUNCTION_FUZZ_ARG_NAME}
     PROPERTIES
