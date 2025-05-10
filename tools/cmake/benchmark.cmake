@@ -1,5 +1,6 @@
 # Google Benchmark dependency
 set(BENCHMARK_URL https://github.com/google/benchmark/archive/299e5928955cc62af9968370293b916f5130916f.zip) # v1.9.3
+set(BENCHMARK_ENABLE_TESTING OFF CACHE INTERNAL "disable benchmark tests")
 if(CMAKE_VERSION VERSION_LESS "3.24")
   # FIND_PACKAGE_ARGS is not available before 3.24, but for now we don't require
   # the higher version just for it
@@ -25,13 +26,14 @@ function(private_add_performance_test)
   set(multi_val_args SOURCES LIBRARIES)
   cmake_parse_arguments(FUNCTION_PERF_ARG "" "${single_val_args}" "${multi_val_args}" ${ARGN})
 
-  add_executable(performance-test-${FUNCTION_PERF_ARG_NAME}
+  set(t performance-test-${FUNCTION_PERF_ARG_NAME})
+  add_executable(${t}
     EXCLUDE_FROM_ALL
     ${FUNCTION_PERF_ARG_SOURCES}
   )
 
   if(MSVC OR MINGW)
-    target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
+    target_link_libraries(${t}
       stumpless
       GTest::gtest
       benchmark::benchmark_main
@@ -39,7 +41,7 @@ function(private_add_performance_test)
       ${FUNCTION_PERF_ARG_LIBRARIES}
     )
   else()
-    target_link_libraries(performance-test-${FUNCTION_PERF_ARG_NAME}
+    target_link_libraries(${t}
       stumpless
       GTest::gtest
       benchmark::benchmark_main
@@ -48,29 +50,35 @@ function(private_add_performance_test)
     )
   endif()
 
-  if($<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}>)
-    add_custom_command(TARGET performance-test-${FUNCTION_PERF_ARG_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_RUNTIME_DLLS:performance-test-${FUNCTION_PERF_ARG_NAME}> $<TARGET_FILE_DIR:performance-test-${FUNCTION_PERF_ARG_NAME}>
+  set(have_runtime_dlls
+    $<BOOL:$<TARGET_RUNTIME_DLLS:${t}>>
+  )
+  set(copy_command
+      ${CMAKE_COMMAND} -E copy_if_different
+      $<TARGET_RUNTIME_DLLS:${t}>
+      $<TARGET_FILE_DIR:${t}>
+  )
+  add_custom_command(TARGET ${t} POST_BUILD
+      COMMAND "$<${have_runtime_dlls}:${copy_command}>"
       COMMAND_EXPAND_LISTS
-    )
-  endif()
+  )
 
-  set_target_properties(performance-test-${FUNCTION_PERF_ARG_NAME}
+  set_target_properties(${t}
     PROPERTIES
     BUILD_RPATH "${PROJECT_BINARY_DIR}"
     COMPILE_FLAGS "${performance_test_compile_flags}"
-    OUTPUT_NAME performance-test-${FUNCTION_PERF_ARG_NAME}
+    OUTPUT_NAME ${t}
   )
 
-  target_include_directories(performance-test-${FUNCTION_PERF_ARG_NAME}
+  target_include_directories(${t}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_BINARY_DIR}/include
   )
 
-  add_custom_target(run-performance-test-${FUNCTION_PERF_ARG_NAME}
-	  COMMAND ${PROJECT_BINARY_DIR}/performance-test-${FUNCTION_PERF_ARG_NAME} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
-    DEPENDS performance-test-${FUNCTION_PERF_ARG_NAME}
+  add_custom_target(run-${t}
+	  COMMAND ${PROJECT_BINARY_DIR}/${t} --benchmark_out=${PERFORMANCE_OUTPUT_DIR}/${FUNCTION_PERF_ARG_NAME}.json --benchmark_out_format=json
+    DEPENDS ${t}
   )
 endfunction(private_add_performance_test)
 

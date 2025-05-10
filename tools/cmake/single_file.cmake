@@ -48,13 +48,17 @@ add_custom_target(single-file
   DEPENDS ${SINGLE_SOURCE_FILE} ${SINGLE_HEADER_FILE}
 )
 
-add_custom_target(bench-single-file
-  DEPENDS ${STUMPLESS_BENCH_SINGLE_FILE_RUNNERS}
-)
+if(BUILD_BENCHMARKING)
+  add_custom_target(bench-single-file
+    DEPENDS ${STUMPLESS_BENCH_SINGLE_FILE_RUNNERS}
+  )
+endif()
 
-add_custom_target(check-single-file
-  DEPENDS ${STUMPLESS_CHECK_SINGLE_FILE_RUNNERS}
-)
+if(BUILD_TESTING)
+  add_custom_target(check-single-file
+    DEPENDS ${STUMPLESS_CHECK_SINGLE_FILE_RUNNERS}
+  )
+endif()
 
 add_custom_target(examples-single-file
   DEPENDS ${STUMPLESS_EXAMPLE_SINGLE_FILE_RUNNERS}

@@ -9,40 +9,40 @@ add_performance_test(prival
 
 add_performance_test(entry
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/entry.cpp
+    "${PROJECT_SOURCE_DIR}/test/performance/entry.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(function
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/target/function.cpp
+    "${PROJECT_SOURCE_DIR}/test/performance/target/function.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(buffer
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/target/buffer.cpp
+    "${PROJECT_SOURCE_DIR}/test/performance/target/buffer.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(log
-  SOURCES test/performance/log.cpp
+  SOURCES "${PROJECT_SOURCE_DIR}/test/performance/log.cpp"
 )
 
 add_performance_test(param
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/param.cpp
+    "${PROJECT_SOURCE_DIR}/test/performance/param.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(target
   SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/target.cpp
+    "${PROJECT_SOURCE_DIR}/test/performance/target.cpp"
     $<TARGET_OBJECTS:test_helper_fixture>
 )
 
 add_performance_test(version
-  SOURCES ${PROJECT_SOURCE_DIR}/test/performance/version.cpp
+  SOURCES "${PROJECT_SOURCE_DIR}/test/performance/version.cpp"
 )
 
 add_custom_target(bench
