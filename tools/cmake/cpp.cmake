@@ -1,5 +1,8 @@
 if(BUILD_TESTING)
   include("${PROJECT_SOURCE_DIR}/tools/cmake/cpp_test.cmake")
+else()
+  # if testing is enabled, the standard is already set to 17
+  set(CMAKE_CXX_STANDARD 14) # minimum version requirement
 endif()
 
 set(CPP_LIB_BUILD_DIR "${PROJECT_BINARY_DIR}/cpp-lib")
@@ -191,10 +194,6 @@ endif()
 if(MINGW)
   target_compile_options(stumplesscpp PRIVATE -D__USE_MINGW_ANSI_STDIO)
   set_target_properties(stumplesscpp PROPERTIES PREFIX "")
-endif()
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-  target_compile_options(stumplesscpp PUBLIC "-std=c++14")
 endif()
 
 add_cpp_test(element
