@@ -1,8 +1,17 @@
-list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/target/wel.c)
-list(APPEND STUMPLESS_SOURCES ${PROJECT_SOURCE_DIR}/src/config/wel_supported.c)
+list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/target/wel.c")
+list(
+  APPEND STUMPLESS_SOURCES
+  "${PROJECT_SOURCE_DIR}/src/config/wel_supported.c"
+)
 
-list(INSERT WRAPTURE_SPECS 0 ${PROJECT_SOURCE_DIR}/tools/wrapture/have_wel_templates.yml)
-list(APPEND WRAPTURE_SPECS ${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml)
+list(
+  INSERT WRAPTURE_SPECS 0
+  "${PROJECT_SOURCE_DIR}/tools/wrapture/have_wel_templates.yml"
+)
+list(
+  APPEND WRAPTURE_SPECS
+  "${PROJECT_SOURCE_DIR}/tools/wrapture/wel_target.yml"
+)
 
 if(INSTALL_HEADERS)
   install(
@@ -16,13 +25,16 @@ if(INSTALL_HEADERS)
   )
 endif()
 
-list(APPEND DOXYGEN_MANPAGES ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3)
+list(
+  APPEND DOXYGEN_MANPAGES
+  "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3"
+)
 
 if(INCLUDE_MANPAGES_IN_INSTALL)
   install(FILES
-    ${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3
+    "${PROJECT_BINARY_DIR}/docs/${STUMPLESS_LANGUAGE}/man/man3/wel.h.3"
     RENAME stumpless_target_wel.h.3
-    DESTINATION ${CMAKE_INSTALL_MANDIR}/man3
+    DESTINATION "${CMAKE_INSTALL_MANDIR}/man3"
   )
 endif()
 
@@ -48,7 +60,12 @@ ADD_CUSTOM_COMMAND(
    COMMENT "Generating default stumpless events"
 )
 
-add_library(default_events SHARED EXCLUDE_FROM_ALL "${PROJECT_BINARY_DIR}/default_events.rc")
+add_library(
+  default_events
+  SHARED
+  EXCLUDE_FROM_ALL
+  "${PROJECT_BINARY_DIR}/default_events.rc"
+)
 set_target_properties(default_events PROPERTIES LINKER_LANGUAGE "C" )
 set_target_properties(default_events PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(default_events PROPERTIES SOVERSION 0)
@@ -87,51 +104,55 @@ endif()
 
 list(APPEND STUMPLESS_LINK_LIBRARIES "KtmW32")
 
-add_function_test(wel
-  SOURCES
-    ${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp
-    ${PROJECT_BINARY_DIR}/events.rc
-)
-add_dependencies(function-test-wel events)
-target_compile_definitions(function-test-wel
-  PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
-)
-add_dependencies(function-test-single-file-wel events)
-target_compile_definitions(function-test-single-file-wel
-  PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
-)
+if(BUILD_TESTING)
+  add_function_test(wel
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/target/wel.cpp"
+      "${PROJECT_BINARY_DIR}/events.rc"
+  )
+  add_dependencies(function-test-wel events)
+  target_compile_definitions(function-test-wel
+    PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
+  )
+  add_dependencies(function-test-single-file-wel events)
+  target_compile_definitions(function-test-single-file-wel
+    PUBLIC WEL_EVENTS_LIBRARY_NAME=\"$<TARGET_FILE_NAME:events>\"
+  )
 
-add_function_test(wel_supported
-  SOURCES
-    ${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp
-    ${PROJECT_BINARY_DIR}/events.rc
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
+  add_function_test(wel_supported
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/config/wel_supported.cpp"
+      "${PROJECT_BINARY_DIR}/events.rc"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 
-add_function_test(wel_supported_leak
-  SOURCES
-    ${PROJECT_SOURCE_DIR}/test/function/leak/wel_supported.cpp
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
+  add_function_test(wel_supported_leak
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/leak/wel_supported.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
 
-add_thread_safety_test(wel
-  SOURCES
-    test/thread_safety/target/wel.cpp
-    $<TARGET_OBJECTS:test_helper_usage>
-)
+  add_thread_safety_test(wel
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/thread_safety/target/wel.cpp"
+      $<TARGET_OBJECTS:test_helper_usage>
+  )
 
-add_thread_safety_test(wel_supported
-  SOURCES
-    test/thread_safety/config/wel_supported.cpp
-    ${PROJECT_BINARY_DIR}/events.rc
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
+  add_thread_safety_test(wel_supported
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/thread_safety/config/wel_supported.cpp"
+      "${PROJECT_BINARY_DIR}/events.rc"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
 
-add_performance_test(wel
-  SOURCES
-    ${PROJECT_SOURCE_DIR}/test/performance/target/wel.cpp
-    $<TARGET_OBJECTS:test_helper_fixture>
-)
+if(BUILD_BENCHMARKING)
+  add_performance_test(wel
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/performance/target/wel.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
+  )
+endif()
 
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/docs/examples/wel")
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/include/docs/examples/wel")
@@ -148,6 +169,6 @@ ADD_CUSTOM_COMMAND(
 )
 
 add_example(wel
-  ${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c
-  ${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc
+  "${PROJECT_SOURCE_DIR}/docs/examples/wel/wel_example.c"
+  "${PROJECT_BINARY_DIR}/docs/examples/wel/example_events.rc"
 )
