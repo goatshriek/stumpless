@@ -92,7 +92,7 @@ if(STUMPLESS_JOURNALD_TARGETS_SUPPORTED)
 
   add_cpp_test(journald
     SOURCES
-      ${PROJECT_SOURCE_DIR}/test/function/cpp/target/journald.cpp
+      "${PROJECT_SOURCE_DIR}/test/function/cpp/target/journald.cpp"
   )
 endif()
 
@@ -142,7 +142,7 @@ else()
   add_custom_command(
     OUTPUT ${GENERATED_CPP_LIB_SOURCES} ${GENERATED_CPP_LIB_HEADERS}
     COMMAND wrapture ${WRAPTURE_SPECS}
-    COMMAND ruby ${PROJECT_SOURCE_DIR}/scripts/copy_headers.rb ${CMAKE_BINARY_DIR}/include/stumpless
+    COMMAND ruby ${PROJECT_SOURCE_DIR}/scripts/copy_headers.rb ${PROJECT_BINARY_DIR}/include/stumpless
     DEPENDS ${WRAPTURE_SPECS}
     WORKING_DIRECTORY ${CPP_LIB_BUILD_DIR}
     VERBATIM
@@ -245,7 +245,6 @@ add_cpp_test(version
 add_custom_target(check-cpp
   DEPENDS ${STUMPLESS_CPP_TEST_RUNNERS}
 )
-
 
 add_no_run_example(cpp
   "${PROJECT_SOURCE_DIR}/docs/examples/cpp/cpp_example.cpp"
