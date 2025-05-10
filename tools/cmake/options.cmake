@@ -91,34 +91,6 @@ set(SQLITE3_RETRY_MAX 3
   CACHE STRING "the maximum number of retries on SQLite3 operations"
 )
 
-string(CONCAT benchmark_path_help_string
-  "A directory with a build of google benchmark that can be used instead of "
-  "downloading and building the library during build. "
-  "In order for this to be used the directory must include ALL of the "
-  "following at configuration time: the benchmark and benchmark_main "
-  "libraries, and the benchmark/benchmark.h header. "
-  "If the necessary files are not found, the benchmark library will be "
-  "downloaded and built when it is needed, and the export-benchmark target "
-  "can be used to populate the provided directory for future builds."
-)
-set(BENCHMARK_PATH ${PROJECT_BINARY_DIR}
-  CACHE PATH ${benchmark_path_help_string}
-)
-
-string(CONCAT gtest_path_help_string
-  "A directory with a build of google test that can be used instead of "
-  "downloading and building the library during build. "
-  "In order for this to be used the directory must include ALL of the "
-  "following at configuration time: the gtest, gtest_main, and gmock "
-  "libraries, the gtest/gtest.h header, and the gmock/gmock.h header. "
-  "If the necessary files are not found, the gtest library will be "
-  "downloaded and built when it is needed, and the export-gtest target "
-  "can be used to populate the provided directory for future builds."
-)
-set(GTEST_PATH ${PROJECT_BINARY_DIR}
-  CACHE PATH ${gtest_path_help_string}
-)
-
 string(CONCAT locale_help_string
   "The locale used for strings passed by the library, for example error "
   "messages. If this is not set it will use the LANG environment variable "

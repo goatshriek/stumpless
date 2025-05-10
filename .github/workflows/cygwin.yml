@@ -12,17 +12,9 @@ env:
 jobs:
   cygwin:
     name: "cygwin, release"
-    runs-on: "windows-2019"
+    runs-on: "windows-latest"
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Cache Google Test and Benchmark
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        id: cache-google-libs
-        with:
-          path: |
-            C:/gtest
-            C:/benchmark
-          key: ${{ runner.os }}-${{ hashFiles('**/gtest.cmake', '**/benchmark.cmake') }}
       - name: Install Cygwin Base
         run: |
           choco install --no-progress cygwin
@@ -33,15 +25,7 @@ jobs:
       - name: Configure
         run: |
           path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DGTEST_PATH=/cygdrive/c/gtest -DBENCHMARK_PATH=/cygdrive/c/benchmark -DCMAKE_INSTALL_PREFIX=/usr ."
-        shell: cmd
-      - name: Build Google Test and Benchmark
-        if: steps.cache-google-libs.outputs.cache-hit != 'true'
-        run: |
-          path C:\tools\cygwin\bin;C:\tools\cygwin\usr\bin
-          bash.exe -c "mkdir /cygdrive/c/gtest"
-          bash.exe -c "mkdir /cygdrive/c/benchmark"
-          bash.exe -c "make gtest benchmark export-gtest export-benchmark"
+          bash.exe -c "cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BENCHMARKING=ON -DCMAKE_INSTALL_PREFIX=/usr ."
         shell: cmd
       - name: Build
         run: |
