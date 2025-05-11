@@ -45,6 +45,7 @@
 /** The maximum length of a msgid, as specified by RFC 5424. */
 #  define STUMPLESS_MAX_MSGID_LENGTH 32
 
+
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -122,6 +123,12 @@ struct stumpless_entry {
   void *mutex;
 #  endif
 };
+
+/*
+ * add new function to_string entry
+ */
+ STUMPLESS_PUBLIC_FUNCTION
+ char *stumpless_entry_to_string( const struct stumpless_entry *entry );
 
 /**
  * Adds an element to an entry. The element is appended to the end of the list

@@ -97,6 +97,61 @@ namespace {
       }
   };
 
+  TEST_F( EntryTest, EntryToStringMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const char *result;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_entry_to_string(basic_entry);
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+    EXPECT_NULL( result );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F(EntryTest, OutputFormatCheck) {
+    char *result = stumpless_entry_to_string(basic_entry);
+    ASSERT_NE(result, nullptr);
+
+    const char *expected_output =
+      "prival=\"14\",app_name=\"basic-app-name\",hostname=\"\","
+      "message_id=\"basic-msgid\",process_id=\"\","
+      "message=\"basic message\","
+      "basic-element=[basic-param=\"basic-value\"],"
+      "basic-element-2";
+    EXPECT_STREQ(result, expected_output);
+    size_t len = strlen(result);
+    EXPECT_NE(result[len - 1], ',');
+    free(result);
+  }
+
+  TEST_F(EntryTest, LastCommaCheck) {
+    char *result = stumpless_entry_to_string(basic_entry);
+    ASSERT_NE(result, nullptr);
+
+    size_t len = strlen(result);
+    EXPECT_NE(result[len - 1], ',');
+
+    free(result);
+  }
+
+  TEST_F(EntryTest, NullEntry) {
+    char *result = stumpless_entry_to_string(NULL);
+    EXPECT_EQ(result, nullptr);
+  }
+
+  TEST_F(EntryTest, EmptyHostnameAndProcid) {
+    char *result = stumpless_entry_to_string(basic_entry);
+    ASSERT_NE(result, nullptr);
+    EXPECT_TRUE(strstr(result, "hostname=\"\"") != nullptr);
+    EXPECT_TRUE(strstr(result, "process_id=\"\"") != nullptr);
+    free(result);
+  }
+
+
   TEST_F( EntryTest, AddElement ) {
     struct stumpless_entry *entry;
     struct stumpless_element *element;

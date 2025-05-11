@@ -428,6 +428,7 @@
 "stumpless_unset_option": "stumpless/target.h"
 "STUMPLESS_VERSION": "stumpless/config.h"
 "stumpless_version_to_string": "stumpless/version.h"
+"stumpless_entry_to_string": "stumpless/entry.h"
 "STUMPLESS_WEL_EVENT_ALERT": "stumpless/windows/default_events.h"
 "STUMPLESS_WEL_EVENT_CRITICAL": "stumpless/windows/default_events.h"
 "STUMPLESS_WEL_EVENT_DEBUG": "stumpless/windows/default_events.h"

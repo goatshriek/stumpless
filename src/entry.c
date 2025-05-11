@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/facility.h>
@@ -1482,4 +1483,119 @@ unchecked_unload_entry( const struct stumpless_entry *entry ) {
 void
 unlock_entry( const struct stumpless_entry *entry ) {
   config_unlock_mutex( entry->mutex );
+}
+
+
+
+
+static size_t append_key_value_pair(char *dest, size_t offset, const char *key, size_t key_length, const char *value, size_t value_length) {
+  // key="
+  memcpy(dest + offset, key, key_length);
+  offset += key_length;
+  dest[offset++] = '=';
+  dest[offset++] = '"';
+
+  // value
+  if (value && value_length > 0) {
+    memcpy(dest + offset, value, value_length);
+    offset += value_length;
+  }
+
+  // "
+  dest[offset++] = '"';
+  dest[offset++] = ',';
+
+  return offset;
+}
+
+/*
+ * format and print struct entry to element_name="value"
+ * to format struct entry's elements used stumpless_element_to_string function
+ * if new element of struct entry created it should be added new element's string lines
+ * it use thread_safe function
+ */
+char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
+    VALIDATE_ARG_NOT_NULL(entry);
+
+    lock_entry(entry);
+
+    const char *app_name = entry->app_name;
+    size_t app_name_length = entry->app_name_length;
+    struct stumpless_element **elements = entry->elements;
+    size_t elements_count = entry->element_count;
+    const char *hostname = entry->hostname;
+    size_t hostname_length = entry->hostname_length;
+    char *message = entry->message;
+    size_t message_length = entry->message_length;
+    const char *message_id = entry->msgid;
+    size_t message_id_length = entry->msgid_length;
+    const char *process_id = entry->procid;
+    size_t process_id_length = entry->procid_length;
+    size_t entry_priority_value = entry->prival;
+
+    unlock_entry(entry);
+
+    size_t format_total_length = 0;
+
+    format_total_length += 7 + 20; // "prival=" + entry_priority_value
+    format_total_length += 9 + app_name_length; // "app_name="
+    format_total_length += 10 + hostname_length; // "hostname="
+    format_total_length += 12 + message_id_length; // "message_id="
+    format_total_length += 12 + process_id_length; // "process_id="
+    format_total_length += 9 + message_length; // "message="
+
+    for (size_t i = 0; i < elements_count; i++) {
+        const char *element_str = stumpless_element_to_string(elements[i]);
+        if (element_str) {
+            format_total_length += strlen(element_str) + 1; // +1 for comma
+        }
+    }
+
+    char *return_format = alloc_mem(format_total_length+1);
+    if (!return_format) {
+        return NULL;
+    }
+
+    size_t offset = 0;
+    char temp[21];
+
+  // prival
+  sprintf(temp, "%zu", entry_priority_value);
+  offset = append_key_value_pair(return_format, offset, "prival", strlen("prival"), temp, strlen(temp));
+
+  // app_name
+  offset = append_key_value_pair(return_format, offset, "app_name", strlen("app_name"), app_name, app_name_length);
+
+  // hostname
+  offset = append_key_value_pair(return_format, offset, "hostname", strlen("hostname"), hostname, hostname_length);
+
+  // message_id
+  offset = append_key_value_pair(return_format, offset, "message_id", strlen("message_id"), message_id, message_id_length);
+
+  // process_id
+  offset = append_key_value_pair(return_format, offset, "process_id", strlen("process_id"), process_id, process_id_length);
+
+  // message
+  offset = append_key_value_pair(return_format, offset, "message", strlen("message"), message, message_length);
+
+
+  int is_first_element = 1;
+  for (size_t i = 0; i < elements_count; i++) {
+    const char *element_str = stumpless_element_to_string(elements[i]);
+    if (element_str) {
+      size_t len = strlen(element_str);
+      if (len > 0) {
+        if (!is_first_element) {
+          return_format[offset++] = ',';
+        }
+        memcpy(return_format + offset, element_str, len);
+        offset += len;
+        is_first_element = 0;
+      }
+      free_mem(element_str);
+    }
+  }
+
+    return_format[offset] = '\0';
+    return return_format;
 }

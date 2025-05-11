@@ -259,3 +259,4 @@ EXPORTS
   stumpless_param_into_string                   @234
   stumpless_set_default_options                 @235
   stumpless_get_default_options                 @236
+  stumpless_entry_to_string                     @237

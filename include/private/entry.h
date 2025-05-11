@@ -26,7 +26,6 @@
 #include <stumpless/facility.h>
 #include <stumpless/severity.h>
 #include "private/strbuilder.h"
-
 /**
  * Frees entry cache
  *
