@@ -1548,7 +1548,9 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
         const char *element_str = stumpless_element_to_string(elements[i]);
         if (element_str) {
             format_total_length += strlen(element_str) + 1; // +1 for comma
+            free_mem(element_str);
         }
+
     }
 
     char *return_format = alloc_mem(format_total_length+1);
