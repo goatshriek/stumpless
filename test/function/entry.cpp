@@ -23,7 +23,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-#include <private/memory.h>
 
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
