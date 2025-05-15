@@ -150,9 +150,24 @@ namespace {
     ASSERT_NE(result, nullptr);
     EXPECT_TRUE(strstr(result, "hostname=\"\"") != nullptr);
     EXPECT_TRUE(strstr(result, "process_id=\"\"") != nullptr);
+    EXPECT_TRUE(strstr(result, "message_id=\"basic-msgid\"") != nullptr);
     free(result);
   }
 
+  TEST_F(EntryTest, NoneOfElementCheck) {
+    basic_entry->elements = nullptr;
+    basic_entry->element_count = 0;
+    char *result = stumpless_entry_to_string(basic_entry);
+    ASSERT_NE(result, nullptr);
+    printf("%s",result);
+
+
+    const char *expected_output =
+      "prival=\"14\",app_name=\"basic-app-name\",hostname=\"\""
+      ",message_id=\"basic-msgid\",process_id=\"\",message=\"basic message\"";
+    EXPECT_STREQ(result, expected_output);
+    free(result);
+  }
 
   TEST_F( EntryTest, AddElement ) {
     struct stumpless_entry *entry;
