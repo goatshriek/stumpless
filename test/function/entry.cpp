@@ -127,7 +127,7 @@ namespace {
     EXPECT_STREQ(result, expected_output);
     size_t len = strlen(result);
     EXPECT_NE(result[len - 1], ',');
-    free_mem(result);
+    free(result);
   }
 
   TEST_F(EntryTest, LastCommaCheck) {
@@ -137,12 +137,13 @@ namespace {
     size_t len = strlen(result);
     EXPECT_NE(result[len - 1], ',');
 
-    free_mem(result);
+    free(result);
   }
 
   TEST_F(EntryTest, NullEntry) {
     char *result = stumpless_entry_to_string(NULL);
     EXPECT_EQ(result, nullptr);
+    free(result);
   }
 
   TEST_F(EntryTest, EmptyHostnameAndProcid) {
@@ -150,7 +151,7 @@ namespace {
     ASSERT_NE(result, nullptr);
     EXPECT_TRUE(strstr(result, "hostname=\"\"") != nullptr);
     EXPECT_TRUE(strstr(result, "process_id=\"\"") != nullptr);
-    free_mem(result);
+    free(result);
   }
 
 
