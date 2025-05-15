@@ -159,8 +159,6 @@ namespace {
     basic_entry->element_count = 0;
     char *result = stumpless_entry_to_string(basic_entry);
     ASSERT_NE(result, nullptr);
-    printf("%s",result);
-
 
     const char *expected_output =
       "prival=\"14\",app_name=\"basic-app-name\",hostname=\"\""
