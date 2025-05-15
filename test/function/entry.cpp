@@ -23,6 +23,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
+#include <private/memory.h>
+
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
@@ -125,7 +127,7 @@ namespace {
     EXPECT_STREQ(result, expected_output);
     size_t len = strlen(result);
     EXPECT_NE(result[len - 1], ',');
-    free(result);
+    free_mem(result);
   }
 
   TEST_F(EntryTest, LastCommaCheck) {
@@ -135,7 +137,7 @@ namespace {
     size_t len = strlen(result);
     EXPECT_NE(result[len - 1], ',');
 
-    free(result);
+    free_mem(result);
   }
 
   TEST_F(EntryTest, NullEntry) {
@@ -148,7 +150,7 @@ namespace {
     ASSERT_NE(result, nullptr);
     EXPECT_TRUE(strstr(result, "hostname=\"\"") != nullptr);
     EXPECT_TRUE(strstr(result, "process_id=\"\"") != nullptr);
-    free(result);
+    free_mem(result);
   }
 
 
