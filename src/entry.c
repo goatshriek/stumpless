@@ -1532,7 +1532,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
     const char *process_id = entry->procid;
     size_t process_id_length = entry->procid_length;
     size_t entry_priority_value = entry->prival;
-    const char **element_string = alloc_mem( sizeof( const char *) * elements_count );
+    const char *element_string[elements_count];
 
   //allocate all elements_string
     for( size_t i = 0; i < elements_count; i++ ) {
@@ -1604,7 +1604,6 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
   for (size_t i = 0; i < elements_count; i++) {
     free_mem( element_string[i] );
   }
-  free_mem(element_string);
 
   //erase , if no element
   if(is_first_element) {
