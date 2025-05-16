@@ -1532,6 +1532,12 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
     const char *process_id = entry->procid;
     size_t process_id_length = entry->procid_length;
     size_t entry_priority_value = entry->prival;
+    const char *element_string[elements_count];
+
+  //allocate all elements_string
+    for( size_t i = 0; i < elements_count; i++ ) {
+      element_string[i] = stumpless_element_to_string( elements[i] );
+    }
 
     unlock_entry(entry);
 
@@ -1545,10 +1551,9 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
     format_total_length += 9 + message_length; // "message="
 
     for (size_t i = 0; i < elements_count; i++) {
-        const char *element_str = stumpless_element_to_string(elements[i]);
+        const char *element_str = element_string[i];
         if (element_str) {
             format_total_length += strlen(element_str) + 1; // +1 for comma
-            free_mem(element_str);
         }
 
     }
@@ -1583,7 +1588,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
 
   int is_first_element = 1;
   for (size_t i = 0; i < elements_count; i++) {
-    const char *element_str = stumpless_element_to_string(elements[i]);
+    const char *element_str = element_string[i];
     if (element_str) {
       size_t len = strlen(element_str);
         if (!is_first_element) {
@@ -1592,8 +1597,12 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
         memcpy(return_format + offset, element_str, len);
         offset += len;
         is_first_element = 0;
-      free_mem(element_str);
     }
+  }
+
+  //free all element_string
+  for (size_t i = 0; i < elements_count; i++) {
+    free_mem( element_string[i] );
   }
 
   //erase , if no element
