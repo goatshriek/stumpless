@@ -26,9 +26,8 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "로컬 UNIX 소켓에 바인딩할 수 없습니다"
 
-// todo translate
 #  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
-"buffer used to store the message"
+"메세지 저장에 사용되는 버퍼입니다"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "주어진 메시지에 대한 버퍼가 너무 작습니다"
@@ -210,9 +209,8 @@ ARG_NAME "이 NULL입니다"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "winsock2 소켓으로 send 호출에 실패"
 
-// todo translate
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"심각도를 나타내는 색상은 스트림 대상들에서만 지원됩니다"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "소켓 열기에 실패했습니다"
