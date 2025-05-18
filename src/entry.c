@@ -1496,10 +1496,9 @@ static size_t append_key_value_pair(char *dest, size_t offset, const char *key, 
   dest[offset++] = '"';
 
   // value
-  if (value && value_length > 0) {
     memcpy(dest + offset, value, value_length);
     offset += value_length;
-  }
+
 
   // "
   dest[offset++] = '"';
@@ -1584,7 +1583,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
   int is_first_element = 1;
   for (size_t i = 0; i < elements_count; i++) {
     const char *element_str = stumpless_element_to_string(elements[i]);
-    if (element_str) {
+
       size_t len = strlen(element_str);
         if (!is_first_element) {
           return_format[offset++] = ',';
@@ -1593,7 +1592,6 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
         offset += len;
         is_first_element = 0;
       free_mem(element_str);
-    }
   }
 
   //erase , if no element
