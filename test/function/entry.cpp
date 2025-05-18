@@ -155,9 +155,10 @@ namespace {
   }
 
   TEST_F(EntryTest, NoneOfElementCheck) {
-    basic_entry->elements = nullptr;
-    basic_entry->element_count = 0;
-    char *result = stumpless_entry_to_string(basic_entry);
+    struct stumpless_entry test_entry = *basic_entry;
+    test_entry.elements = nullptr;
+    test_entry.element_count = 0;
+    char *result = stumpless_entry_to_string(&test_entry);
     ASSERT_NE(result, nullptr);
 
     const char *expected_output =
