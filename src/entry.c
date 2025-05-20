@@ -1530,8 +1530,6 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
     size_t process_id_length = entry->procid_length;
     size_t entry_priority_value = entry->prival;
 
-    unlock_entry(entry);
-
     size_t format_total_length = 0;
 
     format_total_length += 7 + 20; // "prival=" + entry_priority_value
@@ -1547,7 +1545,6 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
             format_total_length += strlen(element_str) + 1; // +1 for comma
             free_mem(element_str);
         }
-
     }
 
     char *return_format = alloc_mem(format_total_length+1);
@@ -1591,6 +1588,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
         is_first_element = false;
       free_mem(element_str);
   }
+  unlock_entry(entry);
 
   //erase , if no element
   if(is_first_element) {
