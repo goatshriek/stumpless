@@ -1485,9 +1485,13 @@ unlock_entry( const struct stumpless_entry *entry ) {
   config_unlock_mutex( entry->mutex );
 }
 
-
-
-
+/*
+ * static function for stumpless_entry_to_string
+ *  @param dest string to append formatted string
+ *  @param size_t offset dest's offset
+ *  @param key,value it is formatted to key="value",
+ *  @return updated offset
+ */
 static size_t append_key_value_pair(char *dest, size_t offset, const char *key, size_t key_length, const char *value, size_t value_length) {
   // key="
   memcpy(dest + offset, key, key_length);
@@ -1507,12 +1511,6 @@ static size_t append_key_value_pair(char *dest, size_t offset, const char *key, 
   return offset;
 }
 
-/*
- * format and print struct entry to element_name="value"
- * to format struct entry's elements used stumpless_element_to_string function
- * if new element of struct entry created it should be added new element's string lines
- * it use thread_safe function
- */
 char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
     VALIDATE_ARG_NOT_NULL(entry);
 
@@ -1580,7 +1578,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
   offset = append_key_value_pair(return_format, offset, "message", strlen("message"), message, message_length);
 
 
-  int is_first_element = 1;
+  bool is_first_element = true;
   for (size_t i = 0; i < elements_count; i++) {
     const char *element_str = stumpless_element_to_string(elements[i]);
 
@@ -1590,7 +1588,7 @@ char *stumpless_entry_to_string(const struct stumpless_entry *entry) {
         }
         memcpy(return_format + offset, element_str, len);
         offset += len;
-        is_first_element = 0;
+        is_first_element = false;
       free_mem(element_str);
   }
 

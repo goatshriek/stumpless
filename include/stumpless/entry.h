@@ -45,7 +45,6 @@
 /** The maximum length of a msgid, as specified by RFC 5424. */
 #  define STUMPLESS_MAX_MSGID_LENGTH 32
 
-
 #  ifdef __cplusplus
 extern "C" {
 #  endif
@@ -145,9 +144,9 @@ struct stumpless_entry {
   *
   * @param entry The entry to get all elements
   *
-  *@return The formatted string of each entry's element  will formatted by element="value"
-  *and each string attach by " , ". But entry's struct stumpless_element section is made by
-  * stumpless_element_to_string() and attach.
+  * @return The formatted string of each entry's elements. Each element is
+  * formatted as element="value" and joined by " , ".  And append each element's
+  * string by stumpless_element_to_string
   */
  STUMPLESS_PUBLIC_FUNCTION
  char *stumpless_entry_to_string( const struct stumpless_entry *entry );

@@ -23,7 +23,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
-
 #include "test/helper/assert.hpp"
 #include "test/helper/fixture.hpp"
 #include "test/helper/memory_allocation.hpp"
@@ -155,16 +154,17 @@ namespace {
   }
 
   TEST_F(EntryTest, NoneOfElementCheck) {
-    struct stumpless_entry test_entry = *basic_entry;
-    test_entry.elements = nullptr;
-    test_entry.element_count = 0;
-    char *result = stumpless_entry_to_string(&test_entry);
+    struct stumpless_entry *test_entry = create_empty_entry();
+    char *result = stumpless_entry_to_string(test_entry);
     ASSERT_NE(result, nullptr);
 
     const char *expected_output =
-      "prival=\"14\",app_name=\"basic-app-name\",hostname=\"\""
-      ",message_id=\"basic-msgid\",process_id=\"\",message=\"basic message\"";
+      "prival=\"14\",app_name=\"fixture-app-name\",hostname=\"\""
+      ",message_id=\"fixture-msgid\",process_id=\"\",message=\"fixture message\"";
+
     EXPECT_STREQ(result, expected_output);
+
+    stumpless_destroy_entry_and_contents(test_entry);
     free(result);
   }
 
