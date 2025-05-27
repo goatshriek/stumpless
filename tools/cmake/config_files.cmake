@@ -1,11 +1,11 @@
 configure_file(
-    "${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in"
-    "${PROJECT_BINARY_DIR}/include/stumpess/config.h"
+  "${PROJECT_SOURCE_DIR}/include/stumpless/config.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/config.h"
 )
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/include/private/config.h.in"
-    "${PROJECT_BINARY_DIR}/include/private/config.h"
+  "${PROJECT_SOURCE_DIR}/include/private/config.h.in"
+  "${PROJECT_BINARY_DIR}/include/private/config.h"
 )
 
 configure_file(
@@ -35,7 +35,7 @@ foreach(UPCASE DOWNCASE SHORTNAME in ZIP_LISTS NAME_UPCASE NAME_DOWNCASE NAME_SH
   set(LEVEL_NAME_DOWNCASE "${DOWNCASE}")
   set(LEVEL_SHORTNAME "${SHORTNAME}")
   configure_file(
-    "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
-    "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
+  "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
+  "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
   )
 endforeach()
