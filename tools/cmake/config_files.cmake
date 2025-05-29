@@ -25,15 +25,11 @@ configure_file(
 )
 
 # generating level header files
-
-set(NAME_UPCASE ALERT CRIT DEBUG EMERG ERR INFO NOTICE WARNING TRACE)
 set(NAME_DOWNCASE alert crit debug emerg err info notice warning trace)
 set(NAME_SHORT a c d em er i n w t)
 
-foreach(UPCASE DOWNCASE SHORTNAME IN ZIP_LISTS NAME_UPCASE NAME_DOWNCASE NAME_SHORT)
-  set(LEVEL_NAME_UPCASE "${UPCASE}")
-  set(LEVEL_NAME_DOWNCASE "${DOWNCASE}")
-  set(LEVEL_SHORTNAME "${SHORTNAME}")
+foreach(LEVEL_NAME_DOWNCASE LEVEL_SHORTNAME IN ZIP_LISTS NAME_DOWNCASE NAME_SHORT)
+  string(TOUPPER "${LEVEL_NAME_DOWNCASE}" LEVEL_NAME_UPCASE)
   configure_file(
   "${PROJECT_SOURCE_DIR}/include/stumpless/level/level.h.in"
   "${PROJECT_BINARY_DIR}/include/stumpless/level/${LEVEL_NAME_DOWNCASE}.h"
