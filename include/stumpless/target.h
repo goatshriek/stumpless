@@ -129,7 +129,8 @@ struct stumpless_target;
  * NULL when called during logging.
  *
  * @param data A pointer to data that may hold anything that the filter function
- * needs to use in addition to the target and entry.
+ * needs to use in addition to the target and entry. This parameter was added in
+ * release v3.0.0.
  *
  * @return true if the entry should be sent to the target, false if not.
  */

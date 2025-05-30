@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1031,7 +1031,8 @@ namespace {
 
     result = stumpless_set_target_filter( target,
       []( const struct stumpless_target *target,
-          const struct stumpless_entry *entry) -> bool { return true; } );
+          const struct stumpless_entry *entry,
+          void *data ) -> bool { return true; } );
     EXPECT_EQ( result, target );
     EXPECT_NO_ERROR;
 

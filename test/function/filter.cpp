@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace {
                                              buffer,
                                              sizeof( buffer ) );
 
-      entry = create_entry(  );
+      entry = create_entry();
     }
 
     virtual void
@@ -62,8 +62,7 @@ namespace {
     stumpless_set_entry_severity( entry, STUMPLESS_SEVERITY_INFO );
     EXPECT_NO_ERROR;
 
-    EXPECT_TRUE( stumpless_mask_filter( target, entry ) );
-
+    EXPECT_TRUE( stumpless_mask_filter( target, entry, NULL ) );
   }
 
   TEST_F( FilterTest, MaskFilterReject ) {
@@ -79,6 +78,6 @@ namespace {
     stumpless_set_entry_severity( entry, STUMPLESS_SEVERITY_INFO );
     EXPECT_NO_ERROR;
 
-    EXPECT_FALSE( stumpless_mask_filter( target, entry ) );
+    EXPECT_FALSE( stumpless_mask_filter( target, entry, NULL ) );
   }
 }
