@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,24 +49,13 @@ namespace {
       struct stumpless_param *param;
 
       buffer[0] = '\0';
-      target = stumpless_open_buffer_target( "buffer target testing",
-                                             buffer,
+      target = stumpless_open_buffer_target( buffer,
                                              TEST_BUFFER_LENGTH );
 
       stumpless_set_target_default_app_name( target, "buffer-target-test" );
       stumpless_set_target_default_msgid( target, "default-message" );
 
-      basic_entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                         STUMPLESS_SEVERITY_INFO,
-                                        "stumpless-unit-test",
-                                        "basic-entry",
-                                        "basic test message" );
-
-      element = stumpless_new_element( "basic-element" );
-      stumpless_add_element( basic_entry, element );
-
-      param = stumpless_new_param( "basic-param-name", "basic-param-value" );
-      stumpless_add_param( element, param );
+      basic_entry = create_entry();
     }
 
     virtual void
@@ -94,9 +83,11 @@ namespace {
 
     EXPECT_THAT( read_buffer,
                  HasSubstr( std::to_string( basic_entry->prival ) ) );
-    EXPECT_THAT( read_buffer, HasSubstr( "basic-element" ) );
-    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-name" ) );
-    EXPECT_THAT( read_buffer, HasSubstr( "basic-param-value" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "fixture-element" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "fixture-param-1" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "fixture-value-1" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "fixture-param-2" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "fixture-value-2" ) );
 
     TestRFC5424Compliance(buffer);
   }
@@ -243,12 +234,10 @@ namespace {
   /* non-fixture tests */
 
   TEST( BufferTargetCloseTest, Generic ) {
-    const char *target_name = "normal target";
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( target_name,
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );
@@ -259,8 +248,6 @@ namespace {
 
     EXPECT_EQ( stumpless_get_current_target(  ),
                stumpless_get_default_target(  ) );
-    EXPECT_STRNE( stumpless_get_current_target(  )->name,
-                  target_name );
 
     stumpless_free_all(  );
   }
@@ -285,12 +272,11 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "normal target",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
-    EXPECT_EQ( target, stumpless_get_current_target(  ) );
+    EXPECT_EQ( target, stumpless_get_current_target() );
 
     stumpless_close_buffer_target( target );
   }
@@ -303,8 +289,7 @@ namespace {
     set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
     ASSERT_NOT_NULL( set_malloc_result );
 
-    target = stumpless_open_buffer_target( "malloc-fail-buffer",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) );
     EXPECT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
@@ -316,20 +301,8 @@ namespace {
   TEST( BufferTargetOpenTest, NullBuffer ) {
     const struct stumpless_target *target;
 
-    target = stumpless_open_buffer_target( "null-buffer",
-                                           NULL,
-                                           100 );
-    ASSERT_NULL( target );
-    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-  }
-
-  TEST( BufferTargetOpenTest, NullName ) {
-    struct stumpless_target *target;
-    char buffer[100];
-
     target = stumpless_open_buffer_target( NULL,
-                                           buffer,
-                                           sizeof( buffer ) );
+                                           100 );
     ASSERT_NULL( target );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
@@ -340,8 +313,7 @@ namespace {
     size_t i;
 
     for( i=0; i < 100; i++ ) {
-      targets[i] = stumpless_open_buffer_target( "many target test",
-                                                 buffer,
+      targets[i] = stumpless_open_buffer_target( buffer,
                                                  sizeof( buffer ) );
       EXPECT_NO_ERROR;
       ASSERT_NOT_NULL( targets[i] );
@@ -369,13 +341,12 @@ namespace {
     char read_buffer[READ_BUFFER_LENGTH];
     size_t read_result;
 
-    target = stumpless_open_buffer_target( "wrap-around-test",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
-    entry = create_entry(  );
+    entry = create_entry();
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( entry );
 
@@ -385,8 +356,7 @@ namespace {
 
     stumpless_close_buffer_target( target );
 
-    target = stumpless_open_buffer_target( "wrap-around-test",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            write_result + 2 );
     EXPECT_NO_ERROR;
     EXPECT_NOT_NULL( target );

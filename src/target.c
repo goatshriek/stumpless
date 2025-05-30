@@ -1153,9 +1153,13 @@ new_target( enum stumpless_target_type type, const char *name ) {
     goto fail;
   }
 
-  target->name = copy_cstring_with_length( name, &target->name_length );
-  if( !target->name ) {
-    goto fail_name;
+  if( name ){
+    target->name = copy_cstring_with_length( name, &target->name_length );
+    if( !target->name ) {
+      goto fail_name;
+    }
+  } else {
+    target->name = NULL;
   }
 
   config_assign_cached_mutex( target->mutex );
@@ -1165,7 +1169,7 @@ new_target( enum stumpless_target_type type, const char *name ) {
 
   target->id = NULL;
   target->type = type;
-  target->options = stumpless_get_default_options(  );
+  target->options = stumpless_get_default_options();
   target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
                                        STUMPLESS_DEFAULT_SEVERITY );
   target->default_app_name[0] = '-';
@@ -1182,6 +1186,7 @@ new_target( enum stumpless_target_type type, const char *name ) {
 
 fail_mutex:
   free_mem( target->name );
+  target->name = NULL;
 fail_name:
   free_mem( target );
 fail:

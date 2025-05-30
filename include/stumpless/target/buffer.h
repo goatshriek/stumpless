@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,9 +91,11 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  * Messages are overwritten as new messages come in. If the user of the buffer
  * target is not reading these, they will be lost.
  *
- * **Thread Safety: MT-Safe race:name**
- * This function is thread safe, of course assuming that name is not modified by
- * any other threads during execution.
+ * In versions prior to 3.0.0, this function also had a name parameter that
+ * was used for the target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
  *
  * **Async Signal Safety: AS-Unsafe heap**
  * This function is not safe to call from signal handlers due to the use of
@@ -102,9 +104,6 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  * **Async Cancel Safety: AC-Unsafe heap**
  * This function is not safe to call from threads that may be asynchronously
  * cancelled, as the memory allocation function may not be AC-Safe itself.
- *
- * @param name The name of the target to open. This is only used for
- * identification of the target.
  *
  * @param buffer The buffer to write messages to.
  *
@@ -115,8 +114,7 @@ stumpless_close_buffer_target( const struct stumpless_target *target );
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
-stumpless_open_buffer_target( const char *name,
-                              char *buffer,
+stumpless_open_buffer_target( char *buffer,
                               size_t size );
 
 /**

@@ -48,15 +48,13 @@ stumpless_close_buffer_target( const struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_open_buffer_target( const char *name,
-                              char *buffer,
+stumpless_open_buffer_target( char *buffer,
                               size_t size ) {
   struct stumpless_target *target;
 
-  VALIDATE_ARG_NOT_NULL( name );
   VALIDATE_ARG_NOT_NULL( buffer );
 
-  target = new_target( STUMPLESS_BUFFER_TARGET, name );
+  target = new_target( STUMPLESS_BUFFER_TARGET, NULL );
 
   if( !target ) {
     goto fail;

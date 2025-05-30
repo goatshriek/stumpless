@@ -23,6 +23,7 @@ fixes, check out the
    thread safety tests (default is ON).
  - `BUILD_BENCHMARKING` CMake option controls the building of the performance
    tests (default is OFF).
+ - Targets may have a mapping function to modify entries before they are logged.
 
 ### Changed
  - Refactor:
@@ -34,6 +35,12 @@ fixes, check out the
    build options for shared libraries and testing.
  - C++ is no longer required to build the project if testing and benchmarking
    are disabled.
+ - Filter functions have a third parameter of a void pointer, to allow custom
+   data to be used during decision making.
+ - Targets no longer have a name associated with them directly. Instead, a
+   name can be optionally assigned, and later used for retrieval. This removes
+   the `name` parameter from the following functions:
+    * `stumpless_open_buffer_target_`
 
 ### Fixed
  - Strings that are a case-insensitive prefix of a valid severity string are

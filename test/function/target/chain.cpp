@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2024 Joel E. Anderson
+ * Copyright 2024-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,7 @@ namespace {
       SetUp( void ) override {
         size_t i;
         chain = stumpless_new_chain( "test-fixture" );
-        target_1 = stumpless_open_buffer_target( "chain-element-1",
-                                                 buffer,
+        target_1 = stumpless_open_buffer_target( buffer,
                                                  sizeof( buffer ) );
         stumpless_add_target_to_chain( chain, target_1 );
 
@@ -75,8 +74,7 @@ namespace {
     starting_length = stumpless_get_chain_length( chain );
     EXPECT_NO_ERROR;
 
-    target = stumpless_open_buffer_target( "chain-add-new",
-                                           target_buffer,
+    target = stumpless_open_buffer_target( target_buffer,
                                            sizeof( target_buffer ) );
     ASSERT_NOT_NULL( target );
 
@@ -118,8 +116,7 @@ namespace {
     starting_length = stumpless_get_chain_length( full_chain );
     EXPECT_NO_ERROR;
 
-    target = stumpless_open_buffer_target( "chain-add-new",
-                                           target_buffer,
+    target = stumpless_open_buffer_target( target_buffer,
                                            sizeof( target_buffer ) );
     ASSERT_NOT_NULL( target );
 
@@ -157,8 +154,7 @@ namespace {
     starting_length = stumpless_get_chain_length( full_chain );
     EXPECT_NO_ERROR;
 
-    target = stumpless_open_buffer_target( "chain-add-new",
-                                           target_buffer,
+    target = stumpless_open_buffer_target( target_buffer,
                                            sizeof( target_buffer ) );
     ASSERT_NOT_NULL( target );
 
@@ -312,8 +308,7 @@ namespace {
     ASSERT_NOT_NULL( chain );
 
     for( i = 0; i < STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH + 1; i++ ){
-      sub_target = stumpless_open_buffer_target( "sub-target",
-                                                 buffer,
+      sub_target = stumpless_open_buffer_target( buffer,
                                                  sizeof( buffer ) );
       EXPECT_NO_ERROR;
 
