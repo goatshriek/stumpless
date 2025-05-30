@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020-2024 Joel E. Anderson
+ * Copyright 2020-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,9 +80,7 @@ namespace {
     struct stumpless_target *target;
 
     // set up the target to log to
-    target = stumpless_open_buffer_target( "thread-safety-test-buffer",
-                                           log_buffer,
-                                           LOG_BUFFER_SIZE );
+    target = stumpless_open_buffer_target( log_buffer, LOG_BUFFER_SIZE );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target );
 
@@ -110,9 +108,7 @@ namespace {
     stumpless_set_error_stream( error_stream );
 
     // set up the target to log to
-    target = stumpless_open_buffer_target( "thread-safety-test-buffer-perror",
-                                           log_buffer,
-                                           LOG_BUFFER_SIZE );
+    target = stumpless_open_buffer_target( log_buffer, LOG_BUFFER_SIZE );
     EXPECT_NO_ERROR;
     ASSERT_NOT_NULL( target ); 
 
