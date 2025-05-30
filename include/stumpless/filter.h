@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@
  */
 
 #ifndef __STUMPLESS_FILTER_H
-#  define __STUMPLESS_FILTER_H
+#define __STUMPLESS_FILTER_H
 
-#  include <stdbool.h>
-#  include <stumpless/config.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/target.h>
+#include <stdbool.h>
+#include <stumpless/config.h>
+#include <stumpless/entry.h>
+#include <stumpless/target.h>
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
 
 /**
  * Compares the severity of the entry to the current mask of the target, and
@@ -49,7 +49,7 @@ extern "C" {
  *
  * **Async Cancel Safety: AC-Unsafe lock**
  * This function is not safe to call from threads that may be asynchronously
- * cancelled, due to the use of a lock that could be left locked..
+ * cancelled, due to the use of a lock that could be left locked.
  *
  * @since release v2.1.0
  *
@@ -57,16 +57,19 @@ extern "C" {
  *
  * @param entry The entry that is being submitted to the target.
  *
+ * @param data Unused.
+ *
  * @return true if the severity of the entry is set in the target's mask,
  * false otherwise.
  */
 STUMPLESS_PUBLIC_FUNCTION
 bool
 stumpless_mask_filter( const struct stumpless_target *target,
-                       const struct stumpless_entry *entry );
+                       const struct stumpless_entry *entry,
+                       void *data );
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 } /* extern "C" */
-#  endif
+#endif
 
 #endif /* __STUMPLESS_FILTER_H */

@@ -210,7 +210,7 @@ stumpless_add_entry( struct stumpless_target *target,
   }
 
   filter = stumpless_get_target_filter( target );
-  if( filter && !filter( target, entry ) ) {
+  if( filter && !filter( target, entry, target->filter_data ) ) {
     return 0;
   }
 
@@ -1174,6 +1174,9 @@ new_target( enum stumpless_target_type type, const char *name ) {
   target->default_msgid_length = 1;
   target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
   target->filter = stumpless_mask_filter;
+  target->filter_data = NULL;
+  target->map = NULL;
+  target->map_data = NULL;
 
   return target;
 

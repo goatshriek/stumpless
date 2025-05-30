@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,10 @@
 
 bool
 stumpless_mask_filter( const struct stumpless_target *target,
-                       const struct stumpless_entry *entry ) {
+                       const struct stumpless_entry *entry,
+                       void *data ) {
+  (void) data;
+
   return STUMPLESS_SEVERITY_MASK( stumpless_get_entry_severity( entry ) )
            & stumpless_get_target_mask( target );
 }

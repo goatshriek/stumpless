@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -385,7 +385,8 @@ strbuilder_append_structured_data( struct strbuilder *builder,
  * Not safe in the context of asynchronous cancellation due to potential resource
  * cleanup issues.
  *
- * @since release v1.5.0lock_entry
+ * @since release v1.5.0
+ *
  * @param entry A pointer to the entry to be destroyed. Must not be NULL.
  */
 void

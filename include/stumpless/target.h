@@ -128,11 +128,41 @@ struct stumpless_target;
  * @param entry The entry that is being submitted to the target. Will not be
  * NULL when called during logging.
  *
+ * @param data A pointer to data that may hold anything that the filter function
+ * needs to use in addition to the target and entry.
+ *
  * @return true if the entry should be sent to the target, false if not.
  */
 typedef bool ( *stumpless_filter_func_t )(
   const struct stumpless_target *target,
-  const struct stumpless_entry *entry );
+  const struct stumpless_entry *entry,
+  void *data );
+
+/**
+ * A function that maps a given entry to another.
+ *
+ * Map functions are useful for adding, removing, or otherwise modifying an
+ * entry before it is logged to a target. They return a pointer to the mapped
+ * entry.
+ *
+ * Map functions should not modify the entry they operate on. If no modification
+ * is needed, then it is better to simply not specify a map function.
+ *
+ * @since release v3.0.0
+ *
+ * @param target The target that the map function was called as part of.
+ *
+ * @param entry The entry that this map function will base its output on.
+ *
+ * @param data A pointer to data that may hold anything that the map function
+ * needs to use in addition to the target and entry.
+ *
+ * @return A pointer to the mapped entry.
+ */
+typedef struct stumpless_entry * ( *stumpless_map_func_t )(
+  const struct stumpless_target *target,
+  const struct stumpless_entry *entry,
+  void *data );
 
 /**
  * A target that log entries can be sent to.
@@ -188,6 +218,30 @@ struct stumpless_target {
  * @since release v2.1.0
  */
   stumpless_filter_func_t filter;
+/**
+ * A pointer to data which may be used by the filter function.
+ *
+ * @since release v3.0.0
+ */
+  void *filter_data;
+/**
+ * A mapping function which will map the entry the target recieved to one that
+ * will be logged. This supports things including redacting specific items,
+ * adding new elements automatically, or mapping element or parameter values to
+ * other entry fields.
+ *
+ * If present, the map function is called after the filter, before the entry is
+ * logged to the target.
+ *
+ * @since release v3.0.0
+ */
+  stumpless_map_func_t map;
+/**
+  * A pointer to data which may be used by the map function.
+  *
+  * @since release v3.0.0
+  */
+  void *map_data;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
