@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2024 Joel E. Anderson
+ * Copyright 2019-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,16 +61,9 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
 
-    target = stumpless_open_buffer_target( "small-buffer-target",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) );
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "stumpless-unit-test",
-                                 "basic-entry",
-                                 "basic test message" );
-
+    entry = create_entry();
 
     stumpless_add_entry( target, entry ); // argument is too big
 
@@ -102,16 +95,9 @@ namespace {
     struct stumpless_target *target;
     struct stumpless_entry *entry;
 
-    target = stumpless_open_buffer_target( "small-buffer-target",
-                                           buffer,
+    target = stumpless_open_buffer_target( buffer,
                                            sizeof( buffer ) ) ;
-
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "stumpless-unit-test",
-                                 "basic-entry",
-                                 "basic test message" );
-
+    entry = create_entry();
 
     stumpless_add_entry( target, entry ); // argument is too big
 
@@ -150,8 +136,7 @@ namespace {
     stumpless_id_t actual_id;
     struct stumpless_entry *entry;
 
-    id_target = stumpless_open_buffer_target( "test-target",
-                                              buffer,
+    id_target = stumpless_open_buffer_target( buffer,
                                               sizeof( buffer ) ) ;
     actual_id = id_target->id;
     id_target->id = NULL;

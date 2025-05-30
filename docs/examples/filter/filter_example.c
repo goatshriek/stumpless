@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022-2024 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,10 @@
 // in them, as well as honoring the default target mask behavior
 bool
 ignore_element_filter( const struct stumpless_target *target,
-                       const struct stumpless_entry *entry ) {
+                       const struct stumpless_entry *entry,
+                       void *data ){
   return !stumpless_get_element_by_name( entry, "ignore" )
-           && stumpless_mask_filter( target, entry );
+           && stumpless_mask_filter( target, entry, data );
 }
 
 int

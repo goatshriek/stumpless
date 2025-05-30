@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2774,7 +2774,7 @@ namespace {
     char buffer[8096];
     const char *procid = "test-procid";
 
-    target = stumpless_open_buffer_target("output buffer", buffer, 8096);
+    target = stumpless_open_buffer_target(buffer, 8096);
     stumpless_set_option( target, STUMPLESS_OPTION_PID);
     ASSERT_NOT_NULL( target );
 
@@ -2949,7 +2949,7 @@ namespace {
     char buffer[8096];
     const char *hostname = "test-hostname";
 
-    target = stumpless_open_buffer_target("output buffer", buffer, 8096);
+    target = stumpless_open_buffer_target(buffer, 8096);
     ASSERT_NOT_NULL( target );
 
     entry = create_entry(  );

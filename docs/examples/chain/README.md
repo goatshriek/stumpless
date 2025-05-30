@@ -69,8 +69,7 @@ investigate them in our application later.
 
 ```c
 stderr_target = stumpless_open_stderr_target( "chain-example-stderr" );
-error_buffer_target = stumpless_open_buffer_target( "chain-example-buffer",
-                                                    error_buffer,
+error_buffer_target = stumpless_open_buffer_target( error_buffer,
                                                     sizeof( error_buffer ) );
 error_chain = stumpless_new_chain( "example-error-chain" );
 stumpless_add_target_to_chain( error_chain, stderr_target );

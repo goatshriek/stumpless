@@ -2,8 +2,9 @@
 Stumpless offers a number of functions that allow logging calls to be filtered
 out at compile time, causing zero performance impact to running workloads.
 However, sometimes you need the added flexibility to set and adjust filters
-in an existing binary, and compile-time filters are not feasible. Fortunately,
-there is also a runtime filtering mechanism that you can use to do just that.
+in an existing application, and compile-time filters just won't work.
+Fortunately, there is also a runtime filtering mechanism that you can use to do
+just that.
 
 By default, all targets have a runtime filter set that inspects the severity
 mask that's been set on a target. These masks are set to allow any entry
@@ -59,19 +60,20 @@ new_mask = mask & ~STUMPLESS_SEVERITY_MASK( STUMPLESS_SEVERITY_DEBUG ) );
 stumpless_set_target_mask( target, new_mask );
 ```
 
-But perhaps we have some magical filtering that we'd like to do. Maybe we want
+But perhaps we have some custom filtering that we'd like to do. Maybe we want
 to make sure that no entries are logged that contain an element named `ignore`.
 This seems reasonable.
 
 Stumpless provides a simple way to accomplish this! First, we need to write a
-filter function that takes the target and entry as parameters, and returns a
-decision on whether to allow the entry. In our case, we just check for the
-existence of an element with our chosen name.
+filter function that takes the target, entry, and a generic pointer as
+parameters, and returns a decision on whether to allow the entry. In our case,
+we just check for the existence of an element with our chosen name.
 
 ```c
 bool
 ignore_element_filter( const struct stumpless_target *target,
-                       const struct stumpless_entry *entry ) {
+                       const struct stumpless_entry *entry,
+                       void *data ){
   return !stumpless_get_element_by_name( entry, "ignore" );
 }
 ```
@@ -91,7 +93,8 @@ filtering and element name filtering, it would look like this:
 ```c
 bool
 ignore_element_filter( const struct stumpless_target *target,
-                       const struct stumpless_entry *entry ) {
+                       const struct stumpless_entry *entry,
+                       void *data ){
   return !stumpless_get_element_by_name( entry, "ignore" )
            && stumpless_mask_filter( target, entry );
 }

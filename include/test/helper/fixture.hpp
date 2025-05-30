@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2020-2023 Joel E. Anderson
+ * Copyright 2020-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
  */
 
 #ifndef __STUMPLESS_TEST_HELPER_FIXTURE_HPP
-#  define __STUMPLESS_TEST_HELPER_FIXTURE_HPP
+#define __STUMPLESS_TEST_HELPER_FIXTURE_HPP
 
-#  include <cstdlib>
-#  include <gtest/gtest.h>
-#  include <string>
-#  include <stumpless.h>
+#include <cstdlib>
+#include <gtest/gtest.h>
+#include <string>
+#include <stumpless.h>
 
-#  define BUFFER_TARGET_FIXTURE_CLASS( CLASS_NAME )                            \
+#define BUFFER_TARGET_FIXTURE_CLASS( CLASS_NAME )                              \
 class CLASS_NAME : public::testing::Test {                                     \
 protected:                                                                     \
   char buffer[8192];                                                           \
@@ -35,9 +35,7 @@ protected:                                                                     \
   virtual void                                                                 \
   SetUp( void ) {                                                              \
     buffer[0] = '\0';                                                          \
-    target = stumpless_open_buffer_target( "info level testing",               \
-                                           buffer,                             \
-                                           sizeof( buffer ) );                 \
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );         \
                                                                                \
     stumpless_set_target_default_app_name( target, "info-level-test" );        \
     stumpless_set_target_default_msgid( target, "default-message" );           \

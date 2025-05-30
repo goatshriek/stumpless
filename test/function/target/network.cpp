@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2024 Joel E. Anderson
+ * Copyright 2019-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ namespace {
     const char *result;
 
     result = stumpless_get_destination( NULL );
-    EXPECT_TRUE( result == NULL );
+    EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
   }
 
@@ -86,9 +86,7 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-network-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_get_destination( target );
@@ -111,9 +109,7 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_get_transport_port( target );
@@ -128,9 +124,7 @@ namespace {
     struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_get_udp_max_message_size( target );
@@ -370,9 +364,7 @@ namespace {
     struct stumpless_target *result;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_destination( target, "localhost" );
@@ -433,9 +425,7 @@ namespace {
     struct stumpless_target *result;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_transport_port( target, "5514" );
@@ -501,9 +491,7 @@ namespace {
     struct stumpless_target *result;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_set_udp_max_message_size( target, 1500 );
@@ -548,9 +536,7 @@ namespace {
     const struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_get_network_protocol( target );
@@ -587,9 +573,7 @@ namespace {
     const struct stumpless_target *target;
     char buffer[100];
 
-    target = stumpless_open_buffer_target( "not-a-udp-target",
-                                           buffer,
-                                           sizeof( buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     ASSERT_NOT_NULL( target );
 
     result = stumpless_get_transport_protocol( target );

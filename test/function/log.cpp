@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,15 +35,12 @@ namespace {
   protected:
     char buffer[TEST_BUFFER_LENGTH];
     struct stumpless_target *target;
-    const char *target_name = "test-target";
     const char *default_app_name = "target-default-app-name";
     const char *default_msgid = "target-default-msgid";
 
     virtual void
     SetUp( void ) {
-      target = stumpless_open_buffer_target( target_name,
-                                             buffer,
-                                             sizeof( buffer ) );
+      target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
 
       stumpless_set_target_default_app_name( target, default_app_name );
       stumpless_set_target_default_msgid( target, default_msgid );
@@ -54,7 +51,6 @@ namespace {
     virtual void
     TearDown( void ) {
       stumpless_close_buffer_target( target );
-
       stumpless_free_all(  );
     }
   };

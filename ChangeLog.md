@@ -54,6 +54,7 @@ fixes, check out the
    `GTEST_PATH` and `BENCHMARK_PATH` CMake options. These libraries are now
    provided using CMake `FetchContent` with `FIND_PACKAGE_ARGS` to search for
    an existing installation.
+ - `stumpless_get_target_name`
 
 
 ## [2.2.0] - 2024-05-26

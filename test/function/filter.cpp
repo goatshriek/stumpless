@@ -34,10 +34,7 @@ namespace {
 
     virtual void
     SetUp( void ) {
-      target = stumpless_open_buffer_target( "filter-target",
-                                             buffer,
-                                             sizeof( buffer ) );
-
+      target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
       entry = create_entry();
     }
 

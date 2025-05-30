@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -428,8 +428,10 @@ namespace {
   }
 
   TEST(StreamSetSeverityColorTest, WrongTargetType) {
-    char buf;
-    struct stumpless_target *target = stumpless_open_buffer_target("buffer", &buf, 1);
+    char buf[1];
+    struct stumpless_target *target;
+
+    target = stumpless_open_buffer_target( buf, sizeof(buf) );
     stumpless_set_severity_color(target, STUMPLESS_SEVERITY_ALERT, "\33[0m");
 
     EXPECT_ERROR_ID_EQ(STUMPLESS_TARGET_UNSUPPORTED);
