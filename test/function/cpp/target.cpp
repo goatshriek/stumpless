@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2022 Joel E. Anderson
+ * Copyright 2022-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,24 +49,26 @@ namespace {
   }
 
   TEST_F( CppTargetTest, SetFilter ) {
-    stumpless_filter_func_t old_filter = target->GetFilter(  );
-
-    target->SetFilter( []( const struct stumpless_target *target,
-                           const struct stumpless_entry *entry ) -> bool {
+    stumpless_filter_func_t old_filter = target->GetFilter();
+    stumpless_filter_func_t new_filter = []( const struct stumpless_target *target,
+                                             const struct stumpless_entry *entry,
+                                             void *data ) -> bool {
       return true;
-    } );
+    };
 
-    ASSERT_NE( target->GetFilter(  ), old_filter );
+    target->SetFilter( new_filter, NULL );
+
+    ASSERT_NE( target->GetFilter(), old_filter );
   }
 
   TEST_F( CppTargetTest, SetMask ) {
-    int old_mask = target->GetMask(  );
+    int old_mask = target->GetMask();
     int new_mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_ERR );
     ASSERT_NE( old_mask, new_mask );
 
     target->SetMask( new_mask );
 
-    int actual_mask = target->GetMask(  );
+    int actual_mask = target->GetMask();
     EXPECT_EQ( actual_mask, new_mask );
   }
 }

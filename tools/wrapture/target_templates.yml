@@ -311,7 +311,7 @@ templates:
           - name: "filter"
             doc: "The new filter to use for this target."
             type: "stumpless_filter_func_t"
-          - name: "filter"
+          - name: "data"
             doc: "The data passed to the filter."
             type: "void *"
         return:
