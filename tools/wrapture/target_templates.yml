@@ -92,24 +92,6 @@ templates:
           return:
             type: "int"
           use-template: "error-code-check"
-      - name: "GetName"
-        doc: >
-          Returns the name of this target.
-
-          The returned character buffer must be freed by the caller when it is
-          no longer needed to avoid memory leaks.
-
-          Available since release v2.0.0.
-        return:
-          doc: "The name of this Target."
-          type: "const char *"
-        wrapped-function:
-          name: "stumpless_get_target_name"
-          includes: "stumpless/target.h"
-          params:
-            - value: "equivalent-struct-pointer"
-          return:
-            type: "const char *"
       - name: "GetOption"
         doc: >
           Gets the given option for this target.

@@ -19,9 +19,6 @@ classes:
           name: "stumpless_open_buffer_target"
           includes: "stumpless/target/buffer.h"
           params:
-            - name: "name"
-              doc: "The name of this target."
-              type: "const char *"
             - name: "buffer"
               doc: "The buffer to log events to."
               type: "char *"
