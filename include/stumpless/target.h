@@ -238,10 +238,10 @@ struct stumpless_target {
  */
   stumpless_map_func_t map;
 /**
-  * A pointer to data which may be used by the map function.
-  *
-  * @since release v3.0.0
-  */
+ * A pointer to data which may be used by the map function.
+ *
+ * @since release v3.0.0
+ */
   void *map_data;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**

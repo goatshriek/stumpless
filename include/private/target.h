@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_TARGET_H
-#  define __STUMPLESS_PRIVATE_TARGET_H
+#define __STUMPLESS_PRIVATE_TARGET_H
 
-#  include <stddef.h>
-#  include <stumpless/entry.h>
-#  include <stumpless/target.h>
-#  include "private/config.h"
+#include <stddef.h>
+#include <stumpless/entry.h>
+#include <stumpless/target.h>
+#include "private/config.h"
 
 void
 destroy_target( const struct stumpless_target *target );

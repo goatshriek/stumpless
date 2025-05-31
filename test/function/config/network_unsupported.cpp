@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2019-2020 Joel E. Anderson
+ * Copyright 2019-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,20 +24,14 @@ namespace {
 
   TEST( NetworkTargetTest, Add ) {
     struct stumpless_target *target;
-    char unused_buffer[100];
+    char buffer[100];
     struct stumpless_entry *entry;
-    const struct stumpless_error *error;
     int result;
 
-    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
-                                 STUMPLESS_SEVERITY_INFO,
-                                 "stumpless-unit-test",
-                                 "basic-entry",
-                                 "basic test message" );
+    entry = screate_entry();
+    ASSERT_NOT_NULL( entry );
 
-    target = stumpless_open_buffer_target( "fake-network-target",
-                                           unused_buffer,
-                                           sizeof( unused_buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_add_entry( target, entry );
@@ -52,12 +46,9 @@ namespace {
 
   TEST( NetworkTargetTest, GenericClose ) {
     struct stumpless_target *target;
-    char unused_buffer[100];
-    const struct stumpless_error *error;
+    char buffer[100];
 
-    target = stumpless_open_buffer_target( "fake-network-target",
-                                           unused_buffer,
-                                           sizeof( unused_buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     stumpless_close_target( target );
@@ -69,13 +60,10 @@ namespace {
 
   TEST( NetworkTargetTest, IsOpen ) {
     struct stumpless_target *target;
-    char unused_buffer[100];
+    char buffer[100];
     const struct stumpless_target *result;
-    const struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "fake-network-target",
-                                           unused_buffer,
-                                           sizeof( unused_buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_target_is_open( target );
@@ -88,13 +76,10 @@ namespace {
 
   TEST( NetworkTargetTest, Open ) {
     struct stumpless_target *target;
-    char unused_buffer[100];
+    char buffer[100];
     const struct stumpless_target *result;
-    const struct stumpless_error *error;
 
-    target = stumpless_open_buffer_target( "fake-network-target",
-                                           unused_buffer,
-                                           sizeof( unused_buffer ) );
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     target->type = STUMPLESS_NETWORK_TARGET;
 
     result = stumpless_open_target( target );

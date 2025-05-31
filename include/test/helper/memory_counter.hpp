@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@
  */
 
 #ifndef __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP
-#  define __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP
+#define __STUMPLESS_TEST_HELPER_MEMORY_COUNTER_HPP
 
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <cstdlib>
 #include <stumpless.h>
-#include <stumpless/memory.h>
 
 struct memory_counter {
   size_t malloc_count;
