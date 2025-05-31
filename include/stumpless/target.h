@@ -794,6 +794,32 @@ stumpless_filter_func_t
 stumpless_get_target_filter( const struct stumpless_target *target );
 
 /**
+ * Gets the current pointer passed to the filter function on the target.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe. A mutex is used to coordinate changes to the
+ * target while it is being read.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock to coordinate the read of the target.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the use of a lock that could be left locked.
+ *
+ * @since release v3.0.0
+ *
+ * @param target The target to get the filter data pointer from.
+ *
+ * @return The filter data pointer of the target, or NULL if an error is
+ * encountered. If an error is encountered, an error code is set appropriately.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+void *
+stumpless_get_target_filter_data( const struct stumpless_target *target );
+
+/**
  * Gets the log mask of a target.
  *
  * The mask is a bit field of severities that this target will allow if the
@@ -1104,13 +1130,17 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
  * @param filter The filter to be used by the target. This can be NULL if all
  * entries should be logged by the target with no filtering.
  *
+ * @param data A pointer that will be passed to the filter when it runs. This
+ * parameter was added in v3.0.0.
+ *
  * @return The modified target if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
  */
 STUMPLESS_PUBLIC_FUNCTION
 struct stumpless_target *
 stumpless_set_target_filter( struct stumpless_target *target,
-                             stumpless_filter_func_t filter );
+                             stumpless_filter_func_t filter,
+                             void *data );
 
 /**
  * Sets the log mask of a target.

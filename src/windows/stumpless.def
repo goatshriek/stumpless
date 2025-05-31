@@ -260,3 +260,4 @@ EXPORTS
   stumpless_set_default_options                 @235
   stumpless_get_default_options                 @236
   stumpless_entry_to_string                     @237
+  stumpless_get_target_filter_data              @238

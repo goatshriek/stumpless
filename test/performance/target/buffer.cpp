@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2024 Joel E. Anderson
+ * Copyright 2024-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,9 +40,9 @@ public:
 
 BENCHMARK_F( BufferFixture, OpenBufferTarget )( benchmark::State &state ) {
   for( auto _ : state ) {
-    struct stumpless_target *target = stumpless_open_buffer_target( "buffer-perf",
-                                                                    buffer,
-                                                                    sizeof( buffer ) );
+    struct stumpless_target *target;
+
+    target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     if( !target ) {
       state.SkipWithError( "could not open buffer target" );
     }

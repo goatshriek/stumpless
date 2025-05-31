@@ -605,6 +605,19 @@ stumpless_get_target_filter( const struct stumpless_target *target ) {
   return filter;
 }
 
+void *
+stumpless_get_target_filter_data( const struct stumpless_target *target ){
+  void *data;
+  VALIDATE_ARG_NOT_NULL( target );
+
+  lock_target( target );
+  data = target->filter_data;
+  unlock_target( target );
+
+  clear_error();
+  return data;
+}
+
 int
 stumpless_get_target_mask( const struct stumpless_target *target ) {
   int mask;
@@ -788,11 +801,13 @@ stumpless_set_target_default_msgid( struct stumpless_target *target,
 
 struct stumpless_target *
 stumpless_set_target_filter( struct stumpless_target *target,
-                             stumpless_filter_func_t filter ) {
+                             stumpless_filter_func_t filter,
+                             void *data ){
   VALIDATE_ARG_NOT_NULL( target );
 
   lock_target( target );
   target->filter = filter;
+  target->filter_data = data;
   unlock_target( target );
 
   clear_error(  );

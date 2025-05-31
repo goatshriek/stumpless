@@ -20,14 +20,22 @@
 #include <stdlib.h>
 #include <stumpless.h>
 
-// this is our custom filter that rejects entries with an element named 'ignore'
-// in them, as well as honoring the default target mask behavior
+// this is our custom filter that rejects entries with an element of a specific
+// name in them, as well as honoring the default target mask behavior
 bool
 ignore_element_filter( const struct stumpless_target *target,
                        const struct stumpless_entry *entry,
                        void *data ){
-  return !stumpless_get_element_by_name( entry, "ignore" )
-           && stumpless_mask_filter( target, entry, data );
+  const char *ignore_name;
+
+  if( data ){
+    ignore_name = data;
+  } else {
+    ignore_name = "ignore";
+  }
+
+  return !stumpless_get_element_by_name( entry, ignore_name )
+           && stumpless_mask_filter( target, entry, NULL );
 }
 
 int
@@ -95,7 +103,9 @@ main( int argc, char **argv ) {
 
   // if we want to customize the filtering even more, then we can set the filter
   // to our own custom function
-  stumpless_set_target_filter( target, ignore_element_filter );
+  // in this case, we could customize the filter's behavior with the third
+  // argument if we needed to
+  stumpless_set_target_filter( target, ignore_element_filter, NULL );
 
 
   // let's create an entry to send to our target
@@ -122,12 +132,10 @@ main( int argc, char **argv ) {
 
   // there's no output to be seen!
 
-
   // destroying all the resources before finishing up
   stumpless_destroy_entry_and_contents( entry );
   stumpless_close_stream_target( target );
-  stumpless_free_all(  );
-
+  stumpless_free_all();
 
   return EXIT_SUCCESS;
 }

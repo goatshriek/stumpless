@@ -24,6 +24,8 @@ fixes, check out the
  - `BUILD_BENCHMARKING` CMake option controls the building of the performance
    tests (default is OFF).
  - Targets may have a mapping function to modify entries before they are logged.
+ - The following functions:
+    * `stumpless_get_target_filter_data`
 
 ### Changed
  - Refactor:

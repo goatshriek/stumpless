@@ -942,6 +942,7 @@ namespace {
     char buffer[100];
     struct stumpless_target *target;
     stumpless_filter_func_t first_filter;
+    stumpless_filter_func_t new_filter;
     const struct stumpless_target *result;
 
     target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
@@ -950,10 +951,12 @@ namespace {
     first_filter = stumpless_get_target_filter( target );
     EXPECT_NOT_NULL( first_filter );
 
-    result = stumpless_set_target_filter( target,
-      []( const struct stumpless_target *target,
+    new_filter = []( const struct stumpless_target *target,
           const struct stumpless_entry *entry,
-          void *data ) -> bool { return true; } );
+          void *data ) -> bool { return true; };
+    result = stumpless_set_target_filter( target,
+                                          new_filter,
+                                          NULL );
     EXPECT_EQ( result, target );
     EXPECT_NO_ERROR;
 
@@ -966,10 +969,10 @@ namespace {
   TEST( SetFilter, NullTarget ) {
     const struct stumpless_target *result;
 
-    result = stumpless_set_target_filter( NULL, stumpless_mask_filter );
+    result = stumpless_set_target_filter( NULL, stumpless_mask_filter, NULL );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
   TEST( SetMask, NullTarget ) {
@@ -978,7 +981,7 @@ namespace {
     result = stumpless_set_target_mask( NULL, 0 );
     EXPECT_NULL( result );
     EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
-    stumpless_free_all(  );
+    stumpless_free_all();
   }
 
   TEST( SetOption, Cons ) {

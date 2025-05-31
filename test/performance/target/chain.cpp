@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2024 Joel E. Anderson
+ * Copyright 2024-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,7 @@ protected:
 public:
   void SetUp( const ::benchmark::State &state ) {
     chain_target = stumpless_new_chain( "chain-perf" );
-    sub_target = stumpless_open_buffer_target( "chain-perf-sub",
-                                               buffer,
-                                               sizeof( buffer ) );
+    sub_target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
     stumpless_add_target_to_chain( chain_target, sub_target );
     entry = create_entry();
     INIT_MEMORY_COUNTER( chain );

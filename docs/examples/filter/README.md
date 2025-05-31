@@ -81,7 +81,7 @@ ignore_element_filter( const struct stumpless_target *target,
 And then we apply the new filter to the target like so:
 
 ```c
-stumpless_set_filter( target, ignore_element_filter );
+stumpless_set_target_filter( target, ignore_element_filter, NULL );
 ```
 
 That's it! Now any messages sent through this target will use our filter
@@ -96,8 +96,39 @@ ignore_element_filter( const struct stumpless_target *target,
                        const struct stumpless_entry *entry,
                        void *data ){
   return !stumpless_get_element_by_name( entry, "ignore" )
-           && stumpless_mask_filter( target, entry );
+           && stumpless_mask_filter( target, entry, NULL );
 }
+```
+
+Up until this point we haven't used the data parameter that filter functions
+have. This is available for filters that want to make decisions on more than
+what the target and entry provide. Let's use it to make the name for elements
+that we're going to ignore customizable.
+
+```c
+bool
+ignore_element_filter( const struct stumpless_target *target,
+                       const struct stumpless_entry *entry,
+                       void *data ){
+  const char *ignore_name;
+
+  if( data ){
+    ignore_name = data;
+  } else {
+    ignore_name = "ignore";
+  }
+
+  return !stumpless_get_element_by_name( entry, ignore_name )
+           && stumpless_mask_filter( target, entry, NULL );
+}
+```
+
+Now our filter can ignore messages with any message name, defaulting to
+"ignore" if one is not provided. When setting the filter, you provide the
+element name you want to filter out as the data pointer.
+
+```c
+stumpless_set_target_filter( target, ignore_element_filter, "drop" );
 ```
 
 For a list of available filters provided by stumpless, check out the
