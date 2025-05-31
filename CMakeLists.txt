@@ -404,7 +404,9 @@ else()
   endif(WIN32)
 
   add_function_test(network_unsupported
-    SOURCES "${PROJECT_SOURCE_DIR}/test/function/config/network_unsupported.cpp"
+    SOURCES
+      "${PROJECT_SOURCE_DIR}/test/function/config/network_unsupported.cpp"
+      $<TARGET_OBJECTS:test_helper_fixture>
   )
 endif()
 

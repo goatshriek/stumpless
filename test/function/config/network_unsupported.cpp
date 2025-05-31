@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include "test/helper/fixture.hpp"
 
 namespace {
 
@@ -28,7 +29,7 @@ namespace {
     struct stumpless_entry *entry;
     int result;
 
-    entry = screate_entry();
+    entry = create_entry();
     ASSERT_NOT_NULL( entry );
 
     target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );

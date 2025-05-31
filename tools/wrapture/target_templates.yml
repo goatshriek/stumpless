@@ -311,6 +311,9 @@ templates:
           - name: "filter"
             doc: "The new filter to use for this target."
             type: "stumpless_filter_func_t"
+          - name: "filter"
+            doc: "The data passed to the filter."
+            type: "void *"
         return:
           doc: "The modified target."
           type: "self-reference"
@@ -319,6 +322,7 @@ templates:
           params:
             - value: "equivalent-struct-pointer"
             - value: "filter"
+            - value: "data"
           return:
             type: "struct stumpless_target *"
           use-template: "pointer-return-error-check"

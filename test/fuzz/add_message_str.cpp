@@ -13,7 +13,7 @@ LLVMFuzzerTestOneInput( const uint8_t *data, size_t size ) {
   memcpy( terminated_data, data, size );
   terminated_data[size] = '\0';
 
-  target = stumpless_open_buffer_target( "fuzzer", buffer, sizeof( buffer ) );
+  target = stumpless_open_buffer_target( buffer, sizeof( buffer ) );
   stumpless_add_message_str( target, terminated_data );
   stumpless_close_buffer_target( target );
 
