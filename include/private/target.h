@@ -27,6 +27,28 @@
 void
 destroy_target( const struct stumpless_target *target );
 
+/**
+ * Initializes a given target structure.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe, as it initializes the lock that is
+ * otherwise used to coordinate changes
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not safe to call from signal handlers due to the
+ * initialization of the lock.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * This function is not safe to call from signal handlers due to the
+ * initialization of the lock.
+ *
+ * @param target The target structure to initialize.
+ *
+ * @return The initialized target, or NULL if an error occurs.
+ */
+struct stumpless_target *
+load_target( struct stumpless_target *target );
+
 void
 lock_target( const struct stumpless_target *target );
 
@@ -88,6 +110,9 @@ target_free_thread( void );
 
 int
 unchecked_get_option( const struct stumpless_target *target, int option );
+
+void
+unload_target( const struct stumpless_target *target );
 
 void
 unlock_target( const struct stumpless_target *target );

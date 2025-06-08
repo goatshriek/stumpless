@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <cstddef>
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include <stumpless.hpp>
@@ -41,24 +42,26 @@ namespace {
   };
 
   TEST_F( CppTargetTest, GetFilter ) {
-    target->GetFilter(  );
+    target->GetFilter();
   }
 
   TEST_F( CppTargetTest, GetMask ) {
-    target->GetMask(  );
+    target->GetMask();
   }
 
   TEST_F( CppTargetTest, SetFilter ) {
     stumpless_filter_func_t old_filter = target->GetFilter();
-    stumpless_filter_func_t new_filter = []( const struct stumpless_target *target,
-                                             const struct stumpless_entry *entry,
-                                             void *data ) -> bool {
+    stumpless_filter_func_t new_filter;
+
+    new_filter= []( const struct stumpless_target *target,
+                    const struct stumpless_entry *entry,
+                    void *data ) -> bool {
       return true;
     };
 
     target->SetFilter( new_filter, NULL );
-
     ASSERT_NE( target->GetFilter(), old_filter );
+    ASSERT_EQ( target->GetFilter(), new_filter );
   }
 
   TEST_F( CppTargetTest, SetMask ) {

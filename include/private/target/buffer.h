@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
  */
 
 #ifndef __STUMPLESS_PRIVATE_TARGET_BUFFER_H
-#  define __STUMPLESS_PRIVATE_TARGET_BUFFER_H
+#define __STUMPLESS_PRIVATE_TARGET_BUFFER_H
 
-#  include <stddef.h>
-#  include <stumpless/config.h>
-#  include "private/config/wrapper/thread_safety.h"
+#include <stddef.h>
+#include <stumpless/config.h>
+#include "private/config/wrapper/thread_safety.h"
 
 /**
  * Internal representation of a buffer target.
@@ -30,6 +30,8 @@
  * of the buffer is reached, and writing over older messages.
  */
 struct buffer_target {
+/** The base target structure. */
+  struct stumpless_target target;
 /** The buffer logged messages are written into. */
   char *buffer;
 /** The size of buffer. */
@@ -43,67 +45,12 @@ struct buffer_target {
  * Protects updates to buffer and the position counters. This mutex must be
  * locked by a thread before it can read from or write to the buffer.
  *
- * Size is _not_ protected by this mutex, as it must not change over the life
- * of the buffer target.
+ * The size field is _not_ protected by this mutex, as it must not change over
+ * the life of the buffer target.
  */
   config_mutex_t buffer_mutex;
 #  endif
 };
-
-/**
- * @brief Cleans up and deallocates a buffer target structure.
- *
- * This function is responsible for releasing the resources associated with
- * a `buffer_target` structure. Specifically, it destroys the mutex protecting
- * the buffer and frees the memory occupied by the `buffer_target` instance.
- *
- * **Thread Safety: MT-Unsafe**
- * The caller must ensure that no other threads are accessing the buffer_target 
- * while this function is executed.
- * 
- * **Async Signal Safety: AS-Unsafe*
- * The function destroys a mutex, which is not safe to use in a signal handler context.
- * 
- * **Async Cancel Safety: AC-Unsafe**
- * The function is not safe to call from threads that may be asynchronously canceled.
- * If a thread is canceled while destroying the mutex or freeing memory, it might leave
- * the program in an inconsistent state.
- * 
- * @param target A pointer to the `buffer_target` structure to be destroyed.
- *               Must not be `NULL`.
- */
-void
-destroy_buffer_target( const struct buffer_target *target );
-
-/**
- * @brief Creates and initializes a new buffer target structure.
- *
- * This function allocates memory for a `buffer_target` structure and initializes
- * its fields. The buffer target is designed to manage a pre-allocated buffer
- * with specified size, enabling read and write operations.
- *
- * **Thread Safety: MT-Safe**
- * The function is thread-safe because it initializes a mutex (buffer_mutex)
- * specifically for the buffer_target. This ensures that subsequent operations on
- * the buffer_target can be performed in a thread-safe manner.
- * 
- * **Async Signal Safety: AS-Unsafe*
- * It uses dynamic memory allocation (e.g., malloc or similar), which is not signal-safe. 
- * 
- * **Async Cancel Safety: AC-Unsafe**
- * The function is not safe to call from threads that may be asynchronously canceled
- * because the memory allocation (or its failure) might not handle thread cancellation properly
- * 
- * @param buffer A pointer to the pre-allocated memory buffer that this target
- *               will manage. This buffer must be valid for the lifetime of the
- *               `buffer_target` structure.
- * @param size The size of the buffer in bytes.
- *
- * @return A pointer to the newly allocated and initialized `buffer_target`
- *         structure, or `NULL` if memory allocation fails.
- */
-struct buffer_target *
-new_buffer_target( char *buffer, size_t size );
 
 /**
  * @brief Writes a message to a buffer target, wrapping around if needed.

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2024 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@
 #include <stumpless/param.h>
 #include <stumpless/severity.h>
 #include <stumpless/target.h>
-#include <stumpless/error.h>
 #include <stumpless/target/buffer.h>
 #include <stumpless/target/file.h>
 #include <stumpless/target/function.h>
@@ -259,7 +258,8 @@ stumpless_add_entry( struct stumpless_target *target,
   switch ( target->type ) {
 
     case STUMPLESS_BUFFER_TARGET:
-      result = sendto_buffer_target( target->id, buffer, builder_length );
+      //result = sendto_buffer_target( ( struct buffer_target * ) target, buffer, builder_length );
+      result = target->send( target, entry, target->send_data );
       break;
 
     case STUMPLESS_FILE_TARGET:
@@ -1147,11 +1147,33 @@ vstumpless_trace_message( struct stumpless_target *target,
 
 void
 destroy_target( const struct stumpless_target *target ) {
-  config_compare_exchange_ptr( &current_target, target, NULL );
-
-  config_destroy_cached_mutex( target->mutex );
+  unload_target( target );
   free_mem( target->name );
   free_mem( target );
+}
+
+struct stumpless_target *
+load_target( struct stumpless_target *target ){
+  config_assign_cached_mutex( target->mutex );
+  if( !config_check_mutex_valid( target->mutex ) ) {
+    return NULL;
+  }
+
+  target->options = stumpless_get_default_options();
+  target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
+                                       STUMPLESS_DEFAULT_SEVERITY );
+  target->default_app_name[0] = '-';
+  target->default_app_name_length = 1;
+  target->default_msgid[0] = '-';
+  target->default_msgid_length = 1;
+  target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
+  target->filter = stumpless_mask_filter;
+  target->filter_data = NULL;
+  target->map = NULL;
+  target->map_data = NULL;
+  target->send_data = NULL;
+
+  return target;
 }
 
 void
@@ -1177,29 +1199,14 @@ new_target( enum stumpless_target_type type, const char *name ) {
     target->name = NULL;
   }
 
-  config_assign_cached_mutex( target->mutex );
-  if( !config_check_mutex_valid( target->mutex ) ) {
-    goto fail_mutex;
+  if( !load_target( target ) ){
+    goto fail_load;
   }
-
-  target->id = NULL;
   target->type = type;
-  target->options = stumpless_get_default_options();
-  target->default_prival = get_prival( STUMPLESS_DEFAULT_FACILITY,
-                                       STUMPLESS_DEFAULT_SEVERITY );
-  target->default_app_name[0] = '-';
-  target->default_app_name_length = 1;
-  target->default_msgid[0] = '-';
-  target->default_msgid_length = 1;
-  target->mask = STUMPLESS_SEVERITY_MASK_UPTO( STUMPLESS_SEVERITY_DEBUG_VALUE );
-  target->filter = stumpless_mask_filter;
-  target->filter_data = NULL;
-  target->map = NULL;
-  target->map_data = NULL;
 
   return target;
 
-fail_mutex:
+fail_load:
   free_mem( target->name );
   target->name = NULL;
 fail_name:
@@ -1275,6 +1282,12 @@ target_free_thread( void ) {
     stumpless_unload_entry_and_contents( &cached_trace );
     cached_trace_valid = false;
   }
+}
+
+void
+unload_target( const struct stumpless_target *target ){
+  config_compare_exchange_ptr( &current_target, target, NULL );
+  config_destroy_cached_mutex( target->mutex );
 }
 
 void

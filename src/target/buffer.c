@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,58 +18,145 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 #include <stumpless/target/buffer.h>
 #include "private/config/wrapper/locale.h"
 #include "private/config/wrapper/thread_safety.h"
 #include "private/error.h"
+#include "private/formatter.h"
 #include "private/inthelper.h"
 #include "private/memory.h"
+#include "private/strbuilder.h"
 #include "private/target.h"
 #include "private/target/buffer.h"
 #include "private/validate.h"
 
+int
+stumpless_buffer_send( const struct stumpless_target *target,
+                       const struct stumpless_entry *entry,
+                       void *data ){
+  struct buffer_target *buffer_target;
+  struct strbuilder *builder = NULL;
+  char *msg;
+  size_t msg_size;
+  size_t write_start;
+  size_t buffer_remaining;
+  size_t free_space_left;
+  int result;
+
+  buffer_target = ( struct buffer_target * ) target;
+
+  builder = format_entry( entry, target );
+  if( !builder ) {
+    return -1;
+  }
+  msg = strbuilder_get_buffer( builder, &msg_size );
+
+  // leave off the newline
+  msg_size--;
+
+  if( msg_size >= buffer_target->size ) {
+    raise_argument_too_big( L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE,
+                            msg_size,
+                            L10N_MESSAGE_SIZE_ERROR_CODE_TYPE );
+    result = -1;
+    goto finish;
+  }
+
+  config_lock_mutex( &buffer_target->buffer_mutex );
+  write_start = buffer_target->write_position;
+  buffer_remaining = buffer_target->size - write_start;
+
+  if( buffer_remaining > msg_size ) {
+    // the entire message will fit into the buffer without wrapping around
+    memcpy( buffer_target->buffer + write_start, msg, msg_size );
+    buffer_target->write_position += msg_size + 1;
+
+  } else {
+    // we need to split the message and wrap it around to the beginning
+    memcpy( buffer_target->buffer + write_start, msg, buffer_remaining );
+    memcpy( buffer_target->buffer,
+            msg + buffer_remaining,
+            msg_size - buffer_remaining );
+    buffer_target->write_position = msg_size - buffer_remaining + 1;
+  }
+
+  buffer_target->buffer[buffer_target->write_position - 1] = '\0';
+
+  // checking to see if we have overwritten older messages and need to adjust
+  // the read position to reflect this
+  if( buffer_target->read_position > write_start ) {
+    free_space_left = buffer_target->read_position - write_start;
+  } else {
+    free_space_left = ( buffer_target->size - write_start ) + buffer_target->read_position;
+  }
+
+  if( free_space_left <= msg_size ) {
+    buffer_target->read_position = ( buffer_target->write_position + 1 ) % buffer_target->size;
+
+    if( buffer_target->buffer[buffer_target->read_position] == '\0' ) {
+      buffer_target->read_position = ( buffer_target->read_position + 1 ) % buffer_target->size;
+    }
+  }
+
+  config_unlock_mutex( &buffer_target->buffer_mutex );
+  result = cap_size_t_to_int( msg_size + 1 );
+
+finish:
+  strbuilder_destroy( builder );
+  return result;
+}
+
 void
 stumpless_close_buffer_target( const struct stumpless_target *target ) {
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return;
-  }
+  struct buffer_target *buffer_target;
+
+  VALIDATE_ARG_NOT_NULL_VOID_RETURN( target );
 
   if( target->type != STUMPLESS_BUFFER_TARGET ) {
     raise_target_incompatible( L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE );
     return;
   }
 
-  clear_error(  );
+  clear_error();
 
-  destroy_buffer_target( target->id );
-  destroy_target( target );
+  buffer_target = ( struct buffer_target * ) target;
+  config_destroy_mutex( &buffer_target->buffer_mutex );
+  unload_target( target );
+  free_mem( target );
 }
 
 struct stumpless_target *
-stumpless_open_buffer_target( char *buffer,
-                              size_t size ) {
-  struct stumpless_target *target;
+stumpless_open_buffer_target( char *buffer, size_t size ) {
+  struct buffer_target *target;
 
   VALIDATE_ARG_NOT_NULL( buffer );
 
-  target = new_target( STUMPLESS_BUFFER_TARGET, NULL );
-
+  target = alloc_mem( sizeof( *target ) );
   if( !target ) {
     goto fail;
   }
 
-  target->id = new_buffer_target( buffer, size );
-  if( !target->id ) {
-    goto fail_id;
+  if( !load_target( &target->target ) ){
+    goto fail_load;
   }
+  target->target.type = STUMPLESS_BUFFER_TARGET;
+  target->target.id = "dummy id";
+  target->target.send = stumpless_buffer_send;
 
-  stumpless_set_current_target( target );
-  return target;
+  config_init_mutex( &target->buffer_mutex );
+  target->buffer = buffer;
+  target->size = size;
+  target->read_position = 0;
+  target->write_position = 0;
 
-fail_id:
-  destroy_target( target );
+  stumpless_set_current_target( &target->target );
+
+  return &target->target;
+
+fail_load:
+  free_mem( target );
 fail:
   return NULL;
 }
@@ -82,17 +169,14 @@ stumpless_read_buffer( struct stumpless_target *target,
   size_t read_position;
   size_t out_position = 0;
 
-  if( !target ) {
-    raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "target" ) );
-    return 0;
-  }
+  VALIDATE_ARG_NOT_NULL_UNSIGNED_RETURN( target );
 
   if( !buffer || max_length == 0 ) {
     raise_argument_empty( L10N_NULL_ARG_ERROR_MESSAGE( "buffer" ) );
     return 0;
   }
 
-  buffer_target = ( struct buffer_target * ) target->id;
+  buffer_target = ( struct buffer_target * ) target;
 
   config_lock_mutex( &buffer_target->buffer_mutex );
 
@@ -118,30 +202,6 @@ cleanup_and_return:
 }
 
 /* private definitions */
-
-void
-destroy_buffer_target( const struct buffer_target *target ) {
-  config_destroy_mutex( &target->buffer_mutex );
-  free_mem( target );
-}
-
-struct buffer_target *
-new_buffer_target( char *buffer, size_t size ) {
-  struct buffer_target *target;
-
-  target = alloc_mem( sizeof( *target ) );
-  if( !target ) {
-    return NULL;
-  }
-
-  config_init_mutex( &target->buffer_mutex );
-  target->buffer = buffer;
-  target->size = size;
-  target->read_position = 0;
-  target->write_position = 0;
-
-  return target;
-}
 
 int
 sendto_buffer_target( struct buffer_target *target,

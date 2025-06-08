@@ -41,15 +41,36 @@
  */
 
 #ifndef __STUMPLESS_TARGET_BUFFER_H
-#  define __STUMPLESS_TARGET_BUFFER_H
+#define __STUMPLESS_TARGET_BUFFER_H
 
-#  include <stddef.h>
-#  include <stumpless/config.h>
-#  include <stumpless/target.h>
+#include <stddef.h>
+#include <stumpless/config.h>
+#include <stumpless/target.h>
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-#  endif
+#endif
+
+/**
+ * Sends an entry to a buffer target.
+ *
+ * @since release v3.0.0
+ *
+ * @param target The target to send the entry to.
+ *
+ * @param entry The entry to send to the target.
+ *
+ * @data A pointer to data that may hold anything that the logging function
+ * needs to use in addition to the target and entry.
+ *
+ * @return A non-negative number if no error was encountered. Otherwise, a
+ * negative number must be returned.
+ */
+STUMPLESS_PUBLIC_FUNCTION
+int
+stumpless_buffer_send( const struct stumpless_target *target,
+                       const struct stumpless_entry *entry,
+                       void *data );
 
 /**
  * Closes a buffer target.
@@ -161,7 +182,7 @@ stumpless_read_buffer( struct stumpless_target *target,
                        char *buffer,
                        size_t max_length );
 
-#  ifdef __cplusplus
+#ifdef __cplusplus
 }                               /* extern "C" */
-#  endif
+#endif
 #endif                          /* __STUMPLESS_TARGET_BUFFER_H */

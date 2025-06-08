@@ -166,6 +166,29 @@ typedef struct stumpless_entry * ( *stumpless_map_func_t )(
   void *data );
 
 /**
+ * A function that sends an entry to a target.
+ *
+ * The send function is responsible for actually sending the entry to the
+ * target. It does not handle any per-target tasks such as filtering.
+ *
+ * @since release v3.0.0
+ *
+ * @param target The target to send the entry to.
+ *
+ * @param entry The entry to send to the target.
+ *
+ * @data A pointer to data that may hold anything that the logging function
+ * needs to use in addition to the target and entry.
+ *
+ * @return A non-negative number if no error was encountered. Otherwise, a
+ * negative number must be returned.
+ */
+typedef int ( *stumpless_send_func_t )(
+  const struct stumpless_target *target,
+  const struct stumpless_entry *entry,
+  void *data );
+
+/**
  * A target that log entries can be sent to.
  */
 struct stumpless_target {
@@ -243,6 +266,19 @@ struct stumpless_target {
  * @since release v3.0.0
  */
   void *map_data;
+/**
+ * The function to use to log entries after filtering and mapping. This must
+ * not be NULL.
+ *
+ * @since release v3.0.0
+ */
+  stumpless_send_func_t send;
+/**
+ * A pointer to data which may be used by the send function.
+ *
+ * @since release v3.0.0
+ */
+  void *send_data;
 #ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * A pointer to a mutex which protects all target fields. The exact type of
