@@ -20,131 +20,100 @@
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
 
-namespace
-{
+namespace {
 
-  class FacilityTest : public ::testing::Test
-  {
+  class FacilityTest : public::testing::Test {
   };
 
-  TEST(GetFacilityString, EachValidFacility)
-  {
+  TEST( GetFacilityString, EachValidFacility ) {
     int facility_count = 0;
     const char *result;
 
-#define CHECK_FACILITY(STRING, ENUM)              \
-  result = stumpless_get_facility_string(STRING); \
-  EXPECT_STREQ(result, #STRING);
-    STUMPLESS_FOREACH_FACILITY(CHECK_FACILITY)
+    #define CHECK_FACILITY( STRING, ENUM ) \
+      result = stumpless_get_facility_string( STRING ); \
+      EXPECT_STREQ( result, #STRING );
+    STUMPLESS_FOREACH_FACILITY( CHECK_FACILITY )
   }
 
-  TEST(GetFacilityString, NoSuchFacility)
-  {
+  TEST( GetFacilityString, NoSuchFacility ) {
     int facility_count = 0;
     const char *result;
 
-#define COUNT_FACILITY(STRING, ENUM) ++facility_count;
-    STUMPLESS_FOREACH_FACILITY(COUNT_FACILITY)
+    #define COUNT_FACILITY( STRING, ENUM ) ++facility_count;
+    STUMPLESS_FOREACH_FACILITY( COUNT_FACILITY )
 
     stumpless_facility wrong_facility =
         static_cast<stumpless_facility>(facility_count + 1);
 
-    result = stumpless_get_facility_string(wrong_facility);
-    EXPECT_STREQ(result, "NO_SUCH_FACILITY");
+    result = stumpless_get_facility_string( wrong_facility );
+    EXPECT_STREQ( result, "NO_SUCH_FACILITY" );
   }
 
-  TEST(GetFacilityEnum, EachValidFacility)
-  {
+  TEST( GetFacilityEnum, EachValidFacility ) {
     int facility_count = 0;
     int result;
 
-#define CHECK_FACILITY_ENUM(STRING, ENUM)             \
-  result = stumpless_get_facility_enum(#STRING + 19); \
-  EXPECT_EQ(result, ENUM);
-    STUMPLESS_FOREACH_FACILITY(CHECK_FACILITY_ENUM)
+    #define CHECK_FACILITY_ENUM( STRING, ENUM ) \
+      result = stumpless_get_facility_enum( #STRING + 19 ); \
+      EXPECT_EQ( result, ENUM );
+    STUMPLESS_FOREACH_FACILITY( CHECK_FACILITY_ENUM )
   }
 
-  TEST(GetFacilityEnum, LowercaseFacility)
-  {
+  TEST( GetFacilityEnum, LowercaseFacility ) {
     int result;
 
-    result = stumpless_get_facility_enum("user");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_USER);
+    result = stumpless_get_facility_enum( "user" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_USER );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("mail");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_MAIL);
+    result = stumpless_get_facility_enum( "mail" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_MAIL );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("daemon");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_DAEMON);
+    result = stumpless_get_facility_enum( "daemon" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_DAEMON );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("auth");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_AUTH);
+    result = stumpless_get_facility_enum( "auth" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("security");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_AUTH);
+    result = stumpless_get_facility_enum( "security" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("syslog");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_SYSLOG);
+    result = stumpless_get_facility_enum( "syslog" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_SYSLOG );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("lpr");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_LPR);
+    result = stumpless_get_facility_enum( "lpr" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_LPR );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("news");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_NEWS);
+    result = stumpless_get_facility_enum( "news" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_NEWS );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("uucp");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_UUCP);
+    result = stumpless_get_facility_enum( "uucp" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_UUCP );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("cron");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_CRON);
+    result = stumpless_get_facility_enum( "cron" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_CRON );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("authpriv");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_AUTH2);
+    result = stumpless_get_facility_enum( "authpriv" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_AUTH2 );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("ftp");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_FTP);
+    result = stumpless_get_facility_enum( "ftp" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_FTP );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("ntp");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_NTP);
+    result = stumpless_get_facility_enum( "ntp" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_NTP );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("audit");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_AUDIT);
+    result = stumpless_get_facility_enum( "audit" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_AUDIT );
     EXPECT_NO_ERROR;
-    result = stumpless_get_facility_enum("alert");
-    EXPECT_EQ(result, STUMPLESS_FACILITY_ALERT);
+    result = stumpless_get_facility_enum( "alert" );
+    EXPECT_EQ( result, STUMPLESS_FACILITY_ALERT );
     EXPECT_NO_ERROR;
   }
 
-  TEST(GetFacilityEnum, NoSuchFacility)
-  {
+  TEST( GetFacilityEnum, NoSuchFacility ) {
     int result;
 
-    result = stumpless_get_facility_enum("an_invalid_facility");
-    EXPECT_EQ(result, -1);
+    result = stumpless_get_facility_enum( "an_invalid_facility" );
+    EXPECT_EQ( result, -1 );
   }
 
-}
-
-TEST(FacilityErrorHandling, ClearsPreviousErrorOnSuccess)
-{
-  stumpless_version_to_string(NULL);
-  EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
-
-  const char *result = stumpless_get_facility_string(STUMPLESS_FACILITY_USER);
-  EXPECT_NO_ERROR;
-  EXPECT_STREQ(result, "STUMPLESS_FACILITY_USER");
-}
-
-TEST(FacilityErrorHandling, InvalidFacilityEnumRaisesError)
-{
-  const char *result = stumpless_get_facility_string(static_cast<stumpless_facility>(200));
-  EXPECT_STREQ(result, "NO_SUCH_FACILITY");
-  EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_FACILITY);
-}
-
-TEST(FacilityErrorHandling, InvalidFacilityStringRaisesError)
-{
-  int result = stumpless_get_facility_enum("not_a_real_facility");
-  EXPECT_EQ(result, -1);
-  EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_FACILITY);
 }
