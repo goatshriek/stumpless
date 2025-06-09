@@ -22,6 +22,7 @@
 #include "private/facility.h"
 #include "private/strhelper.h"
 #include "private/error.h"
+#include <stddef.h>
 #include <stumpless/error.h>
 
 static char *facility_enum_to_string[] = {
@@ -80,8 +81,6 @@ stumpless_get_facility_enum( const char *facility_string ) {
 
   return result;
 }
-
-
 
 /* private functions */
 

@@ -390,8 +390,9 @@ stumpless_get_facility_string( enum stumpless_facility facility );
  *
  * @param facility_string The facility name to get the enum from.
  * 
- * @error Clears previous error on success.
- * @error Raises STUMPLESS_INVALID_FACILITY on invalid input.
+ *  Clears previous error on success.
+ * 
+ *  Raises STUMPLESS_INVALID_FACILITY on invalid input.
  *
  * @return The enum integer corresponding to the given facility or -1 if
  * the string is not a valid facility name.
@@ -419,8 +420,9 @@ stumpless_get_facility_enum( const char *facility_string );
  * 
  * @param facility_buffer_length The length of the buffer
  * 
- * @error Clears previous error on success.
- * @error Raises STUMPLESS_INVALID_FACILITY on invalid input.
+ *  Clears previous error on success.
+ * 
+ *  Raises STUMPLESS_INVALID_FACILITY on invalid input.
  *
  * @return The enum integer corresponding to the given facility or -1 if
  * the string is not a valid facility name.
