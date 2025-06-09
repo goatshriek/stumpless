@@ -22,6 +22,7 @@
 #include "private/facility.h"
 #include "private/strhelper.h"
 #include "private/error.h"
+#include <stumpless/error.h>
 
 static char *facility_enum_to_string[] = {
   STUMPLESS_FOREACH_FACILITY( GENERATE_STRING )
