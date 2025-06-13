@@ -2995,4 +2995,17 @@ namespace {
     stumpless_destroy_entry_and_contents(large_entry);
   }
 
+  TEST( EntryDestructTest, FreeUncachedEntry ) {
+    struct stumpless_entry *original = create_empty_entry();
+    ASSERT_NE(original, nullptr);
+
+    struct stumpless_entry *manual = (struct stumpless_entry *) malloc(sizeof(*manual));
+    ASSERT_NE(manual, nullptr);
+    memcpy(manual, original, sizeof(*manual));
+
+    stumpless_destroy_entry_only(original);
+    stumpless_destroy_entry_only(manual);
+    free(manual);
+  }
+
 }
