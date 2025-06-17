@@ -25,6 +25,7 @@ set(SINGLE_HEADER_FILE "${SINGLE_INCLUDE_DIR}/stumpless.h")
 # load modules
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
+include(CheckTypeSize)
 include(CTest)
 include(FindDoxygen QUIET)
 include(GNUInstallDirs)

@@ -45,11 +45,15 @@
 
 #include <stddef.h>
 #include <stumpless/config.h>
+#include <stumpless/entry.h>
 #include <stumpless/target.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// forward declaration needed to avoid dependency on sutmpless/config/size.h
+struct stumpless_buffer_target;
 
 /**
  * Sends an entry to a buffer target.
@@ -98,6 +102,10 @@ stumpless_buffer_send( const struct stumpless_target *target,
 STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_buffer_target( const struct stumpless_target *target );
+
+STUMPLESS_PUBLIC_FUNCTION
+struct stumpless_buffer_target *
+stumpless_load_buffer_target( struct stumpless_buffer_target *target );
 
 /**
  * Creates a buffer target for the given buffer.

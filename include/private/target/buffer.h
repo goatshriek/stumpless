@@ -21,6 +21,7 @@
 
 #include <stddef.h>
 #include <stumpless/config.h>
+#include <stumpless/target.h>
 #include "private/config/wrapper/thread_safety.h"
 
 /**
@@ -40,7 +41,7 @@ struct buffer_target {
   size_t read_position;
 /** The index to start writing to. */
   size_t write_position;
-#  ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
+#ifdef STUMPLESS_THREAD_SAFETY_SUPPORTED
 /**
  * Protects updates to buffer and the position counters. This mutex must be
  * locked by a thread before it can read from or write to the buffer.
@@ -49,7 +50,7 @@ struct buffer_target {
  * the life of the buffer target.
  */
   config_mutex_t buffer_mutex;
-#  endif
+#endif
 };
 
 /**

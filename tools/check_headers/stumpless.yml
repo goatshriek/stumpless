@@ -140,6 +140,9 @@
 "struct network_target": "private/target/network.h"
 "struct socket_target": "private/target/socket.h"
 "struct strbuilder": "private/strbuilder.h"
+"struct stumpless_buffer_target":
+  - "stumpless/config/size.h"
+  - "stumpless/target/buffer.h"
 "struct stumpless_element": "stumpless/element.h"
 "struct stumpless_entry": "stumpless/entry.h"
 "struct stumpless_error": "stumpless/error.h"
@@ -178,6 +181,7 @@
 "STUMPLESS_ARGUMENT_EMPTY": "stumpless/error.h"
 "STUMPLESS_ARGUMENT_TOO_BIG": "stumpless/error.h"
 "stumpless_buffer_send": "stumpless/target/buffer.h"
+"STUMPLESS_BUFFER_TARGET_SIZE": "stumpless/config/size.h"
 "STUMPLESS_BUFFER_TARGET": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGET": "stumpless/target.h"
 "STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH": "stumpless/config.h"
