@@ -169,8 +169,7 @@ cache_free( const struct cache *c, const void *entry ) {
       entry_index = ( ( const char * ) entry - current_page ) / c->entry_size;
       locks[entry_index] = 0;
 
-      config_unlock_mutex( &c->mutex );
-      return;
+      break;
     }
   }
 

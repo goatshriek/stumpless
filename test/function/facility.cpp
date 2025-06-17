@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include <stumpless.h>
 #include "test/helper/assert.hpp"
+#include <cstddef>
 
 namespace {
 
@@ -115,5 +116,27 @@ namespace {
     result = stumpless_get_facility_enum( "an_invalid_facility" );
     EXPECT_EQ( result, -1 );
   }
+
+  TEST( FacilityErrorHandling, ClearsPreviousErrorOnSuccess ) {
+    stumpless_version_to_string(NULL);
+    EXPECT_ERROR_ID_EQ(STUMPLESS_ARGUMENT_EMPTY);
+
+    const char* result = stumpless_get_facility_string(STUMPLESS_FACILITY_USER);
+    EXPECT_NO_ERROR;
+    EXPECT_STREQ(result, "STUMPLESS_FACILITY_USER");
+  }
+
+  TEST( FacilityErrorHandling, InvalidFacilityEnumRaisesError ) {
+    const char* result = stumpless_get_facility_string(static_cast<stumpless_facility>(200));
+    EXPECT_STREQ(result, "NO_SUCH_FACILITY");
+    EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_FACILITY);
+  }
+
+  TEST( FacilityErrorHandling, InvalidFacilityStringRaisesError ) {
+    int result = stumpless_get_facility_enum("not_a_real_facility");
+    EXPECT_EQ(result, -1);
+    EXPECT_ERROR_ID_EQ(STUMPLESS_INVALID_FACILITY);
+  }
+
 
 }
