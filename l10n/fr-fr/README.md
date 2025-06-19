@@ -1,4 +1,4 @@
-![Logo Stumpless](./assets/logo-and-name.svg)
+![Logo Stumpless](./actifs/logo.svg)
 
 **Une bibliothèque de journalisation C conçue pour des performances élevées et un ensemble de fonctionnalités riche.**
 
