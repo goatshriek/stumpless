@@ -225,7 +225,7 @@ L"Registro do Stumpless no Windows Event Log Source"
 "O parâmetro " PARAM " não pôde ser associado à consulta"
 
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
-"O banco de dados está sobrecarregado no momento. Não foi possivel completar a transação, tente novamente"
+"O banco de dados está sobrecarregado no momento, tente novamente"
 
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
 "Falha ao encerrar conexão com o banco SQLite3"
