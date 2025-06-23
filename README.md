@@ -12,7 +12,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
 
-[한국어](./l10n/ko-kr/README.md) | [简体中文](./l10n/zh-cn/自述.md)
+[Français](./l10n/fr-fr/README.md) | [한국어](./l10n/ko-kr/README.md) | [简体中文](./l10n/zh-cn/自述.md)
 
 
 [Key Features](#key-features) |

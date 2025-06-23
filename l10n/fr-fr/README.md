@@ -12,7 +12,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1-ff69b4.svg)](https://github.com/goatshriek/stumpless/blob/latest/docs/CODE_OF_CONDUCT.md)
 
 
-[한국어](./l10n/ko-kr/README.md) | [简体中文](./l10n/zh-cn/自述.md)
+[English](../../README.md) | [Français](./README.md) | [한국어](../ko-kr/README.md) | [简体中文](../zh-cn/自述.md)
 
 
 [Principales fonctionnalités](#principales-fonctionnalités) |
@@ -194,7 +194,7 @@ pour voir un programme complet en action.
 ### Encore plus d'exemples
 Pour des exemples plus détaillés des scénarios ci-dessus, l'utilisation de types de cibles spécifiques,
 comment gérer des structures de messages plus complexes, et plus encore, consultez les
-[exemples](docs/examples). Ceux-ci incluent des fichiers de code annotés à compiler,
+[exemples](https://github.com/goatshriek/stumpless/tree/latest/docs/examples). Ceux-ci incluent des fichiers de code annotés à compiler,
 exécuter et modifier pour vous lancer.
 
 

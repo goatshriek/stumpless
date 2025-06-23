@@ -22,7 +22,7 @@ Vous avez fait des modifications et souhaitez partager votre travail ? Super ! S
  * Si un commit résout ou est lié à une issue particulière, mentionnez-la dans le corps du commit.
 
 ### **Ce serait bien si...**
-Si vous avez une nouvelle fonctionnalité à proposer, ouvrez une issue sur le projet github en utilisant le modèle "Feature Request". Si cela correspond au projet, vous pouvez commencer à travailler sur un fork et soumettre une pull request pour que nous puissions suivre l'avancement et l'intégrer une fois terminée. Sinon, nous l'ajouterons à la [feuille de route](roadmap.md) et l'implémenterons selon les priorités.
+Si vous avez une nouvelle fonctionnalité à proposer, ouvrez une issue sur le projet github en utilisant le modèle "Feature Request". Si cela correspond au projet, vous pouvez commencer à travailler sur un fork et soumettre une pull request pour que nous puissions suivre l'avancement et l'intégrer une fois terminée. Sinon, nous l'ajouterons à la [feuille de route](../../../docs/roadmap.md) et l'implémenterons selon les priorités.
 
 ### **Ce que nous n'acceptons pas**
 Nous apprécions toute personne souhaitant contribuer ! Cependant, nous devons aussi optimiser le temps passé à soutenir le projet et ses contributeurs. Pour cette raison, certains types de contributions ne seront pas acceptés. Merci de consulter cette liste et d'éviter ces types de pull requests :
