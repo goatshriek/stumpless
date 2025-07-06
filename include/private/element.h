@@ -37,9 +37,27 @@ for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \
     continue;                                       \
   }
 
+/**
+ * @brief The following function locks the mutex associated
+ * with the current element.
+ * 
+ * Note: The config_lock_mutex locks the elements mutex,
+ * under the hood, pthread_lock is used
+ *
+ * @param element ptr to a stumpless_element
+ * @return void
+ */
 void
 lock_element( const struct stumpless_element *element );
 
+/**
+ * @brief The following function looks up a parameter in an
+ * array.
+ * @param[in] element - A ptr to a element
+ * @param[in] index - The index to look up
+ * @return Pointer to the parameter at the specified index, or NULL if the
+ *         index is out of bounds.
+ */
 struct stumpless_param *
 locked_get_param_by_index( const struct stumpless_element *element,
                            size_t index );
@@ -120,6 +138,16 @@ unchecked_load_element( struct stumpless_element *element,
 void
 unchecked_unload_element( const struct stumpless_element *element );
 
+/**
+ * @brief The following function unlocks the mutex associated
+ * with the current element.
+ * 
+ * Note: The config_unlock_mutex unlocks the elements mutex,
+ * under the hood, pthread_unlock_mutex is used
+ *
+ * @param element ptr to a stumpless_element
+ * @return void
+ */
 void
 unlock_element( const struct stumpless_element *element );
 
