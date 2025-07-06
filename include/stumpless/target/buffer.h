@@ -52,9 +52,6 @@
 extern "C" {
 #endif
 
-// forward declaration needed to avoid dependency on sutmpless/config/size.h
-struct stumpless_buffer_target;
-
 /**
  * Sends an entry to a buffer target.
  *
@@ -103,9 +100,14 @@ STUMPLESS_PUBLIC_FUNCTION
 void
 stumpless_close_buffer_target( const struct stumpless_target *target );
 
+/**
+ * TODO documentation
+ */
 STUMPLESS_PUBLIC_FUNCTION
-struct stumpless_buffer_target *
-stumpless_load_buffer_target( struct stumpless_buffer_target *target );
+struct stumpless_target *
+stumpless_load_buffer_target( void *target,
+                              char *buffer,
+                              size_t size );
 
 /**
  * Creates a buffer target for the given buffer.

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ destroy_socket_target( const struct socket_target *trgt ) {
   }
 
   close( trgt->local_socket );
-  unlink( trgt->local_addr.sun_path );
+  unlink( trgt->local_addr.un.sun_path );
   free_mem( trgt );
 }
 
@@ -128,7 +128,7 @@ open_bind_socket( struct socket_target *target ) {
 
   clear_error(  );
 
-  target->local_socket = socket( target->local_addr.sun_family, SOCK_DGRAM, 0 );
+  target->local_socket = socket( target->local_addr.un.sun_family, SOCK_DGRAM, 0 );
   if( target->local_socket < 0 ) {
     raise_socket_failure( L10N_UNIX_SOCKET_FAILED_ERROR_MESSAGE,
                           errno,
@@ -137,7 +137,7 @@ open_bind_socket( struct socket_target *target ) {
   }
 
   bind_result= bind( target->local_socket,
-                     ( struct sockaddr * ) &target->local_addr,
+                     &target->local_addr.addr,
                      sizeof( target->local_addr ) );
 
   if( bind_result < 0 ) {
@@ -168,13 +168,13 @@ new_socket_target( const char *dest,
     goto fail;
   }
 
-  target->target_addr.sun_family = AF_UNIX;
-  memcpy( &target->target_addr.sun_path, dest, dest_len );
-  target->target_addr.sun_path[dest_len] = '\0';
+  target->target_addr.un.sun_family = AF_UNIX;
+  memcpy( &target->target_addr.un.sun_path, dest, dest_len );
+  target->target_addr.un.sun_path[dest_len] = '\0';
 
-  target->local_addr.sun_family = AF_UNIX;
-  memcpy( &target->local_addr.sun_path, source, source_len );
-  target->local_addr.sun_path[source_len] = '\0';
+  target->local_addr.un.sun_family = AF_UNIX;
+  memcpy( &target->local_addr.un.sun_path, source, source_len );
+  target->local_addr.un.sun_path[source_len] = '\0';
 
   target->target_addr_len = sizeof( target->target_addr );
   target->local_socket = -1;
@@ -207,7 +207,7 @@ sendto_socket_target( const struct socket_target *target,
                   msg,
                   msg_length,
                   0,
-                  ( const struct sockaddr * ) &target->target_addr,
+                  &target->target_addr.addr,
                   target->target_addr_len );
 
   if( result == -1 ) {

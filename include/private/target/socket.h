@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2020 Joel E. Anderson
+ * Copyright 2018-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,15 @@
 #  include <sys/un.h>
 
 struct socket_target {
-  struct sockaddr_un target_addr;
+  union {
+    struct sockaddr addr;
+    struct sockaddr_un un;
+  } target_addr;
   socklen_t target_addr_len;
-  struct sockaddr_un local_addr;
+  union {
+    struct sockaddr addr;
+    struct sockaddr_un un;
+  } local_addr;
   int local_socket;
 };
 

@@ -262,3 +262,4 @@ EXPORTS
   stumpless_entry_to_string                     @237
   stumpless_get_target_filter_data              @238
   stumpless_buffer_send                         @239
+  stumpless_load_buffer_target                  @240

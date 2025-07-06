@@ -33,7 +33,7 @@
 #define __STUMPLESS_CONFIG_SIZE_H
 
 /**
- * The size needed to hold a buffer target structure.
+ * The size (in bytes) needed to hold a buffer target structure.
  *
  * @since release v3.0.0
  */
@@ -42,13 +42,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- * A buffer target structure.
- */
-struct stumpless_buffer_target {
-  char reserved[STUMPLESS_BUFFER_TARGET_SIZE];
-};
 
 #ifdef __cplusplus
 } /* extern "C" */
