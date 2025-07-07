@@ -59,7 +59,6 @@
 #include "private/strbuilder.h"
 #include "private/strhelper.h"
 #include "private/target.h"
-#include "private/target/buffer.h"
 #include "private/target/file.h"
 #include "private/target/function.h"
 #include "private/target/stream.h"
