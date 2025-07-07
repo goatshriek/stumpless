@@ -4,6 +4,7 @@
 "deprecated-terms": []
 
 # terms
+"__STUMPLESS_CONFIG_SIZE_H": "stumpless/config/size.h"
 "accept_tcp_connection": "test/helper/server.hpp"
 "alloc_mem": "private/memory.h"
 "ASSERT_NOT_NULL": "test/helper/assert.hpp"

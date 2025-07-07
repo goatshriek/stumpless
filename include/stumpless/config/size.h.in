@@ -39,12 +39,4 @@
  */
 @STUMPLESS_BUFFER_TARGET_SIZE_CODE@
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
-
 #endif /* __STUMPLESS_CONFIG_SIZE_H */
