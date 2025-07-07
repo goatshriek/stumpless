@@ -41,11 +41,21 @@ for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \
  * @brief The following function locks the mutex associated
  * with the current element.
  * 
- * Note: The config_lock_mutex locks the elements mutex,
- * under the hood, pthread_lock is used
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
  *
  * @param element ptr to a stumpless_element
- * @return void
  */
 void
 lock_element( const struct stumpless_element *element );
@@ -53,10 +63,24 @@ lock_element( const struct stumpless_element *element );
 /**
  * @brief The following function looks up a parameter in an
  * array.
+ * 
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
+ * 
  * @param[in] element - A ptr to a element
  * @param[in] index - The index to look up
- * @return Pointer to the parameter at the specified index, or NULL if the
- *         index is out of bounds.
+ * @return Pointer to the parameter at the specified index, or NULL if the index is out of bounds.
  */
 struct stumpless_param *
 locked_get_param_by_index( const struct stumpless_element *element,
@@ -142,11 +166,21 @@ unchecked_unload_element( const struct stumpless_element *element );
  * @brief The following function unlocks the mutex associated
  * with the current element.
  * 
- * Note: The config_unlock_mutex unlocks the elements mutex,
- * under the hood, pthread_unlock_mutex is used
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe as it destroys resources that other threads
+ * would use if they tried to reference this struct.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the destruction
+ * of a lock that may be in use as well as the use of the memory deallocation
+ * function to release memory.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, as the cleanup of the lock may not be completed, and the memory
+ * deallocation function may not be AC-Safe itself.
  *
  * @param element ptr to a stumpless_element
- * @return void
  */
 void
 unlock_element( const struct stumpless_element *element );
