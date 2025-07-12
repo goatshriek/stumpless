@@ -54,6 +54,14 @@ struct buffer_target {
 };
 
 /**
+ * TODO documentation
+ */
+struct buffer_target *
+load_buffer_target( struct buffer_target *target,
+                    char *buffer,
+                    size_t size );
+
+/**
  * @brief Writes a message to a buffer target, wrapping around if needed.
  *
  * This function writes a message to the buffer target, ensuring that the buffer

@@ -27,13 +27,6 @@ install(
 
 install(
   FILES
-    "${PROJECT_BINARY_DIR}/include/stumpless/config/size.h"
-  DESTINATION
-    "${CMAKE_INSTALL_INCLUDEDIR}/stumpless/config"
-)
-
-install(
-  FILES
     "${PROJECT_BINARY_DIR}/include/stumpless/level/alert.h"
     "${PROJECT_BINARY_DIR}/include/stumpless/level/crit.h"
     "${PROJECT_BINARY_DIR}/include/stumpless/level/debug.h"

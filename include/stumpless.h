@@ -176,7 +176,6 @@
 #define __STUMPLESS_H
 
 #include <stumpless/config.h>
-#include <stumpless/config/size.h>
 #include <stumpless/element.h>
 #include <stumpless/entry.h>
 #include <stumpless/error.h>

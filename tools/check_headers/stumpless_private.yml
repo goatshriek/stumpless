@@ -88,6 +88,7 @@
 "journald_init_journald_element": "private/config/journald_supported.h"
 "journald_init_journald_param": "private/config/journald_supported.h"
 "L10N_": "private/config/wrapper/locale.h"
+"load_buffer_target": "private/target/buffer.h"
 "load_corpus": "test/helper/fixture.hpp"
 "load_corpus_folder": "test/helper/fixture.hpp"
 "load_facility": "private/target/journald.h"

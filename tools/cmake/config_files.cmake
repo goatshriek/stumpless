@@ -24,20 +24,6 @@ configure_file(
   "${PROJECT_BINARY_DIR}/include/private/config.h"
 )
 
-# we can generate the size configs after the base configs are known
-# change this to use a block instead of manually saving the variable
-# once CMake minimum is 3.25 or above
-set(CMAKE_REQUIRED_INCLUDES_SAVED "${CMAKE_REQUIRED_INCLUDES}")
-set(CMAKE_REQUIRED_INCLUDES "${PROJECT_SOURCE_DIR}/include;${PROJECT_BINARY_DIR}/include")
-set(CMAKE_EXTRA_INCLUDE_FILES "private/target/buffer.h")
-check_type_size("struct buffer_target" STUMPLESS_BUFFER_TARGET_SIZE LANGUAGE C)
-set(CMAKE_REQUIRED_INCLUDES "${CMAKE_REQUIRED_INCLUDES_SAVED}")
-
-configure_file(
-  "${PROJECT_SOURCE_DIR}/include/stumpless/config/size.h.in"
-  "${PROJECT_BINARY_DIR}/include/stumpless/config/size.h"
-)
-
 configure_file(
   "${PROJECT_SOURCE_DIR}/include/test/config.hpp.in"
   "${PROJECT_BINARY_DIR}/include/test/config.hpp"

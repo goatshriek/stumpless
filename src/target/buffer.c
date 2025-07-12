@@ -128,37 +128,9 @@ stumpless_close_buffer_target( const struct stumpless_target *target ) {
 }
 
 struct stumpless_target *
-stumpless_load_buffer_target( void *target,
-                              char *buffer,
-                              size_t size ){
-  struct buffer_target *private_target;
-
-  VALIDATE_ARG_NOT_NULL( buffer );
-
-  private_target = target;
-  if( !load_target( &private_target->target ) ){
-    return NULL;
-  }
-  private_target->target.type = STUMPLESS_BUFFER_TARGET;
-  private_target->target.id = "dummy id";
-  private_target->target.send = stumpless_buffer_send;
-  private_target->target.send_data = private_target;
-
-  config_init_mutex( &private_target->buffer_mutex );
-  private_target->buffer = buffer;
-  private_target->size = size;
-  private_target->read_position = 0;
-  private_target->write_position = 0;
-
-  stumpless_set_current_target( &private_target->target );
-
-  return &private_target->target;
-}
-
-struct stumpless_target *
 stumpless_open_buffer_target( char *buffer, size_t size ) {
   struct buffer_target *target;
-  struct stumpless_target *result;
+  struct buffer_target *result;
 
   VALIDATE_ARG_NOT_NULL( buffer );
 
@@ -167,7 +139,7 @@ stumpless_open_buffer_target( char *buffer, size_t size ) {
     goto fail;
   }
 
-  result = stumpless_load_buffer_target( target, buffer, size );
+  result = load_buffer_target( target, buffer, size );
   if( !result ){
     goto fail_load;
   }
@@ -221,6 +193,29 @@ cleanup_and_return:
 }
 
 /* private definitions */
+
+struct buffer_target *
+load_buffer_target( struct buffer_target *target,
+                    char *buffer,
+                    size_t size ){
+  if( !load_target( &target->target ) ){
+    return NULL;
+  }
+  target->target.type = STUMPLESS_BUFFER_TARGET;
+  target->target.id = "dummy id";
+  target->target.send = stumpless_buffer_send;
+  target->target.send_data = target;
+
+  config_init_mutex( &target->buffer_mutex );
+  target->buffer = buffer;
+  target->size = size;
+  target->read_position = 0;
+  target->write_position = 0;
+
+  stumpless_set_current_target( &target->target );
+
+  return target;
+}
 
 int
 sendto_buffer_target( struct buffer_target *target,

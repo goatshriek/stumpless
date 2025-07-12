@@ -101,15 +101,6 @@ void
 stumpless_close_buffer_target( const struct stumpless_target *target );
 
 /**
- * TODO documentation
- */
-STUMPLESS_PUBLIC_FUNCTION
-struct stumpless_target *
-stumpless_load_buffer_target( void *target,
-                              char *buffer,
-                              size_t size );
-
-/**
  * Creates a buffer target for the given buffer.
  *
  * Buffer targets will write messages to the given buffer, wrapping around when
