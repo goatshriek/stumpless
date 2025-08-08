@@ -115,10 +115,56 @@ size_t get_paged_size( size_t size );
  */
 void *realloc_mem( const void *mem, size_t size );
 
-// A wrapper for alloc_mem that checks for overflow before proper allocation
+/**
+ * Allocates an array of `item_count` elements, each of size `item_size`.
+ *
+ * This is a thin wrapper around `alloc_mem` that checks for integer
+ * overflow in the multiplication `item_count * item_size` before calling
+ * through to the underlying allocator.
+ *
+ * **Thread Safety: MT-Safe**  
+ * Relies on `alloc_mem` (and the C heap), which is assumed thread-safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**  
+ * Allocation may invoke non-reentrant calls (e.g. `malloc`), so this
+ * cannot be used in signal handlers.
+ *
+ * **Async Cancel Safety: AC-Unsafe**  
+ * If cancellation occurs during allocation, the heap state may become
+ * inconsistent.
+ *
+ * @param item_count  Number of elements to allocate.
+ * @param item_size   Size in bytes of each element.
+ * @return A pointer to the newly allocated zero-initialized array,
+ *         or NULL if overflow is detected or allocation fails.
+ */
 void *alloc_array( size_t item_count, size_t item_size );
 
-// A wrapper for realloc_mem that checks for overflow before proper allocation
+/**
+ * Reallocates an array previously allocated with `alloc_array` (or
+ * another `realloc_array`) to hold `item_count` elements of size
+ * `item_size`, with overflow checking.
+ *
+ * If `mem` is NULL, behaves like `alloc_array`. If `item_count * item_size`
+ * would overflow, no reallocation is attempted and NULL is returned.
+ *
+ * **Thread Safety: MT-Safe**  
+ * Depends on `realloc_mem`, which is assumed to be thread-safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**  
+ * May call non-reentrant routines; unsafe in signal contexts.
+ *
+ * **Async Cancel Safety: AC-Unsafe**  
+ * Cancellation during the call may leave the heap in an undefined state.
+ *
+ * @param mem         Pointer to an existing block (from `alloc_array`),
+ *                    or NULL.
+ * @param item_count  New number of elements.
+ * @param item_size   Size in bytes of each element.
+ * @return A pointer to the resized block, or NULL if overflow is
+ *         detected or reallocation fails. In case of failure with
+ *         non-NULL `mem`, the original block remains valid.
+ */
 void *realloc_array( const void *mem, size_t item_count, size_t item_size );
 
 #endif /* __STUMPLESS_PRIVATE_MEMORY_H */
