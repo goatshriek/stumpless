@@ -1,0 +1,6 @@
+{
+  "cmake.useCMakePresets": "always",
+  "cmake.defaultConfigurePreset": "Default",
+  "cmake.defaultBuildPreset": "Default",
+  "cmake.defaultTestPreset": "Default"
+}

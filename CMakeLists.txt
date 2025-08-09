@@ -711,3 +711,23 @@ endif()
 if(DOXYGEN_FOUND)
   include(tools/cmake/doxygen.cmake)
 endif()
+
+# Option to build examples
+option(STUMPLESS_BUILD_EXAMPLES "Build example programs" OFF)
+
+if(STUMPLESS_BUILD_EXAMPLES)
+  # for compiling examples
+  add_executable(basic_example docs/examples/basic/basic_example.c)
+
+  target_include_directories(basic_example PRIVATE
+    ${PROJECT_SOURCE_DIR}/include        # <-- headers in repo (stumpless.h)
+    ${CMAKE_BINARY_DIR}/include          # <-- generated headers (stumpless/config.h)
+  )
+
+  target_link_libraries(basic_example PRIVATE stumpless)
+
+  # keep your rpath if you want
+  set_target_properties(basic_example PROPERTIES
+    BUILD_RPATH "${CMAKE_BINARY_DIR};${CMAKE_BINARY_DIR}/Debug"
+  )
+endif()
