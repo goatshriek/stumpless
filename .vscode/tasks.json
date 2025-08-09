@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Configure (Preset Auto)",
+      "type": "process",
+      "command": "cmake",
+      "args": ["--preset", "${config:cmake.defaultConfigurePreset}"],
+      "group": { "kind": "build", "isDefault": false },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build (Preset Auto)",
+      "type": "process",
+      "command": "cmake",
+      "args": ["--build", "--preset", "${config:cmake.defaultBuildPreset}"],
+      "dependsOn": ["Configure (Preset Auto)"],
+      "group": { "kind": "build", "isDefault": false },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean (Preset Auto)",
+      "type": "shell",
+      "linux":   { "command": "rm",        "args": ["-rf", "${workspaceFolder}/build"] },
+      "osx":     { "command": "rm",        "args": ["-rf", "${workspaceFolder}/build"] },
+      "windows": { "command": "powershell","args": ["-NoProfile","-ExecutionPolicy","Bypass","-Command","Remove-Item -Recurse -Force build"] },
+      "group": { "kind": "build", "isDefault": false },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean & Rebuild",
+      "type": "shell",
+      "dependsOn": ["Clean (Preset Auto)", "Build (Preset Auto)"],
+      "group": { "kind": "build", "isDefault": false },
+      "command": "echo",
+      "args": ["Rebuilding..."],
+      "problemMatcher": []
+    }
+  ]
+}
