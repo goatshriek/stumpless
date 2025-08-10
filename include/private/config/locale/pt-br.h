@@ -29,9 +29,9 @@
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "o buffer é pequeno demais para a mensagem dada"
 
-// todo translate
+
 #  define L10N_CHAIN_TARGETS_UNSUPPORTED \
-"chain targets are not supported by this build"
+"As cadeias de destinos não são suportadas por esta versão"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "foi tentado fechar um tipo de objetivo não suportado"
@@ -116,9 +116,8 @@
 "um valor de registro MULTI_SZ não estava nem vazio nem finalizado" \
 "com dois caracteres NULL"
 
-// todo translate
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
-"the string is not of the name=\"value\" format"
+"essa string não está no formato nome=\"valor\" correto"
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "a gravidade inválida"
@@ -127,9 +126,8 @@
 "códigos de gravidade devem ser definidos de acordo com a RFC 5424:" \
 " valores entre 0 e 7, incluso"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"Estado inválido na leitura da string UTF-8"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "tipo de objetivo é incompatível com esta operação"
@@ -162,13 +160,11 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "a mensagem é grande demais para ser enviada em um único datagrama"
 
-// todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] and inet_pton failed to resolve the name"
+"gethostbyname[2] e inet_pton falha no processamento do nome"
 
-// todo translate
 #  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
-"the network connection is closed"
+"A conexão de rede foi desconectada"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "o protocolo de rede escolhido não é suportado"
@@ -215,9 +211,9 @@ ARG_NAME " era NULL"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "envio falhou com um socket winsock2"
 
-// todo translate
+
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"Cores de severidade só funcionam em destinos de stream"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "erro ao tentar abrir um socket"
@@ -225,45 +221,35 @@ ARG_NAME " era NULL"
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"Registro do Stumpless no Windows Event Log Source"
 
-// todo translate
 #  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
-"could not bind " PARAM " to the statement"
+"O parâmetro " PARAM " não pôde ser associado à consulta"
 
-// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
-"the database was busy and could not complete the transaction"
+"O banco de dados está sobrecarregado no momento, tente novamente"
 
-// todo translate
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
-"could not close the sqlite3 database"
+"Falha ao encerrar conexão com o banco SQLite3"
 
-// todo translate
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"a custom callback for prepared statements failed"
+"Erro no callback customizado para os prepared statements"
 
-// todo translate
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
-"could not open the sqlite3 database"
+"Erro na abertura do SQLite3"
 
-// todo translate
 #  define L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE \
-"sqlite3_prepare_v2 failed"
+"Erro ao abrir sqlite3_prepare_v2"
 
-// todo translate
 #  define L10N_SQLITE3_RESULT_CODE_TYPE \
-"the return code of the failed sqlite3 call"
+"Código de retorno da chamada SQLite3 malsucedida"
 
-// todo translate
 #  define L10N_SQLITE3_RETRY_COUNT_CODE_TYPE \
-"the number of times the operation was retried"
+"Número de tentativas da operação"
 
-// todo translate
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
-"sqlite3_step failed"
+"Falha ao executar sqlite3_step"
 
-// todo translate
 #  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
-"sqlite3 targets are not supported by this build"
+"os objetos do sqlite3 não são suportados nessa build"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "não foi possível escrever na stream"
