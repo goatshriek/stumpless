@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         lang:
+          - "ae_EG.UTF-8"
           - "bg_BG.UTF-8"
           - "bn_IN.UTF-8"
           - "cz_CZ.UTF-8"
@@ -57,3 +58,4 @@ jobs:
         run: |
           make check
           if grep "DEPRECATED" Testing/Temporary/LastTest.log; then exit 1; fi
+

@@ -1,0 +1,194 @@
+.TH "stumpless/memory.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/memory.h \- Functions for controlling memory allocation during execution\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_free_all\fP (void)"
+.br
+.RI "Closes the default target if it has been opened, frees all memory allocated internally, and performs any other necessary cleanup\&. "
+.ti -1c
+.RI "void \fBstumpless_free_thread\fP (void)"
+.br
+.RI "Frees all memory allocated internally to the calling thread, and performs any other thread-specific cleanup\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "void *(*)(size_t) \fBstumpless_set_malloc\fP (void *(*malloc_func)(size_t))"
+.br
+.RI "Sets the function used by the library to allocate memory\&. "
+.ti -1c
+.RI "void(*)(void *) \fBstumpless_set_free\fP (void(*free_func)(void *))"
+.br
+.RI "Sets the function used by the library to free memory\&. "
+.ti -1c
+.RI "void *(*)(void *, size_t) \fBstumpless_set_realloc\fP (void *(*realloc_func)(void *, size_t))"
+.br
+.RI "Sets the function used by the library to reallocate memory\&. "
+.ti -1c
+.RI "void *(*)(size_t size) \fBstumpless_get_malloc\fP (void)"
+.br
+.RI "Retrieves the current malloc function used by the library\&. "
+.ti -1c
+.RI "void(*)(void *ptr) \fBstumpless_get_free\fP (void)"
+.br
+.RI "Retrieves the current free function used by the library\&. "
+.ti -1c
+.RI "void *(*)(void *ptr, size_t size) \fBstumpless_get_realloc\fP (void)"
+.br
+.RI "Retrieves the current realloc function used by the library\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions for controlling memory allocation during execution\&. 
+
+Some of these functions allow memory allcoation to use custom functions\&. This might be useful if you have your own memory allocation routines or want to lay down your own controls over memory used by the library\&. For example, this capability is used extensively to test for error handling in memory allocation failure scenarios, as well as to ensure that the same amount of memory is freed as is allocated\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_free_all (void)"
+
+.PP
+Closes the default target if it has been opened, frees all memory allocated internally, and performs any other necessary cleanup\&. This function serves as a final exit function, which should be called when an application using the library is preparing to exit or when the library is no longer needed\&. Before this function is called, all targets explicitly opened must be closed (with the exception of the default target, which is opened implicitly) and no pointers to any structs should be retained\&. Failing to do this will result in undefined behavior\&.
+.PP
+Calling other functions after a call to this function is acceptable, however execution times may be longer than usual as memory used to cache objects may need to be allocated\&. If other functions are called, this function should be called again before exit to ensure a memory leak does not exist\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads might be using\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP, \fBchain_example\&.c\fP, \fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBseverity_level_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "void stumpless_free_thread (void)"
+
+.PP
+Frees all memory allocated internally to the calling thread, and performs any other thread-specific cleanup\&. This function should be called in any thread that has used stumpless functions before it exits so that caches and other structures can be cleaned up\&. It is not a substitute for stumpless_free_all, but is called by it and can be left out if stumpless_free_all will be called later in the same thread\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as it only operates on thread-local resources\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself\&. 
+.SH "Variable Documentation"
+.PP 
+.SS "void(*)(void *ptr) stumpless_get_free(void) (void)"
+
+.PP
+Retrieves the current free function used by the library\&. \fBThread Safety: MT-Safe\fP This function is thread-safe as it does not modify any global state\&. It simply retrieves a pointer to the current memory deallocation function\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers since it does not cause any side effects or modify state\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled as it does not perform any blocking operations\&.
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the current free function\&. 
+.RE
+.PP
+
+.SS "void *(*)(size_t size) stumpless_get_malloc(void) (void)"
+
+.PP
+Retrieves the current malloc function used by the library\&. \fBThread Safety: MT-Safe\fP This function is thread-safe as it does not modify any global state\&. It simply retrieves a pointer to the current memory allocation function\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers since it does not cause any side effects or modify state\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled as it does not perform any blocking operations\&.
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the current malloc function\&. 
+.RE
+.PP
+
+.SS "void *(*)(void *ptr, size_t size) stumpless_get_realloc(void) (void)"
+
+.PP
+Retrieves the current realloc function used by the library\&. \fBThread Safety: MT-Safe\fP This function is thread-safe as it does not modify any global state\&. It simply retrieves a pointer to the current memory reallocation function\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers since it does not cause any side effects or modify state\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled as it does not perform any blocking operations\&.
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the current realloc function\&. 
+.RE
+.PP
+
+.SS "void(*)(void *) stumpless_set_free(void(*free_func)(void *)) (void(*)(void *) free_func)"
+
+.PP
+Sets the function used by the library to free memory\&. The provided free function must be able to handle a NULL pointer as the provided argument\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others\&. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers for the same reason as it is not thread safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfree_func\fP A pointer to the memory deallocation function that is desired\&. This function must have the same signature as the standard library \fCfree\fP function (which is the default if this is not called)\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new deallocation function\&. 
+.RE
+.PP
+
+.SS "void *(*)(size_t) stumpless_set_malloc(void *(*malloc_func)(size_t)) (void *(*)(size_t) malloc_func)"
+
+.PP
+Sets the function used by the library to allocate memory\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others\&. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers for the same reason as it is not thread safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImalloc_func\fP A pointer to the allocation function that is desired\&. This function must have the same signature as the standard library \fCmalloc\fP function (which is the default if this is not called)\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new allocation function\&. 
+.RE
+.PP
+
+.SS "void *(*)(void *, size_t) stumpless_set_realloc(void *(*realloc_func)(void *, size_t)) (void *(*)(void *, size_t) realloc_func)"
+
+.PP
+Sets the function used by the library to reallocate memory\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it changes the memory allocation scheme, which could cause an operation to use the old function for some allocation and the new function for others\&. If you need to set any of the memory management functions, it should be done before starting multiple threads with access to shared resources\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers for the same reason as it is not thread safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, as the assignment is not guaranteed to be atomic\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIrealloc_func\fP A pointer to the memory reallocation function that is desired\&. This function must have the same signature as the standard library \fCrealloc\fP function (which is the default if this is not called)\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new reallocation function\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

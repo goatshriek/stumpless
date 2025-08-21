@@ -1,0 +1,178 @@
+.TH "stumpless_entry" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless_entry \- A log entry\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <entry\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBstumpless_id_t\fP \fBid\fP"
+.br
+.RI "A unique identifier of this entry\&. "
+.ti -1c
+.RI "char \fBprocid\fP [128+1]"
+.br
+.RI "The procid of this entry, as a NULL-terminated string\&. "
+.ti -1c
+.RI "size_t \fBprocid_length\fP"
+.br
+.RI "The length of the procid of this entry (in bytes), without a NULL terminator\&. "
+.ti -1c
+.RI "char \fBhostname\fP [255+1]"
+.br
+.RI "The hostname of this entry, as a NULL-terminated string\&. "
+.ti -1c
+.RI "size_t \fBhostname_length\fP"
+.br
+.RI "The length of the hostname of this entry (in bytes), without a NULL terminator\&. "
+.ti -1c
+.RI "int \fBprival\fP"
+.br
+.RI "The prival of this entry\&. "
+.ti -1c
+.RI "char \fBapp_name\fP [48+1]"
+.br
+.RI "The app name of this entry, as a NULL-terminated string\&. "
+.ti -1c
+.RI "size_t \fBapp_name_length\fP"
+.br
+.RI "The length of the app name, without the NULL terminator\&. "
+.ti -1c
+.RI "char * \fBmessage\fP"
+.br
+.RI "The message of this entry, as a NULL-terminated string\&. "
+.ti -1c
+.RI "size_t \fBmessage_length\fP"
+.br
+.RI "The length of the message in bytes, without the NULL terminator\&. "
+.ti -1c
+.RI "char \fBmsgid\fP [32+1]"
+.br
+.RI "The message id of this entry, as a NULL-terminated string\&. "
+.ti -1c
+.RI "size_t \fBmsgid_length\fP"
+.br
+.RI "The length of the message id, without the NULL terminator\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP ** \fBelements\fP"
+.br
+.RI "An array holding the elements of this entry\&. "
+.ti -1c
+.RI "size_t \fBelement_count\fP"
+.br
+.RI "The number of elements in this entry\&. "
+.ti -1c
+.RI "void * \fBmutex\fP"
+.br
+.RI "A pointer to a mutex which protects all entry fields\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A log entry\&. 
+
+Entries are the basic element of logging within the library\&. Note that although many of the members are character strings, they are not guaranteed to be NULL terminated and should not be used with standard string functions\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "char stumpless_entry::app_name[48+1]"
+
+.PP
+The app name of this entry, as a NULL-terminated string\&. 
+.SS "size_t stumpless_entry::app_name_length"
+
+.PP
+The length of the app name, without the NULL terminator\&. 
+.SS "size_t stumpless_entry::element_count"
+
+.PP
+The number of elements in this entry\&. 
+.SS "struct \fBstumpless_element\fP** stumpless_entry::elements"
+
+.PP
+An array holding the elements of this entry\&. 
+.SS "char stumpless_entry::hostname[255+1]"
+
+.PP
+The hostname of this entry, as a NULL-terminated string\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "size_t stumpless_entry::hostname_length"
+
+.PP
+The length of the hostname of this entry (in bytes), without a NULL terminator\&. If this is zero, then the default hostname will be used\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "\fBstumpless_id_t\fP stumpless_entry::id"
+
+.PP
+A unique identifier of this entry\&. 
+.SS "char* stumpless_entry::message"
+
+.PP
+The message of this entry, as a NULL-terminated string\&. This may be NULL if the entry does not have a message set\&. 
+.SS "size_t stumpless_entry::message_length"
+
+.PP
+The length of the message in bytes, without the NULL terminator\&. 
+.SS "char stumpless_entry::msgid[32+1]"
+
+.PP
+The message id of this entry, as a NULL-terminated string\&. 
+.SS "size_t stumpless_entry::msgid_length"
+
+.PP
+The length of the message id, without the NULL terminator\&. 
+.SS "void* stumpless_entry::mutex"
+
+.PP
+A pointer to a mutex which protects all entry fields\&. The exact type of this mutex depends on the build\&. 
+.SS "int stumpless_entry::prival"
+
+.PP
+The prival of this entry\&. This is a combination of the facility and severity of the event, combined using a bitwise or\&. 
+.SS "char stumpless_entry::procid[128+1]"
+
+.PP
+The procid of this entry, as a NULL-terminated string\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "size_t stumpless_entry::procid_length"
+
+.PP
+The length of the procid of this entry (in bytes), without a NULL terminator\&. If this is zero, then the default procid will be used\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

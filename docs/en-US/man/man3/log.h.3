@@ -1,0 +1,461 @@
+.TH "stumpless/log.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/log.h \- Convenience functions for creating and writing simple log entries\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBstump\fP (const char *message,\&.\&.\&.)"
+.br
+.RI "Logs a message to the default target\&. "
+.ti -1c
+.RI "int \fBstump_str\fP (const char *message)"
+.br
+.RI "Logs a message to the default target\&. "
+.ti -1c
+.RI "int \fBstump_trace\fP (const char *file, int line, const char *func, const char *message,\&.\&.\&.)"
+.br
+.RI "Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBstump_trace_str\fP (const char *file, int line, const char *func, const char *message)"
+.br
+.RI "Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "void \fBstumplog\fP (int priority, const char *message,\&.\&.\&.)"
+.br
+.RI "Logs a message to the current target with the given priority\&. "
+.ti -1c
+.RI "int \fBstumplog_set_mask\fP (int mask)"
+.br
+.RI "Sets the log mask of the current target\&. "
+.ti -1c
+.RI "void \fBstumplog_str\fP (int priority, const char *message)"
+.br
+.RI "Logs a message to the current target with the given priority\&. "
+.ti -1c
+.RI "void \fBstumplog_trace\fP (int priority, const char *file, int line, const char *func, const char *message,\&.\&.\&.)"
+.br
+.RI "Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "void \fBstumplog_trace_str\fP (int priority, const char *file, int line, const char *func, const char *message)"
+.br
+.RI "Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBvstump\fP (const char *message, va_list subs)"
+.br
+.RI "Logs a message to the default target\&. "
+.ti -1c
+.RI "int \fBvstump_trace\fP (const char *file, int line, const char *func, const char *message, va_list subs)"
+.br
+.RI "Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "void \fBvstumplog\fP (int priority, const char *message, va_list subs)"
+.br
+.RI "Logs a message to the default target with the given priority\&. "
+.ti -1c
+.RI "void \fBvstumplog_trace\fP (int priority, const char *file, int line, const char *func, const char *message, va_list subs)"
+.br
+.RI "Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Convenience functions for creating and writing simple log entries\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "int stump (const char * message,  \&.\&.\&.)"
+
+.PP
+Logs a message to the default target\&. The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstump_str()\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP\&.
+.SS "int stump_str (const char * message)"
+
+.PP
+Logs a message to the default target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP\&.
+.SS "int stump_trace (const char * file, int line, const char * func, const char * message,  \&.\&.\&.)"
+
+.PP
+Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstump_trace_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stump_trace_str (const char * file, int line, const char * func, const char * message)"
+
+.PP
+Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "void stumplog (int priority, const char * message,  \&.\&.\&.)"
+
+.PP
+Logs a message to the current target with the given priority\&. This function can serve as a replacement for the traditional \fCsyslog\fP function\&.
+.PP
+For detailed information on what the current target will be for a given system, check the \fBstumpless_get_current_target()\fP function documentation\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumplog_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. 
+.RE
+.PP
+
+.SS "int stumplog_set_mask (int mask)"
+
+.PP
+Sets the log mask of the current target\&. The mask is a bit field of severities that this target will allow if the default mask-based filter is in use\&. These can be formed and checked using the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and combining them using bitwise or operations\&.
+.PP
+This function can serve as a replacement for the traditional \fCsetlogmask\fP function\&.
+.PP
+For detailed information on what the current target will be for a given system, check the \fBstumpless_get_current_target()\fP function documentation\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fImask\fP The mask to use with the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The previous mask that was in use on the current target\&. If the mask could not be retrieved, 0 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SS "void stumplog_str (int priority, const char * message)"
+
+.PP
+Logs a message to the current target with the given priority\&. This function can serve as a replacement for the traditional \fCsyslog\fP function\&.
+.PP
+For detailed information on what the current target will be for a given system, check the \fBstumpless_get_current_target()\fP function documentation\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&. 
+.RE
+.PP
+
+.SS "void stumplog_trace (int priority, const char * file, int line, const char * func, const char * message,  \&.\&.\&.)"
+
+.PP
+Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+This function can serve as a replacement for the traditional \fCsyslog\fP function\&.
+.PP
+For detailed information on what the default target will be for a given system, check the \fBstumpless_get_default_target()\fP function documentation\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstumplog_trace_str()\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the entry should be tied to\&.
+.br
+\fIline\fP The line in the source file that the entry should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the entry should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. 
+.RE
+.PP
+
+.SS "void stumplog_trace_str (int priority, const char * file, int line, const char * func, const char * message)"
+
+.PP
+Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+This function can serve as a replacement for the traditional \fCsyslog\fP function\&.
+.PP
+For detailed information on what the default target will be for a given system, check the \fBstumpless_get_default_target()\fP function documentation\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the entry should be tied to\&.
+.br
+\fIline\fP The line in the source file that the entry should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the entry should be tied to\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&. 
+.RE
+.PP
+
+.SS "int vstump (const char * message, va_list subs)"
+
+.PP
+Logs a message to the default target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int vstump_trace (const char * file, int line, const char * func, const char * message, va_list subs)"
+
+.PP
+Logs a message to the default target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "void vstumplog (int priority, const char * message, va_list subs)"
+
+.PP
+Logs a message to the default target with the given priority\&. Can serve as a replacement for the traditional \fCvsyslog\fP function\&.
+.PP
+For detailed information on what the default target will be for a given system, check the \fBstumpless_get_default_target()\fP function documentation\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&. 
+.RE
+.PP
+
+.SS "void vstumplog_trace (int priority, const char * file, int line, const char * func, const char * message, va_list subs)"
+
+.PP
+Logs a message to the default target with the given priority, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+This function can serve as a replacement for the traditional \fCvsyslog\fP function\&.
+.PP
+For detailed information on what the default target will be for a given system, check the \fBstumpless_get_default_target()\fP function documentation\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

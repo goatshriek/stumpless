@@ -1,0 +1,56 @@
+.TH "stumpless/target Directory Reference" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target Directory Reference \- Header files for target types provided by the library\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Files"
+
+.in +1c
+.ti -1c
+.RI "file \fBbuffer\&.h\fP"
+.br
+.RI "Buffer targets provide the simple capability to write logs into a character buffer\&. "
+.ti -1c
+.RI "file \fBchain\&.h\fP"
+.br
+.RI "Chains allow logs to be sent to a group of targets\&. "
+.ti -1c
+.RI "file \fBfile\&.h\fP"
+.br
+.RI "File targets allow logs to be sent to a specified file\&. "
+.ti -1c
+.RI "file \fBfunction\&.h\fP"
+.br
+.RI "Function targets allow log entries to be sent to a custom function, making it possible to implement arbitrary functionality using this library as a logging framework\&. "
+.ti -1c
+.RI "file \fBjournald\&.h\fP"
+.br
+.RI "Journald targets send messages to a systemd journald service\&. "
+.ti -1c
+.RI "file \fBnetwork\&.h\fP"
+.br
+.RI "Network targets allow logs to be sent over a network to a remote log collector or relay\&. "
+.ti -1c
+.RI "file \fBsocket\&.h\fP"
+.br
+.RI "Socket targets allow logs to be sent to a Unix domain socket\&. "
+.ti -1c
+.RI "file \fBsqlite3\&.h\fP"
+.br
+.RI "SQLite3 targets allow logs to be sent to a SQLite3 database\&. "
+.ti -1c
+.RI "file \fBstream\&.h\fP"
+.br
+.RI "Functions for working with stream targets (that is, FILE pointers)\&. "
+.ti -1c
+.RI "file \fBwel\&.h\fP"
+.br
+.RI "Functions for working with Windows Event Log (WEL) targets\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Header files for target types provided by the library\&. 

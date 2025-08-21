@@ -1,0 +1,409 @@
+.TH "stumpless/severity.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/severity.h \- Severity codes for classifying log entries\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_MASK\fP(SEVERITY)   ( LOG_MASK( SEVERITY ) )"
+.br
+.RI "Creates a severity mask for the provided severity\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_MASK_UPTO\fP(SEVERITY)   ( LOG_UPTO( SEVERITY ) )"
+.br
+.RI "Creates a severity mask from EMERG up to the provided severity\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_EMERG_VALUE\fP   LOG_EMERG"
+.br
+.RI "Severity code value for EMERG log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_ALERT_VALUE\fP   LOG_ALERT"
+.br
+.RI "Severity code value for ALERT log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_CRIT_VALUE\fP   LOG_CRIT"
+.br
+.RI "Severity code value for CRIT log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_ERR_VALUE\fP   LOG_ERR"
+.br
+.RI "Severity code value for ERR log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_WARNING_VALUE\fP   LOG_WARNING"
+.br
+.RI "Severity code value for WARNING log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_NOTICE_VALUE\fP   LOG_NOTICE"
+.br
+.RI "Severity code value for NOTICE log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_INFO_VALUE\fP   LOG_INFO"
+.br
+.RI "Severity code value for INFO log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_DEBUG_VALUE\fP   LOG_DEBUG"
+.br
+.RI "Severity code value for DEBUG log entries\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_TRACE_VALUE\fP   \fBSTUMPLESS_SEVERITY_DEBUG_VALUE\fP"
+.br
+.RI "Equivalent to the DEBUG severity code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FOREACH_SEVERITY\fP(ACTION)"
+.br
+.RI "A macro function that runs the provided action once for each severity, providing the symbol and value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR\fP   '\\33[31;1m'"
+.br
+.RI "The default stumpless ansi terminal color values\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR\fP   '\\33[31;1m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR\fP   '\\33[31m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_ERR_DEFAULT_COLOR\fP   '\\33[31m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR\fP   '\\33[33m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR\fP   '\\33[32m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_INFO_DEFAULT_COLOR\fP   '\\33[37m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR\fP   '\\33[0m'"
+.br
+.ti -1c
+.RI "#define \fBSTUMPLESS_SEVERITY_TRACE\fP   \fBSTUMPLESS_SEVERITY_DEBUG\fP"
+.br
+.RI "Equivalent to the DEBUG severity\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_severity\fP { \fBSTUMPLESS_SEVERITY_EMERG\fP = ( LOG_EMERG ), \fBSTUMPLESS_SEVERITY_ALERT\fP = ( LOG_ALERT ), \fBSTUMPLESS_SEVERITY_CRIT\fP = ( LOG_CRIT ), \fBSTUMPLESS_SEVERITY_ERR\fP = ( LOG_ERR ), \fBSTUMPLESS_SEVERITY_WARNING\fP = ( LOG_WARNING ), \fBSTUMPLESS_SEVERITY_NOTICE\fP = ( LOG_NOTICE ), \fBSTUMPLESS_SEVERITY_INFO\fP = ( LOG_INFO ), \fBSTUMPLESS_SEVERITY_DEBUG\fP = ( LOG_DEBUG ) }"
+.br
+.RI "All possible severity codes available to log entries\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBstumpless_get_severity_string\fP (enum \fBstumpless_severity\fP severity)"
+.br
+.RI "Gets the string representation of the given severity\&. "
+.ti -1c
+.RI "enum \fBstumpless_severity\fP \fBstumpless_get_severity_enum\fP (const char *severity_string)"
+.br
+.RI "Gets the enum value corresponding to the given severity string\&. "
+.ti -1c
+.RI "enum \fBstumpless_severity\fP \fBstumpless_get_severity_enum_from_buffer\fP (const char *buffer, size_t length)"
+.br
+.RI "Gets the enum value corresponding to the given severity string in a buffer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Severity codes for classifying log entries\&. 
+
+See RFC 5424 section 6\&.2\&.1 for details on these values\&. Severities are defined to be compatible with the syslog\&.h header if it is found on the system\&. Otherwise, they are defined as closely as possible to the RFC 5424 specification\&. 
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_FOREACH_SEVERITY(ACTION)"
+\fBValue:\fP.PP
+.nf
+                                  \\
+ACTION( STUMPLESS_SEVERITY_EMERG, STUMPLESS_SEVERITY_EMERG_VALUE )     \\
+                        \\ACTION( STUMPLESS_SEVERITY_ALERT, STUMPLESS_SEVERITY_ALERT_VALUE )     \\
+                                  \\ACTION( STUMPLESS_SEVERITY_CRIT, STUMPLESS_SEVERITY_CRIT_VALUE )       \\
+                                        \\ACTION( STUMPLESS_SEVERITY_ERR, STUMPLESS_SEVERITY_ERR_VALUE )         \\
+                                    \\ACTION( STUMPLESS_SEVERITY_WARNING, STUMPLESS_SEVERITY_WARNING_VALUE ) \\
+                       \\ACTION( STUMPLESS_SEVERITY_NOTICE, STUMPLESS_SEVERITY_NOTICE_VALUE )   \\
+                          \\ACTION( STUMPLESS_SEVERITY_INFO, STUMPLESS_SEVERITY_INFO_VALUE )       \\
+                                    \\ACTION( STUMPLESS_SEVERITY_DEBUG, STUMPLESS_SEVERITY_DEBUG_VALUE )
+.fi
+
+.PP
+A macro function that runs the provided action once for each severity, providing the symbol and value\&. The action must take two arguments, the first being the symbol name of the severity, and the second the numeric value of the severity\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR   '\\33[31;1m'"
+
+.SS "#define STUMPLESS_SEVERITY_ALERT_VALUE   LOG_ALERT"
+
+.PP
+Severity code value for ALERT log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR   '\\33[31m'"
+
+.SS "#define STUMPLESS_SEVERITY_CRIT_VALUE   LOG_CRIT"
+
+.PP
+Severity code value for CRIT log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR   '\\33[0m'"
+
+.SS "#define STUMPLESS_SEVERITY_DEBUG_VALUE   LOG_DEBUG"
+
+.PP
+Severity code value for DEBUG log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR   '\\33[31;1m'"
+
+.PP
+The default stumpless ansi terminal color values\&. 
+.SS "#define STUMPLESS_SEVERITY_EMERG_VALUE   LOG_EMERG"
+
+.PP
+Severity code value for EMERG log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_ERR_DEFAULT_COLOR   '\\33[31m'"
+
+.SS "#define STUMPLESS_SEVERITY_ERR_VALUE   LOG_ERR"
+
+.PP
+Severity code value for ERR log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_INFO_DEFAULT_COLOR   '\\33[37m'"
+
+.SS "#define STUMPLESS_SEVERITY_INFO_VALUE   LOG_INFO"
+
+.PP
+Severity code value for INFO log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_MASK(SEVERITY)   ( LOG_MASK( SEVERITY ) )"
+
+.PP
+Creates a severity mask for the provided severity\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SS "#define STUMPLESS_SEVERITY_MASK_UPTO(SEVERITY)   ( LOG_UPTO( SEVERITY ) )"
+
+.PP
+Creates a severity mask from EMERG up to the provided severity\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP, and \fBfilter_example\&.c\fP\&.
+.SS "#define STUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR   '\\33[32m'"
+
+.SS "#define STUMPLESS_SEVERITY_NOTICE_VALUE   LOG_NOTICE"
+
+.PP
+Severity code value for NOTICE log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_TRACE   \fBSTUMPLESS_SEVERITY_DEBUG\fP"
+
+.PP
+Equivalent to the DEBUG severity\&. Trace level messages include extra information, but do not have a distinct severity value in log entries\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_TRACE_VALUE   \fBSTUMPLESS_SEVERITY_DEBUG_VALUE\fP"
+
+.PP
+Equivalent to the DEBUG severity code value\&. Trace level messages include extra information, but do not have a distinct severity value in log entries\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR   '\\33[33m'"
+
+.SS "#define STUMPLESS_SEVERITY_WARNING_VALUE   LOG_WARNING"
+
+.PP
+Severity code value for WARNING log entries\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBstumpless_severity\fP"
+
+.PP
+All possible severity codes available to log entries\&. In versions prior to 2\&.0\&.0, these values were simply #define symbols\&. They have been changed to an enum to clearly convey proper usage\&.
+.PP
+See \fBSTUMPLESS_FOREACH_SEVERITY()\fP and \fBSTUMPLESS_GENERATE_ENUM()\fP for how the enumeration is actually defined\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_SEVERITY_EMERG \fP\fP
+Emergency: system is unusable\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_ALERT \fP\fP
+Alert: action must be taken immediately\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_CRIT \fP\fP
+Critical: critical conditions\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_ERR \fP\fP
+Error: error conditions\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_WARNING \fP\fP
+Warning: warning conditions\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_NOTICE \fP\fP
+Notice: normal but significant condition\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_INFO \fP\fP
+Informational: informational messages\&. 
+.TP
+\fB\fISTUMPLESS_SEVERITY_DEBUG \fP\fP
+Debug: debug-level messages\&. 
+.SH "Function Documentation"
+.PP 
+.SS "enum \fBstumpless_severity\fP stumpless_get_severity_enum (const char * severity_string)"
+
+.PP
+Gets the enum value corresponding to the given severity string\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIseverity_string\fP The severity name to get the enum from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The enum integer corresponding to the given severity or -1 if the string is not a valid severity name\&. An error code STUMPLESS_INVALID_SEVERITY is raised if the string is not a valid severity name\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_severity\fP stumpless_get_severity_enum_from_buffer (const char * buffer, size_t length)"
+
+.PP
+Gets the enum value corresponding to the given severity string in a buffer\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIbuffer\fP The buffer containing the severity name to get the enum from\&.
+.br
+\fIlength\fP The length of the buffer\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The enum integer corresponding to the given severity or -1 if the string is not a valid severity name\&. An error code STUMPLESS_INVALID_SEVERITY is raised if the string is not a valid severity name\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_severity_string (enum \fBstumpless_severity\fP severity)"
+
+.PP
+Gets the string representation of the given severity\&. This is a string literal that should not be modified or freed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIseverity\fP The severity to get the string from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The string representation of the given severity\&. An error code STUMPLESS_INVALID_SEVERITY is raised if the given severity is not valid\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

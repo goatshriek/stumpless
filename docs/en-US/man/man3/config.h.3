@@ -1,0 +1,204 @@
+.TH "stumpless/config.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/config.h \- Configuration information to provide to code built with the library\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_PUBLIC_FUNCTION\fP   __attribute__ ((visibility ('default')))"
+.br
+.RI "Marks functions that are provided for use by the library\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_CHAIN_TARGET_ARRAY_LENGTH\fP   4"
+.br
+.RI "The length of the array in the chain target structure\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_FACILITY\fP   \fBSTUMPLESS_FACILITY_USER\fP"
+.br
+.RI "The facility code to use when one is not supplied\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_FILE\fP   'stumpless\-default\&.log'"
+.br
+.RI "The name of the file opened if the default target is to a file\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_SEVERITY\fP   \fBSTUMPLESS_SEVERITY_INFO\fP"
+.br
+.RI "The severity code to use when one is not supplied\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_SOCKET\fP   '/dev/log'"
+.br
+.RI "A string literal with the default socket logged to\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FALLBACK_PAGESIZE\fP   4096"
+.br
+.RI "The memory page size used for dynamic memory allocations\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_LANGUAGE\fP   'en\-US'"
+.br
+.RI "The language stumpless was built for, as an RFC 5646 language tag\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_CHAIN_TARGETS_SUPPORTED\fP   1"
+.br
+.RI "Defined if chain targets are supported by this build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_NETWORK_TARGETS_SUPPORTED\fP   1"
+.br
+.RI "Defined if journald targets are supported by this build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SOCKET_TARGETS_SUPPORTED\fP   1"
+.br
+.RI "Defined if socket targets are supported by this build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING\fP   'logs'"
+.br
+.RI "A string literal with the name of the table used by default for SQLite3 targets\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SQLITE3_RETRY_MAX\fP   3"
+.br
+.RI "The maximum number of retries for SQLite operations\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SYSLOG_H_COMPATIBLE\fP   1"
+.br
+.RI "Defined if sqlite3 targets are supported by this build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_THREAD_SAFETY_SUPPORTED\fP   1"
+.br
+.RI "Defined if thread-safe functionality is supported\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEPRECATION_WARNINGS_ENABLED\fP   1"
+.br
+.RI "Defined if Windows Event Log targets are supported by this build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAJOR_VERSION\fP   3"
+.br
+.RI "The major version of this stumpless build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_MINOR_VERSION\fP   0"
+.br
+.RI "The minor version of this stumpless build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_PATCH_VERSION\fP   0"
+.br
+.RI "The patch version of this stumpless build\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_VERSION\fP   '3\&.0\&.0'"
+.br
+.RI "The version of stumpless this library was built with\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Configuration information to provide to code built with the library\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_CHAIN_TARGET_ARRAY_LENGTH   4"
+
+.PP
+The length of the array in the chain target structure\&. Chains where all targets fit into this array will require less dynamic memory and fewer dereferences, speeding up their performance\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_CHAIN_TARGETS_SUPPORTED   1"
+
+.PP
+Defined if chain targets are supported by this build\&. 
+.SS "#define STUMPLESS_DEFAULT_FACILITY   \fBSTUMPLESS_FACILITY_USER\fP"
+
+.PP
+The facility code to use when one is not supplied\&. 
+.SS "#define STUMPLESS_DEFAULT_FILE   'stumpless\-default\&.log'"
+
+.PP
+The name of the file opened if the default target is to a file\&. 
+.SS "#define STUMPLESS_DEFAULT_SEVERITY   \fBSTUMPLESS_SEVERITY_INFO\fP"
+
+.PP
+The severity code to use when one is not supplied\&. 
+.SS "#define STUMPLESS_DEFAULT_SOCKET   '/dev/log'"
+
+.PP
+A string literal with the default socket logged to\&. 
+.SS "#define STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING   'logs'"
+
+.PP
+A string literal with the name of the table used by default for SQLite3 targets\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_DEPRECATION_WARNINGS_ENABLED   1"
+
+.PP
+Defined if Windows Event Log targets are supported by this build\&. Defined if deprecation warnings are printed to standard output\&. 
+.SS "#define STUMPLESS_FALLBACK_PAGESIZE   4096"
+
+.PP
+The memory page size used for dynamic memory allocations\&. 
+.SS "#define STUMPLESS_LANGUAGE   'en\-US'"
+
+.PP
+The language stumpless was built for, as an RFC 5646 language tag\&. 
+.SS "#define STUMPLESS_MAJOR_VERSION   3"
+
+.PP
+The major version of this stumpless build\&. 
+.SS "#define STUMPLESS_MINOR_VERSION   0"
+
+.PP
+The minor version of this stumpless build\&. 
+.SS "#define STUMPLESS_NETWORK_TARGETS_SUPPORTED   1"
+
+.PP
+Defined if journald targets are supported by this build\&. Defined if network targets are supported by this build\&. 
+.SS "#define STUMPLESS_PATCH_VERSION   0"
+
+.PP
+The patch version of this stumpless build\&. 
+.SS "#define STUMPLESS_PUBLIC_FUNCTION   __attribute__ ((visibility ('default')))"
+
+.PP
+Marks functions that are provided for use by the library\&. 
+.SS "#define STUMPLESS_SOCKET_TARGETS_SUPPORTED   1"
+
+.PP
+Defined if socket targets are supported by this build\&. 
+.SS "#define STUMPLESS_SQLITE3_RETRY_MAX   3"
+
+.PP
+The maximum number of retries for SQLite operations\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_SYSLOG_H_COMPATIBLE   1"
+
+.PP
+Defined if sqlite3 targets are supported by this build\&. Defined if this build can directly replace syslog\&.h usage\&. 
+.SS "#define STUMPLESS_THREAD_SAFETY_SUPPORTED   1"
+
+.PP
+Defined if thread-safe functionality is supported\&. 
+.SS "#define STUMPLESS_VERSION   '3\&.0\&.0'"
+
+.PP
+The version of stumpless this library was built with\&. This will be in standard semantic versioning format: 'major\&.minor\&.patch'\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

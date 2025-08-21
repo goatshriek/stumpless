@@ -1,0 +1,658 @@
+.TH "stumpless/target/network.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/network.h \- Network targets allow logs to be sent over a network to a remote log collector or relay\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_TRANSPORT_PORT\fP   '514'"
+.br
+.RI "The default transport port for network targets\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE\fP   1472"
+.br
+.RI "The default message size for UDP network targets\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_network_protocol\fP { \fBSTUMPLESS_IPV4_NETWORK_PROTOCOL\fP, \fBSTUMPLESS_IPV6_NETWORK_PROTOCOL\fP }"
+.br
+.RI "Network protocols used by a network target\&. "
+.ti -1c
+.RI "enum \fBstumpless_transport_protocol\fP { \fBSTUMPLESS_TCP_TRANSPORT_PROTOCOL\fP, \fBSTUMPLESS_UDP_TRANSPORT_PROTOCOL\fP }"
+.br
+.RI "Transport protocols used by a network target\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_network_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a network target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_destination\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the destination of a network target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_transport_port\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the transport port number of a network target\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_udp_max_message_size\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the current maximum message size of a UDP network target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_network_target\fP (const char *name, enum \fBstumpless_network_protocol\fP network, enum \fBstumpless_transport_protocol\fP transport)"
+.br
+.RI "Creates a network target, but does not open it\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_tcp4_target\fP (const char *name)"
+.br
+.RI "Creates a network target for logging over IPv4 and TCP, but does not open it\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_tcp6_target\fP (const char *name)"
+.br
+.RI "Creates a network target for logging over IPv6 and TCP, but does not open it\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_udp4_target\fP (const char *name)"
+.br
+.RI "Creates a network target for logging over IPv4 and UDP, but does not open it\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_udp6_target\fP (const char *name)"
+.br
+.RI "Creates a network target for logging over IPv6 and UDP, but does not open it\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_network_target\fP (const char *name, const char *destination, enum \fBstumpless_network_protocol\fP network, enum \fBstumpless_transport_protocol\fP transport)"
+.br
+.RI "Opens a network target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_tcp4_target\fP (const char *name, const char *destination)"
+.br
+.RI "Opens a network target for remote logging over IPv4 and TCP\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_tcp6_target\fP (const char *name, const char *destination)"
+.br
+.RI "Opens a network target for remote logging over IPv6 and TCP\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_udp4_target\fP (const char *name, const char *destination)"
+.br
+.RI "Opens a network target for remote logging over IPv4 and UDP\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_udp6_target\fP (const char *name, const char *destination)"
+.br
+.RI "Opens a network target for remote logging over IPv6 and UDP\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_destination\fP (struct \fBstumpless_target\fP *target, const char *destination)"
+.br
+.RI "Sets the destination of a network target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_transport_port\fP (struct \fBstumpless_target\fP *target, const char *port)"
+.br
+.RI "Sets the transport port number of a network target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_udp_max_message_size\fP (struct \fBstumpless_target\fP *target, size_t max_msg_size)"
+.br
+.RI "Sets the maximum message size of a UDP network target\&. "
+.ti -1c
+.RI "enum \fBstumpless_network_protocol\fP \fBstumpless_get_network_protocol\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the network protocol of a network target\&. "
+.ti -1c
+.RI "enum \fBstumpless_transport_protocol\fP \fBstumpless_get_transport_protocol\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the transport protocol of a network target\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Network targets allow logs to be sent over a network to a remote log collector or relay\&. 
+
+There are a number of popular options for the remote end including Splunk, rsyslog, and syslog-ng\&. Network targets can send messages to these and others, over both IPv4 and IPv6, TCP and UDP\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to network targets is thread safe by virtue of using the network logging functions which are thread safe themselves\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to network targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to network targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entries may not be completed\&. 
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_DEFAULT_TRANSPORT_PORT   '514'"
+
+.PP
+The default transport port for network targets\&. This is based largely on tradition, but some applications may expect a different port (for example 1514 and 6514 are sometimes used)\&. If a different port is needed on a target, use \fBstumpless_set_transport_port()\fP to change it\&. 
+.SS "#define STUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE   1472"
+
+.PP
+The default message size for UDP network targets\&. This is set to account for an MTU of 1500 bytes, a 20 byte IP header, and an 8 byte datagram header\&. If you wish to change this value for a particular target, then you must use the \fBstumpless_set_udp_max_message_size()\fP function on the target\&. 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBstumpless_network_protocol\fP"
+
+.PP
+Network protocols used by a network target\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_IPV4_NETWORK_PROTOCOL \fP\fP
+Internet Protocol version 4, RFC 791\&. 
+.TP
+\fB\fISTUMPLESS_IPV6_NETWORK_PROTOCOL \fP\fP
+Internet Protocl version 6, RFC 8200\&. 
+.SS "enum \fBstumpless_transport_protocol\fP"
+
+.PP
+Transport protocols used by a network target\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_TCP_TRANSPORT_PROTOCOL \fP\fP
+TCP, RFC 793\&. 
+.TP
+\fB\fISTUMPLESS_UDP_TRANSPORT_PROTOCOL \fP\fP
+UDP, RFC 768\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_network_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a network target\&. This function closes the network connection associated with the target before destruction\&. It also destroys all memory allocated for the target, including the target struct itself\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The network target to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "const char * stumpless_get_destination (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the destination of a network target\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+If the network target has been created but not had a destination set yet, the result will be NULL\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the destination and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the destination from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current destination of the network target, or NULL if one has not yet been set\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_network_protocol\fP stumpless_get_network_protocol (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the network protocol of a network target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the network protocol from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The network protocol of the network target\&. In the event of an error, -1 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_transport_port (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the transport port number of a network target\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+If the network target has been created but not had a destination set yet, the result will be a string holding the same string as in STUMPLESS_DEFAULT_TRANSPORT_PORT\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the port number from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current port number of the network target, encoded as a NULL-terminated string\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_transport_protocol\fP stumpless_get_transport_protocol (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the transport protocol of a network target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the transport protocol from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The transport protocol of the network target\&. In the event of an error, -1 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_udp_max_message_size (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the current maximum message size of a UDP network target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the message size from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current maximum message size of the supplied target if no error is encountered\&. In the event of an error, 0 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_new_network_target (const char * name, enum \fBstumpless_network_protocol\fP network, enum \fBstumpless_transport_protocol\fP transport)"
+
+.PP
+Creates a network target, but does not open it\&. A network target can be created with this function if the target needs to be created without initiating a network session\&. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change\&.
+.PP
+The target will stay in a paused state until it is opened using the stumpless_open_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fInetwork\fP The network protocol to use\&.
+.br
+\fItransport\fP The transport protocol to use\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_new_tcp4_target (const char * name)"
+
+.PP
+Creates a network target for logging over IPv4 and TCP, but does not open it\&. A network target can be created with this function if the target needs to be created without initiating a network session\&. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change\&.
+.PP
+The target will stay in a paused state until it is opened using the stumpless_open_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtcp_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_new_tcp6_target (const char * name)"
+
+.PP
+Creates a network target for logging over IPv6 and TCP, but does not open it\&. A network target can be created with this function if the target needs to be created without initiating a network session\&. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change\&.
+.PP
+The target will stay in a paused state until it is opened using the stumpless_open_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_new_udp4_target (const char * name)"
+
+.PP
+Creates a network target for logging over IPv4 and UDP, but does not open it\&. A network target can be created with this function if the target needs to be created without initiating a network session\&. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change\&.
+.PP
+The target will stay in a paused state until it is opened using the stumpless_open_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_new_udp6_target (const char * name)"
+
+.PP
+Creates a network target for logging over IPv6 and UDP, but does not open it\&. A network target can be created with this function if the target needs to be created without initiating a network session\&. This also allows parameters that are not available in the open function to be set before initiating the session, instead of restarting the session on each change\&.
+.PP
+The target will stay in a paused state until it is opened using the stumpless_open_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_network_target (const char * name, const char * destination, enum \fBstumpless_network_protocol\fP network, enum \fBstumpless_transport_protocol\fP transport)"
+
+.PP
+Opens a network target\&. Network targets allow traditional syslog messages to be sent to a remote server\&. This function allows the type of network target to be specified by parameters, but if you know that you want a specific type then it is easier to use the simplified functions that specify the type by name, such as the stumpless_open_udp4_target function\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:destination\fP This function is thread safe, of course assuming that name and destination are not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIdestination\fP The destination to send the messages to\&. This could be a hostname or an IP address\&.
+.br
+\fInetwork\fP The network protocol to use\&.
+.br
+\fItransport\fP The transport protocol to use\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_tcp4_target (const char * name, const char * destination)"
+
+.PP
+Opens a network target for remote logging over IPv4 and TCP\&. A TCP4 target will use Syslog over TCP, as defined in RFC 6587\&. Note that this includes the use of octet counting for transmission of messages, instead of a delimiter such as a newline character\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:destination\fP This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIdestination\fP The destination to send the messages to\&. This could be a hostname or an IP address\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_tcp6_target (const char * name, const char * destination)"
+
+.PP
+Opens a network target for remote logging over IPv6 and TCP\&. A TCP6 target will use Syslog over TCP, as defined in RFC 6587\&. Note that this includes the use of octet counting for transmission of messages, instead of a delimiter such as a newline character\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:destination\fP This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIdestination\fP The destination to send the messages to\&. This could be a hostname or an IP address\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_udp4_target (const char * name, const char * destination)"
+
+.PP
+Opens a network target for remote logging over IPv4 and UDP\&. A UDP4 target will use Syslog over UDP, as defined in RFC 5426\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:destination\fP This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIdestination\fP The destination to send the messages to\&. This could be a hostname or an IP address\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_udp6_target (const char * name, const char * destination)"
+
+.PP
+Opens a network target for remote logging over IPv6 and UDP\&. A UDP6 target will use Syslog over UDP, as defined in RFC 5426\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:destination\fP This function is thread safe, of course assuming that name and destination is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIdestination\fP The destination to send the messages to\&. This could be a hostname or an IP address\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_destination (struct \fBstumpless_target\fP * target, const char * destination)"
+
+.PP
+Sets the destination of a network target\&. If the target is already open when this function is called, then it will attempt to re-open the target after the destination is changed\&. If the target is in a paused state, then it will be left that way until an explicit call to stumpless_open_target is made\&.
+.PP
+Note that if the target cannot be re-opened, this will not be treated as an error condition\&. That is, the returned value will still be the target, and the destination will reflect the new value\&. Versions prior to 2\&.0\&.0 treated this as an error condition and returned NULL despite the destination being updated successfully\&.
+.PP
+\fBThread Safety: MT-Safe race:destination\fP This function is thread safe, of course assuming that the destination string is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new destination and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to be modified\&.
+.br
+\fIdestination\fP The new destintion to send messages to\&. This could be a hostname or an IP address\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtcp_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_set_transport_port (struct \fBstumpless_target\fP * target, const char * port)"
+
+.PP
+Sets the transport port number of a network target\&. No validation is performed on the provided port number\&. The string can even contain non-numerical characters, and the target will be updated with the provided string\&. However, the target may not be able to successfully open if the port is invalid\&.
+.PP
+If the target is already open when this function is called, then it will attempt to re-open the target after the port is changed\&. If the target is in a paused state, then it will be left that way until an explicit call to stumpless_open_target is made\&.
+.PP
+Note that if the target cannot be re-opened, this will not be treated as an error condition\&. That is, the returned value will still be the target, and the port will reflect the new value\&. Versions prior to 2\&.0\&.0 treated this as an error condition and returned NULL despite the port being updated successfully\&.
+.PP
+\fBThread Safety: MT-Safe race:port\fP This function is thread safe, of course assuming that the port string is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new destination and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to be modified\&.
+.br
+\fIport\fP The new transport port number to use\&. This is an ASCII string, and will be copied by the function\&. After the call returns, the parameter will not be referenced again and can be destroyed as needed\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtcp_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_set_udp_max_message_size (struct \fBstumpless_target\fP * target, size_t max_msg_size)"
+
+.PP
+Sets the maximum message size of a UDP network target\&. Messages that are longer than the maximum size are truncated to this length\&. If the underlying transport for a network target can support a larger datagram and you need support for longer messages, then you can use this option to increase the size\&. Likewise, the option can be used to force smaller datagrams if needed, for example in the case of extra overhead in the IP header beyond the typical 20 bytes\&.
+.PP
+Note that truncations due to the maximum size do not take UTF characters into account\&. If you have entries using multi-byte characters, then you need to be sure that these truncations do not cause parsing or security problems\&.
+.PP
+Without calling this function, UDP targets start with a maximum message size set to \fCSTUMPLESS_DEFAULT_UDP_MAX_MESSAGE_SIZE\fP\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to be modified\&.
+.br
+\fImax_msg_size\fP The new maximum message size for the supplied target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBudp_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,599 @@
+.TH "stumpless/facility.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/facility.h \- Facility codes for classifying log entries\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_KERN_VALUE\fP   LOG_KERN"
+.br
+.RI "Kernel message facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_USER_VALUE\fP   LOG_USER"
+.br
+.RI "User-level message facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_MAIL_VALUE\fP   LOG_MAIL"
+.br
+.RI "Mail system facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_DAEMON_VALUE\fP   LOG_DAEMON"
+.br
+.RI "System daemons facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_AUTH_VALUE\fP   LOG_AUTH"
+.br
+.RI "Facility code value for security/authorization messages\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_SYSLOG_VALUE\fP   ( 5 << 3 )"
+.br
+.RI "Facility code value for messages generated internally by the logging daemon as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LPR_VALUE\fP   LOG_LPR"
+.br
+.RI "Line printer subsystem facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_NEWS_VALUE\fP   LOG_NEWS"
+.br
+.RI "Network news subsystem facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_UUCP_VALUE\fP   LOG_UUCP"
+.br
+.RI "UUCP subsystem facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_CRON_VALUE\fP   LOG_CRON"
+.br
+.RI "Clock daemon facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_AUTH2_VALUE\fP   ( 10 << 3 )"
+.br
+.RI "Security/authorization messages facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_FTP_VALUE\fP   ( 11 << 3 )"
+.br
+.RI "FTP daemon facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_NTP_VALUE\fP   ( 12 << 3 )"
+.br
+.RI "NTP subsystem facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_AUDIT_VALUE\fP   ( 13 << 3 )"
+.br
+.RI "Log audit facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_ALERT_VALUE\fP   ( 14 << 3 )"
+.br
+.RI "Log alert facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_CRON2_VALUE\fP   ( 15 << 3 )"
+.br
+.RI "Clock daemon facility code value as defined by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL0_VALUE\fP   LOG_LOCAL0"
+.br
+.RI "Local use 0 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL1_VALUE\fP   LOG_LOCAL1"
+.br
+.RI "Local use 1 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL2_VALUE\fP   LOG_LOCAL2"
+.br
+.RI "Local use 2 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL3_VALUE\fP   LOG_LOCAL3"
+.br
+.RI "Local use 3 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL4_VALUE\fP   LOG_LOCAL4"
+.br
+.RI "Local use 4 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL5_VALUE\fP   LOG_LOCAL5"
+.br
+.RI "Local use 5 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL6_VALUE\fP   LOG_LOCAL6"
+.br
+.RI "Local use 6 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FACILITY_LOCAL7_VALUE\fP   LOG_LOCAL7"
+.br
+.RI "Local use 7 facility code value\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FOREACH_FACILITY\fP(ACTION)"
+.br
+.RI "A macro function that runs the provided action once for each facility, providing the symbol and value\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_facility\fP { \fBSTUMPLESS_FACILITY_KERN\fP = ( LOG_KERN ), \fBSTUMPLESS_FACILITY_USER\fP = ( LOG_USER ), \fBSTUMPLESS_FACILITY_MAIL\fP = ( LOG_MAIL ), \fBSTUMPLESS_FACILITY_DAEMON\fP = ( LOG_DAEMON ), \fBSTUMPLESS_FACILITY_AUTH\fP = ( LOG_AUTH ), \fBSTUMPLESS_FACILITY_SYSLOG\fP = ( ( 5 << 3 ) ), \fBSTUMPLESS_FACILITY_LPR\fP = ( LOG_LPR ), \fBSTUMPLESS_FACILITY_NEWS\fP = ( LOG_NEWS ), \fBSTUMPLESS_FACILITY_UUCP\fP = ( LOG_UUCP ), \fBSTUMPLESS_FACILITY_CRON\fP = ( LOG_CRON ), \fBSTUMPLESS_FACILITY_AUTH2\fP = ( ( 10 << 3 ) ), \fBSTUMPLESS_FACILITY_FTP\fP = ( ( 11 << 3 ) ), \fBSTUMPLESS_FACILITY_NTP\fP = ( ( 12 << 3 ) ), \fBSTUMPLESS_FACILITY_AUDIT\fP = ( ( 13 << 3 ) ), \fBSTUMPLESS_FACILITY_ALERT\fP = ( ( 14 << 3 ) ), \fBSTUMPLESS_FACILITY_CRON2\fP = ( ( 15 << 3 ) ), \fBSTUMPLESS_FACILITY_LOCAL0\fP = ( LOG_LOCAL0 ), \fBSTUMPLESS_FACILITY_LOCAL1\fP = ( LOG_LOCAL1 ), \fBSTUMPLESS_FACILITY_LOCAL2\fP = ( LOG_LOCAL2 ), \fBSTUMPLESS_FACILITY_LOCAL3\fP = ( LOG_LOCAL3 ), \fBSTUMPLESS_FACILITY_LOCAL4\fP = ( LOG_LOCAL4 ), \fBSTUMPLESS_FACILITY_LOCAL5\fP = ( LOG_LOCAL5 ), \fBSTUMPLESS_FACILITY_LOCAL6\fP = ( LOG_LOCAL6 ), \fBSTUMPLESS_FACILITY_LOCAL7\fP = ( LOG_LOCAL7 ) }"
+.br
+.RI "All possible facility codes available to log entries\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBstumpless_get_facility_string\fP (enum \fBstumpless_facility\fP facility)"
+.br
+.RI "Gets the string representation of the given facility\&. "
+.ti -1c
+.RI "enum \fBstumpless_facility\fP \fBstumpless_get_facility_enum\fP (const char *facility_string)"
+.br
+.RI "Gets the enum value corresponding to the given facility string\&. "
+.ti -1c
+.RI "enum \fBstumpless_facility\fP \fBstumpless_get_facility_enum_from_buffer\fP (const char *facility_string, size_t facility_buffer_length)"
+.br
+.RI "Gets the enum value corresponding to the given facility string\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Facility codes for classifying log entries\&. 
+
+See RFC 5424 section 6\&.2\&.1 for details on these values\&. The underlying values of facilities are defined to be compatible with the syslog\&.h header if it is found on the system\&. Otherwise, they are defined as closely as possible to the RFC 5425 specification\&. Some facilities do not exist in the syslog\&.h header and as such are always defined according to the RFC\&. 
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_FACILITY_ALERT_VALUE   ( 14 << 3 )"
+
+.PP
+Log alert facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_AUDIT_VALUE   ( 13 << 3 )"
+
+.PP
+Log audit facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_AUTH2_VALUE   ( 10 << 3 )"
+
+.PP
+Security/authorization messages facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_AUTH_VALUE   LOG_AUTH"
+
+.PP
+Facility code value for security/authorization messages\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_CRON2_VALUE   ( 15 << 3 )"
+
+.PP
+Clock daemon facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_CRON_VALUE   LOG_CRON"
+
+.PP
+Clock daemon facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_DAEMON_VALUE   LOG_DAEMON"
+
+.PP
+System daemons facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_FTP_VALUE   ( 11 << 3 )"
+
+.PP
+FTP daemon facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_KERN_VALUE   LOG_KERN"
+
+.PP
+Kernel message facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL0_VALUE   LOG_LOCAL0"
+
+.PP
+Local use 0 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL1_VALUE   LOG_LOCAL1"
+
+.PP
+Local use 1 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL2_VALUE   LOG_LOCAL2"
+
+.PP
+Local use 2 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL3_VALUE   LOG_LOCAL3"
+
+.PP
+Local use 3 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL4_VALUE   LOG_LOCAL4"
+
+.PP
+Local use 4 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL5_VALUE   LOG_LOCAL5"
+
+.PP
+Local use 5 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL6_VALUE   LOG_LOCAL6"
+
+.PP
+Local use 6 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LOCAL7_VALUE   LOG_LOCAL7"
+
+.PP
+Local use 7 facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_LPR_VALUE   LOG_LPR"
+
+.PP
+Line printer subsystem facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_MAIL_VALUE   LOG_MAIL"
+
+.PP
+Mail system facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_NEWS_VALUE   LOG_NEWS"
+
+.PP
+Network news subsystem facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_NTP_VALUE   ( 12 << 3 )"
+
+.PP
+NTP subsystem facility code value as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_SYSLOG_VALUE   ( 5 << 3 )"
+
+.PP
+Facility code value for messages generated internally by the logging daemon as defined by RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_USER_VALUE   LOG_USER"
+
+.PP
+User-level message facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FACILITY_UUCP_VALUE   LOG_UUCP"
+
+.PP
+UUCP subsystem facility code value\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SS "#define STUMPLESS_FOREACH_FACILITY(ACTION)"
+
+.PP
+A macro function that runs the provided action once for each facility, providing the symbol and value\&. The action must take two arguments, the first being the symbol name of the facility, and the second the numeric value of the facility\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBstumpless_facility\fP"
+
+.PP
+All possible facility codes available to log entries\&. In versions prior to 2\&.0\&.0, these values were simply #define symbols\&. They have been changed to an enum to clearly convey proper usage\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_FACILITY_KERN \fP\fP
+Kernel messages\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_USER \fP\fP
+User-level messages\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_MAIL \fP\fP
+Mail system facility code value as defined by RFC 5424\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_DAEMON \fP\fP
+System daemons\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_AUTH \fP\fP
+Security/authorization messages\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_SYSLOG \fP\fP
+Message generated internally by the logging daemon\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LPR \fP\fP
+Line printer subsystem\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_NEWS \fP\fP
+Network news\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_UUCP \fP\fP
+UUCP subsystem\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_CRON \fP\fP
+Clock daemon\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_AUTH2 \fP\fP
+Security/authorization messages\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_FTP \fP\fP
+FTP daemon\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_NTP \fP\fP
+NTP subsystem\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_AUDIT \fP\fP
+Log audit\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_ALERT \fP\fP
+Log alert\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_CRON2 \fP\fP
+Clock daemon\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL0 \fP\fP
+Local use 0\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL1 \fP\fP
+Local use 1\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL2 \fP\fP
+Local use 2\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL3 \fP\fP
+Local use 3\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL4 \fP\fP
+Local use 4\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL5 \fP\fP
+Local use 5\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL6 \fP\fP
+Local use 6\&. 
+.TP
+\fB\fISTUMPLESS_FACILITY_LOCAL7 \fP\fP
+Local use 7\&. 
+.SH "Function Documentation"
+.PP 
+.SS "enum \fBstumpless_facility\fP stumpless_get_facility_enum (const char * facility_string)"
+
+.PP
+Gets the enum value corresponding to the given facility string\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility_string\fP The facility name to get the enum from\&.
+.RE
+.PP
+Clears previous error on success\&.
+.PP
+Raises STUMPLESS_INVALID_FACILITY on invalid input\&.
+.PP
+\fBReturns\fP
+.RS 4
+The enum integer corresponding to the given facility or -1 if the string is not a valid facility name\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_facility\fP stumpless_get_facility_enum_from_buffer (const char * facility_string, size_t facility_buffer_length)"
+
+.PP
+Gets the enum value corresponding to the given facility string\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility_string\fP The facility name to get the enum from\&.
+.br
+\fIfacility_buffer_length\fP The length of the buffer
+.RE
+.PP
+Clears previous error on success\&.
+.PP
+Raises STUMPLESS_INVALID_FACILITY on invalid input\&.
+.PP
+\fBReturns\fP
+.RS 4
+The enum integer corresponding to the given facility or -1 if the string is not a valid facility name\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_facility_string (enum \fBstumpless_facility\fP facility)"
+
+.PP
+Gets the string representation of the given facility\&. This is a string literal that should not be modified or freed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility\fP The facility to get the string from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The string representation of the given facility\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

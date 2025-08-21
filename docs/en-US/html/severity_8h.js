@@ -1,0 +1,37 @@
+var severity_8h =
+[
+    [ "STUMPLESS_FOREACH_SEVERITY", "severity_8h.html#a4f8373bdfa711f4e6c7a2b2416335c48", null ],
+    [ "STUMPLESS_SEVERITY_ALERT_DEFAULT_COLOR", "severity_8h.html#abe7b13862109ab666e7dc6443f0610c3", null ],
+    [ "STUMPLESS_SEVERITY_ALERT_VALUE", "severity_8h.html#abc582a60033e9e4042a6ff306aff7014", null ],
+    [ "STUMPLESS_SEVERITY_CRIT_DEFAULT_COLOR", "severity_8h.html#aa7e4483efc54af781d79d528852c8597", null ],
+    [ "STUMPLESS_SEVERITY_CRIT_VALUE", "severity_8h.html#acf40f8aad89bec900b443b684aa9d90c", null ],
+    [ "STUMPLESS_SEVERITY_DEBUG_DEFAULT_COLOR", "severity_8h.html#aa5f663e9325a1772290968adfbc93030", null ],
+    [ "STUMPLESS_SEVERITY_DEBUG_VALUE", "severity_8h.html#aaafb5f8b586e286e5ac58b99957d3fc6", null ],
+    [ "STUMPLESS_SEVERITY_EMERG_DEFAULT_COLOR", "severity_8h.html#a7c8c48a3582785d506ed7b0eb5ec2049", null ],
+    [ "STUMPLESS_SEVERITY_EMERG_VALUE", "severity_8h.html#a9c1b865ce9849313c47d9ddca0997628", null ],
+    [ "STUMPLESS_SEVERITY_ERR_DEFAULT_COLOR", "severity_8h.html#abe53d8345e26e030914e31097e5c0159", null ],
+    [ "STUMPLESS_SEVERITY_ERR_VALUE", "severity_8h.html#ab9800815500c6176ed3517efeeb2cc32", null ],
+    [ "STUMPLESS_SEVERITY_INFO_DEFAULT_COLOR", "severity_8h.html#a9747e78a43ee9efab7dedcf8d6bf614e", null ],
+    [ "STUMPLESS_SEVERITY_INFO_VALUE", "severity_8h.html#a0f643ddbe126d60a8b730e9ecb9a8bbe", null ],
+    [ "STUMPLESS_SEVERITY_MASK", "severity_8h.html#a27f7aaf54cddf1a576bcb40f18ef21f6", null ],
+    [ "STUMPLESS_SEVERITY_MASK_UPTO", "severity_8h.html#af7ccf07aaf1ed990c9879252835d76d6", null ],
+    [ "STUMPLESS_SEVERITY_NOTICE_DEFAULT_COLOR", "severity_8h.html#af4078ee25dbb89a39c51278417208005", null ],
+    [ "STUMPLESS_SEVERITY_NOTICE_VALUE", "severity_8h.html#a7ccb24daaccc9a6f5e8b02df1f077901", null ],
+    [ "STUMPLESS_SEVERITY_TRACE", "severity_8h.html#ac8c4b75d6114bd6584c2780fec31a207", null ],
+    [ "STUMPLESS_SEVERITY_TRACE_VALUE", "severity_8h.html#a2d4315de96cc40e6c030322001d83e9d", null ],
+    [ "STUMPLESS_SEVERITY_WARNING_DEFAULT_COLOR", "severity_8h.html#a9055058ba0ecbbcb6a69bf9767e3dd4f", null ],
+    [ "STUMPLESS_SEVERITY_WARNING_VALUE", "severity_8h.html#a4dd071aee9a2d06a99c5fd55bee7062b", null ],
+    [ "stumpless_severity", "severity_8h.html#a5abdbd435635ff97469956113ce954d2", [
+      [ "STUMPLESS_SEVERITY_EMERG", "severity_8h.html#a5abdbd435635ff97469956113ce954d2aa2b1d6ea2cbcb43661f19de71841cf99", null ],
+      [ "STUMPLESS_SEVERITY_ALERT", "severity_8h.html#a5abdbd435635ff97469956113ce954d2ab759f32096479cdbd0adb2f89666eb93", null ],
+      [ "STUMPLESS_SEVERITY_CRIT", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a04afc0f53f350efa5fc22f58950c875b", null ],
+      [ "STUMPLESS_SEVERITY_ERR", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a5536f0103445b72a386de6359c61f73e", null ],
+      [ "STUMPLESS_SEVERITY_WARNING", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a6e5b2322f15fd26b8514d92fdda68182", null ],
+      [ "STUMPLESS_SEVERITY_NOTICE", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a54861615c3d5dbb73c4811ed5e40bfc9", null ],
+      [ "STUMPLESS_SEVERITY_INFO", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a9edfeb366f218242e927a91452d3d51a", null ],
+      [ "STUMPLESS_SEVERITY_DEBUG", "severity_8h.html#a5abdbd435635ff97469956113ce954d2a53648914286d08b4ad01de154e5fe744", null ]
+    ] ],
+    [ "stumpless_get_severity_enum", "severity_8h.html#ac2986bd0627b64606f63a5417b1168e6", null ],
+    [ "stumpless_get_severity_enum_from_buffer", "severity_8h.html#a2c1edd49dbfd6541a34e549a27062c77", null ],
+    [ "stumpless_get_severity_string", "severity_8h.html#a69b4266765ef80b4fb097dc5e50e92fb", null ]
+];

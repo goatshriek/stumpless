@@ -1,0 +1,78 @@
+.TH "stumpless_param" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless_param \- A parameter within a structured data element\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <param\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char \fBname\fP [32+1]"
+.br
+.RI "The name of the parameter\&. "
+.ti -1c
+.RI "size_t \fBname_length\fP"
+.br
+.RI "The number of characters in name (not including the NULL character)\&. "
+.ti -1c
+.RI "char * \fBvalue\fP"
+.br
+.RI "The value may be any UTF-8 string\&. "
+.ti -1c
+.RI "size_t \fBvalue_length\fP"
+.br
+.RI "The number of characters in value (not including the NULL character)\&. "
+.ti -1c
+.RI "void * \fBmutex\fP"
+.br
+.RI "A pointer to a mutex which protects all target fields\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A parameter within a structured data element\&. 
+
+A parameter must have both a name and a value in compliance with RFC 5424\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "void* stumpless_param::mutex"
+
+.PP
+A pointer to a mutex which protects all target fields\&. The exact type of this mutex depends on the build\&. 
+.SS "char stumpless_param::name[32+1]"
+
+.PP
+The name of the parameter\&. The name must be between 1 and 32 characters long and consist only of ASCII characters between '!' and '~', inclusive, with the exception of the '=', ' ', ']', and ''' characters, which are not allowed\&.
+.PP
+Note that the name will be NULL-terminated as of version 1\&.6\&.0\&. In earlier versions it is \fInot\fP NULL-terminated\&.
+.PP
+If you need to access the name, use the stumpless_(g|s)et_param_name functions\&. These will protect you from changes in the struct in future versions\&. 
+.SS "size_t stumpless_param::name_length"
+
+.PP
+The number of characters in name (not including the NULL character)\&. 
+.SS "char* stumpless_param::value"
+
+.PP
+The value may be any UTF-8 string\&. As specified in RFC 5424, the characters ''' (ABNF d34), '\\' (ABNF d92), and ']' (ABNF d93) MUST be escaped by placing a backslash character '\\' directly before them\&.
+.PP
+Unlike the name field, value will always be NULL-terminated\&. This is done to support their use for wel insertion strings\&.
+.PP
+If you need to access the value, use the stumpless_(g|s)et_param_value functions\&. These will protect you from changes in the struct in future versions\&. 
+.SS "size_t stumpless_param::value_length"
+
+.PP
+The number of characters in value (not including the NULL character)\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

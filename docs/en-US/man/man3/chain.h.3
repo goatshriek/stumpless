@@ -1,0 +1,187 @@
+.TH "stumpless/target/chain.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/chain.h \- Chains allow logs to be sent to a group of targets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_add_target_to_chain\fP (struct \fBstumpless_target\fP *chain, struct \fBstumpless_target\fP *target)"
+.br
+.RI "Adds a target to an existing chain target\&. "
+.ti -1c
+.RI "void \fBstumpless_close_chain_and_contents\fP (struct \fBstumpless_target\fP *chain)"
+.br
+.RI "Closes a chain of targets\&. "
+.ti -1c
+.RI "void \fBstumpless_close_chain_only\fP (struct \fBstumpless_target\fP *chain)"
+.br
+.RI "Closes a chain target\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_chain_length\fP (const struct \fBstumpless_target\fP *chain)"
+.br
+.RI "Gets the number of targets currently in a chain\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_new_chain\fP (const char *name)"
+.br
+.RI "Creates a new target chain\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Chains allow logs to be sent to a group of targets\&. 
+
+
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBThread Safety: MT-Safe\fP Logging to chains is thread safe\&. A lock is used to prevent changes to the chain during a logging operation\&. Note that the thread safety of each target in the chain must also be considered when determining the thread safety of an operation on a chain\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to chains is not signal safe, as a non-reentrant lock is used to coordinate changes to the chain\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to chains is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed\&. 
+.SH "Function Documentation"
+.PP 
+.SS "struct \fBstumpless_target\fP * stumpless_add_target_to_chain (struct \fBstumpless_target\fP * chain, struct \fBstumpless_target\fP * target)"
+
+.PP
+Adds a target to an existing chain target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock as well as the use of memory allocation functions when the static target array is not big enough\&. If the chain has space for the new target in its static array, then the heap constraint is not present\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the lock may not be released, and the memory allocation functions may not be AC-Safe\&. If the chain has space for the new target in its static array, then the heap constraint is not present\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIchain\fP The chain target to add the target to\&.
+.br
+\fItarget\fP The new target to add to the chain\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The chain target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "void stumpless_close_chain_and_contents (struct \fBstumpless_target\fP * chain)"
+
+.PP
+Closes a chain of targets\&. This function closes each target in the chain, and then destroys all memory allocated for the chain itself\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIchain\fP The chain of targets to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "void stumpless_close_chain_only (struct \fBstumpless_target\fP * chain)"
+
+.PP
+Closes a chain target\&. This function destroys all memory allocated for the chain itself\&. The targets in the chain are not closed or modified\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIchain\fP The chain to close\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_chain_length (const struct \fBstumpless_target\fP * chain)"
+
+.PP
+Gets the number of targets currently in a chain\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the lock may not be released\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIchain\fP The chain to get the length of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The length of the provided chain if no error is encountered\&. If an error is encountered, 0 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_new_chain (const char * name)"
+
+.PP
+Creates a new target chain\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the logging target, as well as the name of the file to open\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new chain if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

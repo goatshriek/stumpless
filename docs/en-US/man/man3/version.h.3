@@ -1,0 +1,116 @@
+.TH "stumpless/version.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/version.h \- Runtime information about the library\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_version\fP"
+.br
+.RI "A description of a library version\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_version\fP * \fBstumpless_get_version\fP (void)"
+.br
+.RI "Gets the version of code the library was built with\&. "
+.ti -1c
+.RI "int \fBstumpless_version_cmp\fP (const struct \fBstumpless_version\fP *version_x, const struct \fBstumpless_version\fP *version_y)"
+.br
+.RI "Compares the version of two given \fBstumpless_version\fP struct\&. "
+.ti -1c
+.RI "char * \fBstumpless_version_to_string\fP (const struct \fBstumpless_version\fP *version)"
+.br
+.RI "Creates a string representation of the given version\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Runtime information about the library\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "struct \fBstumpless_version\fP * stumpless_get_version (void)"
+
+.PP
+Gets the version of code the library was built with\&. This version must be freed by the caller when it is no longer needed to avoid a memory leak\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the version structure\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBReturns\fP
+.RS 4
+The version of code used by the library build\&. 
+.RE
+.PP
+
+.SS "int stumpless_version_cmp (const struct \fBstumpless_version\fP * version_x, const struct \fBstumpless_version\fP * version_y)"
+
+.PP
+Compares the version of two given \fBstumpless_version\fP struct\&. This function makes use of a similar convention used by the standard library's strcmp function\&.
+.PP
+\fBThread Safety: MT-Safe race:version_x race:version_y\fP This function is thread safe, as long as the versions to be compared are not modified by other threads during the call\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIversion_x,version_y\fP Two given version(const) to be compared\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if version numbers are the same, 
+.br
+ 1 if version_x->patch - version_y->patch > 0, -1 if < 0 
+.br
+ 10 if version_x->minor - version_y->minor > 0, -10 if < 0 
+.br
+ 100 if version_x->major - version_y->major > 0, -100 if < 0 
+.br
+ INT_MAX if one of the version pointers is null\&. 
+.br
+ 
+.RE
+.PP
+
+.SS "char * stumpless_version_to_string (const struct \fBstumpless_version\fP * version)"
+
+.PP
+Creates a string representation of the given version\&. This string will be NULL-terminated, and will appear in the standard semantic versioning format of 'major\&.minor\&.patch'\&.
+.PP
+This string must be freed by the caller when it is no longer needed\&. Failing to do so will result in a memory leak of the returned string\&.
+.PP
+\fBThread Safety: MT-Safe race:version\fP This function is thread safe, as long as the version is not modified by other threads during the call\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIversion\fP The version to convert to a string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A string representation of the provided version\&. This should be destroyed via the memory deallocation function currently configured via \fBstumpless_set_free()\fP\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,801 @@
+.TH "stumpless/element.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/element.h \- Types and functions for creating and modifying elements\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_element\fP"
+.br
+.RI "An element of structured data\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_ELEMENT_NAME_LENGTH\fP   32"
+.br
+.RI "The maximum length of an element name, as specified by RFC 5424\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_add_new_param\fP (struct \fBstumpless_element\fP *element, const char *param_name, const char *param_value)"
+.br
+.RI "Creates a new param and adds it to the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_add_param\fP (struct \fBstumpless_element\fP *element, struct \fBstumpless_param\fP *param)"
+.br
+.RI "Adds a param to an element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_copy_element\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Creates a copy of an element\&. "
+.ti -1c
+.RI "void \fBstumpless_destroy_element_and_contents\fP (const struct \fBstumpless_element\fP *e)"
+.br
+.RI "Destroys an element as well as all params that it contains, freeing any allocated memory\&. "
+.ti -1c
+.RI "void \fBstumpless_destroy_element_only\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Destroys an element, freeing any allocated memory\&. "
+.ti -1c
+.RI "bool \fBstumpless_element_has_param\fP (const struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "True if the given element has a param with the given name, false otherwise\&. "
+.ti -1c
+.RI "const char * \fBstumpless_element_to_string\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Returns name and params from element as a formatted string\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_element_name\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Returns the name of the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_get_param_by_index\fP (const struct \fBstumpless_element\fP *element, size_t index)"
+.br
+.RI "Returns the param in the given element at the specified index\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_get_param_by_name\fP (const struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Returns the first occurrence of a param with the given name in element, if it is found\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_param_count\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Returns the number of params in the given element\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_param_index\fP (const struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Gives the index of the first occurrence of a param with the given name in the given element\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_param_name_by_index\fP (const struct \fBstumpless_element\fP *element, size_t index)"
+.br
+.RI "Gets the name of the param with the given index in this element\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_param_name_count\fP (const struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Gives the number of params with the given name found in the given element\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_param_value_by_index\fP (const struct \fBstumpless_element\fP *element, size_t index)"
+.br
+.RI "Returns the value of the param at the given index in the given element\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_param_value_by_name\fP (const struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Returns the value of the first param with the given name in the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_load_element\fP (struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Loads a provided element with the given name\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_new_element\fP (const char *name)"
+.br
+.RI "Creates a new element with the given name\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_set_element_name\fP (struct \fBstumpless_element\fP *element, const char *name)"
+.br
+.RI "Sets the name of the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_set_param\fP (struct \fBstumpless_element\fP *element, size_t index, struct \fBstumpless_param\fP *param)"
+.br
+.RI "Puts the param at the given index in the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_set_param_value_by_index\fP (struct \fBstumpless_element\fP *element, size_t index, const char *value)"
+.br
+.RI "Sets the value of the param at the given index in the given element\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_set_param_value_by_name\fP (struct \fBstumpless_element\fP *element, const char *name, const char *value)"
+.br
+.RI "Sets the value of the first param with the given name in the given element\&. "
+.ti -1c
+.RI "void \fBstumpless_unload_element_and_contents\fP (const struct \fBstumpless_element\fP *e)"
+.br
+.RI "Unloads an element as well as all params that it contains\&. "
+.ti -1c
+.RI "void \fBstumpless_unload_element_only\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Unloads an element, freeing any allocated memory\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Types and functions for creating and modifying elements\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_MAX_ELEMENT_NAME_LENGTH   32"
+
+.PP
+The maximum length of an element name, as specified by RFC 5424\&. 
+.SH "Function Documentation"
+.PP 
+.SS "struct \fBstumpless_element\fP * stumpless_add_new_param (struct \fBstumpless_element\fP * element, const char * param_name, const char * param_value)"
+
+.PP
+Creates a new param and adds it to the given element\&. This is equivalent to calling \fBstumpless_new_param()\fP and passing the result directly \fBstumpless_add_param()\fP\&.
+.PP
+\fBThread Safety: MT-Safe race:param_name race:param_value\fP This function is thread safe, of course assuming that the param name and value or not changed by other threads during execution\&. A mutex is used to coordinate updates to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the new param\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to add the new param to\&.
+.br
+\fIparam_name\fP The name of the new param\&.
+.br
+\fIparam_value\fP The value of the new param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_add_param (struct \fBstumpless_element\fP * element, struct \fBstumpless_param\fP * param)"
+
+.PP
+Adds a param to an element\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate updates to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to adjust the array of params in the element\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to add the param to\&.
+.br
+\fIparam\fP The param to add to element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_element\fP * stumpless_copy_element (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Creates a copy of an element\&. Copies of elements are 'deep' in that the copy also copies each of the params that the original element has, if any\&. This means that even if the params of the original element are destroyed, the equivalent ones in this element will still be valid\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to copy\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A new element that is a deep copy of the original\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_destroy_element_and_contents (const struct \fBstumpless_element\fP * e)"
+
+.PP
+Destroys an element as well as all params that it contains, freeing any allocated memory\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIe\fP The element to destroy\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP\&.
+.SS "void stumpless_destroy_element_only (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Destroys an element, freeing any allocated memory\&. Associated params are left untouched, and must be destroyed separately\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to destroy\&. 
+.RE
+.PP
+
+.SS "bool stumpless_element_has_param (const struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+True if the given element has a param with the given name, false otherwise\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to search for the param\&.
+.br
+\fIname\fP The name of the param to check for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if no error is encountered and the param is found\&. If the param is not found or an error is encountered, then false is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_element_to_string (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Returns name and params from element as a formatted string\&. The character buffer should be freed when no longer is needed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the name and params from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The formatted string of name or name=[param1,\&.\&.\&.] if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_element_name (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Returns the name of the given element\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the name from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The name of the element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_get_param_by_index (const struct \fBstumpless_element\fP * element, size_t index)"
+
+.PP
+Returns the param in the given element at the specified index\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the param from\&.
+.br
+\fIindex\fP The index of the param to retrieve\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The param if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_get_param_by_name (const struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Returns the first occurrence of a param with the given name in element, if it is found\&. Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances with the same name\&. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this\&. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to search\&.
+.br
+\fIname\fP The param name to search for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The param if it is found in the element, or NULL otherwise\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_param_count (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Returns the number of params in the given element\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the param count of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of params element has\&. If there is an error, zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_param_index (const struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Gives the index of the first occurrence of a param with the given name in the given element\&. Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances that this function does not recognize\&. If you simply need a count of params with a given name, then you can use stumpless_get_param_name_count to find this\&. If you need a reference to any other params, then you must loop through all params in the element using stumpless_get_param_by_index, checking each name\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to search for params with the given name\&.
+.br
+\fIname\fP The name to search params for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The first instance of a param with name in element, if one exists\&. If there is no such param or an error is encountered, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_param_name_by_index (const struct \fBstumpless_element\fP * element, size_t index)"
+
+.PP
+Gets the name of the param with the given index in this element\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the param and name from\&.
+.br
+\fIindex\fP The index of the param to get the name from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The name of the param at the given index, if no error is encountered\&. If an error is encountered, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_param_name_count (const struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Gives the number of params with the given name found in the given element\&. If you need to get an actual reference to any of these params beyond the first one, then you will need to loop through all params in the element using stumpless_get_param_by_index, checking each name\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to search for params\&.
+.br
+\fIname\fP The name to look for in params\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of params found with the given name in the given element\&. If an error is encountered, zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_param_value_by_index (const struct \fBstumpless_element\fP * element, size_t index)"
+
+.PP
+Returns the value of the param at the given index in the given element\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to retrieve the param and value from\&.
+.br
+\fIindex\fP The index of the param to get the value from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The value of the param at the given index, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_param_value_by_name (const struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Returns the value of the first param with the given name in the given element\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+If you need to get the value of a param with the given name beyond the first one, then you will need to loop through all params in the element using stumpless_get_param_by_index, checking each name\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to retrieve the param and value from\&.
+.br
+\fIname\fP The name of the param to get the value from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The value of the first param with the given name, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_load_element (struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Loads a provided element with the given name\&. Does not call any memory allocation routines, and is faster than stumpless_new_element as a result\&.
+.PP
+An element loaded using this function must be unloaded with stumpless_unload_element when it is no longer needed\&. Calling stumpless_destroy_element or any function that does (such as stumpless_destroy_entry_and_contents will result in memory corruption)\&.
+.PP
+\fBThread Safety: MT-Safe race:element race:name\fP This function is thread safe, assuming that the element and name are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a mutex initialization routine\&. If STUMPLESS_THREAD_SAFETY_SUPPORTED is not defined, then this function is AS-Safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a mutex initialization routine\&. If STUMPLESS_THREAD_SAFETY_SUPPORTED is not defined, then this function is AC-Safe\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The struct to load\&.
+.br
+\fIname\fP The name of the element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the loaded element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_new_element (const char * name)"
+
+.PP
+Creates a new element with the given name\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the new element\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The new name of the element\&. Valid name should have printable ASCII characters expect '=', ']' , ''' and should be 32 characters long
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_element\fP * stumpless_set_element_name (struct \fBstumpless_element\fP * element, const char * name)"
+
+.PP
+Sets the name of the given element\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe\&. A mutex is used to coordinate changes to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to set the name of\&.
+.br
+\fIname\fP The new name of the element\&. Valid name should have printable ASCII characters expect '=', ']' , ''' and should be 32 characters long
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_set_param (struct \fBstumpless_element\fP * element, size_t index, struct \fBstumpless_param\fP * param)"
+
+.PP
+Puts the param at the given index in the given element\&. The parameter previously at this position will be removed from the element, but it is NOT destroyed by this call\&. Callers must clean up this param separately\&.
+.PP
+A param cannot be set at an index position that does not already hold a param\&. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error is raised\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to set the param on\&.
+.br
+\fIindex\fP The index to set to param\&.
+.br
+\fIparam\fP The param to set at the given index\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_set_param_value_by_index (struct \fBstumpless_element\fP * element, size_t index, const char * value)"
+
+.PP
+Sets the value of the param at the given index in the given element\&. \fBThread Safety: MT-Safe race:value\fP This function is thread safe, of course assuming that the value is not changed during execution by another thread\&. A mutex is used to coordinate changes to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to set the param on\&.
+.br
+\fIindex\fP The index of the param to set the value of\&.
+.br
+\fIvalue\fP The new value to set on the param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_set_param_value_by_name (struct \fBstumpless_element\fP * element, const char * name, const char * value)"
+
+.PP
+Sets the value of the first param with the given name in the given element\&. If a param of the given name is not found in the element, one is created with the supplied name and value and added to the end of the element\&.
+.PP
+If you need to set the value of a param with this name other than the first one, then you will need to loop through the params using stumpless_get_param_by_index to find the params you want and then set the value using stumpless_set_param_value\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:value\fP This function is thread safe, of course assuming that the name and value are not changed during execution by another thread\&.\&. A mutex is used to coordinate changes to the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to set the param on\&.
+.br
+\fIname\fP The name of the param to set the value of (or create)\&.
+.br
+\fIvalue\fP The new value to set on the param\&.\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_unload_element_and_contents (const struct \fBstumpless_element\fP * e)"
+
+.PP
+Unloads an element as well as all params that it contains\&. Either this function or stumpless_unload_element_only must be used to clean up any element struct previously loaded with stumpless_load_element\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIe\fP The element to unload\&. 
+.RE
+.PP
+
+.SS "void stumpless_unload_element_only (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Unloads an element, freeing any allocated memory\&. Associated params are left untouched, and must be unloaded separately\&.
+.PP
+Either this function or stumpless_unload_element_and_contents must be used to clean up any element struct previously loaded with stumpless_load_element\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to unload\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

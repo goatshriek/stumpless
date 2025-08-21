@@ -1,0 +1,506 @@
+.TH "stumpless/error.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/error.h \- Error codes and functions for detecting and assessing them\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_error\fP"
+.br
+.RI "Information describing an error encountered by the library\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_FOREACH_ERROR\fP(ERROR)"
+.br
+.RI "A macro to implement error id enum and error string array\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_error_id\fP { \fBSTUMPLESS_ADDRESS_FAILURE\fP = ( 0 ), \fBSTUMPLESS_ARGUMENT_EMPTY\fP = ( 1 ), \fBSTUMPLESS_ARGUMENT_TOO_BIG\fP = ( 2 ), \fBSTUMPLESS_DUPLICATE_ELEMENT\fP = ( 3 ), \fBSTUMPLESS_ELEMENT_NOT_FOUND\fP = ( 4 ), \fBSTUMPLESS_FILE_OPEN_FAILURE\fP = ( 5 ), \fBSTUMPLESS_FILE_WRITE_FAILURE\fP = ( 6 ), \fBSTUMPLESS_INDEX_OUT_OF_BOUNDS\fP = ( 7 ), \fBSTUMPLESS_INVALID_FACILITY\fP = ( 8 ), \fBSTUMPLESS_INVALID_ID\fP = ( 9 ), \fBSTUMPLESS_INVALID_SEVERITY\fP = ( 10 ), \fBSTUMPLESS_MEMORY_ALLOCATION_FAILURE\fP = ( 11 ), \fBSTUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED\fP = ( 12 ), \fBSTUMPLESS_PARAM_NOT_FOUND\fP = ( 13 ), \fBSTUMPLESS_SOCKET_BIND_FAILURE\fP = ( 14 ), \fBSTUMPLESS_SOCKET_CONNECT_FAILURE\fP = ( 15 ), \fBSTUMPLESS_SOCKET_FAILURE\fP = ( 16 ), \fBSTUMPLESS_SOCKET_SEND_FAILURE\fP = ( 17 ), \fBSTUMPLESS_STREAM_WRITE_FAILURE\fP = ( 18 ), \fBSTUMPLESS_TARGET_INCOMPATIBLE\fP = ( 19 ), \fBSTUMPLESS_TARGET_UNSUPPORTED\fP = ( 20 ), \fBSTUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED\fP = ( 21 ), \fBSTUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE\fP = ( 22 ), \fBSTUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE\fP = ( 23 ), \fBSTUMPLESS_INVALID_ENCODING\fP = ( 24 ), \fBSTUMPLESS_GETHOSTNAME_FAILURE\fP = ( 25 ), \fBSTUMPLESS_FUNCTION_TARGET_FAILURE\fP = ( 26 ), \fBSTUMPLESS_JOURNALD_FAILURE\fP = ( 27 ), \fBSTUMPLESS_WINDOWS_FAILURE\fP = ( 28 ), \fBSTUMPLESS_INVALID_PARAM_STRING\fP = ( 29 ), \fBSTUMPLESS_SQLITE3_BUSY\fP = ( 30 ), \fBSTUMPLESS_SQLITE3_CALLBACK_FAILURE\fP = ( 31 ), \fBSTUMPLESS_SQLITE3_FAILURE\fP = ( 32 ), \fBSTUMPLESS_NETWORK_CLOSED\fP = ( 33 ), \fBSTUMPLESS_ARGUMENT_TOO_SMALL\fP = ( 34 ) }"
+.br
+.RI "An (enum) identifier of the types of errors that might be encountered\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "const struct \fBstumpless_error\fP * \fBstumpless_get_error\fP (void)"
+.br
+.RI "Retrieves the error encountered by the last library call\&. "
+.ti -1c
+.RI "enum \fBstumpless_error_id\fP \fBstumpless_get_error_id\fP (const struct \fBstumpless_error\fP *err)"
+.br
+.RI "Gets the error id of the given error\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_error_id_string\fP (enum \fBstumpless_error_id\fP id)"
+.br
+.RI "Gets the error string of the given error id\&. "
+.ti -1c
+.RI "FILE * \fBstumpless_get_error_stream\fP (void)"
+.br
+.RI "Gets the current stream that errors are written to\&. "
+.ti -1c
+.RI "bool \fBstumpless_has_error\fP (void)"
+.br
+.RI "True if the last call to a stumpless function encountered an error\&. "
+.ti -1c
+.RI "void \fBstumpless_perror\fP (const char *prefix)"
+.br
+.RI "Prints information about the current error to the error stream\&. "
+.ti -1c
+.RI "void \fBstumpless_set_error_stream\fP (FILE *stream)"
+.br
+.RI "Sets the stream to write errors to\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Error codes and functions for detecting and assessing them\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_FOREACH_ERROR(ERROR)"
+
+.PP
+A macro to implement error id enum and error string array\&. 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBstumpless_error_id\fP"
+
+.PP
+An (enum) identifier of the types of errors that might be encountered\&. Note that the same error may be encountered in different contexts with a different ultimate cause\&. To completely diagnose a problem, you will need to look at more than just the error id\&.
+.PP
+See \fBSTUMPLESS_FOREACH_ERROR()\fP and \fBSTUMPLESS_GENERATE_ENUM()\fP for how this enumeration is generated\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_ADDRESS_FAILURE \fP\fP
+A provided network address was not valid\&. This might be formatting problem, or it might mean that a DNS lookup failed\&. 
+.br
+ 
+.TP
+\fB\fISTUMPLESS_ARGUMENT_EMPTY \fP\fP
+A required function parameter was NULL or empty\&. 
+.TP
+\fB\fISTUMPLESS_ARGUMENT_TOO_BIG \fP\fP
+A provided argument was too big, for example to fit into a buffer target\&. 
+.TP
+\fB\fISTUMPLESS_DUPLICATE_ELEMENT \fP\fP
+A duplicate of an already existing element was detected in an entry\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&. 
+.br
+ 
+.RE
+.PP
+
+.TP
+\fB\fISTUMPLESS_ELEMENT_NOT_FOUND \fP\fP
+No element with the specified characteristics was found\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&. 
+.br
+ 
+.RE
+.PP
+
+.TP
+\fB\fISTUMPLESS_FILE_OPEN_FAILURE \fP\fP
+Could not open a file\&. 
+.TP
+\fB\fISTUMPLESS_FILE_WRITE_FAILURE \fP\fP
+Could not write to a file\&. 
+.TP
+\fB\fISTUMPLESS_INDEX_OUT_OF_BOUNDS \fP\fP
+A provided index was not in a valid range\&. 
+.TP
+\fB\fISTUMPLESS_INVALID_FACILITY \fP\fP
+A provided facility code did not conform to RFC 5424\&. 
+.TP
+\fB\fISTUMPLESS_INVALID_ID \fP\fP
+A target or entry ID was not valid\&. 
+.TP
+\fB\fISTUMPLESS_INVALID_SEVERITY \fP\fP
+A provided severity code did not conform to RFC 5424\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&. 
+.br
+ 
+.RE
+.PP
+
+.TP
+\fB\fISTUMPLESS_MEMORY_ALLOCATION_FAILURE \fP\fP
+A memory allocation or reallocation failed\&. 
+.TP
+\fB\fISTUMPLESS_NETWORK_PROTOCOL_UNSUPPORTED \fP\fP
+The given layer 3 protocol is not supported by this implementation\&. 
+.TP
+\fB\fISTUMPLESS_PARAM_NOT_FOUND \fP\fP
+No param with the specified characteristics was found\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&. 
+.br
+ 
+.RE
+.PP
+
+.TP
+\fB\fISTUMPLESS_SOCKET_BIND_FAILURE \fP\fP
+Could not bind to a socket\&. 
+.TP
+\fB\fISTUMPLESS_SOCKET_CONNECT_FAILURE \fP\fP
+Could not connect to a socket\&. 
+.TP
+\fB\fISTUMPLESS_SOCKET_FAILURE \fP\fP
+Could not create a socket\&. 
+.TP
+\fB\fISTUMPLESS_SOCKET_SEND_FAILURE \fP\fP
+Could not send to a socket\&. 
+.TP
+\fB\fISTUMPLESS_STREAM_WRITE_FAILURE \fP\fP
+Could not write to a stream\&. 
+.TP
+\fB\fISTUMPLESS_TARGET_INCOMPATIBLE \fP\fP
+The requested operation is not valid on the given target type\&. 
+.TP
+\fB\fISTUMPLESS_TARGET_UNSUPPORTED \fP\fP
+The target type provided is unsupported by this implementation\&. 
+.TP
+\fB\fISTUMPLESS_TRANSPORT_PROTOCOL_UNSUPPORTED \fP\fP
+The given layer 4 protocol is not supported by this implementation\&. 
+.TP
+\fB\fISTUMPLESS_WINDOWS_EVENT_LOG_CLOSE_FAILURE \fP\fP
+Could not close the Windows Event Log\&. 
+.TP
+\fB\fISTUMPLESS_WINDOWS_EVENT_LOG_OPEN_FAILURE \fP\fP
+Could not open the Windows Event Log\&. 
+.TP
+\fB\fISTUMPLESS_INVALID_ENCODING \fP\fP
+A provided encoding does not conform to the standard\&. 
+.TP
+\fB\fISTUMPLESS_GETHOSTNAME_FAILURE \fP\fP
+The current hostname could not be retrieved\&. 
+.TP
+\fB\fISTUMPLESS_FUNCTION_TARGET_FAILURE \fP\fP
+
+.IP "\(bu" 2
+A call to a function target's log function failed\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_JOURNALD_FAILURE \fP\fP
+
+.IP "\(bu" 2
+A call to a systemd journald function failed\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_WINDOWS_FAILURE \fP\fP
+
+.IP "\(bu" 2
+A general failure of a Windows API call\&. Details on what call failed and * why are provided in the error details\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_INVALID_PARAM_STRING \fP\fP
+
+.IP "\(bu" 2
+The format of the given string is incorrect\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_SQLITE3_BUSY \fP\fP
+
+.IP "\(bu" 2
+SQLite3 was busy and could not complete the request\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_SQLITE3_CALLBACK_FAILURE \fP\fP
+
+.IP "\(bu" 2
+A custom callback to a SQLite3 target failed\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_SQLITE3_FAILURE \fP\fP
+
+.IP "\(bu" 2
+SQLite3 encountered a failure\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_NETWORK_CLOSED \fP\fP
+
+.IP "\(bu" 2
+The network connection requested has been closed\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.TP
+\fB\fISTUMPLESS_ARGUMENT_TOO_SMALL \fP\fP
+
+.IP "\(bu" 2
+A provided argument was too small, for example maximum allotted buffer size\&. * * 
+.PP
+\fBSince\fP
+.RS 4
+release v3\&.0\&.0 
+.br
+ 
+.RE
+.PP
+
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "const struct \fBstumpless_error\fP * stumpless_get_error (void)"
+
+.PP
+Retrieves the error encountered by the last library call\&. The returned error struct is only valid until the next call to a stumpless function\&. After this, it should not be referred to, and if the error of any subsequent call is needed another call to stumpless_get_error must be made\&.
+.PP
+Note that the id is the only field of the error that is guaranteed to be set\&. Other members may or may not be set, depending on the context of the error\&.
+.PP
+If the code_type is NULL, then the code is not valid and should be ignored\&.
+.PP
+This function does \fInot\fP clear or update the per-thread error code for stumpless, as it is involved in the error handling process itself\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. No synchronization primitives are used as the returned pointer is specific to the thread of execution\&. As a result, the result should not be shared between threads\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&. If you do so, note that if it is called before a stumpless library function in the handler itself the result will not be meaningful\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBReturns\fP
+.RS 4
+A \fBstumpless_error\fP struct describing the error encountered by the last function call\&. If no error was encountered, this will be NULL\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_error_id\fP stumpless_get_error_id (const struct \fBstumpless_error\fP * err)"
+
+.PP
+Gets the error id of the given error\&. \fBThread Safety: MT-Safe race:err\fP This function is thread safe, as long as err is not modifed by other threads during this call\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.5\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIerr\fP The error to get the id from\&. This must not be NULL\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The error id of the given error\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_error_id_string (enum \fBstumpless_error_id\fP id)"
+
+.PP
+Gets the error string of the given error id\&. This is a string literal that should not be modified or freed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The error id to get the error string from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The error string of the given error id\&. 
+.RE
+.PP
+
+.SS "FILE * stumpless_get_error_stream (void)"
+
+.PP
+Gets the current stream that errors are written to\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic variables are used to store and retrieve the error stream\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be ansynchronously cancelled\&.
+.PP
+\fBReturns\fP
+.RS 4
+The current stream errors are written to\&. 
+.RE
+.PP
+
+.SS "bool stumpless_has_error (void)"
+
+.PP
+True if the last call to a stumpless function encountered an error\&. To get the error itself, use the stumpless_get_error function\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. No synchronization primitives are used as the returned flag is specific to the thread of execution\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&. If you do so, note that if it is called before a stumpless library function in the handler itself the result will not be meaningful\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if the last stumpless call had an error, false if not\&. 
+.RE
+.PP
+
+.SS "void stumpless_perror (const char * prefix)"
+
+.PP
+Prints information about the current error to the error stream\&. A prefix can be added to the information if desired\&. If one is provided then it will be followed by a colon character and a space, followed by the error information\&. If it is not provided then the colon and space characters will not be printed\&.
+.PP
+The message will end with a newline\&.
+.PP
+If there is not currently an active error message, then nothing will be printed (not even the prefix)\&.
+.PP
+\fBThread Safety: MT-Safe race:prefix\fP This function is thread safe, of course assuming that prefix is not changed by other threads during execution\&. A lock is used to coordinate accesses to the error stream\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers, as it uses a non-reentrant lock to synchronize access to the error stream\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the lock used to control access to the error stream may not be released after a cancellation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIprefix\fP An optional prefix to print in front of the message\&. If this is NULL then it will simply be ignored\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "void stumpless_set_error_stream (FILE * stream)"
+
+.PP
+Sets the stream to write errors to\&. This will be stderr by default, but can be set to any stream\&. If it is set to NULL then error messages will not be printed (essentially skipping all \fCstumpless_perror\fP calls)\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic variables are used to store and retrieve the error stream\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be ansynchronously cancelled\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstream\fP The stream to write errors to\&. If this is NULL then the messages intended for the error stream will be ignored\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

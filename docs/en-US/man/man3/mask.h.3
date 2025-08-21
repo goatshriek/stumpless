@@ -1,0 +1,29 @@
+.TH "stumpless/level/mask.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/level/mask.h \- Masks that provide shorthand for enabling or disabling logging levels at compile time\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SH "Detailed Description"
+.PP 
+Masks that provide shorthand for enabling or disabling logging levels at compile time\&. 
+
+While this files does not contain any definitions itself, it provides the logic that makes it possible to set a certain level of compile-time logging using some shorthand definitions\&.
+.PP
+Stumpless does not support mixing any of these masks with the \fCSTUMPLESS_DISABLE_<LEVEL_NAME>_LEVEL\fP definitions that remove specific levels during compilation\&. If you need to disable a non-contiguous series of levels, then you will need to explicitly disable each one, rather than using a mask and disabling the remaining ones\&.
+.PP
+The first mask definition is \fCSTUMPLESS_ENABLE_UPTO_<LEVEL>\fP, which enables all levels up to and including the named one, and disables all of those below it\&. For example, defining \fCSTUMPLESS_ENABLE_UPTO_WARNING\fP will enable \fCEMERG\fP, \fCALERT\fP, \fCCRIT\fP, \fCERR\fP, and \fCWARNING\fP level calls and will disable \fCNOTICE\fP, \fCINFO\fP, \fCDEBUG\fP, and \fCTRACE\fP level calls\&. Note that the semantics of this mask closely resemble the \fCLOG_UPTO\fP macro provided in \fCsyslog\&.h\fP for runtime level filtering\&.
+.PP
+By this logic, defining \fCSTUMPLESS_ENABLE_UPTO_TRACE\fP enables all log levels\&. Since this is the default for stumpless, this definition is effectively ignored\&.
+.PP
+As the corollary to the UPTO mask, the \fCSTUMPLESS_DISABLE_DOWNTO_<LEVEL>\fP definition will perform the opposite, disabling all levels down to and including the named one and enabling all of those above it\&. For example, defining \fCSTUMPLESS_DISABLE_DOWNTO_WARNING\fP will enable \fCEMERG\fP, \fCALERT\fP, \fCCRIT\fP, and \fCERR\fP level calls and will disable \fCWARNING\fP, \fCNOTICE\fP, \fCINFO\fP, \fCDEBUG\fP, and \fCTRACE\fP level calls\&.
+.PP
+This means that defining \fCSTUMPLESS_DISABLE_DOWNTO_EMERG\fP disables all logging calls that can be removed during compile time\&. There is also a synonym for this which is more descriptive of the intent: \fCSTUMPLESS_DISABLE_ALL_LEVELS\fP\&.
+.PP
+Note that for all of the above cases, the symbol must be defined \fIbefore\fP the inclusion of this header (or before inclusion of \fBstumpless\&.h\fP)\&. The best way to ensure that this happens is to pass it in as a definition during the build process\&. If this is not possible, be sure that it is defined first in any sources depending on this behavior\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

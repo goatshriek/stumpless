@@ -1,0 +1,108 @@
+.TH "stumpless/target/function.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/function.h \- Function targets allow log entries to be sent to a custom function, making it possible to implement arbitrary functionality using this library as a logging framework\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef int(* \fBstumpless_log_func_t\fP) (const struct \fBstumpless_target\fP *, const struct \fBstumpless_entry\fP *)"
+.br
+.RI "A handler for entries sent to a function target\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_function_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a function target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_function_target\fP (const char *name, \fBstumpless_log_func_t\fP log_function)"
+.br
+.RI "Opens a function target\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Function targets allow log entries to be sent to a custom function, making it possible to implement arbitrary functionality using this library as a logging framework\&. 
+
+If a log function returns a negative value, it is passed on as the result of the library call, and a STUMPLESS_FUNCTION_TARGET_FAILURE error is raised\&. This allows error handling to use either return codes or the stumpless error types\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to function targets is thread safe, dependent on the thread safety of the function itself\&. No coordination is done by stumpless itself to ensure that calls to the function are serialized\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP Logging to function targets is signal safe, depndent on the signal safety of the function itself\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP Logging to function targets is safe to call from threads that may be asynchronously cancelled, dependent on the cancellation safety of the function itself\&. 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef int(* stumpless_log_func_t) (const struct \fBstumpless_target\fP *, const struct \fBstumpless_entry\fP *)"
+
+.PP
+A handler for entries sent to a function target\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_function_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a function target\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The function target to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfunction_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_function_target (const char * name, \fBstumpless_log_func_t\fP log_function)"
+
+.PP
+Opens a function target\&. Function targets provide a way to fully customize the behavior of a target, defining any desired functionality and directly providing it to the target\&. This can be used as a way to implement custom log targets such as a specialized database table, or to take action if specific event types are sent to the target\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the logging target\&.
+.br
+\fIlog_function\fP The function to use to log entries sent to the target\&. This function will be called for each entry sent to the target, and will be given a pointer to the target itself as well as the entry passed to it\&. It returns an int with the same semantics as stumpless_add_entry where a non-negative value indicates success and a negative value is returned in the event of an error\&. The target and entry pointers passed to the function are guaranteed to be non-NULL, since NULL pointers will generate errors before the function is called\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfunction_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

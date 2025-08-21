@@ -1,0 +1,1658 @@
+.TH "stumpless/entry.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/entry.h \- Types and functions for creating and modifying entries\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_entry\fP"
+.br
+.RI "A log entry\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_PROCID_LENGTH\fP   128"
+.br
+.RI "The maximum length of a procid, as specified by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_HOSTNAME_LENGTH\fP   255"
+.br
+.RI "The maximum length of a hostname, as specified by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_APP_NAME_LENGTH\fP   48"
+.br
+.RI "The maximum length of an app name, as specified by RFC 5424\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_MSGID_LENGTH\fP   32"
+.br
+.RI "The maximum length of a msgid, as specified by RFC 5424\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBstumpless_entry_to_string\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns all entry's elements in formatted string\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_add_element\fP (struct \fBstumpless_entry\fP *entry, struct \fBstumpless_element\fP *element)"
+.br
+.RI "Adds an element to an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_add_new_element\fP (struct \fBstumpless_entry\fP *entry, const char *name)"
+.br
+.RI "Creates a new element with the given name and adds it to this entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_add_new_param_to_entry\fP (struct \fBstumpless_entry\fP *entry, const char *element_name, const char *param_name, const char *param_value)"
+.br
+.RI "Creates a new param and adds it to the given element in the given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_copy_entry\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Creates a copy of an entry\&. "
+.ti -1c
+.RI "void \fBstumpless_destroy_entry_and_contents\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Destroys an entry as well as all elements and params that it contains, freeing any allocated memory\&. "
+.ti -1c
+.RI "void \fBstumpless_destroy_entry_only\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Destroys an entry, freeing any allocated memory\&. "
+.ti -1c
+.RI "bool \fBstumpless_entry_has_element\fP (const struct \fBstumpless_entry\fP *entry, const char *name)"
+.br
+.RI "True if the given entry has an element with the given name, false otherwise\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_get_element_by_index\fP (const struct \fBstumpless_entry\fP *entry, size_t index)"
+.br
+.RI "Returns the element at the given index in this Entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_get_element_by_name\fP (const struct \fBstumpless_entry\fP *entry, const char *name)"
+.br
+.RI "Returns the element with the given name in this entry, if it is found\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_element_count\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the number of elements in the given entry\&. "
+.ti -1c
+.RI "size_t \fBstumpless_get_element_index\fP (const struct \fBstumpless_entry\fP *entry, const char *name)"
+.br
+.RI "Returns the index of the element with the given name in this entry, if it is found\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_app_name\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the app name of the given entry\&. "
+.ti -1c
+.RI "enum \fBstumpless_facility\fP \fBstumpless_get_entry_facility\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the facility code of the given entry\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_hostname\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the hostname of a given entry\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_message\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the message of the given entry\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_msgid\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the msgid of the given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_get_entry_param_by_index\fP (const struct \fBstumpless_entry\fP *entry, size_t element_index, size_t param_index)"
+.br
+.RI "Gets the param from the element at the given index in an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_get_entry_param_by_name\fP (const struct \fBstumpless_entry\fP *entry, const char *element_name, const char *param_name)"
+.br
+.RI "Gets the first param from the element with the given name in an entry\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_param_value_by_index\fP (const struct \fBstumpless_entry\fP *entry, size_t element_index, size_t param_index)"
+.br
+.RI "Gets the value of the param from the element at the given index in an entry\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_param_value_by_name\fP (const struct \fBstumpless_entry\fP *entry, const char *element_name, const char *param_name)"
+.br
+.RI "Gets the value of the first param from the element with the given name in an entry\&. "
+.ti -1c
+.RI "int \fBstumpless_get_entry_prival\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the prival of the given entry, as defined in RFC 5424\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_entry_procid\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the procid of a given entry\&. "
+.ti -1c
+.RI "enum \fBstumpless_severity\fP \fBstumpless_get_entry_severity\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Returns the severity code of the given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_load_entry\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message,\&.\&.\&.)"
+.br
+.RI "Loads an entry struct with the given characteristics\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_load_entry_str\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message)"
+.br
+.RI "Creates a new entry with the given characteristics\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_new_entry\fP (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message,\&.\&.\&.)"
+.br
+.RI "Creates a new entry with the given characteristics\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_new_entry_str\fP (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message)"
+.br
+.RI "Creates a new entry with the given characteristics\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_element\fP (struct \fBstumpless_entry\fP *entry, size_t index, struct \fBstumpless_element\fP *element)"
+.br
+.RI "Puts the element at the given index in the given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_app_name\fP (struct \fBstumpless_entry\fP *entry, const char *app_name)"
+.br
+.RI "Sets the app name for an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_facility\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_facility\fP facility)"
+.br
+.RI "Sets the facility of an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_hostname\fP (struct \fBstumpless_entry\fP *entry, const char *hostname)"
+.br
+.RI "Sets the hostname of a given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_message\fP (struct \fBstumpless_entry\fP *entry, const char *message,\&.\&.\&.)"
+.br
+.RI "Sets the message of a given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_message_str\fP (struct \fBstumpless_entry\fP *entry, const char *message)"
+.br
+.RI "Sets the message of a given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_message_str_w\fP (struct \fBstumpless_entry\fP *entry, const wchar_t *message)"
+.br
+.RI "Sets the message of a given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_msgid\fP (struct \fBstumpless_entry\fP *entry, const char *msgid)"
+.br
+.RI "Sets the msgid for an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_param_by_index\fP (struct \fBstumpless_entry\fP *entry, size_t element_index, size_t param_index, struct \fBstumpless_param\fP *param)"
+.br
+.RI "Puts the param in the element at the given index of an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_param_value_by_index\fP (struct \fBstumpless_entry\fP *entry, size_t element_index, size_t param_index, const char *value)"
+.br
+.RI "Sets the value of the param in the element at the given index of an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_param_value_by_name\fP (struct \fBstumpless_entry\fP *entry, const char *element_name, const char *param_name, const char *value)"
+.br
+.RI "Sets the value of the first param in the named element an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_priority\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity)"
+.br
+.RI "Sets the facility and severity of an entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_prival\fP (struct \fBstumpless_entry\fP *entry, int prival)"
+.br
+.RI "Sets the prival of an entry, as defined in RFC 5424\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_procid\fP (struct \fBstumpless_entry\fP *entry, const char *procid)"
+.br
+.RI "Sets the procid of a given entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_entry_severity\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_severity\fP severity)"
+.br
+.RI "Sets the severity of an entry\&. "
+.ti -1c
+.RI "void \fBstumpless_unload_entry_and_contents\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Unloads an entry as well as all elements that it contains\&. "
+.ti -1c
+.RI "void \fBstumpless_unload_entry_only\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Unloads an entry, freeing any allocated memory\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBvstumpless_load_entry\fP (struct \fBstumpless_entry\fP *entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message, va_list subs)"
+.br
+.RI "Creates a new entry with the given parameters\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBvstumpless_new_entry\fP (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char *app_name, const char *msgid, const char *message, va_list subs)"
+.br
+.RI "Creates a new entry with the given parameters\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBvstumpless_set_entry_message\fP (struct \fBstumpless_entry\fP *entry, const char *message, va_list subs)"
+.br
+.RI "Sets the message of a given entry\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Types and functions for creating and modifying entries\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_MAX_APP_NAME_LENGTH   48"
+
+.PP
+The maximum length of an app name, as specified by RFC 5424\&. 
+.SS "#define STUMPLESS_MAX_HOSTNAME_LENGTH   255"
+
+.PP
+The maximum length of a hostname, as specified by RFC 5424\&. 
+.SS "#define STUMPLESS_MAX_MSGID_LENGTH   32"
+
+.PP
+The maximum length of a msgid, as specified by RFC 5424\&. 
+.SS "#define STUMPLESS_MAX_PROCID_LENGTH   128"
+
+.PP
+The maximum length of a procid, as specified by RFC 5424\&. 
+.SH "Function Documentation"
+.PP 
+.SS "struct \fBstumpless_entry\fP * stumpless_add_element (struct \fBstumpless_entry\fP * entry, struct \fBstumpless_element\fP * element)"
+
+.PP
+Adds an element to an entry\&. The element is appended to the end of the list of elements in this entry\&.
+.PP
+Note that duplicate elements are not allowed in RFC 5424, and as such attempts to add an element to an entry already having one with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to add the element to\&.
+.br
+\fIelement\fP The element to add to the entry\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_entry\fP * stumpless_add_new_element (struct \fBstumpless_entry\fP * entry, const char * name)"
+
+.PP
+Creates a new element with the given name and adds it to this entry\&. Note that duplicate elements are not allowed in RFC 5424, and as such attempts to add an element to an entry already having one with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to add the new element to\&.
+.br
+\fIname\fP The name of the new element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SS "struct \fBstumpless_entry\fP * stumpless_add_new_param_to_entry (struct \fBstumpless_entry\fP * entry, const char * element_name, const char * param_name, const char * param_value)"
+
+.PP
+Creates a new param and adds it to the given element in the given entry\&. If an element with the given name does not exist in the given entry, then one will be created with the new param added to it\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to add the new param to\&.
+.br
+\fIelement_name\fP The name of the element to add the param to\&. If an element with this name is not found, it will be created\&. Valid name should have printable ASCII characters expect '=', ']' , ''' and should be 32 characters long\&.
+.br
+\fIparam_name\fP The name of the new param to add\&.
+.br
+\fIparam_value\fP The value of the new param to add\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_copy_entry (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Creates a copy of an entry\&. Copies of entries are 'deep' in that the copy also copies each of the elements that the original entry has, if any\&. This means that even if the elements or params of the original entry are destroyed, the equivalent ones in this entry will still be valid\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to copy\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A new entry that is a deep copy of the original\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_destroy_entry_and_contents (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Destroys an entry as well as all elements and params that it contains, freeing any allocated memory\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to destroy\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "void stumpless_destroy_entry_only (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Destroys an entry, freeing any allocated memory\&. Associated elements and params are left untouched, and must be destroyed separately\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to destroy\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP\&.
+.SS "bool stumpless_entry_has_element (const struct \fBstumpless_entry\fP * entry, const char * name)"
+
+.PP
+True if the given entry has an element with the given name, false otherwise\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to search for the element\&.
+.br
+\fIname\fP The name of the element to check for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+True if no error is encountered and the element is found\&. If the element is not found or an error is encountered, then false is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "char * stumpless_entry_to_string (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns all entry's elements in formatted string\&. The character buffer should be freed when no longer is needed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the element with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get all elements
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The formatted string of each entry's elements\&. Each element is formatted as element='value' and joined by ' , '\&. And append each element's string by stumpless_element_to_string 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_get_element_by_index (const struct \fBstumpless_entry\fP * entry, size_t index)"
+
+.PP
+Returns the element at the given index in this Entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to search\&.
+.br
+\fIindex\fP The index of the element to get\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The element if it is found in the entry, or NULL otherwise\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_get_element_by_name (const struct \fBstumpless_entry\fP * entry, const char * name)"
+
+.PP
+Returns the element with the given name in this entry, if it is found\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to search\&.
+.br
+\fIname\fP The name of the element to search for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The element if it is found in the entry, or NULL otherwise\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SS "size_t stumpless_get_element_count (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the number of elements in the given entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the entry\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the element count of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of elements entry has\&. If there is an error, zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_get_element_index (const struct \fBstumpless_entry\fP * entry, const char * name)"
+
+.PP
+Returns the index of the element with the given name in this entry, if it is found\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not changed by another thread during execution\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to search\&.
+.br
+\fIname\fP The name of the element to search for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The index of the element if it is found in the entry\&. If an error was encountered or the element does not exist in the entry, then 0 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_app_name (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the app name of the given entry\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the app name of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The app name of the entry if no error is encountered\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_facility\fP stumpless_get_entry_facility (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the facility code of the given entry\&. In versions prior to v2\&.0\&.0, this function returned an int, and -1 in the event of an error\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the entry\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the facility of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The facility of the entry if no error is encountered\&. If an error was encountered, then an invalid facility is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_hostname (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the hostname of a given entry\&. If hostname is not set it will return the machine hostname\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the hostname of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The hostname of the entry if no error is encountered\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_message (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the message of the given entry\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+Note that if this message was originally set using format specifiers, the result will have them substituted, instead of the original placeholders\&.
+.PP
+It is also important to note that the message may be NULL if the entry does not have one\&. This differs from other fields like the app id or msgid, which will be an RFC 5424 NILVALUE '-' if they have not been set\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the message of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The message of the entry (which may be NULL)\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_msgid (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the msgid of the given entry\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the msgid of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The msgid of the entry if no error is encountered\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_get_entry_param_by_index (const struct \fBstumpless_entry\fP * entry, size_t element_index, size_t param_index)"
+
+.PP
+Gets the param from the element at the given index in an entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the param from\&.
+.br
+\fIelement_index\fP The index of the element to get the param from\&.
+.br
+\fIparam_index\fP The index of the param to get from the element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The param at the given index if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_get_entry_param_by_name (const struct \fBstumpless_entry\fP * entry, const char * element_name, const char * param_name)"
+
+.PP
+Gets the first param from the element with the given name in an entry\&. Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances with the same name\&. If you need a reference to other params with the same name in the element, then you must loop through all params using stumpless_get_entry_param_by_index, checking each name\&.
+.PP
+\fBThread Safety: MT-Safe race:element_name race:param_name\fP This function is thread safe, of course assuming that the names are not changed by another thread during execution\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the param from\&.
+.br
+\fIelement_name\fP The name of the element to get the param from\&.
+.br
+\fIparam_name\fP The name of the param to get from the element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The first param with the given name if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_param_value_by_index (const struct \fBstumpless_entry\fP * entry, size_t element_index, size_t param_index)"
+
+.PP
+Gets the value of the param from the element at the given index in an entry\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the param from\&.
+.br
+\fIelement_index\fP The index of the element to get the param from\&.
+.br
+\fIparam_index\fP The index of the param to get the value of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The value of the param at the given index if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_param_value_by_name (const struct \fBstumpless_entry\fP * entry, const char * element_name, const char * param_name)"
+
+.PP
+Gets the value of the first param from the element with the given name in an entry\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+Note that an element may contain as many instances of a param as desired according to RFC 5424, and therefore there may be other param instances with the same name\&. If you need the value of other params with the same name in the element, then you must loop through all params using stumpless_get_entry_param_by_index, checking each name\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe race:element_name race:param_name\fP This function is thread safe, of course assuming that the names are not changed by another thread during execution\&. A mutex is used to coordinate access to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the param from\&.
+.br
+\fIelement_name\fP The name of the element to get the param from\&.
+.br
+\fIparam_name\fP The name of the param to get from the element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The value of the first param with the given name if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfunction_example\&.c\fP\&.
+.SS "int stumpless_get_entry_prival (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the prival of the given entry, as defined in RFC 5424\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the entry\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the prival of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The prival of the entry if no error is encountered\&. If an error was encountered, then -1 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_entry_procid (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the procid of a given entry\&. If procid is not set it will return the ProcessID\&. The result character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the procid of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The procid of the entry if no error is encountered\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "enum \fBstumpless_severity\fP stumpless_get_entry_severity (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Returns the severity code of the given entry\&. In versions prior to v2\&.0\&.0, this function returned an int, and -1 in the event of an error\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the entry\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the severity of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The severity of the entry if no error is encountered\&. If an error was encountered, then an invalid severity is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_load_entry (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message,  \&.\&.\&.)"
+
+.PP
+Loads an entry struct with the given characteristics\&. The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_load_entry_str\fP instead\&.
+.PP
+This function has the same behavior as stumpless_new_entry, except it does not create a new entry, instead loading an existing struct\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The struct to load\&.
+.br
+\fIfacility\fP The facility code of the event this entry describes\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the event this entry describes\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImessage\fP The message in the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. This also means that characters such as % need to be escaped as they would be in printf\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The loaded entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_load_entry_str (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message)"
+
+.PP
+Creates a new entry with the given characteristics\&. This function has the same behavior as stumpless_load_entry_str, except it does not create a new entry, instead loading an existing struct\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry structure to load with the given fields\&.
+.br
+\fIfacility\fP The facility code of the event this entry describes\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the event this entry describes\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImessage\fP The message in the entry\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The loaded entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_new_entry (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message,  \&.\&.\&.)"
+
+.PP
+Creates a new entry with the given characteristics\&. In versions prior to 2\&.0\&.0, the facility and severity parameters were int types instead of enums\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_new_entry_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe race:app_name race:msgid race:message\fP This function is thread safe, of course assuming that the string arguments are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the new element\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility\fP The facility code of the event this entry describes\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the event this entry describes\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImessage\fP The message in the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. This also means that characters such as % need to be escaped as they would be in printf\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_entry\fP * stumpless_new_entry_str (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message)"
+
+.PP
+Creates a new entry with the given characteristics\&. \fBThread Safety: MT-Safe race:app_name race:msgid race:message\fP This function is thread safe, of course assuming that the string arguments are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the new element\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility\fP The facility code of the event this entry describes\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the event this entry describes\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&.
+.br
+\fImessage\fP The message in the entry\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_element (struct \fBstumpless_entry\fP * entry, size_t index, struct \fBstumpless_element\fP * element)"
+
+.PP
+Puts the element at the given index in the given entry\&. The element previously at this position will be removed from the entry, but it is NOT destroyed by this call\&. Callers must clean up this element separately\&.
+.PP
+An element cannot be set at an index position that does not already hold one\&. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error is raised\&.
+.PP
+Note that duplicate elements are not allowed in RFC 5424, and as such attempts to set an element of an entry which already contains another element with the same name will result in a STUMPLESS_DUPLICATE_ELEMENT error\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the element on\&.
+.br
+\fIindex\fP The index to set to element\&.
+.br
+\fIelement\fP The element to set at the given index\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_app_name (struct \fBstumpless_entry\fP * entry, const char * app_name)"
+
+.PP
+Sets the app name for an entry\&. \fBThread Safety: MT-Safe race:app_name\fP This function is thread safe, of course assuming that the name is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry for which the app name will be set\&.
+.br
+\fIapp_name\fP A NULL-terminated string holding the new app_name for the entry\&. This will be copied in to the entry, and therefore may be modified or freed after this call without affecting the entry\&. If this is NULL, then a single '-' character will be used, as specified as the NILVALUE in RFC
+.IP "5424." 4
+The app name length is restricted to be 48 characters or less\&.
+.PP
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_facility (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_facility\fP facility)"
+
+.PP
+Sets the facility of an entry\&. In versions prior to 2\&.0\&.0, the facility parameter was an int type instead of an enum\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the facility of\&.
+.br
+\fIfacility\fP The new facility of the entry\&. This must be a valid value according to RFC 5424, available as STUMPLESS_FACILITY constants\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_hostname (struct \fBstumpless_entry\fP * entry, const char * hostname)"
+
+.PP
+Sets the hostname of a given entry\&. If hostname is NULL it will set hostname to be the Machine hostname\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIhostname\fP The new hostname to set on the entry\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_message (struct \fBstumpless_entry\fP * entry, const char * message,  \&.\&.\&.)"
+
+.PP
+Sets the message of a given entry\&. The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_set_entry_message_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new message and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fImessage\fP The new message to set on the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. If this is NULL, then it will be blank in the entry (no characters)\&. This also means that characters such as % need to be escaped as they would be in printf\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP\&.
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_message_str (struct \fBstumpless_entry\fP * entry, const char * message)"
+
+.PP
+Sets the message of a given entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new message and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fImessage\fP The new message to set on the entry\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_message_str_w (struct \fBstumpless_entry\fP * entry, const wchar_t * message)"
+
+.PP
+Sets the message of a given entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new message and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fImessage\fP The new message to set on the entry\&. If this is NULL, then it will be blank in the entry (no characters)\&. This must be a valid UTF-16 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_msgid (struct \fBstumpless_entry\fP * entry, const char * msgid)"
+
+.PP
+Sets the msgid for an entry\&. \fBThread Safety: MT-Safe race:msgid\fP This function is thread safe, of course assuming that the msgid is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new msgid and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry for which the msgid will be set\&.
+.br
+\fImsgid\fP A NULL-terminated string holding the new msgid for the entry\&. The string must be in the ASCII printable range 33 <= character <= 126 as specified in RFC5424\&. This will be copied in to the entry, and therefore may be modified or freed after this call without affecting the entry\&. If this is NULL, then a single '-' character will be used, as specified as the NILVALUE in RFC 5424\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_param_by_index (struct \fBstumpless_entry\fP * entry, size_t element_index, size_t param_index, struct \fBstumpless_param\fP * param)"
+
+.PP
+Puts the param in the element at the given index of an entry\&. The parameter previously at this position will be removed from the element, but it is NOT destroyed by this call\&. Callers must clean up this param separately\&.
+.PP
+A param cannot be set at an index position that does not already hold a param\&. If this is attempted, then a STUMPLESS_INDEX_OUT_OF_BOUNDS error is raised\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the param on\&.
+.br
+\fIelement_index\fP The index of the element to have the param\&.
+.br
+\fIparam_index\fP The index to put the param at in the chosen element\&.
+.br
+\fIparam\fP The param to set\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_param_value_by_index (struct \fBstumpless_entry\fP * entry, size_t element_index, size_t param_index, const char * value)"
+
+.PP
+Sets the value of the param in the element at the given index of an entry\&. \fBThread Safety: MT-Safe race:value\fP This function is thread safe, of course assuming that value is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the param value on\&.
+.br
+\fIelement_index\fP The index of the element having the param to modify\&.
+.br
+\fIparam_index\fP The index of the param to set the value of\&.
+.br
+\fIvalue\fP The new value to set on the param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_param_value_by_name (struct \fBstumpless_entry\fP * entry, const char * element_name, const char * param_name, const char * value)"
+
+.PP
+Sets the value of the first param in the named element an entry\&. If an element with the given name is not found in the entry, one is created with the supplied name and added to the end of the entry\&.
+.PP
+If a param of the given name is not found in the named element, one is created with the supplied name and value and added to the end of the element\&.
+.PP
+If you need to set the value of a param with this name other than the first one, then you will need to loop through the params using stumpless_get_entry_param_by_index to find the params you want and then set the value using stumpless_set_entry_param_value_by_index\&.
+.PP
+\fBThread Safety: MT-Safe race:element_name race:param_name race:value\fP This function is thread safe, of course assuming that the names and value are not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the param value on\&.
+.br
+\fIelement_name\fP The name of the element having the param to modify\&.
+.br
+\fIparam_name\fP The name of the param to set the value of\&.
+.br
+\fIvalue\fP The new value to set on the param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, and \fBfunction_example\&.c\fP\&.
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_priority (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity)"
+
+.PP
+Sets the facility and severity of an entry\&. In versions prior to 2\&.0\&.0, the facility and severity parameters were int types instead of enums\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the priority values of\&.
+.br
+\fIfacility\fP The new facility of the entry\&. This must be a valid value according to RFC 5424, available as STUMPLESS_FACILITY constants\&.
+.br
+\fIseverity\fP The new severity of the entry\&. This must be a valid value according to RFC 5424, available as STUMPLESS_SEVERITY constants\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_prival (struct \fBstumpless_entry\fP * entry, int prival)"
+
+.PP
+Sets the prival of an entry, as defined in RFC 5424\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the prival of\&.
+.br
+\fIprival\fP The new prival of the entry, as defined in RFC 5424\&. Only the first 8 bits of prival are considered: the rest are discarded after extracting the effective facility and severity\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_procid (struct \fBstumpless_entry\fP * entry, const char * procid)"
+
+.PP
+Sets the procid of a given entry\&. If procid is NULL it will set procid to be the ProcessID\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIprocid\fP The new procid to set on the entry\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_entry_severity (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_severity\fP severity)"
+
+.PP
+Sets the severity of an entry\&. In versions prior to 2\&.0\&.0, the severity parameter was an int type instead of an enum\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to set the severity of\&.
+.br
+\fIseverity\fP The new severity of the entry\&. This must be a valid value according to RFC 5424, available as STUMPLESS_SEVERITY constants\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_unload_entry_and_contents (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Unloads an entry as well as all elements that it contains\&. Either this function or stumpless_unload_entry_only must be used to clean up any entry struct previously loaded with stumpless_load_entry\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to unload\&. 
+.RE
+.PP
+
+.SS "void stumpless_unload_entry_only (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Unloads an entry, freeing any allocated memory\&. Associated elements are left untouched, and must be unloaded separately\&.
+.PP
+Either this function or stumpless_unload_entry_and_contents must be used to clean up any entry struct previously loaded with stumpless_load_entry\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to unload\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * vstumpless_load_entry (struct \fBstumpless_entry\fP * entry, enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message, va_list subs)"
+
+.PP
+Creates a new entry with the given parameters\&. This function has the same behavior as vstumpless_new_entry, except it does not create a new entry, instead loading an existing struct\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The struct to load\&.
+.br
+\fIfacility\fP The facility code of the entry\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the entry\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&. The app name length is restricted to be 48 characters or less\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&. The string must be in the ASCII printable range 33 <= character <= 126 as specified in RFC5424\&.
+.br
+\fImessage\fP The message in the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. If this is NULL, then it will be blank in the entry (no characters)\&. This also means that characters such as % need to be escaped as they would be in printf\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call them\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The loaded entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * vstumpless_new_entry (enum \fBstumpless_facility\fP facility, enum \fBstumpless_severity\fP severity, const char * app_name, const char * msgid, const char * message, va_list subs)"
+
+.PP
+Creates a new entry with the given parameters\&. In versions prior to 2\&.0\&.0, the facility and severity parameters were int types instead of enums\&.
+.PP
+\fBThread Safety: MT-Safe race:app_name race:msgid race:message\fP This function is thread safe, of course assuming that the string arguments are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the new element\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfacility\fP The facility code of the entry\&. This should be a \fCSTUMPLESS_FACILITY\fP value\&.
+.br
+\fIseverity\fP The severity code of the entry\&. This should be a \fCSTUMPLESS_SEVERITY\fP value\&.
+.br
+\fIapp_name\fP The app_name of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&. The app name length is restricted to be 48 characters or less\&.
+.br
+\fImsgid\fP The message id of the entry\&. If this is NULL, then it will be blank in the entry (a single '-' character)\&. The string must be in the ASCII printable range 33 <= character <= 126 as specified in RFC5424\&.
+.br
+\fImessage\fP The message in the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. If this is NULL, then it will be blank in the entry (no characters)\&. This also means that characters such as % need to be escaped as they would be in printf\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call them\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * vstumpless_set_entry_message (struct \fBstumpless_entry\fP * entry, const char * message, va_list subs)"
+
+.PP
+Sets the message of a given entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new message and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fImessage\fP The new message to set on the entry\&. This message may contain any format specifiers valid in \fCprintf\fP\&. If this is NULL, then it will be blank in the entry (no characters)\&. Characters such as % need to be escaped as they would be in printf\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call them\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

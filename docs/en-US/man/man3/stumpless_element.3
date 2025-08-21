@@ -1,0 +1,76 @@
+.TH "stumpless_element" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless_element \- An element of structured data\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <element\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char \fBname\fP [32+1]"
+.br
+.RI "The name of the element\&. "
+.ti -1c
+.RI "size_t \fBname_length\fP"
+.br
+.RI "The number of characters in name\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP ** \fBparams\fP"
+.br
+.RI "The parameters this element contains\&. "
+.ti -1c
+.RI "size_t \fBparam_count\fP"
+.br
+.RI "The number of params in the array\&. "
+.ti -1c
+.RI "void * \fBmutex\fP"
+.br
+.RI "A pointer to a mutex which protects all element fields\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+An element of structured data\&. 
+
+Elements must have a name, but may or may not have any parameters\&. Their components must comply with RFC 5424\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "void* stumpless_element::mutex"
+
+.PP
+A pointer to a mutex which protects all element fields\&. The exact type of this mutex depends on the build\&. 
+.SS "char stumpless_element::name[32+1]"
+
+.PP
+The name of the element\&. As specified in RFC 5424, the '=', ']', ''' characters are not allowed in element names\&. In addition, the '@' character is only allowed in names that are private\&. All other characters between '!' and '~', inclusive, are allowed\&.
+.PP
+According to the standard names must either be private (of the form name<private enterprise number>) or registered with the IANA\&. This library assumes that you have done your due diligence and does not enforce the registration requirement\&.
+.PP
+Note that the name will be NULL-terminated as of version 1\&.6\&.0\&. In earlier versions it is \fInot\fP NULL-terminated\&.
+.PP
+If you need to access the name, use the stumpless_(g|s)et_element_name functions\&. These will protect you from changes in the struct in future versions\&. 
+.SS "size_t stumpless_element::name_length"
+
+.PP
+The number of characters in name\&. 
+.SS "size_t stumpless_element::param_count"
+
+.PP
+The number of params in the array\&. 
+.SS "struct \fBstumpless_param\fP** stumpless_element::params"
+
+.PP
+The parameters this element contains\&. This is an array of pointers to param structures\&. Use the param_count member to iterate through the array if needed\&. This may be NULL if there are no params in the element, but not necessarily - the param_count is the only way to tell for sure\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

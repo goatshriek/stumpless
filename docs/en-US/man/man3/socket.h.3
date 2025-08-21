@@ -1,0 +1,84 @@
+.TH "stumpless/target/socket.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/socket.h \- Socket targets allow logs to be sent to a Unix domain socket\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_socket_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a socket target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_socket_target\fP (const char *name, const char *local_socket)"
+.br
+.RI "Opens a socket target\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Socket targets allow logs to be sent to a Unix domain socket\&. 
+
+The most common use for socket targets is to send logs to /dev/log, /var/run/syslog, or whatever socket the syslog daemon is listening on\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to socket targets is thread safe by virtue of using the \fCsendto\fP function, which is thread safe itself\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to socket targets is not signal safe, as a non-reentrant lock is used to coordinate the read of the entry with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to socket targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for entries may not be completed\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_socket_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a socket target\&. This function closes the socket target, as well as the connection to the target socket\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The socket target to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsocket_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_socket_target (const char * name, const char * local_socket)"
+
+.PP
+Opens a socket target\&. \fBThread Safety: MT-Safe race:name race:local_socket\fP This function is thread safe, of course assuming that the target name and socket name are not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the socket target, and the socket to send logs to\&.
+.br
+\fIlocal_socket\fP The name of the Unix domain socket to connect from\&. This can be set to NULL if you'd like to use the default name of stumpless-socket\&. If abstract socket names are supported, then this name will be abstract and therefore not appear in the filesystem\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBsocket_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,398 @@
+.TH "stumpless/param.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/param.h \- Types and functions for creating and modifying params\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_param\fP"
+.br
+.RI "A parameter within a structured data element\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_MAX_PARAM_NAME_LENGTH\fP   32"
+.br
+.RI "The maximum length of a parameter name, as specified by RFC 5424\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_copy_param\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Creates a copy of a param\&. "
+.ti -1c
+.RI "void \fBstumpless_destroy_param\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Destroys a param, freeing any allocated memory\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_param_name\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Returns the name of the given param\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_param_value\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Returns the value of the given param\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_load_param\fP (struct \fBstumpless_param\fP *param, const char *name, const char *value)"
+.br
+.RI "Loads a provided param with the given values\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_new_param\fP (const char *name, const char *value)"
+.br
+.RI "Creates a new param with the given name and value\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_new_param_from_string\fP (const char *string)"
+.br
+.RI "Creates a new param given a string by parsing the string and calling stumpless_new_param\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_set_param_name\fP (struct \fBstumpless_param\fP *param, const char *name)"
+.br
+.RI "Sets the name of the given param\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_set_param_value\fP (struct \fBstumpless_param\fP *param, const char *value)"
+.br
+.RI "Sets the value of the given param\&. "
+.ti -1c
+.RI "const char * \fBstumpless_param_to_string\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Returns the name and the value from param as a formatted string\&. "
+.ti -1c
+.RI "size_t \fBstumpless_param_into_string\fP (const struct \fBstumpless_param\fP *param, char *str, size_t max_size)"
+.br
+.RI "Copies the name and the value from param to a buffer string\&. "
+.ti -1c
+.RI "void \fBstumpless_unload_param\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Unloads a param\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Types and functions for creating and modifying params\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_MAX_PARAM_NAME_LENGTH   32"
+
+.PP
+The maximum length of a parameter name, as specified by RFC 5424\&. 
+.SH "Function Documentation"
+.PP 
+.SS "struct \fBstumpless_param\fP * stumpless_copy_param (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Creates a copy of a param\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the copy\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to copy\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A new param that is a copy of the original\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_destroy_param (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Destroys a param, freeing any allocated memory\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to destroy\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_param_name (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Returns the name of the given param\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the name and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to get the name from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The name of param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_param_value (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Returns the value of the given param\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the value and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to get the value from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The value of param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_load_param (struct \fBstumpless_param\fP * param, const char * name, const char * value)"
+
+.PP
+Loads a provided param with the given values\&. This function will allocate less memory than stumpless_new_param, but will still allocate memory for the value of the param, which may be of variable length\&.
+.PP
+A param loaded using this function must be unloaded with stumpless_unload_param when it is no longer needed\&. Calling stumpless_destroy_param or any function that does (such as stumpless_destroy_entry_and_contents will result in memory corruption)\&.
+.PP
+\fBThread Safety: MT-Safe race:param race:name race:value\fP This function is thread safe, assuming that the param, name, and value are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap lock\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the param's value as well as the use of a mutex initialization routine\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions and a mutex initialization routine\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The struct to load with the given values\&.
+.br
+\fIname\fP The name of the param\&.
+.br
+\fIvalue\fP The value of the param\&. This pointer will be stored and used over the lifetime of the param, and must be valid until \fCstumpless_unload_param\fP is called on this loaded param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to the loaded param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_new_param (const char * name, const char * value)"
+
+.PP
+Creates a new param with the given name and value\&. \fBThread Safety: MT-Safe race:name race:value\fP This function is thread safe, of course assuming that name and value are not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap lock\fP This function is not safe to call from signal handlers due to the use of memory management functions to create the new param as well as the use of a mutex initialization routine\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions and a mutex initialization routine\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the new param\&. Restricted to printable ASCII characters different from '=', ']' and '''\&.
+.br
+\fIvalue\fP The value of the new param\&. The value must be UTF-8 string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "struct \fBstumpless_param\fP * stumpless_new_param_from_string (const char * string)"
+
+.PP
+Creates a new param given a string by parsing the string and calling stumpless_new_param\&. **Thread Safety: MT-Safe This function is thread safe, assuming the the given string is not changed by other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers since it calls \fBstumpless_new_param()\fP which has usage of memory management functions\&.
+.PP
+\fBAsync Cancel Safety: AC_Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, since it calls \fBstumpless_new_param()\fP which has usage of memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIstring\fP The string to create the \fBstumpless_param\fP from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The created param, if no error is encountered\&. If an error is encountered, NULL is returned and an error code set appropriately\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_param_into_string (const struct \fBstumpless_param\fP * param, char * str, size_t max_size)"
+
+.PP
+Copies the name and the value from param to a buffer string\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v3\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to get the name and the value from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The size written to the buffer string if no error is encountered\&. If error code 'STUMPLESS_ARGUMENT_TOO_SMALL' is encountered, then minimum required size of the buffer is returned\&. If a NULL argument is encountered, 0 is returned\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_param_to_string (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Returns the name and the value from param as a formatted string\&. The character buffer should be freed when no longer is needed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the param with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to get the name and the value from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The formatted string of 'param_name=param_value' if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_set_param_name (struct \fBstumpless_param\fP * param, const char * name)"
+
+.PP
+Sets the name of the given param\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the param while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to set the name of\&.
+.br
+\fIname\fP The new name of param\&. Restricted to printable ASCII characters different from '=', ']' and '''\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_set_param_value (struct \fBstumpless_param\fP * param, const char * value)"
+
+.PP
+Sets the value of the given param\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the param while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new value and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v1\&.6\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to set the value of\&.
+.br
+\fIvalue\fP The new name of param\&. The value must be UTF-8 string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified param, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void stumpless_unload_param (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Unloads a param\&. Either this function, stumpless_unload_element_and_contents, or stumpless_unload_entry_and_contents must be used to clean up any param struct previously loaded with stumpless_load_param\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this struct\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to unload\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

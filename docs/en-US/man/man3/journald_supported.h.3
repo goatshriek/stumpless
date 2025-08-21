@@ -1,0 +1,143 @@
+.TH "stumpless/config/journald_supported.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/config/journald_supported.h \- Functions that help when using journald targets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "stumpless_element_namer_func_t \fBstumpless_get_element_journald_namer\fP (const struct \fBstumpless_element\fP *element)"
+.br
+.RI "Gets the function used to derive the name of the field for this element when logging to journald targets\&. "
+.ti -1c
+.RI "stumpless_param_namer_func_t \fBstumpless_get_param_journald_namer\fP (const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Gets the function used to derive the name of the field for this param when logging to journald targets\&. "
+.ti -1c
+.RI "struct \fBstumpless_element\fP * \fBstumpless_set_element_journald_namer\fP (struct \fBstumpless_element\fP *element, stumpless_element_namer_func_t namer)"
+.br
+.RI "Sets the function used to derive the name of the field for this element when logging to journald targets\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_set_param_journald_namer\fP (struct \fBstumpless_param\fP *param, stumpless_param_namer_func_t namer)"
+.br
+.RI "Sets the function used to derive the name of the field for this param when logging to journald targets\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions that help when using journald targets\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "stumpless_element_namer_func_t stumpless_get_element_journald_namer (const struct \fBstumpless_element\fP * element)"
+
+.PP
+Gets the function used to derive the name of the field for this element when logging to journald targets\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate with other accesses to the element\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock which could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to get the function of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The namer function of the element if no error is encountered\&. If an error is encountered, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "stumpless_param_namer_func_t stumpless_get_param_journald_namer (const struct \fBstumpless_param\fP * param)"
+
+.PP
+Gets the function used to derive the name of the field for this param when logging to journald targets\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate with other accesses to the param\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock which could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to get the function of\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The namer function of the param if no error is encountered\&. If an error is encountered, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_element\fP * stumpless_set_element_journald_namer (struct \fBstumpless_element\fP * element, stumpless_element_namer_func_t namer)"
+
+.PP
+Sets the function used to derive the name of the field for this element when logging to journald targets\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate with other accesses to the element\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock which could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIelement\fP The element to set the function of\&.
+.br
+\fInamer\fP The naming function to use for the element\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified element if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_set_param_journald_namer (struct \fBstumpless_param\fP * param, stumpless_param_namer_func_t namer)"
+
+.PP
+Sets the function used to derive the name of the field for this param when logging to journald targets\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate with other accesses to the param\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock which could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIparam\fP The param to set the function of\&.
+.br
+\fInamer\fP The naming function to use for the param\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified param if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,65 @@
+.TH "stumpless/filter.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/filter.h \- Filters that can be used to control which entries are sent to targets at runtime\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBstumpless_mask_filter\fP (const struct \fBstumpless_target\fP *target, const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Compares the severity of the entry to the current mask of the target, and only passes the entry if the mask bit corresponding to the severity is set\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Filters that can be used to control which entries are sent to targets at runtime\&. 
+
+
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "bool stumpless_mask_filter (const struct \fBstumpless_target\fP * target, const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Compares the severity of the entry to the current mask of the target, and only passes the entry if the mask bit corresponding to the severity is set\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target that the entry will be sent to if it passes\&.
+.br
+\fIentry\fP The entry that is being submitted to the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the severity of the entry is set in the target's mask, false otherwise\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,357 @@
+.TH "stumpless/level/info.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/level/info.h \- Macro functions that log messages and entries at the info level\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBstump_i\fP(\&.\&.\&.)"
+.br
+.RI "Logs a message to the current target with info severity\&. "
+.ti -1c
+.RI "#define \fBstump_i_str\fP(message)"
+.br
+.RI "Logs a message to the current target with info severity\&. "
+.ti -1c
+.RI "#define \fBstump_i_entry\fP(target,  entry)   \fBstumpless_add_entry\fP( ( target ), ( entry ) )"
+.br
+.RI "Adds an entry to a given target with info severity\&. "
+.ti -1c
+.RI "#define \fBstump_i_log\fP(target,  priority, \&.\&.\&.)   \fBstumpless_add_log\fP( ( target ), ( priority ), __VA_ARGS__ )"
+.br
+.RI "Adds a message to a given target with the specified priority\&. "
+.ti -1c
+.RI "#define \fBstump_i_log_str\fP(target,  priority,  message)   \fBstumpless_add_log_str\fP( ( target ), ( priority ), ( message ) )"
+.br
+.RI "Adds a message to a given target with the specified priority\&. "
+.ti -1c
+.RI "#define \fBstump_i_message\fP(target, \&.\&.\&.)"
+.br
+.RI "Adds a message to a given target with info severity\&. "
+.ti -1c
+.RI "#define \fBstump_i_message_str\fP(target,  message)"
+.br
+.RI "Adds a message to a given target with info severity\&. "
+.ti -1c
+.RI "#define \fBstumplog_i\fP(priority, \&.\&.\&.)   \fBstumplog\fP( ( priority ), __VA_ARGS__ )"
+.br
+.RI "Adds a message to the current target with the specified priority\&. "
+.ti -1c
+.RI "#define \fBstumplog_i_str\fP(priority,  message)   \fBstumplog_str\fP( ( priority ), ( message ) )"
+.br
+.RI "Adds a message to the current target with the specified priority\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Macro functions that log messages and entries at the info level\&. 
+
+These can be turned into no-ops at compile time by defining STUMPLESS_DISABLE_INFO_LEVEL during build, or at least before inclusion of this header (or \fBstumpless\&.h\fP)\&. 
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define stump_i( \&.\&.\&.)"
+\fBValue:\fP.PP
+.nf
+stumpless_add_log( stumpless_get_current_target(),                             \\
+                   STUMPLESS_SEVERITY_INFO |                    \\
+                     STUMPLESS_DEFAULT_FACILITY,                               \\
+                   __VA_ARGS__ )
+.fi
+
+.PP
+Logs a message to the current target with info severity\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumpless_add_log\fP with the provided message and calculated priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+This function will log the given message with a severity of STUMPLESS_SEVERITY_INFO, and the facility defined by the STUMPLESS_DEFAULT_FACILITY\&. If you wish to specify a different priority, then you will need to use \fBstumplog_i\fP instead\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstump_i_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fI\&.\&.\&.\fP The message to log, optionally along with the values for any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP, \fBfilter_example\&.c\fP, and \fBseverity_level_example\&.c\fP\&.
+.SS "#define stump_i_entry(target, entry)   \fBstumpless_add_entry\fP( ( target ), ( entry ) )"
+
+.PP
+Adds an entry to a given target with info severity\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumpless_add_entry\fP with the provided target and entry\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+This call does not override the severity of the entry itself\&. Rather, it is intended to allow logging calls to be removed at compile time if the severity is known ahead of time\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the entry to\&.
+.br
+\fIentry\fP The entry to send to the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stump_i_log(target, priority,  \&.\&.\&.)   \fBstumpless_add_log\fP( ( target ), ( priority ), __VA_ARGS__ )"
+
+.PP
+Adds a message to a given target with the specified priority\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to stumplog with the provided message and priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstump_i_log_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the entry to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fI\&.\&.\&.\fP The message to log, optionally along with the values for any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stump_i_log_str(target, priority, message)   \fBstumpless_add_log_str\fP( ( target ), ( priority ), ( message ) )"
+
+.PP
+Adds a message to a given target with the specified priority\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstump_i_log_str\fP with the provided target, message, and priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the entry to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stump_i_message(target,  \&.\&.\&.)"
+\fBValue:\fP.PP
+.nf
+stumpless_add_log( ( target ),                                                 \\
+                   STUMPLESS_DEFAULT_FACILITY |                                \\
+                     STUMPLESS_SEVERITY_INFO,                   \\
+                   __VA_ARGS__ )
+.fi
+
+.PP
+Adds a message to a given target with info severity\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumpless_add_log\fP with the provided message and calculated priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+This function will log the given message with a severity of STUMPLESS_SEVERITY_INFO, and the facility defined by the STUMPLESS_DEFAULT_FACILITY\&. If you wish to specify a different priority, then you will need to use stump_i_log instead\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstump_i_message_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the entry to\&.
+.br
+\fI\&.\&.\&.\fP The message to log, optionally along with the values for any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stump_i_message_str(target, message)"
+\fBValue:\fP.PP
+.nf
+stumpless_add_log_str( ( target ),                                             \\
+                       STUMPLESS_DEFAULT_FACILITY |                            \\
+                         STUMPLESS_SEVERITY_INFO,               \\
+                       ( message ) )
+.fi
+
+.PP
+Adds a message to a given target with info severity\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumpless_add_log_str\fP with the provided target and message\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+This function will log the given message with a severity of STUMPLESS_SEVERITY_INFO, and the facility defined by the STUMPLESS_DEFAULT_FACILITY\&. If you wish to specify a different priority, then you will need to use \fBstump_i_log\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the entry to\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stump_i_str(message)"
+\fBValue:\fP.PP
+.nf
+stumpless_add_log_str( stumpless_get_current_target(  ),                       \\
+                       STUMPLESS_SEVERITY_INFO |                \\
+                         STUMPLESS_DEFAULT_FACILITY,                           \\
+                       ( message ) )
+.fi
+
+.PP
+Logs a message to the current target with info severity\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumpless_add_log\fP with the provided message and calculated priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+This function will log the given message with a severity of STUMPLESS_SEVERITY_INFO, and the facility defined by the STUMPLESS_DEFAULT_FACILITY\&. If you wish to specify a different priority, then you will need to use stumplog_em instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the function is disabled then the effective return value is zero, although a return value of zero does not guarantee that this function is disabled\&. 
+.RE
+.PP
+
+.SS "#define stumplog_i(priority,  \&.\&.\&.)   \fBstumplog\fP( ( priority ), __VA_ARGS__ )"
+
+.PP
+Adds a message to the current target with the specified priority\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumplog\fP with the provided priority and message\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fBstumplog_i_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fI\&.\&.\&.\fP The message to log, optionally along with the values for any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBseverity_level_example\&.c\fP\&.
+.SS "#define stumplog_i_str(priority, message)   \fBstumplog_str\fP( ( priority ), ( message ) )"
+
+.PP
+Adds a message to the current target with the specified priority\&. This function will be removed at compile time if STUMPLESS_DISABLE_INFO_LEVEL has been defined during build\&. If it is disabled, then this function is removed at compile time and will have no effect\&. Otherwise, it is equivalent to a call to \fBstumplog_str\fP with the provided message and calculated priority\&.
+.PP
+Note that if this function is disabled, then the arguments will not be evaluated, meaning that any side effects will not happen\&. Be sure that any side effects you rely on will not cause problems if they are left out during a build with info level calls disabled\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,101 @@
+.TH "stumpless/option.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/option.h \- Options that can be used to modify the behavior of Stumpless components\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_PID\fP   LOG_PID"
+.br
+.RI "Option to include the PID in stumpless messages\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_CONS\fP   LOG_CONS"
+.br
+.RI "Option to log to system console if writing to the target stream fails\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_NDELAY\fP   LOG_NDELAY"
+.br
+.RI "For all applicable targets, NDELAY semantics is the default behavior\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_ODELAY\fP   LOG_ODELAY"
+.br
+.RI "Definitions for ODELAY remains the same for all targets as defined in NDELAY with the only difference being that they will be executed when the first message is logged\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_NOWAIT\fP   LOG_NOWAIT"
+.br
+.RI "No need to wait for the child processes that may have been created while logging the messages\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_PERROR\fP   LOG_PERROR"
+.br
+.RI "Log the message to the stderr as well as to the target\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_OPTION_NONE\fP   0"
+.br
+.RI "Empty option mask for explicit 'no option' use\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Options that can be used to modify the behavior of Stumpless components\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_OPTION_CONS   LOG_CONS"
+
+.PP
+Option to log to system console if writing to the target stream fails\&. 
+.SS "#define STUMPLESS_OPTION_NDELAY   LOG_NDELAY"
+
+.PP
+For all applicable targets, NDELAY semantics is the default behavior\&. NDELAY definition for each target:
+.IP "1." 4
+Buffer - Buffer created and passed by the user\&. Not applicable\&.
+.IP "2." 4
+File - Open the file in append mode\&.
+.IP "3." 4
+Function - Function created and passed by the user\&. Not applicable\&.
+.IP "4." 4
+Journald - Unix socket to journald opened by sd_journal_sendv\&. Not applicable\&.
+.IP "5." 4
+Network - Establish network connection with the destination\&.
+.IP "6." 4
+Socket - Open and bind the socket\&.
+.IP "7." 4
+Stream - Stream created and passed by the user\&. Not applicable\&.
+.IP "8." 4
+WEL - Execute RegisterEventSource\&.
+.IP "9." 4
+SQLITE3 - Connect to the database\&.
+.IP "10." 4
+Chain - Each target in the chain will have their own definition\&. 
+.PP
+
+.SS "#define STUMPLESS_OPTION_NONE   0"
+
+.PP
+Empty option mask for explicit 'no option' use\&. 
+.SS "#define STUMPLESS_OPTION_NOWAIT   LOG_NOWAIT"
+
+.PP
+No need to wait for the child processes that may have been created while logging the messages\&. (Stumpless does not spawn child processes because it slows down the process of logging, so essentially this option is always set) 
+.SS "#define STUMPLESS_OPTION_ODELAY   LOG_ODELAY"
+
+.PP
+Definitions for ODELAY remains the same for all targets as defined in NDELAY with the only difference being that they will be executed when the first message is logged\&. 
+.SS "#define STUMPLESS_OPTION_PERROR   LOG_PERROR"
+
+.PP
+Log the message to the stderr as well as to the target\&. 
+.SS "#define STUMPLESS_OPTION_PID   LOG_PID"
+
+.PP
+Option to include the PID in stumpless messages\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

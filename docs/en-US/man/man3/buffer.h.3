@@ -1,0 +1,126 @@
+.TH "stumpless/target/buffer.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/buffer.h \- Buffer targets provide the simple capability to write logs into a character buffer\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_buffer_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a buffer target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_buffer_target\fP (const char *name, char *buffer, size_t size)"
+.br
+.RI "Creates a buffer target for the given buffer\&. "
+.ti -1c
+.RI "size_t \fBstumpless_read_buffer\fP (struct \fBstumpless_target\fP *target, char *buffer, size_t max_length)"
+.br
+.RI "Reads the next message from the provided buffer target and writes it into the given buffer\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Buffer targets provide the simple capability to write logs into a character buffer\&. 
+
+The interface for buffer targets is based on the Linux kernel log buffer interface\&. Interacting with the buffer should only be done using the provided functions, or corruption or loss of log messages may occur\&.
+.PP
+The contents of the buffer itself may be modified at any time, and should not be read directly with any expectation of consistency or coherence\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to buffer targets is thread safe\&. A mutex is used to coordinate changes to the buffer with each other and reads\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to buffer targets is not signal safe, as a non-reentrant lock is used to coordinate accesses to the buffer\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to buffer targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_buffer_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a buffer target\&. Note that this will not release the buffer it was dynamically allocated\&. This must be done after the buffer target is closed to avoid invalid memory accesses\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The buffer target to close\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_buffer_target (const char * name, char * buffer, size_t size)"
+
+.PP
+Creates a buffer target for the given buffer\&. Buffer targets will write messages to the given buffer, wrapping around when the end is reached\&. A NULL character will be written to the end of each message\&. Note that callers must handle the wrap-around case, and not assume that each read will end in a NULL character, in case a wrap-around occurs\&.
+.PP
+Messages that are too large to fit into the buffer will be discarded\&.
+.PP
+Messages are overwritten as new messages come in\&. If the user of the buffer target is not reading these, they will be lost\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIbuffer\fP The buffer to write messages to\&.
+.br
+\fIsize\fP The number of characters the provided buffer can hold\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The new target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "size_t stumpless_read_buffer (struct \fBstumpless_target\fP * target, char * buffer, size_t max_length)"
+
+.PP
+Reads the next message from the provided buffer target and writes it into the given buffer\&. If the buffer has not been read from before messages have wrapped around, then you may only get the end of a message\&. To avoid this situation, you will need to read the buffer often enough to stay ahead of the written messages\&. Making sure that the log buffer is sufficiently sized may help with this\&.
+.PP
+A terminating NULL character will always be written at the end of the output\&. Note that this means that if the read operation was successful but there was no message to read, the result will be 1 with a single NULL character being written to the read buffer\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate reads and writes of the message buffer\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as a lock may be left locked when a thread exits prematurely\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The buffer target to read from\&.
+.br
+\fIbuffer\fP The buffer to write the message in to\&.
+.br
+\fImax_length\fP The maximum number of bytes to write into the provided buffer\&. If this is zero, then the read buffer will be considered an empty argument and an error will be raised\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of bytes written into buffer, including the terminating NULL character\&. In the event of an error, 0 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

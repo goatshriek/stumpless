@@ -1,0 +1,168 @@
+.TH "stumpless/target/journald.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/journald.h \- Journald targets send messages to a systemd journald service\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_journald_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a journald target\&. "
+.ti -1c
+.RI "size_t \fBstumpless_flatten_element_name\fP (const struct \fBstumpless_entry\fP *entry, size_t element_index, char *destination, size_t size)"
+.br
+.RI "Creates a journald-compliant name for the element\&. "
+.ti -1c
+.RI "size_t \fBstumpless_flatten_param_name\fP (const struct \fBstumpless_entry\fP *entry, size_t element_index, size_t param_index, char *destination, size_t size)"
+.br
+.RI "Creates a name for the param by combining the element and param name\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_journald_target\fP (const char *name)"
+.br
+.RI "Opens a journald target\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Journald targets send messages to a systemd journald service\&. 
+
+Journald supports structured logging but does not use the same hierarchy as RFC 5424, instead providing a simple key/value pairing\&. To compensate for this these targets perform a number of transformations to map the elements and params into the flat hierarchy\&. By default element and param names are converted to uppercase and are joined together using underscores, but this behavior can be customized as needed\&.
+.PP
+Because RFC 5424 allows most printable ASCII characters while journald only allows letters and numbers, incompatible characters of the generated field name will be replaced with an underscore to comply with journald requirements\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to journald targets is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP Logging to journald targets is not signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP Logging to journald targets is not async cancellation safe as it relies on sd_journal_sendv which is not documented as such\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_journald_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a journald target\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The journald target to close\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_flatten_element_name (const struct \fBstumpless_entry\fP * entry, size_t element_index, char * destination, size_t size)"
+
+.PP
+Creates a journald-compliant name for the element\&. All lower case letters are converted to upper case\&. Characters that are not alphanumeric are replaced with an underscore character\&. This includes any UTF-8 characters\&.
+.PP
+If the destination buffer is too small to hold the complete name, then nothing is done\&. Callers can detect this by comparing the return value to the value provided in the size argument\&. If the return value is larger, then nothing was done\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe\&. It reads fields of the entry and element without any synchronization\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry that the param is part of\&.
+.br
+\fIelement_index\fP The index of the element in the entry\&.
+.br
+\fIdestination\fP The buffer to write the name to\&.
+.br
+\fIsize\fP The maximum number of bytes to write to the destination buffer\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of bytes needed to write the complete flattened name, not including a NULL terminating character\&. If this is greater than size, then it signifies that nothing was done\&. 
+.RE
+.PP
+
+.SS "size_t stumpless_flatten_param_name (const struct \fBstumpless_entry\fP * entry, size_t element_index, size_t param_index, char * destination, size_t size)"
+
+.PP
+Creates a name for the param by combining the element and param name\&. Both names are converted to all upper case and combined with an underscore character between them\&.
+.PP
+Characters that are not alphanumeric are replaced with an underscore character\&. This includes any UTF-8 characters\&.
+.PP
+If the destination buffer is too small to hold the complete name, then nothing is done\&. Callers can detect this by comparing the return value to the value provided in the size argument\&. If the return value is larger, then nothing was done by the call\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe\&. It reads fields of the entry, element, and param without any synchronization\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry that the param is part of\&.
+.br
+\fIelement_index\fP The index of the element the param is part of\&.
+.br
+\fIparam_index\fP The index of the param within the element\&.
+.br
+\fIdestination\fP The buffer to write the name to\&.
+.br
+\fIsize\fP The maximum number of bytes to write to the destination buffer\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of bytes needed to write the complete flattened name, not including a NULL terminating character\&. If this is greater than size, then it signifies that nothing was done\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_journald_target (const char * name)"
+
+.PP
+Opens a journald target\&. This target will send log entries to the local service\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the logging target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

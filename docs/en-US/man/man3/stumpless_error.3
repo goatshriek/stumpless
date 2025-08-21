@@ -1,0 +1,56 @@
+.TH "stumpless_error" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless_error \- Information describing an error encountered by the library\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <error\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_error_id\fP \fBid\fP"
+.br
+.RI "error family "
+.ti -1c
+.RI "const char * \fBmessage\fP"
+.br
+.RI "specific details of the failure "
+.ti -1c
+.RI "int \fBcode\fP"
+.br
+.RI "an error code possibly providing more information "
+.ti -1c
+.RI "const char * \fBcode_type\fP"
+.br
+.RI "a description of the error code "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Information describing an error encountered by the library\&. 
+.SH "Field Documentation"
+.PP 
+.SS "int stumpless_error::code"
+
+.PP
+an error code possibly providing more information 
+.SS "const char* stumpless_error::code_type"
+
+.PP
+a description of the error code 
+.SS "enum \fBstumpless_error_id\fP stumpless_error::id"
+
+.PP
+error family 
+.SS "const char* stumpless_error::message"
+
+.PP
+specific details of the failure 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

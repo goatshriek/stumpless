@@ -1,0 +1,38 @@
+.TH "stumpless/generator.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/generator.h \- Generic functionality to be used with STUMPLESS_FOREACH macros to allow for more generic definition of enumerations and to string functions\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_GENERATE_ENUM\fP(NAME,  VALUE)   NAME = ( VALUE ),"
+.br
+.RI "Returns a definition of a symbol with the given name and value fit for use in an enum definition\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Generic functionality to be used with STUMPLESS_FOREACH macros to allow for more generic definition of enumerations and to string functions\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_GENERATE_ENUM(NAME, VALUE)   NAME = ( VALUE ),"
+
+.PP
+Returns a definition of a symbol with the given name and value fit for use in an enum definition\&. Compatible with \fCSTUMPLESS_FOREACH_\fP macro functions such as \fBSTUMPLESS_FOREACH_FACILITY()\fP\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

@@ -1,0 +1,1392 @@
+.TH "stumpless/target.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target.h \- General types and functions for working with all targets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstumpless_target\fP"
+.br
+.RI "A target that log entries can be sent to\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_TARGET_NAME\fP   'stumpless\-default'"
+.br
+.RI "The name of the default target\&. "
+.ti -1c
+.RI "#define \fBSTUMPLESS_BUFFER_TARGET_VALUE\fP   0"
+.br
+.RI "write to a character buffer "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FILE_TARGET_VALUE\fP   1"
+.br
+.RI "write to a file "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FUNCTION_TARGET_VALUE\fP   2"
+.br
+.RI "call a custom function "
+.ti -1c
+.RI "#define \fBSTUMPLESS_JOURNALD_TARGET_VALUE\fP   3"
+.br
+.RI "send to the systemd journald service "
+.ti -1c
+.RI "#define \fBSTUMPLESS_NETWORK_TARGET_VALUE\fP   4"
+.br
+.RI "send to a network endpoint "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SOCKET_TARGET_VALUE\fP   5"
+.br
+.RI "write to a Unix socket "
+.ti -1c
+.RI "#define \fBSTUMPLESS_STREAM_TARGET_VALUE\fP   6"
+.br
+.RI "write to a FILE stream "
+.ti -1c
+.RI "#define \fBSTUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE\fP   7"
+.br
+.RI "add to the Windows Event Log "
+.ti -1c
+.RI "#define \fBSTUMPLESS_SQLITE3_TARGET_VALUE\fP   8"
+.br
+.RI "add to a SQLite3 database "
+.ti -1c
+.RI "#define \fBSTUMPLESS_CHAIN_TARGET_VALUE\fP   9"
+.br
+.RI "write to a series of targets "
+.ti -1c
+.RI "#define \fBSTUMPLESS_FOREACH_TARGET_TYPE\fP(ACTION)"
+.br
+.RI "A macro function that runs the provided action once for each target_type, providing the symbol and value\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef bool(* \fBstumpless_filter_func_t\fP) (const struct \fBstumpless_target\fP *target, const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "A function that determines whether a given entry should be sent to a given target\&. "
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBstumpless_target_type\fP { \fBSTUMPLESS_BUFFER_TARGET\fP = ( 0 ), \fBSTUMPLESS_FILE_TARGET\fP = ( 1 ), \fBSTUMPLESS_FUNCTION_TARGET\fP = ( 2 ), \fBSTUMPLESS_JOURNALD_TARGET\fP = ( 3 ), \fBSTUMPLESS_NETWORK_TARGET\fP = ( 4 ), \fBSTUMPLESS_SOCKET_TARGET\fP = ( 5 ), \fBSTUMPLESS_STREAM_TARGET\fP = ( 6 ), \fBSTUMPLESS_WINDOWS_EVENT_LOG_TARGET\fP = ( 7 ), \fBSTUMPLESS_SQLITE3_TARGET\fP = ( 8 ), \fBSTUMPLESS_CHAIN_TARGET\fP = ( 9 ) }"
+.br
+.RI "Types of targets that may be created\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBstumpless_add_entry\fP (struct \fBstumpless_target\fP *target, const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Adds an entry into a given target\&. "
+.ti -1c
+.RI "int \fBstumpless_add_log\fP (struct \fBstumpless_target\fP *target, int priority, const char *message,\&.\&.\&.)"
+.br
+.RI "Adds a log message with a priority to a given target\&. "
+.ti -1c
+.RI "int \fBstumpless_add_log_str\fP (struct \fBstumpless_target\fP *target, int priority, const char *message)"
+.br
+.RI "Adds a log message with a priority to a given target\&. "
+.ti -1c
+.RI "int \fBstumpless_add_message\fP (struct \fBstumpless_target\fP *target, const char *message,\&.\&.\&.)"
+.br
+.RI "Adds a message to a given target\&. "
+.ti -1c
+.RI "int \fBstumpless_add_message_str\fP (struct \fBstumpless_target\fP *target, const char *message)"
+.br
+.RI "Adds a string message to a given target\&. "
+.ti -1c
+.RI "void \fBstumpless_close_target\fP (struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a target\&. "
+.ti -1c
+.RI "FILE * \fBstumpless_get_cons_stream\fP (void)"
+.br
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_get_current_target\fP (void)"
+.br
+.RI "Gets the current target\&. "
+.ti -1c
+.RI "int \fBstumpless_get_default_options\fP (void)"
+.br
+.RI "Gets the options to be used while initializing a target\&. "
+.ti -1c
+.RI "int \fBstumpless_get_default_facility\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the default facility of a target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_get_default_target\fP (void)"
+.br
+.RI "Gets the default target\&. "
+.ti -1c
+.RI "int \fBstumpless_get_option\fP (const struct \fBstumpless_target\fP *target, int option)"
+.br
+.RI "Gets a given option of a target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_target_default_app_name\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Returns the default app name of the given target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_target_default_msgid\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Returns the default msgid of the given target\&. "
+.ti -1c
+.RI "\fBstumpless_filter_func_t\fP \fBstumpless_get_target_filter\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Returns the current filter used by the given target to determine if entries should be allowed through it\&. "
+.ti -1c
+.RI "int \fBstumpless_get_target_mask\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the log mask of a target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_target_name\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Returns the name of the given target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_target\fP (struct \fBstumpless_target\fP *target)"
+.br
+.RI "Opens a target that has already been created and configured\&. "
+.ti -1c
+.RI "void \fBstumpless_set_cons_stream\fP (FILE *stream)"
+.br
+.RI "Sets the console stream to write logs to\&. "
+.ti -1c
+.RI "void \fBstumpless_set_current_target\fP (struct \fBstumpless_target\fP *target)"
+.br
+.RI "Sets the target used when one is not provided\&. "
+.ti -1c
+.RI "void \fBstumpless_set_default_options\fP (int option)"
+.br
+.RI "Sets the default options to be used for all new targets created\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_default_facility\fP (struct \fBstumpless_target\fP *target, int default_facility)"
+.br
+.RI "Sets the default facility of a target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_option\fP (struct \fBstumpless_target\fP *target, int option)"
+.br
+.RI "Sets an option on a target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_target_default_app_name\fP (struct \fBstumpless_target\fP *target, const char *app_name)"
+.br
+.RI "Sets the default app name for a given target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_target_default_msgid\fP (struct \fBstumpless_target\fP *target, const char *msgid)"
+.br
+.RI "Sets the default msgid for a given target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_target_filter\fP (struct \fBstumpless_target\fP *target, \fBstumpless_filter_func_t\fP filter)"
+.br
+.RI "Sets the filter used to determine whether entries should be logged by a given target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_target_mask\fP (struct \fBstumpless_target\fP *target, int mask)"
+.br
+.RI "Sets the log mask of a target\&. "
+.ti -1c
+.RI "const struct \fBstumpless_target\fP * \fBstumpless_target_is_open\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Checks to see if the given target is open\&. "
+.ti -1c
+.RI "int \fBstumpless_trace_entry\fP (struct \fBstumpless_target\fP *target, struct \fBstumpless_entry\fP *entry, const char *file, int line, const char *func)"
+.br
+.RI "Adds an entry into a given target\&. "
+.ti -1c
+.RI "int \fBstumpless_trace_log\fP (struct \fBstumpless_target\fP *target, int priority, const char *file, int line, const char *func, const char *message,\&.\&.\&.)"
+.br
+.RI "Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBstumpless_trace_log_str\fP (struct \fBstumpless_target\fP *target, int priority, const char *file, int line, const char *func, const char *message)"
+.br
+.RI "Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBstumpless_trace_message\fP (struct \fBstumpless_target\fP *target, const char *file, int line, const char *func, const char *message,\&.\&.\&.)"
+.br
+.RI "Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBstumpless_trace_message_str\fP (struct \fBstumpless_target\fP *target, const char *file, int line, const char *func, const char *message)"
+.br
+.RI "Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_unset_option\fP (struct \fBstumpless_target\fP *target, int option)"
+.br
+.RI "Unsets an option on a target\&. "
+.ti -1c
+.RI "int \fBvstumpless_add_log\fP (struct \fBstumpless_target\fP *target, int priority, const char *message, va_list subs)"
+.br
+.RI "Adds a log message with a priority to a given target\&. "
+.ti -1c
+.RI "int \fBvstumpless_add_message\fP (struct \fBstumpless_target\fP *target, const char *message, va_list subs)"
+.br
+.RI "Adds a message to a given target\&. "
+.ti -1c
+.RI "int \fBvstumpless_trace_log\fP (struct \fBstumpless_target\fP *target, int priority, const char *file, int line, const char *func, const char *message, va_list subs)"
+.br
+.RI "Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "int \fBvstumpless_trace_message\fP (struct \fBstumpless_target\fP *target, const char *file, int line, const char *func, const char *message, va_list subs)"
+.br
+.RI "Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_target_type_string\fP (enum \fBstumpless_target_type\fP target_type)"
+.br
+.RI "Gets the string representation of the given target_type\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+General types and functions for working with all targets\&. 
+
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_BUFFER_TARGET_VALUE   0"
+
+.PP
+write to a character buffer 
+.SS "#define STUMPLESS_CHAIN_TARGET_VALUE   9"
+
+.PP
+write to a series of targets 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SS "#define STUMPLESS_DEFAULT_TARGET_NAME   'stumpless\-default'"
+
+.PP
+The name of the default target\&. 
+.SS "#define STUMPLESS_FILE_TARGET_VALUE   1"
+
+.PP
+write to a file 
+.SS "#define STUMPLESS_FOREACH_TARGET_TYPE(ACTION)"
+\fBValue:\fP.PP
+.nf
+ACTION( STUMPLESS_BUFFER_TARGET, STUMPLESS_BUFFER_TARGET_VALUE )\\
+ACTION( STUMPLESS_FILE_TARGET, STUMPLESS_FILE_TARGET_VALUE )\\
+ACTION( STUMPLESS_FUNCTION_TARGET, STUMPLESS_FUNCTION_TARGET_VALUE )\\
+ACTION( STUMPLESS_JOURNALD_TARGET, STUMPLESS_JOURNALD_TARGET_VALUE )\\
+ACTION( STUMPLESS_NETWORK_TARGET, STUMPLESS_NETWORK_TARGET_VALUE )\\
+ACTION( STUMPLESS_SOCKET_TARGET, STUMPLESS_SOCKET_TARGET_VALUE )\\
+ACTION( STUMPLESS_STREAM_TARGET, STUMPLESS_STREAM_TARGET_VALUE )\\
+ACTION( STUMPLESS_WINDOWS_EVENT_LOG_TARGET, STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE )\\
+ACTION( STUMPLESS_SQLITE3_TARGET, STUMPLESS_SQLITE3_TARGET_VALUE )\\
+ACTION( STUMPLESS_CHAIN_TARGET, STUMPLESS_CHAIN_TARGET_VALUE )
+.fi
+
+.PP
+A macro function that runs the provided action once for each target_type, providing the symbol and value\&. The action must take two arguments, the first being the symbol name of the target_type, and the second the numeric value of the target_type\&. 
+.SS "#define STUMPLESS_FUNCTION_TARGET_VALUE   2"
+
+.PP
+call a custom function 
+.SS "#define STUMPLESS_JOURNALD_TARGET_VALUE   3"
+
+.PP
+send to the systemd journald service 
+.SS "#define STUMPLESS_NETWORK_TARGET_VALUE   4"
+
+.PP
+send to a network endpoint 
+.SS "#define STUMPLESS_SOCKET_TARGET_VALUE   5"
+
+.PP
+write to a Unix socket 
+.SS "#define STUMPLESS_SQLITE3_TARGET_VALUE   8"
+
+.PP
+add to a SQLite3 database 
+.SS "#define STUMPLESS_STREAM_TARGET_VALUE   6"
+
+.PP
+write to a FILE stream 
+.SS "#define STUMPLESS_WINDOWS_EVENT_LOG_TARGET_VALUE   7"
+
+.PP
+add to the Windows Event Log 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef bool(* stumpless_filter_func_t) (const struct \fBstumpless_target\fP *target, const struct \fBstumpless_entry\fP *entry)"
+
+.PP
+A function that determines whether a given entry should be sent to a given target\&. The two parameters are guaranteed not to be NULL whenever a filter function is called by the library itself, and so NULL checks are not necessary\&.
+.PP
+Note that this function does not actually add the entry to the target, but only evaluates whether or not it should be sent\&.
+.PP
+The safety attributes (thread, async, async-cancel) of a filter function come into play whenever an entry is sent to a target via stumpless_add_entry or another function that results in a call to this\&. If the function is not safe in conditions where the add function is, the target will need to be treated as though it is also unsafe in these conditions when entries are passed to it\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target that the entry will be sent to if it passes\&. Will not be NULL when called during logging\&.
+.br
+\fIentry\fP The entry that is being submitted to the target\&. Will not be NULL when called during logging\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the entry should be sent to the target, false if not\&. 
+.RE
+.PP
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBstumpless_target_type\fP"
+
+.PP
+Types of targets that may be created\&. 
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fISTUMPLESS_BUFFER_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_FILE_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_FUNCTION_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_JOURNALD_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_NETWORK_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_SOCKET_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_STREAM_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_WINDOWS_EVENT_LOG_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_SQLITE3_TARGET \fP\fP
+.TP
+\fB\fISTUMPLESS_CHAIN_TARGET \fP\fP
+.SH "Function Documentation"
+.PP 
+.SS "int stumpless_add_entry (struct \fBstumpless_target\fP * target, const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Adds an entry into a given target\&. This is the primary logging function of stumpless; all other logging functions call this one after performing any setup specific to themselves\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIentry\fP The entry to send to the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SS "int stumpless_add_log (struct \fBstumpless_target\fP * target, int priority, const char * message,  \&.\&.\&.)"
+
+.PP
+Adds a log message with a priority to a given target\&. The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_add_log_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_add_log_str (struct \fBstumpless_target\fP * target, int priority, const char * message)"
+
+.PP
+Adds a log message with a priority to a given target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_add_message (struct \fBstumpless_target\fP * target, const char * message,  \&.\&.\&.)"
+
+.PP
+Adds a message to a given target\&. The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_add_message_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This may be NULL, in which case an event with no message is logged\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP, and \fBchain_example\&.c\fP\&.
+.SS "int stumpless_add_message_str (struct \fBstumpless_target\fP * target, const char * message)"
+
+.PP
+Adds a string message to a given target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fImessage\fP The message to log\&. This may be NULL, in which case an event with no message is logged\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "void stumpless_close_target (struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a target\&. Targets that can be closed in multiple ways will be closed in the most complete way possible\&. Specifically, SQLite3 targets will have the underlying database connection closed as well, and chain targets will have all targets in them closed\&.
+.PP
+This function can be used when you'd like to avoid checking the type of the target and then calling the appropriate close function\&. Note that use of this doesn't actually avoid the check - it just does the check on your behalf\&. It is more efficient to call the specific close function if you know the type of the target\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBentry_example\&.c\fP, and \fBseverity_level_example\&.c\fP\&.
+.SS "FILE * stumpless_get_cons_stream (void)"
+
+.SS "struct \fBstumpless_target\fP * stumpless_get_current_target (void)"
+
+.PP
+Gets the current target\&. The current target is either the last target that was opened, set by a call to \fBstumpless_set_current_target()\fP, or the default target if neither of the former exists\&.
+.PP
+The current target will still be the last target that was opened even if the target was opened with STUMPLESS_OPTION_ODELAY option and is not yet connected for logging\&.
+.PP
+If the target that is designated as the current target is closed, then the current target will be reset to the default target until another target is opened\&.
+.PP
+Be careful not to confuse this target with the default target, which is the target used when no suitable current target exists\&. While these may be the same in some cases, they will not always be\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic operations are used to work with the default target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBReturns\fP
+.RS 4
+The current target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "int stumpless_get_default_facility (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the default facility of a target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the facility from\&.\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The default facility if no error is encountered\&. If an error is encountered, then -1 is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "int stumpless_get_default_options (void)"
+
+.PP
+Gets the options to be used while initializing a target\&. If no options are set for atomic variable default_option, it will default to 0\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic operations are used to work with the default option\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers as it only consists of an atomic read\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled, as it only consists of an atomic read\&.
+.PP
+\fBReturns\fP
+.RS 4
+Value store in atomic variable default_option 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_get_default_target (void)"
+
+.PP
+Gets the default target\&. The default target is opened when a logging call is made with no target open\&. It will not be opened until either this happens or a call to this function is made\&. It will not be closed until a call to \fBstumpless_free_all()\fP is made\&. It should not be closed manually outside of the free all function\&.
+.PP
+Be careful not to confuse this target with the current target, which is the last target opened or set via \fBstumpless_set_current_target()\fP\&. While these will return the same target in some cases, such as if they are called before opening any targets, they are not equivalent\&.
+.PP
+The default target type will change depending on the configuration of the system configuration\&. If Windows Event Log targets are supported, then the default target will log to an event log named \fCSTUMPLESS_DEFAULT_TARGET_NAME\fP\&. If Windows Event Log targets are not supported and socket targets are, then the default target will point at the socket named in STUMPLESS_DEFAULT_SOCKET, which will be /var/run/syslog if it existed at build time, or else /dev/log\&. If neither of these target types are supported then a file target is opened to log to the file named in \fCSTUMPLESS_DEFAULT_FILE\fP\&.
+.PP
+The default target will not have any options set, and will have a default facility of \fCSTUMPLESS_FACILITY_USER\fP\&. These settings may be modified by calling the appropriate modifiers on the target after retrieving it with this function\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic operations are used to work with the default target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the possible use of memory management functions to create the default target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of memory management functions\&.
+.PP
+\fBReturns\fP
+.RS 4
+The default target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "int stumpless_get_option (const struct \fBstumpless_target\fP * target, int option)"
+
+.PP
+Gets a given option of a target\&. While the returned value is the option if it is set, code can also simply check the truth value of the return to see if the provided option is set\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the option from\&.
+.br
+\fIoption\fP The option to check the target for\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The option if it is set on the target\&. If the option is not set, then zero is returned\&. If an error is encountered, then zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_target_default_app_name (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Returns the default app name of the given target\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the app name from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The default app name of the target, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_target_default_msgid (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Returns the default msgid of the given target\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the msgid from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The default msgid of the target, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "\fBstumpless_filter_func_t\fP stumpless_get_target_filter (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Returns the current filter used by the given target to determine if entries should be allowed through it\&. Note that NULL is a valid return value from this function, indicating that the target does not currently have a filter set\&. In order to detect an error condition, use the \fCstumpless_has_error\fP function instead\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the filter from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The filter function in use by the target, or NULL if an error is encountered\&. If an error is encountered, an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "int stumpless_get_target_mask (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the log mask of a target\&. The mask is a bit field of severities that this target will allow if the default mask-based filter is in use\&. These can be formed and checked using the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and combining them using bitwise or operations\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being read\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate the read of the target\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the mask from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current mask of the target\&. If an error is encountered, then zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_target_name (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Returns the name of the given target\&. The character buffer must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the target with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.0\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the name from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The name of target, if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_target_type_string (enum \fBstumpless_target_type\fP target_type)"
+
+.PP
+Gets the string representation of the given target_type\&. This is a string literal that should not be modified or freed by the caller\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget_type\fP The target_type to get the string from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The string representation of the given target_type\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_target (struct \fBstumpless_target\fP * target)"
+
+.PP
+Opens a target that has already been created and configured\&. Targets that have been created using the \fCstumpless_new_*_target\fP family of functions need to be opened once they have been configured with all of the desired parameters, or if a previous change caused them to pause\&.
+.PP
+If the provided target has not had all mandatory settings configured or some other error is encountered, then the operation will fail and the target will remain in a paused state\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate accesses and updates to the current target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to open\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if it was opened successfully (which will be equal to the target argument)\&. If an error was encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtcp_example\&.c\fP\&.
+.SS "void stumpless_set_cons_stream (FILE * stream)"
+
+.PP
+Sets the console stream to write logs to\&. This will be stdout by default, but can be set to any stream\&. If it is set to NULL then console messages will not be printed\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic variables are used to store and retrieve the console stream\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be ansynchronously cancelled\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIstream\fP The stream to write logs to\&. If this is NULL then the messages intended for the console stream will be ignored\&. 
+.RE
+.PP
+
+.SS "void stumpless_set_current_target (struct \fBstumpless_target\fP * target)"
+
+.PP
+Sets the target used when one is not provided\&. Without being set, the current target will be the last one opened, or the default target if a target has not yet been opened\&. The current target is used by functions like \fBstumplog()\fP and stumpless() where a target is not explicitly provided to the call\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic operations are used to work with the default target\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers as it only consists of an atomic read\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled, as it only consists of an atomic read\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to use as the current target\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_default_facility (struct \fBstumpless_target\fP * target, int default_facility)"
+
+.PP
+Sets the default facility of a target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fIdefault_facility\fP The default facility to use on the target\&. This should be a STUMPLESS_FACILITY value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBtcp_example\&.c\fP\&.
+.SS "void stumpless_set_default_options (int option)"
+
+.PP
+Sets the default options to be used for all new targets created\&. If a target is created without calling this function, STUMPLESS_OPTION_NONE will be used as default\&. Using this function will not affect options for targets already created\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. Atomic operations are used to work with the default target\&.
+.PP
+\fBAsync Signal Safety: AS-Safe\fP This function is safe to call from signal handlers as it only consists of an atomic write\&.
+.PP
+\fBAsync Cancel Safety: AC-Safe\fP This function is safe to call from threads that may be asynchronously cancelled, as it only consists of an atomic write\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIoption\fP The bitwise 'or' of all options to be set as default\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_option (struct \fBstumpless_target\fP * target, int option)"
+
+.PP
+Sets an option on a target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fIoption\fP The option to set on the target\&. This should be a STUMPLESS_OPTION value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_target_default_app_name (struct \fBstumpless_target\fP * target, const char * app_name)"
+
+.PP
+Sets the default app name for a given target\&. \fBThread Safety: MT-Safe race:app_name\fP This function is thread safe, of course assuming that the name is not changed by any other threads during exeuction\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fIapp_name\fP The new default app name, as a NULL-terminated string\&. The app name length is restricted to be 48 characters or less\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_target_default_msgid (struct \fBstumpless_target\fP * target, const char * msgid)"
+
+.PP
+Sets the default msgid for a given target\&. \fBThread Safety: MT-Safe race:msgid\fP This function is thread safe, of course assuming that the msgid is not changed by any other threads during exeuction\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes and the use of memory management functions to create the new name and free the old one\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fImsgid\fP The new default msgid, as a NULL-terminated string\&. The string must be in the ASCII printable range 33 <= character <= 126 as specified in RFC5424\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_target_filter (struct \fBstumpless_target\fP * target, \fBstumpless_filter_func_t\fP filter)"
+
+.PP
+Sets the filter used to determine whether entries should be logged by a given target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to set the filter function for\&.
+.br
+\fIfilter\fP The filter to be used by the target\&. This can be NULL if all entries should be logged by the target with no filtering\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_set_target_mask (struct \fBstumpless_target\fP * target, int mask)"
+
+.PP
+Sets the log mask of a target\&. The mask is a bit field of severities that this target will allow if the default mask-based filter is in use\&. These can be formed and checked using the STUMPLESS_SEVERITY_MASK and STUMPLESS_SEVERITY_MASK_UPTO macros, and combining them using bitwise or operations\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fImask\fP The mask to use with the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "const struct \fBstumpless_target\fP * stumpless_target_is_open (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Checks to see if the given target is open\&. For targets that are opened with a single \fCopen\fP function call, they will likely be considered open as long as they are non-NULL, as the target creation would otherwise fail before it could be opened\&. Targets are be considered in a paused state if they were created but not opened yet, for example with \fCstumpless_new_network_target\fP as opposed to \fCstumpless_open_network_target\fP\&. Targets may also be paused if a settings change has been made that could not be validated, such as changing the port on a TCP network target to one that does not respond on the server\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being accessed\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to check\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The target if it is currently open, and NULL if not\&. 
+.RE
+.PP
+
+.SS "int stumpless_trace_entry (struct \fBstumpless_target\fP * target, struct \fBstumpless_entry\fP * entry, const char * file, int line, const char * func)"
+
+.PP
+Adds an entry into a given target\&. The entry has a structured data element added to it with the file, line, and function information specified\&.
+.PP
+The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIentry\fP The entry to send to the target\&.
+.br
+\fIfile\fP The name of the source file the entry should be tied to\&.
+.br
+\fIline\fP The line in the source file that the entry should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the entry should be tied to\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_trace_log (struct \fBstumpless_target\fP * target, int priority, const char * file, int line, const char * func, const char * message,  \&.\&.\&.)"
+
+.PP
+Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_trace_log_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_trace_log_str (struct \fBstumpless_target\fP * target, int priority, const char * file, int line, const char * func, const char * message)"
+
+.PP
+Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_trace_message (struct \fBstumpless_target\fP * target, const char * file, int line, const char * func, const char * message,  \&.\&.\&.)"
+
+.PP
+Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+The message must be a valid format specifier string provided along with the appropriate number of variable arguments afterwards\&. This means that it should not be a user-controlled value under any circumstances\&. If you need a safer alternative without the risks of format strings, use \fCstumpless_trace_message_str\fP instead\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&. This may be NULL, in which case an event with no message is logged\&. This must be a valid UTF-8 string in shortest form\&.
+.br
+\fI\&.\&.\&.\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int stumpless_trace_message_str (struct \fBstumpless_target\fP * target, const char * file, int line, const char * func, const char * message)"
+
+.PP
+Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log\&. This may be NULL, in which case an event with no message is logged\&. This must be a valid UTF-8 string in shortest form\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_unset_option (struct \fBstumpless_target\fP * target, int option)"
+
+.PP
+Unsets an option on a target\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the target while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to modify\&.
+.br
+\fIoption\fP The option to unset on the target\&. This should be a STUMPLESS_OPTION value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "int vstumpless_add_log (struct \fBstumpless_target\fP * target, int priority, const char * message, va_list subs)"
+
+.PP
+Adds a log message with a priority to a given target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int vstumpless_add_message (struct \fBstumpless_target\fP * target, const char * message, va_list subs)"
+
+.PP
+Adds a message to a given target\&. \fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int vstumpless_trace_log (struct \fBstumpless_target\fP * target, int priority, const char * file, int line, const char * func, const char * message, va_list subs)"
+
+.PP
+Adds a log message with a priority to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIpriority\fP The priority of the message - this should be the bitwise or of a single STUMPLESS_SEVERITY and single STUMPLESS_FACILITY value\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SS "int vstumpless_trace_message (struct \fBstumpless_target\fP * target, const char * file, int line, const char * func, const char * message, va_list subs)"
+
+.PP
+Adds a message to a given target, along with the file, line, and function information specified in a structured data element\&. The trace information is added in an element named \fCtrace\fP with params named \fCfile\fP, \fCline\fP, and \fCfunction\fP for the respective pieces of information\&.
+.PP
+\fBThread Safety: MT-Safe env locale\fP This function is thread safe\&. Different target types handle thread safety differently, as some require per-target locks and others can rely on system libraries to log safely, but all targets support thread safe logging in some manner\&. For target-specific information on how thread safety is supported and whether AS or AC safety can be assumed, refer to the documentation for the target's header file (in the \fCstumpless/target\fP include folder)\&. For all targets, the environment variables and locale will be used during some of the string formatting of the message\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers as some targets make use of non-reentrant locks to coordinate access\&. It also may make memory allocation calls to create internal cached structures, and memory allocation may not be signal safe\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of locks in some targets that could be left locked and the potential for memory allocation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to send the message to\&.
+.br
+\fIfile\fP The name of the source file the message should be tied to\&.
+.br
+\fIline\fP The line in the source file that the message should be tied to\&.
+.br
+\fIfunc\fP The name of the function that the message should be tied to\&.
+.br
+\fImessage\fP The message to log, optionally containing any format specifiers valid in \fCprintf\fP\&.
+.br
+\fIsubs\fP Substitutions for any format specifiers provided in message\&. The number of substitutions provided must exactly match the number of specifiers given\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call it\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A non-negative value if no error is encountered\&. If an error is encountered, then a negative value is returned and an error code is set appropriately\&. If the entry was rejected by the target's filter, then 0 is returned\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

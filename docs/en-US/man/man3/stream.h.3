@@ -1,0 +1,167 @@
+.TH "stumpless/target/stream.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/stream.h \- Functions for working with stream targets (that is, FILE pointers)\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstumpless_close_stream_target\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a stream target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_stderr_target\fP (const char *name)"
+.br
+.RI "Opens a stream target for the stderr stream\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_stdout_target\fP (const char *name)"
+.br
+.RI "Opens a stream target for the stdout stream\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_stream_target\fP (const char *name, FILE *stream)"
+.br
+.RI "Opens a stream target for the given stream\&. "
+.ti -1c
+.RI "void \fBstumpless_set_severity_color\fP (struct \fBstumpless_target\fP *target, enum \fBstumpless_severity\fP severity, const char *escape_code)"
+.br
+.RI "Sets the ANSI escape code (https://en.wikipedia.org/wiki/ANSI_escape_code) to be printed in a specific target when a log is made at some severity\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions for working with stream targets (that is, FILE pointers)\&. 
+
+\fBThread Safety: MT-Safe\fP Logging to stream targets is thread safe\&. A mutex is used to coordinate writes to the stream\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to stream targets is not signal safe, as a non-reentrant lock is used to coordinate writes to the stream\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to stream targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed\&. 
+.SH "Function Documentation"
+.PP 
+.SS "void stumpless_close_stream_target (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a stream target\&. This function does NOT close the stream associated with the target\&. It does destroy all memory allocated for the target, including the target struct itself\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The stream target to close\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBfilter_example\&.c\fP, and \fBstream_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_stderr_target (const char * name)"
+
+.PP
+Opens a stream target for the stderr stream\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_stdout_target (const char * name)"
+
+.PP
+Opens a stream target for the stdout stream\&. \fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP, \fBentry_example\&.c\fP, \fBfilter_example\&.c\fP, and \fBseverity_level_example\&.c\fP\&.
+.SS "struct \fBstumpless_target\fP * stumpless_open_stream_target (const char * name, FILE * stream)"
+
+.PP
+Opens a stream target for the given stream\&. Events logged to this target will be separated by a newline, just as with a file target\&. In fact, a stream target is equivalent to a file target with the difference being that the file must be opened and closed by the caller\&.
+.PP
+A stream target can also be useful for logging to other streams, such as stdout and stderr, which is not possible with a file target\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the target to open\&. This is only used for identification of the target\&.
+.br
+\fIstream\fP The stream to log events to\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.PP
+\fBExamples\fP
+.in +1c
+\fBstream_example\&.c\fP\&.
+.SS "void stumpless_set_severity_color (struct \fBstumpless_target\fP * target, enum \fBstumpless_severity\fP severity, const char * escape_code)"
+
+.PP
+Sets the ANSI escape code (https://en.wikipedia.org/wiki/ANSI_escape_code) to be printed in a specific target when a log is made at some severity\&. It should be used with stdout or stderr as targets, since it is only for aesthetic purposes\&.
+.PP
+\fBThread Safety: MT-Safe race:escape_code\fP This function is thread safe, of course assuming that escape_code is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The name of the target for which to set the colors\&.
+.br
+\fIseverity\fP The severity code (LOG_ERR etc\&.) to which we set the specific color\&.
+.br
+\fIescape_code\fP The ANSI escape code representing the color\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

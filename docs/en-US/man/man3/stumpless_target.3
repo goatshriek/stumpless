@@ -1,0 +1,145 @@
+.TH "stumpless_target" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless_target \- A target that log entries can be sent to\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <target\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBstumpless_id_t\fP \fBid\fP"
+.br
+.RI "A unique identifier of this target\&. "
+.ti -1c
+.RI "enum \fBstumpless_target_type\fP \fBtype\fP"
+.br
+.RI "The type of this target\&. "
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.RI "The name of this target\&. "
+.ti -1c
+.RI "size_t \fBname_length\fP"
+.br
+.RI "The number of characters in the name\&. "
+.ti -1c
+.RI "int \fBoptions\fP"
+.br
+.RI "A bitwise or of all options set on the target\&. "
+.ti -1c
+.RI "int \fBdefault_prival\fP"
+.br
+.RI "The prival used for messages without a severity or facility provided\&. "
+.ti -1c
+.RI "char \fBdefault_app_name\fP [48]"
+.br
+.RI "The app name used for messages without one provided\&. "
+.ti -1c
+.RI "size_t \fBdefault_app_name_length\fP"
+.br
+.RI "The number of characters in the default app name\&. "
+.ti -1c
+.RI "char \fBdefault_msgid\fP [32]"
+.br
+.RI "The msgid used for messages without one provided\&. "
+.ti -1c
+.RI "size_t \fBdefault_msgid_length\fP"
+.br
+.RI "The number of characters in the default msgid\&. "
+.ti -1c
+.RI "int \fBmask\fP"
+.br
+.RI "The log mask for the target\&. "
+.ti -1c
+.RI "\fBstumpless_filter_func_t\fP \fBfilter\fP"
+.br
+.RI "A filter function used to determine if a given entry should be processed by this target or ignored\&. "
+.ti -1c
+.RI "void * \fBmutex\fP"
+.br
+.RI "A pointer to a mutex which protects all target fields\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A target that log entries can be sent to\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBbasic_example\&.c\fP, \fBchain_example\&.c\fP, \fBentry_example\&.c\fP, \fBfile_example\&.c\fP, \fBfilter_example\&.c\fP, \fBfunction_example\&.c\fP, \fBseverity_level_example\&.c\fP, \fBsocket_example\&.c\fP, \fBstream_example\&.c\fP, \fBtcp_example\&.c\fP, and \fBudp_example\&.c\fP\&.
+.SH "Field Documentation"
+.PP 
+.SS "char stumpless_target::default_app_name[48]"
+
+.PP
+The app name used for messages without one provided\&. The default app name is not NULL-terminated\&. 
+.SS "size_t stumpless_target::default_app_name_length"
+
+.PP
+The number of characters in the default app name\&. 
+.SS "char stumpless_target::default_msgid[32]"
+
+.PP
+The msgid used for messages without one provided\&. The default msgid is not NULL-terminated\&. 
+.SS "size_t stumpless_target::default_msgid_length"
+
+.PP
+The number of characters in the default msgid\&. 
+.SS "int stumpless_target::default_prival"
+
+.PP
+The prival used for messages without a severity or facility provided\&. 
+.SS "\fBstumpless_filter_func_t\fP stumpless_target::filter"
+
+.PP
+A filter function used to determine if a given entry should be processed by this target or ignored\&. If this is NULL, then all entries sent to the target are accepted\&. By default targets use the stumpless_mask_filter which filters messages based on the severity bits in the mask of the target\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0 
+.RE
+.PP
+
+.SS "\fBstumpless_id_t\fP stumpless_target::id"
+
+.PP
+A unique identifier of this target\&. 
+.SS "int stumpless_target::mask"
+
+.PP
+The log mask for the target\&. Used by the default target filter\&. 
+.PP
+\fBExamples\fP
+.in +1c
+\fBchain_example\&.c\fP\&.
+.SS "void* stumpless_target::mutex"
+
+.PP
+A pointer to a mutex which protects all target fields\&. The exact type of this mutex depends on the build\&. 
+.SS "char* stumpless_target::name"
+
+.PP
+The name of this target\&. For some target types, the name may have more significcance than a simple identifier\&. For example, the name of a file target will be the file that the target writes to\&.
+.PP
+The name of the target will be NULL-terminated\&. 
+.SS "size_t stumpless_target::name_length"
+
+.PP
+The number of characters in the name\&. 
+.SS "int stumpless_target::options"
+
+.PP
+A bitwise or of all options set on the target\&. 
+.SS "enum \fBstumpless_target_type\fP stumpless_target::type"
+
+.PP
+The type of this target\&. The type of a target will not change over the lifetime of the target\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

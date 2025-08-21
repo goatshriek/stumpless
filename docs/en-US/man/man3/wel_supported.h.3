@@ -1,0 +1,758 @@
+.TH "stumpless/config/wel_supported.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/config/wel_supported.h \- Functions necessary when using Windows Event Log targets\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "DWORD \fBstumpless_add_default_wel_event_source\fP (void)"
+.br
+.RI "Creates the registry entries for displaying default entries in the Windows Event Log\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_add_wel_event_source\fP (LPCSTR subkey_name, LPCSTR source_name, DWORD category_count, LPCSTR category_file, LPCSTR event_file, LPCSTR param_file, DWORD types_supported)"
+.br
+.RI "Creates or updates the registry entries for displaying log entries in the Windows Event Log for a new event source\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_add_wel_event_source_w\fP (LPCWSTR subkey_name, LPCWSTR source_name, DWORD category_count, LPCWSTR category_file, LPCWSTR event_file, LPCWSTR param_file, DWORD types_supported)"
+.br
+.RI "Creates or updates the registry entries for displaying log entries in the Windows Event Log for a new event source\&. "
+.ti -1c
+.RI "WORD \fBstumpless_get_wel_category\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Gets the category of an entry used with Windows Event Log targets\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_get_wel_event_id\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Gets the event id of an entry used with Windows Event Log targets\&. "
+.ti -1c
+.RI "struct \fBstumpless_param\fP * \fBstumpless_get_wel_insertion_param\fP (const struct \fBstumpless_entry\fP *entry, WORD index)"
+.br
+.RI "Gets an insertion param from a Windows Event Log entry\&. "
+.ti -1c
+.RI "LPCSTR \fBstumpless_get_wel_insertion_string\fP (const struct \fBstumpless_entry\fP *entry, WORD index)"
+.br
+.RI "Gets an insertion string from a Windows Event Log entry\&. "
+.ti -1c
+.RI "LPCWSTR \fBstumpless_get_wel_insertion_string_w\fP (const struct \fBstumpless_entry\fP *entry, WORD index)"
+.br
+.RI "Gets an insertion string from a Windows Event Log entry\&. "
+.ti -1c
+.RI "WORD \fBstumpless_get_wel_type\fP (const struct \fBstumpless_entry\fP *entry)"
+.br
+.RI "Gets the type of an entry used with Windows Event Log targets\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_remove_default_wel_event_source\fP (void)"
+.br
+.RI "Removes the registry entries for the event source for default WEL entries\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_remove_wel_event_source\fP (LPCSTR subkey_name, LPCSTR source_name)"
+.br
+.RI "Removes the registry entries for an event source for the Windows Event Log\&. "
+.ti -1c
+.RI "DWORD \fBstumpless_remove_wel_event_source_w\fP (LPCWSTR subkey_name, LPCWSTR source_name)"
+.br
+.RI "Removes the registry entries for an event source for the Windows Event Log\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_category\fP (struct \fBstumpless_entry\fP *entry, WORD category)"
+.br
+.RI "Sets the category of an entry for use with a Windows Event Log target\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_event_id\fP (struct \fBstumpless_entry\fP *entry, DWORD event_id)"
+.br
+.RI "Sets the event id of an entry for use with a Windows Event Log target\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_insertion_param\fP (struct \fBstumpless_entry\fP *entry, WORD index, const struct \fBstumpless_param\fP *param)"
+.br
+.RI "Sets a param to use for string insertion in a Windows Event Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_insertion_string\fP (struct \fBstumpless_entry\fP *entry, WORD index, LPCSTR str)"
+.br
+.RI "Sets a string to use for string insertion in a Windows Event Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_insertion_string_w\fP (struct \fBstumpless_entry\fP *entry, WORD index, LPCWSTR str)"
+.br
+.RI "Sets a string to use for string insertion in a Windows Event Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_insertion_strings\fP (struct \fBstumpless_entry\fP *entry, WORD count,\&.\&.\&.)"
+.br
+.RI "Sets the insertion strings of a Windows Event Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_insertion_strings_w\fP (struct \fBstumpless_entry\fP *entry, WORD count,\&.\&.\&.)"
+.br
+.RI "Sets the insertion strings of a Windows Event Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBstumpless_set_wel_type\fP (struct \fBstumpless_entry\fP *entry, WORD type)"
+.br
+.RI "Sets the type of an entry for use with a Windows Event Log target\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBvstumpless_set_wel_insertion_strings\fP (struct \fBstumpless_entry\fP *entry, WORD count, va_list insertions)"
+.br
+.RI "Sets the insertion strings of a Windows Even Log entry\&. "
+.ti -1c
+.RI "struct \fBstumpless_entry\fP * \fBvstumpless_set_wel_insertion_strings_w\fP (struct \fBstumpless_entry\fP *entry, WORD count, va_list insertions)"
+.br
+.RI "Sets the insertion strings of a Windows Even Log entry\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions necessary when using Windows Event Log targets\&. 
+
+
+.SH "Function Documentation"
+.PP 
+.SS "DWORD stumpless_add_default_wel_event_source (void)"
+
+.PP
+Creates the registry entries for displaying default entries in the Windows Event Log\&. Specifically, the following registry subkey is created, or modified if it already exists: HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Stumpless
+.PP
+The 'Sources' subkey of this entry has 'Stumpless' added to it, assuming it is a \fCREG_MULTI_SZ\fP type if it already exists\&.
+.PP
+If an existing Sources key is already present and is not correctly formatted with NULL terminating characters as required by a MULTI_SZ, then this call fails and returns ERROR_INVALID_PARAMETER\&.
+.PP
+A subkey is also created within this key named 'Stumpless', with the following values set in it:
+.IP "\(bu" 2
+CategoryCount: 8 (one category is present for each severity in RFC 5424)
+.IP "\(bu" 2
+CategoryMessageFile: Points to the image containing stumpless\&.
+.IP "\(bu" 2
+EventMessageFile: Points to the image containing stumpless\&.
+.IP "\(bu" 2
+TypesSupported: 0x1f (all event types are allowed)\&.
+.PP
+.PP
+This call is semantically equivalent to stumpless_add_wel_event_source_w( L'Stumpless', L'Stumpless', 8, L'stumpless\&.dll', L'stumpless\&.dll', NULL, EVENTLOG_AUDIT_FAILURE | EVENTLOG_AUDIT_SUCCESS | EVENTLOG_ERROR_TYPE | EVENTLOG_INFORMATION_TYPE | EVENTLOG_WARNING_TYPE) where L'stumpless\&.dll' is the full path to the current stumpless module loaded\&. Note that this may be a DLL or EXE, depending on how the library was compiled in the currently running process\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or a Windows error code result if an error was encountered\&. Note that the error code may not necessarily correspond to a call to GetLastError after this, for example in the case where a registry value was not correctly formed\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_add_wel_event_source (LPCSTR subkey_name, LPCSTR source_name, DWORD category_count, LPCSTR category_file, LPCSTR event_file, LPCSTR param_file, DWORD types_supported)"
+
+.PP
+Creates or updates the registry entries for displaying log entries in the Windows Event Log for a new event source\&. Any existing keys are opened and existing values are overwritten\&.
+.PP
+For Microsoft documentation on each of the parameters listed below, see https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3 which describe the semantics these registry values\&.
+.PP
+If the Event Viewer does not have an entry for the application or message or category descriptions are not displayed properly, you may need to restart the Event Viewer for this to take effect\&. Also, be aware that permissions set on the folder where the DLL resides may have an effect; see https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log for one such issue\&.
+.PP
+\fBThread Safety: MT-Safe race:subkey_name race:source_name race:category_file race:event_file race:parameter:file\fP This function is thread safe, of course assuming that the string parameters are not changed during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors, as well as memory management functions to create wide strings for unicode support\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors, as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIsubkey_name\fP The name of the subkey that the source should be added to, as a UTF-8 NULL terminated string\&. This subkey will be created under HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\&. This name may contain backslashes to nest the key under other subkeys\&.
+.br
+\fIsource_name\fP The name of the event source, as a UTF-8 NULL terminated string\&. This will be added to the 'Sources' value of the subkey, and created as a subkey under it as well\&. An error is raised if this is NULL\&. If the value 'Sources' already exists and is not a properly formatted MULTI_SZ value, then this function fails and returns ERROR_INVALID_PARAMETER\&.
+.br
+\fIcategory_count\fP The number of categories present in the message file\&. This is used for the CategoryCount registry value\&.
+.br
+\fIcategory_file\fP A path to the resource file containing the categories used for this source, as a UTF-8 NULL terminated string\&. If NULL, then the CategoryMessageFile registry value will not be created\&.
+.br
+\fIevent_file\fP A path to the resource file containing the messages used for this source, as a UTF-8 NULL terminated string\&. If NULL, then the EventMessageFile registry value will not be created\&.
+.br
+\fIparam_file\fP A path to the resource file containing the messages used as parameters for this source, as a UTF-8 NULL terminated string\&. If NULL, then the ParameterMessageFile registry value will not be created\&.
+.br
+\fItypes_supported\fP A set of flags designating the event types that are supported by this source\&. This is used for the TypesSupported registry value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or a Windows error code result if an error was encountered\&. Note that the error code may not necessarily correspond to a call to GetLastError after this, for example in the case where a registry value was not correctly formed\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_add_wel_event_source_w (LPCWSTR subkey_name, LPCWSTR source_name, DWORD category_count, LPCWSTR category_file, LPCWSTR event_file, LPCWSTR param_file, DWORD types_supported)"
+
+.PP
+Creates or updates the registry entries for displaying log entries in the Windows Event Log for a new event source\&. Any existing keys are opened and existing values are overwritten\&.
+.PP
+For Microsoft documentation on each of the parameters listed below, see https://docs.microsoft.com/en-us/windows/win32/eventlog/event-sources and https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-even/ac5ffa75-d036-4302-b008-ce9e0bcd60e3 which describe the semantics these registry values\&.
+.PP
+If the Event Viewer does not have an entry for the application or message or category descriptions are not displayed properly, you may need to restart the Event Viewer for this to take effect\&. Also, be aware that permissions set on the folder where the DLL resides may have an effect; see https://stackoverflow.com/questions/29029025/no-categories-in-windows-event-log for one such issue\&.
+.PP
+\fBThread Safety: MT-Safe race:subkey_name race:source_name race:category_file race:event_file race:parameter:file\fP This function is thread safe, of course assuming that the string parameters are not changed during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIsubkey_name\fP The name of the subkey that the source should be added to, as a wide char NULL terminated string\&. This subkey will be created under HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\&. This name may contain backslashes to nest the key under other subkeys\&.
+.br
+\fIsource_name\fP The name of the event source, as a wide char NULL terminated string\&. This will be added to the 'Sources' value of the subkey, and created as a subkey under it as well\&. An error is raised if this is NULL\&. If the value 'Sources' already exists and is not a properly formatted MULTI_SZ value, then this function fails and returns ERROR_INVALID_PARAMETER\&.
+.br
+\fIcategory_count\fP The number of categories present in the message file\&. This is used for the CategoryCount registry value\&.
+.br
+\fIcategory_file\fP A path to the resource file containing the categories used for this source, as a wide char NULL terminated string\&. If NULL, then the CategoryMessageFile registry value will not be created\&.
+.br
+\fIevent_file\fP A path to the resource file containing the messages used for this source, as a wide char NULL terminated string\&. If NULL, then the EventMessageFile registry value will not be created\&.
+.br
+\fIparam_file\fP A path to the resource file containing the messages used as parameters for this source, as a wide char NULL terminated string\&. If NULL, then the ParameterMessageFile registry value will not be created\&.
+.br
+\fItypes_supported\fP A set of flags designating the event types that are supported by this source\&. This is used for the TypesSupported registry value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or a Windows error code result if an error was encountered\&. Note that the error code may not necessarily correspond to a call to GetLastError after this, for example in the case where a registry value was not correctly formed\&. 
+.RE
+.PP
+
+.SS "WORD stumpless_get_wel_category (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Gets the category of an entry used with Windows Event Log targets\&. The category is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the category specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry and its WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the category from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The entry category\&. In the event of an error, then zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_get_wel_event_id (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Gets the event id of an entry used with Windows Event Log targets\&. The event id is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the event id specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry and its WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the event id from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The entry event id\&. In the event of an error, then zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_param\fP * stumpless_get_wel_insertion_param (const struct \fBstumpless_entry\fP * entry, WORD index)"
+
+.PP
+Gets an insertion param from a Windows Event Log entry\&. \fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to retrieve the insertion param from\&.
+.br
+\fIindex\fP The index of the insertion param to retrieve\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The specified insertion param\&. If the provided index is in range but has not yet been assigned a param, then NULL is returned\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "LPCSTR stumpless_get_wel_insertion_string (const struct \fBstumpless_entry\fP * entry, WORD index)"
+
+.PP
+Gets an insertion string from a Windows Event Log entry\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the string and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to retrieve the insertion string from\&.
+.br
+\fIindex\fP The index of the insertion string to retrieve\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The specified insertion string\&. If the provided index is in range but has not yet been assigned, then NULL is returned\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. The returned string will be a UTF-8 multibyte string\&.
+.RE
+.PP
+Because insertion strings are stored as wide character strings, they are converted to multibyte for this return value\&. If you assign an insertion string or param and then call this function, the result may not have the exact same bytes as the original depending on the original value due to changes made during the encoding conversions\&. If this is a problem, consider using the \fC_w\fP variants of functions in this header\&. 
+.SS "LPCWSTR stumpless_get_wel_insertion_string_w (const struct \fBstumpless_entry\fP * entry, WORD index)"
+
+.PP
+Gets an insertion string from a Windows Event Log entry\&. The character buffer returned must be freed by the caller when it is no longer needed to avoid memory leaks\&.
+.PP
+In versions prior to v2\&.0\&.0, the returned pointer was to the internal buffer used to store the string and was not to be modified by the caller\&. This behavior changed in v2\&.0\&.0 in order to avoid thread safety issues\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate the read of the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access and the use of memory management functions to create the result\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to retrieve the insertion string from\&.
+.br
+\fIindex\fP The index of the insertion string to retrieve\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The specified insertion string\&. If the provided index is in range but has not yet been assigned, then NULL is returned\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. The returned string will be a wide character string\&. 
+.RE
+.PP
+
+.SS "WORD stumpless_get_wel_type (const struct \fBstumpless_entry\fP * entry)"
+
+.PP
+Gets the type of an entry used with Windows Event Log targets\&. The type is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the type specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry and its WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to get the type from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The entry type\&. In the event of an error, then zero is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_remove_default_wel_event_source (void)"
+
+.PP
+Removes the registry entries for the event source for default WEL entries\&. Specifically, the following registry subkey and all subkeys are deleted: HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\\Stumpless
+.PP
+This call is semantically equivalent to stumpless_remove_wel_event_source_w( L'Stumpless', L'Stumpless' )\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or the result of GetLastError if an error was encountered\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_remove_wel_event_source (LPCSTR subkey_name, LPCSTR source_name)"
+
+.PP
+Removes the registry entries for an event source for the Windows Event Log\&. \fBThread Safety: MT-Safe race:subkey_name race:source_name\fP This function is thread safe, of course assuming that the string parameters are not changed during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors, as well as memory management functions to create wide strings for unicode support\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors, as well as memory management functions\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIsubkey_name\fP The name of the subkey that the source is installed in, as a UTF-8 NULL terminated string\&. This subkey will be looked for under HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\&. This name may contain backslashes to nest the key under other subkeys\&.
+.br
+\fIsource_name\fP The name of the event source, as a UTF-8 NULL terminated string\&. This will be removed from the 'Sources' value of the subkey, and then a the subkey of the same name under the provided subkey is deleted\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or the result of GetLastError if an error was encountered\&. 
+.RE
+.PP
+
+.SS "DWORD stumpless_remove_wel_event_source_w (LPCWSTR subkey_name, LPCWSTR source_name)"
+
+.PP
+Removes the registry entries for an event source for the Windows Event Log\&. \fBThread Safety: MT-Safe race:subkey_name race:source_name\fP This function is thread safe, of course assuming that the string parameters are not changed during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe\fP This function is not safe to call from signal handlers due to the use of a thread-global structure to store errors\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a thread-global structure to store errors\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIsubkey_name\fP The name of the subkey that the source is installed in, as a wide char NULL terminated string\&. This subkey will be looked for under HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog\&. This name may contain backslashes to nest the key under other subkeys\&.
+.br
+\fIsource_name\fP The name of the event source, as a wide char NULL terminated string\&. This will be removed from the 'Sources' value of the subkey, and then a the subkey of the same name under the provided subkey is deleted\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+ERROR_SUCCESS if the operation was successful, or the result of GetLastError if an error was encountered\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_category (struct \fBstumpless_entry\fP * entry, WORD category)"
+
+.PP
+Sets the category of an entry for use with a Windows Event Log target\&. The category is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the category specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry's WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIcategory\fP The category to assign\&. This should be a category defined in a header generated using the Windows Message Compiler\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_event_id (struct \fBstumpless_entry\fP * entry, DWORD event_id)"
+
+.PP
+Sets the event id of an entry for use with a Windows Event Log target\&. The event id is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the event id specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry's WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIevent_id\fP The event id to assign\&. This should be a event id defined in a header generated using the Windows Message Compiler\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_insertion_param (struct \fBstumpless_entry\fP * entry, WORD index, const struct \fBstumpless_param\fP * param)"
+
+.PP
+Sets a param to use for string insertion in a Windows Event Log entry\&. Windows Events may include insertion strings that are replaced with a specific value provided when logged\&. This function maps a specific insertion string to a param\&. The value of the param will then be substituted for that insertion string when an event is logged\&. If the windows event does not have an insertion string correlating to the given index, it will simply be ignored\&.
+.PP
+Note that insertion strings use the value of the param at log time\&. If the value changes between log entries, it will reflect these changes in the log itself as well\&. This also means that you should not destroy a param unless you are sure that no entries exist that are using it\&.
+.PP
+Insertion params always take precedence over a insertion string\&. If an insertion string was set at the same index as a param when it is set, it will effectively be removed and the param value used from then on\&. If the param value is removed, then the insertion string will be unset, and the previous string will \fInot\fP be restored\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIindex\fP The index of the insertion string to use the param for\&. Valid values are greater than or equal to 0, with 0 being the first string in a message\&.
+.br
+\fIparam\fP The param to use for the insertion strings\&. The value of the param will be used during logging\&. Prior to version v2\&.1\&.0, this parameter was not const\&. If this is NULL, then the insertion string will be cleared at the given index\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_insertion_string (struct \fBstumpless_entry\fP * entry, WORD index, LPCSTR str)"
+
+.PP
+Sets a string to use for string insertion in a Windows Event Log entry\&. Windows Events may include insertion strings such as %1 or %3 that are replaced with a specific value provided when logged\&. This function maps a specific insertion string to a given string\&. The string will then be substituted for that insertion string when an event is logged\&. If the windows event does not have an insertion string correlating to the given index, it will simply be ignored\&.
+.PP
+Note that the provided string is copied by the library, and therefore will always hold the value that was in str when this function was called, even if the string changes or is destroyed later\&.
+.PP
+This function performs a multibyte to wide character conversion in order to support unicode characters\&. If you have a wide character string already, use stumpless_set_wel_insertion_string_w to avoid this unnecessary conversion\&.
+.PP
+\fBThread Safety: MT-Safe race:str\fP This function is thread safe, of course assuming that the str is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIindex\fP The index of the insertion string to use the param for\&. Valid values are greater than or equal to 0, with 0 being the first string in a message\&.
+.br
+\fIstr\fP The string to use for the insertion string\&. This must be a NULL-terminated UTF-8 multibyte string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_insertion_string_w (struct \fBstumpless_entry\fP * entry, WORD index, LPCWSTR str)"
+
+.PP
+Sets a string to use for string insertion in a Windows Event Log entry\&. Windows Events may include insertion strings such as %1 or %3 that are replaced with a specific value provided when logged\&. This function maps a specific insertion string to a given string\&. The string will then be substituted for that insertion string when an event is logged\&. If the windows event does not have an insertion string correlating to the given index, it will simply be ignored\&.
+.PP
+Note that the provided string is copied by the library, and therefore will always hold the value that was in str when this function was called, even if the string changes or is destroyed later\&.
+.PP
+This function avoids a multibyte to wide conversion that must be performed by stumpless_set_wel_insertion_string\&. If you already have a wide character string, use this function as it will be more performant\&. Otherwise, use the non-wide version as it will perform the conversion for you\&.
+.PP
+\fBThread Safety: MT-Safe race:str\fP This function is thread safe, of course assuming that the str is not changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIindex\fP The index of the insertion string to use the param for\&. Valid values are greater than or equal to 0, with 0 being the first string in a message\&.
+.br
+\fIstr\fP The string to use for the insertion string\&. This must be a NULL-terminated wide char string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_insertion_strings (struct \fBstumpless_entry\fP * entry, WORD count,  \&.\&.\&.)"
+
+.PP
+Sets the insertion strings of a Windows Event Log entry\&. Instead of setting each insertion string separately via \fCstumpless_set_wel_insertion_string\fP this function can set the insertion strings all at the same time\&.
+.PP
+This function performs multibyte to wide character conversions in order to support unicode characters\&. If you have wide character strings already, use stumpless_set_wel_insertion_strings_w to avoid these unnecessary conversions\&.
+.PP
+\fBThread Safety: MT-Safe race:\&.\&.\&.\fP This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIcount\fP The number of insertion strings that will be provided\&.
+.br
+\fI\&.\&.\&.\fP The insertion strings to set on the entry\&. These must be NULL-terminated UTF-8 multibyte strings in the same order as they appear in the message\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_insertion_strings_w (struct \fBstumpless_entry\fP * entry, WORD count,  \&.\&.\&.)"
+
+.PP
+Sets the insertion strings of a Windows Event Log entry\&. Instead of setting each insertion string separately via \fCstumpless_set_wel_insertion_string\fP this function can set the insertion strings all at the same time\&.
+.PP
+This function avoids multibyte to wide conversions that must be performed by stumpless_set_wel_insertion_strings\&. If you already have a wide character string, use this function as it will be more performant\&. Otherwise, use the non-wide version as it will perform the conversion for you\&.
+.PP
+\fBThread Safety: MT-Safe race:\&.\&.\&.\fP This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.1\&.0\&.
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIcount\fP The number of insertion strings that will be provided\&.
+.br
+\fI\&.\&.\&.\fP The insertion strings to set on the entry\&. These must be NULL-terminated wide character strings in the same order as they appear in the message\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * stumpless_set_wel_type (struct \fBstumpless_entry\fP * entry, WORD type)"
+
+.PP
+Sets the type of an entry for use with a Windows Event Log target\&. The type is used by a Windows Event Log target\&. Entries that are going to be sent to a Windows Event Log target must have the type specified before they are sent\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&. A mutex is used to coordinate changes to the entry's WEL data while it is being modified\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate changes\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fItype\fP The type to assign\&. This should be a type defined in a header generated using the Windows Message Compiler\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * vstumpless_set_wel_insertion_strings (struct \fBstumpless_entry\fP * entry, WORD count, va_list insertions)"
+
+.PP
+Sets the insertion strings of a Windows Even Log entry\&. Instead of setting the each insertion string separately via \fCstumpless_set_wel_insertion_string\fP this function can set the insertion strings all at the same time\&.
+.PP
+This function performs multibyte to wide character conversions in order to support unicode characters\&. If you have wide character strings already, use vstumpless_set_wel_insertion_strings_w to avoid these unnecessary conversions\&.
+.PP
+\fBThread Safety: MT-Safe race:\&.\&.\&.\fP This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIcount\fP The number of insertion strings that will be provided\&.
+.br
+\fIinsertions\fP The insertion strings to set on the entry\&. These must be NULL-terminated UTF-8 multibyte strings in the same order as they appear in the message\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call them\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_entry\fP * vstumpless_set_wel_insertion_strings_w (struct \fBstumpless_entry\fP * entry, WORD count, va_list insertions)"
+
+.PP
+Sets the insertion strings of a Windows Even Log entry\&. Instead of setting the each insertion string separately via \fCstumpless_set_wel_insertion_string\fP this function can set the insertion strings all at the same time\&.
+.PP
+This function avoids multibyte to wide conversions that must be performed by vstumpless_set_wel_insertion_strings\&. If you already have a wide character string, use this function as it will be more performant\&. Otherwise, use the non-wide version as it will perform the conversion for you\&.
+.PP
+\fBThread Safety: MT-Safe race:\&.\&.\&.\fP This function is thread safe, of course assuming that none of the supplied insertion strings are changed by any other threads during execution\&. A mutex is used to coordinate changes to the entry's WEL data with other accesses and modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP This function is not safe to call from signal handlers due to the use of a non-reentrant lock to coordinate access\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, due to the use of a lock that could be left locked\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to modify\&.
+.br
+\fIcount\fP The number of insertion strings that will be provided\&.
+.br
+\fIinsertions\fP The insertion strings to set on the entry\&. These must be NULL-terminated wide character strings in the same order as they appear in the message\&. This list must be started via \fCva_start\fP before being used, and \fCva_end\fP should be called afterwards, as this function does not call them\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified entry if no error is encountered\&. In the event of an error, then NULL will be returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.

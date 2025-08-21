@@ -1,0 +1,483 @@
+.TH "stumpless/target/sqlite3.h" 3 "Version 3.0.0" "stumpless" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stumpless/target/sqlite3.h \- SQLite3 targets allow logs to be sent to a SQLite3 database\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTUMPLESS_DEFAULT_SQLITE3_INSERT_SQL\fP"
+.br
+.RI "The default SQL statement used to insert entries into a SQLite3 database\&. "
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef void *(* \fBstumpless_sqlite3_prepare_func_t\fP) (const struct \fBstumpless_entry\fP *entry, void *data, size_t *count)"
+.br
+.RI "A function for generating SQLite3 prepared statements for a given entry\&. "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBstumpless_close_sqlite3_target_and_db\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a SQLite3 target and its database handle\&. "
+.ti -1c
+.RI "void \fBstumpless_close_sqlite3_target_only\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Closes a SQLite3 target, but does not touch the database handle\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_create_default_sqlite3_table\fP (struct \fBstumpless_target\fP *target)"
+.br
+.RI "Creates a table in the target's database for use with the default SQLite3 insertion behavior\&. "
+.ti -1c
+.RI "void * \fBstumpless_get_sqlite3_db\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the SQLite3 database handle used by the target\&. "
+.ti -1c
+.RI "const char * \fBstumpless_get_sqlite3_insert_sql\fP (const struct \fBstumpless_target\fP *target)"
+.br
+.RI "Gets the SQL statement used to insert entries into the database\&. "
+.ti -1c
+.RI "\fBstumpless_sqlite3_prepare_func_t\fP \fBstumpless_get_sqlite3_prepare\fP (const struct \fBstumpless_target\fP *target, void **data)"
+.br
+.RI "Gets the preparation function and data pointer used to prepare statements for insertion into the database\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_sqlite3_target\fP (const char *name)"
+.br
+.RI "Opens a SQLite3 target\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_sqlite3_target_from_db\fP (void *db)"
+.br
+.RI "Opens a SQLite3 target with an already-open database handle\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_open_sqlite3_target_with_options\fP (const char *name, int flags, const char *vfs)"
+.br
+.RI "Opens a SQLite3 target with the provided options\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_sqlite3_insert_sql\fP (struct \fBstumpless_target\fP *target, const char *sql)"
+.br
+.RI "Sets the SQL statement used to insert entries into the database\&. "
+.ti -1c
+.RI "struct \fBstumpless_target\fP * \fBstumpless_set_sqlite3_prepare\fP (struct \fBstumpless_target\fP *target, \fBstumpless_sqlite3_prepare_func_t\fP preparer, void *data)"
+.br
+.RI "Set the function used to prepare statements for entries to this target\&. "
+.ti -1c
+.RI "void * \fBstumpless_sqlite3_prepare\fP (const struct \fBstumpless_entry\fP *entry, void *data, size_t *count)"
+.br
+.RI "The default prepare function used for SQLite3 targets\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+SQLite3 targets allow logs to be sent to a SQLite3 database\&. 
+
+The database, tables, and fields can be left up to the defaults, or customized as needed\&.
+.PP
+\fBThread Safety: MT-Safe\fP Logging to sqlite3 targets is thread safe\&. A mutex is used to coordinate transactions\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Logging to sqlite3 targets is not signal safe, as a non-reentrant lock is used to coordinate transactions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP Logging to sqlite3 targets is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define STUMPLESS_DEFAULT_SQLITE3_INSERT_SQL"
+\fBValue:\fP.PP
+.nf
+"INSERT INTO " STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING " "                 \\
+"( prival, version, timestamp, hostname, app_name, procid, msgid,"             \\
+"  structured_data, message ) "                                                \\
+"VALUES ( $prival, 1, $timestamp, $hostname, $app_name, $procid, $msgid, "     \\
+         "$structured_data, $message )"
+.fi
+
+.PP
+The default SQL statement used to insert entries into a SQLite3 database\&. 
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void *(* stumpless_sqlite3_prepare_func_t) (const struct \fBstumpless_entry\fP *entry, void *data, size_t *count)"
+
+.PP
+A function for generating SQLite3 prepared statements for a given entry\&. See \fBstumpless_set_sqlite3_prepare\fP for the semantics of writing and using a prepare function with SQLite3 targets\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "bool stumpless_close_sqlite3_target_and_db (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a SQLite3 target and its database handle\&. This function can fail if the database handle cannot be closed\&. In this case, the target is not closed, and no resources are released\&.
+.PP
+\fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The SQLite3 target to close\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+true if the target was closed, and false if not\&. An error code is set appropriately if the target could not be closed\&. 
+.RE
+.PP
+
+.SS "void stumpless_close_sqlite3_target_only (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Closes a SQLite3 target, but does not touch the database handle\&. \fBThread Safety: MT-Unsafe\fP This function is not thread safe as it destroys resources that other threads would use if they tried to reference this target\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock heap\fP This function is not safe to call from signal handlers due to the destruction of a lock that may be in use as well as the use of the memory deallocation function to release memory\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock may not be completed, and the memory deallocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The SQLite3 target to close\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_create_default_sqlite3_table (struct \fBstumpless_target\fP * target)"
+
+.PP
+Creates a table in the target's database for use with the default SQLite3 insertion behavior\&. The schema of this table is described below\&. Note that the value of \fCSTUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING\fP is configurable and set at build time for the library\&.
+.PP
+.PP
+.nf
+CREATE TABLE STUMPLESS_DEFAULT_SQLITE3_TABLE_NAME_STRING (
+  log_id INTEGER PRIMARY KEY,
+  prival INTEGER NOT NULL,
+  version INTEGER NOT NULL,
+  timestamp TEXT,
+  hostname TEXT,
+  app_name TEXT,
+  procid TEXT,
+  msgid TEXT,
+  structured_data TEXT,
+  message TEXT
+);
+.fi
+.PP
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate the table creation with other target modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to create the default table in\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target if no error is encountered\&. If an error is encountered, then NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void * stumpless_get_sqlite3_db (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the SQLite3 database handle used by the target\&. The database handle is used by stumpless sqlite3 routines, and serialized using an internal mutex\&. When you use this handle outside of the library, you must ensure that your operations are also thread safe without this mutex, for example by using the SQLITE_OPEN_NOMUTEX or SQLITE_OPEN_FULLMUTEX options\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate the retrieval of the handle with other target modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The sqlite3 database handle for this target, a sqlite3 *\&. The return type is void * so that all users of stumpless do not have to have sqlite3 types defined in order to include the headers\&. 
+.RE
+.PP
+
+.SS "const char * stumpless_get_sqlite3_insert_sql (const struct \fBstumpless_target\fP * target)"
+
+.PP
+Gets the SQL statement used to insert entries into the database\&. See \fBstumpless_set_sqlite3_insert_sql\fP to change this statement\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate the retrieval of the SQL statement with other target modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the insert SQL from\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current SQL used to insert entries into the database, as a UTF-8 encoded string\&. If an error occurs then NULL is returned and an error is set appropriately\&. 
+.RE
+.PP
+
+.SS "\fBstumpless_sqlite3_prepare_func_t\fP stumpless_get_sqlite3_prepare (const struct \fBstumpless_target\fP * target, void ** data)"
+
+.PP
+Gets the preparation function and data pointer used to prepare statements for insertion into the database\&. See \fBstumpless_set_sqlite3_prepare\fP to change this function\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate the retrieval of the function with other target modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to get the prepare function from\&.
+.br
+\fIdata\fP A pointer to a variable where the data pointer should be written to\&. If this is NULL, then it is ignored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The current prepare function for the target\&. If an error occurs then NULL is returned and an error is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_sqlite3_target (const char * name)"
+
+.PP
+Opens a SQLite3 target\&. This is equivalent to calling \fBstumpless_open_sqlite3_target_with_options\fP with SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE as the flags and NULL as the VFS module name\&.
+.PP
+\fBThread Safety: MT-Safe race:name\fP This function is thread safe, of course assuming that name is not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the database to open\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_sqlite3_target_from_db (void * db)"
+
+.PP
+Opens a SQLite3 target with an already-open database handle\&. This function allows a specialized database to be opened, or an existing handle to be used\&. For example, if an in-memory database is needed, it can be opened and then passed to this function for logging\&.
+.PP
+Note that there are two close functions for SQLite3 targets: \fBstumpless_close_sqlite3_target_and_db\fP and \fBstumpless_close_sqlite3_target_only\fP\&. Be sure to call the appropriate one depending on whether you want this handle to be closed when the target is closed\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIdb\fP The database handle to use\&. This should be a sqlite3 *, though it is not declared as such so that sqlite3 headers are not required\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_open_sqlite3_target_with_options (const char * name, int flags, const char * vfs)"
+
+.PP
+Opens a SQLite3 target with the provided options\&. The three parameters are passed directly to sqlite3_open_v2\&.
+.PP
+\fBThread Safety: MT-Safe race:name race:vfs\fP This function is thread safe, of course assuming that name and vfs are not modified by any other threads during execution\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe heap\fP This function is not safe to call from signal handlers due to the use of memory allocation functions\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe heap\fP This function is not safe to call from threads that may be asynchronously cancelled, as the memory allocation function may not be AC-Safe itself\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The name of the database to open\&.
+.br
+\fIflags\fP Flags as defined for sqlite3_open_v2\&.
+.br
+\fIvfs\fP The name of the VFS module to use as defined by sqlite3_open_v2\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The opened target if no error is encountered\&. In the event of an error, NULL is returned and an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_sqlite3_insert_sql (struct \fBstumpless_target\fP * target, const char * sql)"
+
+.PP
+Sets the SQL statement used to insert entries into the database\&. \fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate the changes with other target modifications\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to set the insert SQL for\&.
+.br
+\fIsql\fP The new SQL insertion statement to use for the target\&. This string must be valid for the duration of its use in the target, as a pointer to it is kept internally\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target on success, or NULL on failure\&. In the event of failure an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "struct \fBstumpless_target\fP * stumpless_set_sqlite3_prepare (struct \fBstumpless_target\fP * target, \fBstumpless_sqlite3_prepare_func_t\fP preparer, void * data)"
+
+.PP
+Set the function used to prepare statements for entries to this target\&. Preparation functions take three arguments: the entry that is being sent to the database target, a pointer provided when the function is set, and an output parameter where the number of prepared statements to use is written\&. The function should return a pointer to an array of prepared statements that should be committed to the database for the entry, or NULL if an error occurs\&. The default prepare function is \fBstumpless_sqlite3_prepare\fP, which is a good place to look for an example\&.
+.PP
+Note that the return type is a void * instead of the actual type of sqlite3_stmt **\&. This is so that the SQLite3 headers are not needed\&.
+.PP
+Be careful when using a custom prepare function in builds where SQLite was directly embedded into Stumpless instead of dynamically linked\&. If this is the case, using a single databse handle in both SQLite functions compiled into Stumpless and SQLite functions compiled in a separate module may cause serious issues, for example due to static data structures\&. The example \fBsqlite3_example\&.c\fP does this, and is a good way to check if you are in this situation as it will fail in this scenario\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate accesses of the target structures\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fItarget\fP The target to set the function for\&.
+.br
+\fIpreparer\fP The new prepare function to use in the target\&.
+.br
+\fIdata\fP A pointer that will be passed to the prepare function on each invocation\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The modified target on success, or NULL on failure\&. In the event of failure an error code is set appropriately\&. 
+.RE
+.PP
+
+.SS "void * stumpless_sqlite3_prepare (const struct \fBstumpless_entry\fP * entry, void * data, size_t * count)"
+
+.PP
+The default prepare function used for SQLite3 targets\&. This function will generate a single prepared statement based on the target's current insert SQL statement\&. See \fBstumpless_set_sqlite3_insert_sql\fP for how to set the SQL used by this function\&.
+.PP
+\fBThread Safety: MT-Safe\fP This function is thread safe as a mutex is used to coordinate accesses of the entry and target structures\&.
+.PP
+\fBAsync Signal Safety: AS-Unsafe lock\fP Thisi function is not signal safe, as a non-reentrant lock is used to coordinate the read of the target with other potential accesses\&.
+.PP
+\fBAsync Cancel Safety: AC-Unsafe lock\fP This function is not safe to call from threads that may be asynchronously cancelled, as the cleanup of the lock used for the target may not be completed\&.
+.PP
+\fBSince\fP
+.RS 4
+release v2\&.2\&.0
+.RE
+.PP
+\fBParameters\fP
+.RS 4
+\fIentry\fP The entry to prepare the statement based on\&.
+.br
+\fIdata\fP The internal SQLite3 target structure\&.
+.br
+\fIcount\fP A pointer to an output variable where the number of valid prepared statements will be written to\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A pointer to an array of sqlite3_stmt pointers on success, or NULL on failure\&. In the event of failure an error code is set appropriately\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for stumpless from the source code\&.
