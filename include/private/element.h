@@ -29,17 +29,17 @@
  * Iterates the parameters of an element and executes the following block only
  * for parameters whose name matches the provided name.
  *
- * **Thread Safety: MT-Safe race:element**
- * Requires external synchronization so that element->params and
- * element->param_count are not modified during iteration. Each param is locked
- * only for the duration of the strcmp() comparison.
+ * **Thread Safety: MT-Safe req:element-stable**
+ * This macro locks each parameter during the name comparison but does not guard
+ * against concurrent structural changes to the element's parameter array. No
+ * other thread should modify the element's parameter list during iteration.
  *
  * **Async Signal Safety: AS-Unsafe lock**
- * Uses lock_param/unlock_param (mutex operations) and strcmp(), which are not
- * async-signal-safe.
+ * This macro is not safe to use from signal handlers due to locking.
  *
  * **Async Cancel Safety: AC-Unsafe lock**
- * May block at mutex operations, which are cancellation points.
+ * This macro is not safe for threads that may be asynchronously cancelled
+ * during the locking operations performed inside the macro.
  */
 #define FOR_EACH_PARAM_WITH_NAME( ELEMENT, NAME ) \
 for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \
@@ -69,6 +69,7 @@ for( i = 0; i < ( ELEMENT )->param_count; i++ ) {   \
  * cancelled during the lock operation.
  *
  * @param element The element to lock. Must not be NULL.
+ * 
  */
 void
 lock_element( const struct stumpless_element *element );
@@ -76,15 +77,16 @@ lock_element( const struct stumpless_element *element );
 /**
  * Gets a parameter by index from a locked element, without performing additional locking.
  *
- * **Thread Safety: MT-Safe race:element**
- * The caller MUST hold the element's lock for the entire call and while using
- * the returned pointer. Do not call without holding the element lock.
+ * **Thread Safety: MT-Safe req:element-locked**
+ * This function is safe when the caller already holds the element's lock. It
+ * must not be called without the element being locked by the caller.
  *
- * **Async Signal Safety: AS-Safe**
- * Pure indexed reads of already-initialized memory; no locking, allocation, or I/O.
+ * **Async Signal Safety: AS-Unsafe**
+ * This function is not intended for use in signal handlers.
  *
  * **Async Cancel Safety: AC-Safe**
- * Contains no cancellation points.
+ * This function does not allocate memory or perform blocking operations, but
+ * safety depends on the caller maintaining the required lock.
  *
  * @param element The locked element to read from. Must not be NULL.
  *
@@ -174,6 +176,23 @@ unchecked_load_element( struct stumpless_element *element,
 void
 unchecked_unload_element( const struct stumpless_element *element );
 
+/**
+ * Unlocks the provided element.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function releases the element's internal lock. It must only be called
+ * by the thread that currently holds the lock.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * This function is not safe to call from signal handlers due to the use of a
+ * mutex routine.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled during the unlock operation.
+ *
+ * @param element The element to unlock. Must not be NULL.
+ */
 /**
  * Unlocks the provided element.
  *
