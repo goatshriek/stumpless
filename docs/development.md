@@ -65,6 +65,10 @@ cmake --build . --parallel 4 --config x64-Debug --target check
 # name, which for functionality tests is function-test-<name>
 cmake --build . --target --parallel 4 function-test-target && ./function-test-target
 ```
+## IDE Setup
+
+If you use Visual Studio Code, see **[IDE Setup (VS Code)](./ide-setup.md)** for the minimal extension list and how to open the repo. This keeps IDE guidance lightweight and defers to official documentation.
+
 
 More details about building the library are available in the
 [INSTALL.md](../INSTALL.md) file. However, if you plan to be developing
