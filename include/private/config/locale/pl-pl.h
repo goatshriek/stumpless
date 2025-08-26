@@ -22,33 +22,29 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "nie można podłączyć do gniazda unix"
 
-// todo translate
 #  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
-"buffer used to store the message"
+"bufor używany do przechowywania wiadomości"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
-"buffer jest za mały dla tej wiadomości"
+"bufor jest za mały dla tej wiadomości"
 
-// todo translate
 #  define L10N_CHAIN_TARGETS_UNSUPPORTED \
-"chain targets are not supported by this build"
+"cele łańcuchowe nie są obsługiwane w tym buildzie"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba zamknięcia pliku docelowego nieobsługiwanego typu"
 
-// todo translate
 #  define L10N_COMMIT_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CommitTransaction failed"
+"próba wywołania CommitTransaction zakończyła się błędem"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"awaria połączenia z gniazdem sys/socket.h socketem"
+"błąd połączenia z gniazdem sys/socket.h socketem"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"Awaria połączenia winsock socketem"
+"błąd połączenia winsock socketem"
 
-// todo translate
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
-"CreateTransaction failed"
+"próba wywołania CreateTransaction zakończyła się błędem"
 
 #  define L10N_DESTINATION_NETWORK_ONLY_ERROR_MESSAGE \
 "podany plik docelowy jest ważny tylko dla miejsc docelowych w sieci"
@@ -69,7 +65,7 @@
 "komunikat o błędzie - nie udało się zapisać"
 
 #  define L10N_FORMAT_ERROR_MESSAGE(ARG) \
-"nieważny " ARG " formát"
+"niepoprawny format " ARG
 
 #  define L10N_FUNCTION_TARGET_FAILURE_CODE_TYPE \
 "kod powrotu funkcji obsługi protokołu"
@@ -84,21 +80,19 @@
 "wywołanie getaddrinfo zwróciło błąd zwracanej wartości"
 
 #  define L10N_GETCOMPUTERNAME_FAILED_ERROR_MESSAGE \
-"GetComputerName przegrany"
+"próba wywołania GetComputerName nie udana"
 
 #  define L10N_GETHOSTNAME_FAILED_ERROR_MESSAGE \
-"gethostname przegrany"
+"próba wywołania gethostname zakończyła się błędem"
 
 #  define L10N_GETLASTERROR_ERROR_CODE_TYPE \
 "wynik GetLastError po nieudanym wywołaniu"
 
-// todo translate
 #  define L10N_GETMODULEFILENAMEW_FAILED_ERROR_MESSAGE \
-"GetModuleFileNameW failed"
+"próba wywołania GetModuleFileNameW zakończyła się błędem"
 
-// todo translate
 #  define L10N_GETMODULEHANDLEXW_FAILED_ERROR_MESSAGE \
-"GetModuleHandleExW failed"
+"próba wywołania GetModuleHandleExW zakończyła się błędem"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
 "nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany" \
@@ -117,14 +111,11 @@
 #  define L10N_INVALID_INDEX_ERROR_MESSAGE( INDEXED_THING ) \
 "nieprawidłowy indeks " INDEXED_THING
 
-// todo translate
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"a MULTI_SZ registry value was neither empty nor terminated with two NULL" \
-" characters"
+"wartość rejestru MULTI_SZ nie była ani pusta, ani zakończona dwoma znakami NULL" \
 
-// todo translate
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
-"the string is not of the name=\"value\" format"
+"string nie jest w formacie name=\"value\""
 
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "nieprawidłowa usługa"
@@ -133,13 +124,11 @@
 "kod serwisowy musi być zdefiniowany zgodnie ze standardem RFC 5424:" \
 " wartości pomiędzy 0 a 7 łącznie z"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"nieprawidłowy stan osiągnięty podczas analizowania ciągu znaków UTF-8"
 
-// todo translate
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
-"target type is incompatible with this operation"
+"cel jest niekompatybilny z tą operacją"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_CODE_TYPE \
 "kod powrotu sd_journal_sendv"
@@ -154,13 +143,11 @@
 #  define L10N_MAX_MESSAGE_SIZE_UDP_ONLY_ERROR_MESSAGE \
 "maksymalny rozmiar wiadomości obowiązuje tylko dla UDP"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"wynik GetLastError po nie udanym wywołaniu"
 
-// todo translate
 #  define L10N_MB_TO_WIDE_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided multibyte string to a wide char string"
+"nie udało się przekonwertować podanego multi byte stringa do wide stringa"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
 "wywołanie alokacji pamięci nie powiodło się"
@@ -171,13 +158,11 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "wiadomość jest zbyt duża, aby można ją było wysłać w jednym datagramie"
 
-// todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] and inet_pton failed to resolve the name"
+"funkcje gethostbyname[2] i inet_pton nie mogły rozpoznać nazwy"
 
-// todo translate
 #  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
-"the network connection is closed"
+"połączenie zostało zamknięte"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "wybrany protokół sieciowy nie jest obsługiwany"
@@ -194,28 +179,23 @@ ARG_NAME " miał wartość NULL"
 #  define L10N_PARAM_NOT_FOUND_ERROR_MESSAGE \
 "określony parametr nie został znaleziony"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_CREATION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be created"
+"nie udało się utworzyć podklucza rejestru"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_DELETION_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be deleted"
+"nie udało się usunąć podklucza rejestru"
 
-// todo translate
 #  define L10N_REGISTRY_SUBKEY_OPEN_FAILED_ERROR_MESSAGE \
-"a registry subkey could not be opened"
+"nie udało się otworzyć podklucza rejestru"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_GET_FAILED_ERROR_MESSAGE \
-"a registry value could not be read"
+"nie udało się odczytać wartości rejestru"
 
-// todo translate
 #  define L10N_REGISTRY_VALUE_SET_FAILED_ERROR_MESSAGE \
-"a registry value could not be set"
+"nie udało się ustawić wartości rejestru"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"wysyłanie uniksa socketu (unix socket) przegrany"
+"próba wysłania do socketu unix nie udana"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "próba wysłania nieobsługiwanego typu danych wejściowych do celu"
@@ -224,61 +204,49 @@ ARG_NAME " miał wartość NULL"
 "próba wysłania wejścia nieobsługiwanego typu"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"wysyłanie gniazda systemowego (sys/socket.h) przegrany"
+"próba wysłania do socketu systemowego (sys/socket.h) nie udana"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "wysyłanie winsock2 socketu przegrany"
 
-// todo translate
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"kolory poziomów ważności są obsługiwane wyłącznie dla celów strumieniowych"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otwór w gnieździe przegrany"
 
-// todo translate
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
-L"Stumpless registration of Windows Event Log Source"
+L"Rejestracja źródła dziennika zdarzeń Windows w Stumpless"
 
-// todo translate
 #  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
-"could not bind " PARAM " to the statement"
+"nie udało się powiązać parametru " PARAM " z instrukcją"
 
-// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
-"the database was busy and could not complete the transaction"
+"baza danych była zajęta i nie mogła sfinalizować transakcji"
 
-// todo translate
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
-"could not close the sqlite3 database"
+"nie udało się zamknąć bazy danych sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"a custom callback for prepared statements failed"
+"wywolanie niestandardowego callbacka dla instrukcji przygotowanych nie powiodło się"
 
-// todo translate
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
-"could not open the sqlite3 database"
+"nie udało się otworzyć bazy danych sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE \
-"sqlite3_prepare_v2 failed"
+"sqlite3_prepare_v2 nieudane"
 
-// todo translate
 #  define L10N_SQLITE3_RESULT_CODE_TYPE \
-"the return code of the failed sqlite3 call"
+"wynik nieudanego wywołania sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_RETRY_COUNT_CODE_TYPE \
-"the number of times the operation was retried"
+"liczba ponownych prób wykonania operacji"
 
-// todo translate
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
-"sqlite3_step failed"
+"wywołanie sqlite3_step nie powiodło się"
 
-// todo translate
 #  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
-"sqlite3 targets are not supported by this build"
+"sqlite3 targets nie są obsługiwane przez ten build"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "nie mogę pisać do streamu"
@@ -310,23 +278,20 @@ L"Stumpless registration of Windows Event Log Source"
 #  define L10N_WEL_OPEN_FAILURE_ERROR_MESSAGE \
 "Kod błędu Windows Socket"
 
-// todo translate
 #  define L10N_WIDE_TO_MB_CONVERSION_ERROR_MESSAGE \
-"could not convert the provided wide char string to a multibyte string"
+"nie udało się przekonwertować podanego multi byte stringa do wide stringa"
 
-// todo translate
 #  define L10N_WINDOWS_RETURN_ERROR_CODE_TYPE \
-"the Windows error code returned by the failed call"
+"błąd Windows zwrócony przez nieudane wywołanie"
 
 #  define L10N_WINDOWS_SOCKET_ERROR_CODE_TYPE \
 "błąd zwracane wartości (error code) Windows socketu"
 
-// todo translate
 #  define L10N_WINDOWS_WIDE_TO_MB_CONVERSION_ERROR_CODE_TYPE \
-"the result of GetLastError after the failed call"
+"wynik GetLastError po nieudanym wywolaniu"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"awaria otwierania winsock2 socketu"
+"błąd otwierania winsock2 socketu"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "wynik WSAGetLastError po niepowodzeniu połączenia"
