@@ -95,15 +95,15 @@
 "próba wywołania GetModuleHandleExW zakończyła się błędem"
 
 #  define L10N_INDEX_OUT_OF_BOUNDS_ERROR_CODE_TYPE \
-"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być reprezentowany" \
-" jako typ danych int"
+"nieprawidłowy indeks - indeks jest zbyt duży, aby mógł być" \
+" reprezentowany jako typ danych int"
 
 #  define L10N_INVALID_FACILITY_ERROR_CODE_TYPE \
 "niezgodne urządzenie"
 
 #  define L10N_INVALID_FACILITY_ERROR_MESSAGE \
-"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować zgodnie" \
-" z protokołem RFC 5424"
+"wartość kodu urządzenia, po podzieleniu przez 8, należy zdefiniować" \
+" zgodnie z protokołem RFC 5424"
 
 #  define L10N_INVALID_ID_ERROR_MESSAGE \
 "nieprawidłowy cel ID"
@@ -112,7 +112,8 @@
 "nieprawidłowy indeks " INDEXED_THING
 
 #  define L10N_INVALID_MULTI_SZ_ERROR_MESSAGE \
-"wartość rejestru MULTI_SZ nie była ani pusta, ani zakończona dwoma znakami NULL" \
+"wartość rejestru MULTI_SZ nie była ani pusta, ani zakończona" \
+" dwoma znakami NULL"
 
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string nie jest w formacie name=\"value\""
@@ -134,7 +135,7 @@
 "kod powrotu sd_journal_sendv"
 
 #  define L10N_JOURNALD_FAILURE_ERROR_MESSAGE \
-"sd_journal_sendv przegrany"
+"wywołanie sd_journal_sendv nie powiodło się"
 
 #  define L10N_LOCAL_SOCKET_NAME_FILE_OPEN_ERROR_MESSAGE \
 "nie jest możliwe utworzenie pliku z wybraną nazwą gniazda lokalnego" \
@@ -210,7 +211,8 @@ ARG_NAME " miał wartość NULL"
 "wysyłanie winsock2 socketu przegrany"
 
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"kolory poziomów ważności są obsługiwane wyłącznie dla celów strumieniowych"
+"kolory poziomów ważności są obsługiwane wyłącznie dla" \
+" celów strumieniowych"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "otwór w gnieździe przegrany"
@@ -228,7 +230,8 @@ L"Rejestracja źródła dziennika zdarzeń Windows w Stumpless"
 "nie udało się zamknąć bazy danych sqlite3"
 
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"wywolanie niestandardowego callbacka dla instrukcji przygotowanych nie powiodło się"
+"wywolanie niestandardowego callbacka dla instrukcji przygotowanych"\
+" nie powiodło się"
 
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
 "nie udało się otworzyć bazy danych sqlite3"
