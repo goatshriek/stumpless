@@ -659,7 +659,7 @@ namespace {
   }
 
   TEST( PerrorOption, FileErrorStream ) {
-    char log_buffer[100];
+    char log_buffer[512];
     struct stumpless_target *target;
     const struct stumpless_target *target_result;
     const char *error_filename = "target_with_perror.log";
