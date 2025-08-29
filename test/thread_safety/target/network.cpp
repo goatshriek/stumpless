@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /*
- * Copyright 2020 Joel E. Anderson
+ * Copyright 2020-2025 Joel E. Anderson
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,8 +163,8 @@ namespace {
                                 false );
 
       // cleanup after the test
-      listener_thread->join();
       stumpless_close_network_target( target );
+      listener_thread->join();
       EXPECT_NO_ERROR;
       stumpless_free_all(  );
 
