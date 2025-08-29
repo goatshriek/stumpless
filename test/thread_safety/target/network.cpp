@@ -199,8 +199,8 @@ namespace {
                                 false );
 
       // cleanup after the test
-      listener_thread->join();
       stumpless_close_network_target( target );
+      listener_thread->join();
       EXPECT_NO_ERROR;
       stumpless_free_all(  );
 
