@@ -23,13 +23,47 @@
 #include <stumpless/error.h>
 #include "private/config.h"
 
+/**
+ * Clears the current thread's error state.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * Modifies only thread-local error state; no locks, allocation, or I/O.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * Contains no cancellation points.
+ */
 void
 clear_error( void );
 
+/**
+ * Raises an error indicating that a network address operation failed.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code produced by the failing call.
+ * 
+ * @param code_type Localized description of what @p code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_address_failure( const char *message, int code, const char *code_type );
 
+/**
+ * Raises an error indicating that a required argument was empty.
+ *
+ * @param message Localized message describing the error.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_argument_empty( const char *message );
@@ -51,16 +85,46 @@ raise_argument_too_big( const char *message,
                         size_t arg_size,
                         const char *arg_type );
 
+/**
+ * Raises an error indicating that an argument size was too small.
+ *
+ * @param message  Localized message describing the error.
+ * 
+ * @param arg_size The offending size value.
+ * 
+ * @param arg_type Localized description of which argument was too small.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers due to use of a thread-global error structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for asynchronously cancelled threads for the same reason.
+ */
 COLD_FUNCTION
 void
 raise_argument_too_small( const char *message,
-                        size_t arg_size,
-                        const char *arg_type );
+                          size_t arg_size,
+                          const char *arg_type );
 
+/**
+ * Raises an error indicating that a duplicate element was encountered.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_duplicate_element( void );
 
+/**
+ * Raises an error indicating that a requested element was not found.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_element_not_found( void );
@@ -99,24 +163,80 @@ raise_error( enum stumpless_error_id id,
              int code,
              const char *code_type );
 
+/**
+ * Raises an error indicating that a file could not be opened.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_file_open_failure( void );
 
+/**
+ * Raises an error indicating that a file write failed.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_file_write_failure( void );
 
+/**
+ * Raises an error when a function-target callback fails to write a log entry.
+ *
+ * A function target delivers events by calling an app callback (`log_function`).
+ * This error is raised if that callback returns a negative value (less than 0)
+ * while the entry is being written.
+ *
+ * @param code The callback’s return value. Negative values indicate failure.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_function_target_failure( int code );
 
+
+
+/**
+ * Raises an error indicating that a gethostname call failed.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code from the failing call.
+ * 
+ * @param code_type Localized description of what @p code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers due to use of a thread-global error structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for asynchronously cancelled threads for the same reason.
+ */
 COLD_FUNCTION
 void
 raise_gethostname_failure( const char *message,
                            int code,
                            const char *code_type );
 
+/**
+ * Raises an error indicating an index was out of bounds.
+ *
+ * @param message Localized description of the failure.
+ * 
+ * @param index   The index that was out of bounds.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_index_out_of_bounds( const char *message, size_t index );
@@ -143,22 +263,63 @@ COLD_FUNCTION
 void
 raise_invalid_encoding( const char *message );
 
+/**
+ * Raises an error indicating an invalid facility value.
+ *
+ * @param facility The invalid facility value.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_invalid_facility( int facility );
 
+/**
+ * Raises an error indicating an invalid identifier was used.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_invalid_id( void );
 
+/**
+ * Raises an error indicating an invalid parameter was used.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_invalid_param( void );
 
+/**
+ * Raises an error indicating an invalid severity value.
+ *
+ * @param severity The invalid severity value.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_invalid_severity( int severity );
 
+/**
+ * Raises an error indicating a journald operation failed.
+ *
+ * @param code Error code from the failing call.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_journald_failure( int code );
@@ -184,6 +345,13 @@ COLD_FUNCTION
 void
 raise_mb_conversion_failure( int code );
 
+/**
+ * Raises an error indicating a memory allocation failure occurred.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_memory_allocation_failure( void );
@@ -210,10 +378,40 @@ COLD_FUNCTION
 void
 raise_network_closed( const char *message );
 
+/**
+ * Raises an error indicating that the requested network protocol is not supported.
+ *
+ * Records the error in the per-thread error structure for later inspection via
+ * the library error API.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers due to use of a thread-global error structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for asynchronously cancelled threads for the same reason.
+ */
 COLD_FUNCTION
 void
 raise_network_protocol_unsupported( void );
 
+/**
+ * Raises an error indicating that a requested parameter was not found.
+ *
+ * Records the error in the per-thread error structure for later inspection via
+ * the library error API.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Not safe to call from signal handlers due to use of a thread-global error structure.
+ *
+ * **Async Cancel Safety: AC-Unsafe**
+ * Not safe for asynchronously cancelled threads for the same reason.
+ */
 COLD_FUNCTION
 void
 raise_param_not_found( void );
@@ -241,22 +439,74 @@ COLD_FUNCTION
 void
 raise_resolve_hostname_failure( const char *message );
 
+/**
+ * Raises an error indicating a socket bind failure.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code from the failing call.
+ * 
+ * @param code_type Localized description of what the code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_socket_bind_failure( const char *message,
                            int code,
                            const char *code_type );
 
+/**
+ * Raises an error indicating that connecting a socket failed.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code from the failing call.
+ * 
+ * @param code_type Localized description of what @p code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_socket_connect_failure( const char *message,
                               int code,
                               const char *code_type );
 
+/**
+ * Raises an error indicating that a socket function call failed.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code from the failing call.
+ * 
+ * @param code_type Localized description of what @p code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_socket_failure( const char *message, int code, const char *code_type );
 
+/**
+ * Raises an error indicating that sending on a socket failed.
+ *
+ * @param message   Localized description of the failure.
+ * 
+ * @param code      Error code from the failing call.
+ * 
+ * @param code_type Localized description of what @p code represents.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_socket_send_failure( const char *message,
@@ -307,26 +557,72 @@ COLD_FUNCTION
 void
 raise_sqlite3_failure( const char *message, int code );
 
+/**
+ * Raises an error indicating that writing to a stream failed.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_stream_write_failure( void );
 
+/**
+ * Raises an error indicating that the target is incompatible with the operation.
+ *
+ * @param message Localized description of the incompatibility.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_target_incompatible( const char *message );
 
+/**
+ * Raises an error indicating that the target is unsupported.
+ *
+ * @param message Localized description of the unsupported target.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_target_unsupported( const char *message );
 
+/**
+ * Raises an error indicating that the transport protocol is unsupported.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_transport_protocol_unsupported( void );
 
+/**
+ * Raises an error indicating that closing the Windows Event Log (WEL) failed.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_wel_close_failure( void );
 
+/**
+ * Raises an error indicating that opening the Windows Event Log (WEL) failed.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
 COLD_FUNCTION
 void
 raise_wel_open_failure( void );
