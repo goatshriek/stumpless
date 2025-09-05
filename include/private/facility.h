@@ -40,6 +40,23 @@
 int
 get_facility( int prival );
 
+/**
+ * Returns non-zero if a facility value is invalid.
+ *
+ * A valid facility value is the syslog-encoded facility (facility_id << 3):
+ * a multiple of 8 in the inclusive range [0, 23 << 3]. Valid examples:
+ * 0, 8, 16, ..., 184. Any value outside this range or not divisible by 8
+ * is considered invalid.
+ *
+ * @param facility The encoded facility value to validate (facility_id << 3).
+ * 
+ * @return Non-zero if invalid; 0 if valid.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Safe**
+ * **Async Cancel Safety: AC-Safe**
+ * 
+ */
 int
 facility_is_invalid( int facility );
 

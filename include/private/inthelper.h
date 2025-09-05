@@ -34,6 +34,23 @@ int
 cap_size_t_to_int( size_t val );
 
 
+/**
+ * Converts a size_t value to int with overflow detection.
+ *
+ * Returns -1 if @p val is greater than INT_MAX; otherwise returns (int) @p val.
+ * Typical use: preparing a size_t index for APIs that take an int error/code,
+ * e.g., raise_error(..., size_t_to_int(index), ...).
+ *
+ * @param val The non-negative value to convert.
+ * 
+ * @return (int) val when val <= INT_MAX; otherwise -1 to indicate overflow.
+ *
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Safe**
+ * **Async Cancel Safety: AC-Safe**
+ * Performs only integer comparison/cast; no locking, allocation, or I/O.
+ * 
+ */
 int
 size_t_to_int( size_t val );
 
