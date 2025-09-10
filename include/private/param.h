@@ -113,6 +113,26 @@ size_t
 locked_param_into_buffer( const struct stumpless_param *param,
                         char *buffer, size_t buffer_size );
 
+/**
+ * Unlocks a parameter's internal mutex.
+ *
+ * Must be called by the same thread that previously locked the parameter
+ * (e.g., via lock_param). This function performs no NULL or ownership checks.
+ *
+ * @param param The parameter whose lock to release. Must not be NULL and must
+ *              currently be locked by the caller.
+ *
+ * **Thread Safety: MT-Safe**
+ * Coordinates access via the parameter's mutex; multiple threads may contend
+ * on the same param.
+ *
+ * **Async Signal Safety: AS-Unsafe lock**
+ * Not safe to call from signal handlers due to use of mutex routines.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock**
+ * May be a cancellation point; do not call from threads that may be cancelled.
+ * 
+ */
 void
 unlock_param( const struct stumpless_param *param );
 
