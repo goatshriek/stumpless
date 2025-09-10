@@ -290,6 +290,13 @@ add_function_test(target
   LIBRARIES GTest::gmock
 )
 
+# inthelper: covers src/inthelper.c conversion helpers
+add_function_test(inthelper
+  SOURCES
+    test/function/inthelper.c
+    src/inthelper.c
+)
+
 add_function_test(target_leak
   SOURCES "${PROJECT_SOURCE_DIR}/test/function/leak/target.cpp"
 )
