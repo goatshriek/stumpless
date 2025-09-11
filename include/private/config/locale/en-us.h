@@ -128,6 +128,13 @@
 "severity codes must be defined in accordance with RFC 5424: values between 0" \
 " and 7 inclusive"
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"the invalid prival"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival codes must be defined in accordance with RFC 5424: values between 0" \
+" and 255 inclusive"
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "invalid state reached during UTF-8 string parsing"
 

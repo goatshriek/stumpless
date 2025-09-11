@@ -2584,6 +2584,7 @@ namespace {
     const struct stumpless_entry *result;
     entry = create_empty_entry();
     result = stumpless_set_entry_prival(entry, prival );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
     EXPECT_NULL( result );
     stumpless_free_all(  );
   }
@@ -2595,6 +2596,7 @@ namespace {
     const struct stumpless_entry *result;
     entry = create_empty_entry();
     result = stumpless_set_entry_prival( entry, prival );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
     EXPECT_NULL( result );
     stumpless_free_all(  );
   }
