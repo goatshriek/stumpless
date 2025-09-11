@@ -142,6 +142,14 @@
 "allvarlighetskoder måste vara definierade i enlighet med RFC 5424: värden " \
 "mellan 0 till och med 7"
 
+
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"den ogiltiga privalen"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-koder måste vara definierade i enlighet med RFC 5424: värden mellan 0" \
+" och 255 inklusive"
+
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "invalid state reached during UTF-8 string parsing"
