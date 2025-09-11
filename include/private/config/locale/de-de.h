@@ -126,6 +126,13 @@
 "Schweregrad-Codes müssen in Übereinstimmung mit RFC 5424 definiert werden: " \
 "Werte zwischen 0 und einschließlich 7"
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"der ungültige prival"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-Codes müssen gemäß RFC 5424 definiert werden: Werte zwischen 0" \
+" und einschließlich 255"
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "Ungültiger Zustand während der UTF-8 string Zerlegung erreicht"
 
