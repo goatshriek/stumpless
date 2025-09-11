@@ -1569,9 +1569,10 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
  *
  * @param entry The entry to set the prival of.
  *
- * @param prival The new prival of the entry, as defined in RFC 5424. Only the
- * first 8 bits of prival are considered: the rest are discarded after
- * extracting the effective facility and severity.
+ * @param prival The new prival of the entry, as defined in RFC 5424. The value
+ * must be between 0 and 255. Only the first 8 bits of prival are
+ * considered: the rest are discarded after extracting the effective facility
+ * and severity.
  *
  * @return The modified entry if no error is encountered. If an error is
  * encountered, then NULL is returned and an error code is set appropriately.
