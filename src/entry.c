@@ -1026,6 +1026,9 @@ stumpless_set_entry_priority( struct stumpless_entry *entry,
 struct stumpless_entry *
 stumpless_set_entry_prival( struct stumpless_entry *entry,
                             int prival ) {
+  if ((prival & 0xFF) != prival)
+    return NULL;
+  
   return stumpless_set_entry_priority( entry,
                                        get_facility( prival ),
                                        get_severity( prival ) );
