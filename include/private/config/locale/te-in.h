@@ -127,6 +127,12 @@
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "తీవ్రత కోడ్లు RFC 5424 ప్రకారం: 0-7 విలువలు"
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"చెల్లని ప్రైవాల్"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"RFC 5424 ప్రకారం ప్రైవాల్ కోడ్లు నిర్వచించబడాలి: విలువలు 0 నుండి 255 వరకు"
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "UTF-8 స్ట్రింగ్ పార్సింగ్ సమయంలో చెల్లని స్థితికి చేరుకుంది"
 
