@@ -290,11 +290,10 @@ add_function_test(target
   LIBRARIES GTest::gmock
 )
 
-# inthelper: covers src/inthelper.c conversion helpers
-add_function_test(inthelper
+# inthelper_cap: public-api test that exercises the cap (size_t -> INT_MAX) path
+add_function_test(inthelper_cap
   SOURCES
-    test/function/inthelper.c
-    src/inthelper.c
+    test/function/inthelper_cap.cpp
 )
 
 add_function_test(target_leak
