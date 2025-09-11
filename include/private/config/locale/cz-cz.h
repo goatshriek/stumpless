@@ -131,6 +131,14 @@
 "kód služby musí být definován v souladu s normou RFC 5424: hodnoty mezi 0 a" \
 " 7 včetně"
 
+
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"neplatná prioritní hodnota"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"kód prival musí být definován v souladu s RFC 5424: hodnoty mezi 0" \
+" a 255 včetně"
+
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "invalid state reached during UTF-8 string parsing"
