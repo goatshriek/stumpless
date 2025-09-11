@@ -128,6 +128,14 @@
 "गंभीरता कोड को RFC 5424 के अनुसार परिभाषित किया जाना चाहिए: 0 . " \
 "के बीच के मान और 7 समावेशी"
 
+
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"अमान्य prival"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival कोड को RFC 5424 के अनुसार परिभाषित किया जाना चाहिए: 0 और 255 के" \
+" बीच समावेशी मान"
+
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "invalid state reached during UTF-8 string parsing"
