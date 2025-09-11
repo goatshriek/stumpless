@@ -135,6 +135,12 @@
 "нивата на тежест трябва да бъдат дефинирани в съответствие с RFC 5424:" \
 " стойности между 0 и 7 включително"
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"невалидният привал"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"приватните кодове трябва да бъдат дефинирани в съответствие с RFC 5424: стойности между 0 и 255 включително"
+
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "invalid state reached during UTF-8 string parsing"
