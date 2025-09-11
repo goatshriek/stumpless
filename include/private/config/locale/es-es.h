@@ -127,6 +127,15 @@
 "los códigos de gravedad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
 
+
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"el prival inválido"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"los códigos prival deben ser definidos de acuerdo al RFC 5424: valores entre 0" \
+" y 255 inclusive"
+
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "se alcanzó un estado inválido durante el análisis de la cadena UTF-8"
 
