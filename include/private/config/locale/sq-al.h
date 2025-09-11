@@ -132,6 +132,13 @@
 " me RFC 5424: vlera duhet të jetë në mes 0" \
 " dhe 7 (duke përfshirë)"
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"prival jo-valid"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"kodet prival duhet të definohen në përputhshmëri me RFC 5424: vlerat në mes 0" \
+" dhe 255 (duke përfshirë)"
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "gjendja jo-valide u arrit gjatë analizës (parsing) të string-ut UTF-8"
 
