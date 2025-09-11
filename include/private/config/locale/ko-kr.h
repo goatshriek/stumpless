@@ -125,6 +125,12 @@
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "심각도 코드는 RFC 5424에 따라 정의되어야 합니다. 값은 0부터 7까지입니다."
 
+# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"잘못된 prival"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival 코드는 RFC 5424에 따라 정의되어야 합니다: 0에서 255 사이의 값만 허용됩니다"
+
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "UTF-8 문자열 구문 분석 중 잘못된 상태에 도달했습니다"
 
