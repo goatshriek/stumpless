@@ -2586,6 +2586,7 @@ namespace {
     result = stumpless_set_entry_prival(entry, prival );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
     EXPECT_NULL( result );
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
@@ -2598,6 +2599,7 @@ namespace {
     result = stumpless_set_entry_prival( entry, prival );
     EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
     EXPECT_NULL( result );
+    stumpless_destroy_entry_only( entry );
     stumpless_free_all(  );
   }
 
