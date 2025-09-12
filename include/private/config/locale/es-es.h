@@ -132,8 +132,8 @@
 "el prival inválido"
 
 #  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"los códigos prival deben ser definidos de acuerdo al RFC 5424: valores entre 0" \
-" y 255 inclusive"
+"los códigos prival deben ser definidos de acuerdo al RFC 5424:" \
+" valores entre 0 y 255 inclusive"
 
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \

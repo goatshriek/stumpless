@@ -131,7 +131,8 @@
 "den ugyldige prival"
 
 #define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"prival koder skal være defineret i overensstemmelse med RFC 5424: værdier mellem 0 og 255 inklusivt"
+"prival koder skal være defineret i overensstemmelse med RFC 5424:" \
+" værdier mellem 0 og 255 inklusivt"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "ugyldig stat nået under UTF-8 streng parsing"

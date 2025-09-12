@@ -134,7 +134,8 @@
 "geçersiz özel"
 
 #define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"özel kodlar RFC 5424'e uygun olarak tanımlanmalıdır: 0 ile 255 arasındaki değerler (dahil)"
+"özel kodlar RFC 5424'e uygun olarak tanımlanmalıdır: " \
+"0 ile 255 arasındaki değerler (dahil)"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "UTF-8 string yorumlama sırasında geçersiz duruma ulaşıldı"

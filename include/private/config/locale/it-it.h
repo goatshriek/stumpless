@@ -131,8 +131,8 @@
 "prival non valido"
 
 #define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"i codici prival devono essere definiti in osservanza del RFC 5424: valori tra 0" \
-" e 255 inclusi"
+"i codici prival devono essere definiti in osservanza del RFC 5424: valori" \
+" tra 0 e 255 inclusi"
 
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
