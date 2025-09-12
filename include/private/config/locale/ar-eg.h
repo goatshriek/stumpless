@@ -142,18 +142,18 @@
     "النص ليس بصيغة "                    \
     "name=\"value\""
 
+#define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"قيمة الخطورة والمنشأة غير صالحة"
+
+#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"قيمة الخطورة والمنشأة يجب ان تكون بصيغة RFC 5424: القيم بين 0 و 255 شاملة"
+
 #define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
     "مستوي الشدة غير معلوم "
 
 #define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
     "قيمة الشدة يجب ان تكون بصيغة"          \
     "RFC 5424: القيم بين 0 و 7 شاملة"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"قيمة الخطورة والمنشأة غير صالحة"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"قيمة الخطورة والمنشأة يجب ان تكون بصيغة RFC 5424: القيم بين 0 و 255 شاملة"
 
 #define L10N_INVALID_STATE_DURING_UTF8_PARSING   \
     "الوصول الي حالة غير صالحة اثناء تحليل النص" \

@@ -124,19 +124,19 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "a karakterlánc nem név=\"érték\" formátumú"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"az érvénytelen prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"A prival kódokat az RFC 5424 szerint kell meghatározni: 0" \
+" és 255 közötti értékek"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "az érvénytelen súlyosság"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "a súlyossági kódokat az RFC 5424 szerint kell meghatározni: 0" \
 " és 7 közötti értékek"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"az érvénytelen prival"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"A prival kódokat az RFC 5424 szerint kell meghatározni: 0" \
-" és 255 közötti értékek"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "érvénytelen állapot az UTF-8 karakterlánc-elemzés során"

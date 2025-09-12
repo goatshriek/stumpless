@@ -125,6 +125,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"অবৈধ prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival কোডগুলি অবশ্যই RFC 5424 অনুসারে সংজ্ঞায়িত করতে হবে: মান 0 থেকে" \
+" 255 এর মধ্যে"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "অসফল severity"
 
@@ -132,13 +139,6 @@
 "তীব্রতা কোড অবশ্যই RFC 5424 অনুসারে"\
 "সংজ্ঞায়িত করা উচিত: 0 এর মধ্যে মান" \
 " এবং 7 সহ"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"অবৈধ prival"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"prival কোডগুলি অবশ্যই RFC 5424 অনুসারে সংজ্ঞায়িত করতে হবে: মান 0 থেকে" \
-" 255 এর মধ্যে"
 
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \

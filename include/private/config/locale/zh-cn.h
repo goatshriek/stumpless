@@ -124,18 +124,17 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"无效的prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"私有代码必须根据 RFC 5424 定义：值介于 0 到 255（含）之间"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "severity无效"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "severity代码必须根据RFC 5424定义：值在0~7之间"
-
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"无效的prival"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"私有代码必须根据 RFC 5424 定义：值介于 0 到 255（含）之间"
 
 // todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \

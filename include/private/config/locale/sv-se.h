@@ -135,19 +135,18 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"den ogiltiga privalen"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-koder måste vara definierade i enlighet med RFC 5424: värden mellan 0"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ogiltiga allvarligheten"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "allvarlighetskoder måste vara definierade i enlighet med RFC 5424: värden " \
-"mellan 0 till och med 7"
-
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"den ogiltiga privalen"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"prival-koder måste vara definierade i enlighet med RFC 5424: värden mellan 0" \
+"mellan 0 till och med 7" \
 " och 255 inklusive"
 
 // todo translate

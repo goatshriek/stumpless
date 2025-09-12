@@ -122,17 +122,17 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"שאינו חוקי prival-ה"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"255 לבין 0 ערכים בין :RFC 5424-חייבים להיות מוגדרים בהתאם ל prival קודי"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "שאינו חוקי Severity-ה"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "ערכים בין 0 ל-7 כולל :RFC 5424-בהתאם ל (Severity) יש להגדיר קודי חומרה"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"שאינו חוקי prival-ה"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"255 לבין 0 ערכים בין :RFC 5424-חייבים להיות מוגדרים בהתאם ל prival קודי"
 
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \

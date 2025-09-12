@@ -121,18 +121,18 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "文字列は 名前=\"価値\" 形式ではありません"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"無効な prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival コードは RFC 5424 に従って定義する必要があります：値は 0 から 255" \
+"（含む）の間です"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "無効な重大度"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "重大度コードは RFC 5424 に従って定義する必要があります。値は 0 と 7 です。"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"無効な prival"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"prival コードは RFC 5424 に従って定義する必要があります：値は 0 から 255" \
-"（含む）の間です"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "UTF-8 文字列の解析中に無効な状態に達しました"

@@ -119,19 +119,19 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "Der String entspricht nicht dem name=\"value\" Format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"der ungültige prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-Codes müssen gemäß RFC 5424 definiert werden: Werte zwischen 0" \
+" und einschließlich 255"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "Ungültiger Schweregrad"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "Schweregrad-Codes müssen in Übereinstimmung mit RFC 5424 definiert werden: " \
 "Werte zwischen 0 und einschließlich 7"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"der ungültige prival"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"prival-Codes müssen gemäß RFC 5424 definiert werden: Werte zwischen 0" \
-" und einschließlich 255"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "Ungültiger Zustand während der UTF-8 string Zerlegung erreicht"

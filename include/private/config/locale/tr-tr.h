@@ -123,19 +123,19 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string name=\"value\" biçiminde değil"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"geçersiz özel"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"özel kodlar RFC 5424'e uygun olarak tanımlanmalıdır: " \
+"0 ile 255 arasındaki değerler (dahil)"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "geçersiz önem derecesi(severity)"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "önem derecesi(severity) kodları RFC 5424'e uygun olarak tanımlanmalıdır:" \
 "0 ve 7 arasındaki değerler, 7 dahil"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"geçersiz özel"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"özel kodlar RFC 5424'e uygun olarak tanımlanmalıdır: " \
-"0 ile 255 arasındaki değerler (dahil)"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "UTF-8 string yorumlama sırasında geçersiz duruma ulaşıldı"

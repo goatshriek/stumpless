@@ -119,19 +119,19 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "essa string não está no formato nome=\"valor\" correto"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"o prival inválido"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"códigos prival devem ser definidos de acordo com a RFC 5424: valores entre 0" \
+" e 255, inclusive"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "a gravidade inválida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "códigos de gravidade devem ser definidos de acordo com a RFC 5424:" \
 " valores entre 0 e 7, incluso"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"o prival inválido"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"códigos prival devem ser definidos de acordo com a RFC 5424: valores entre 0" \
-" e 255, inclusive"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "Estado inválido na leitura da string UTF-8"

@@ -116,19 +116,19 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "la chaîne de caractères n'est pas au format nom=\"valeur\""
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"le prival invalide"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"les codes prival doivent être définis conformément au RFC 5424 : valeurs" \
+" comprises entre 0 et 255 inclus"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la sévérité invalide"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "les codes de sévérité doivent être définis conformément au RFC 5424:" \
 " valeurs entre 0 et 7 inclus"
-
-# define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
-"le prival invalide"
-
-#define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
-"les codes prival doivent être définis conformément au RFC 5424 : valeurs" \
-" comprises entre 0 et 255 inclus"
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "état invalide atteint pendant UTF-8 string parsing"
