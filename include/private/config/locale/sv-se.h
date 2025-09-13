@@ -135,6 +135,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"den ogiltiga privalen"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-koder måste vara definierade i enlighet med RFC 5424: värden mellan 0" \
+"och 255 inklusive"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ogiltiga allvarligheten"
 

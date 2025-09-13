@@ -112,6 +112,7 @@
 "raise_invalid_facility": "private/error.h"
 "raise_invalid_id": "private/error.h"
 "raise_invalid_severity": "private/error.h"
+"raise_invalid_prival": "private/error.h"
 "raise_memory_allocation_failure": "private/error.h"
 "raise_network_protocol_unsupported": "private/error.h"
 "raise_param_not_found": "private/error.h"

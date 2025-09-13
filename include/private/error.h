@@ -312,6 +312,19 @@ void
 raise_invalid_severity( int severity );
 
 /**
+ * Raises an error indicating an invalid prival value.
+ * 
+ * @param prival The invalid prival value.
+ * 
+ * **Thread Safety: MT-Safe**
+ * **Async Signal Safety: AS-Unsafe**
+ * **Async Cancel Safety: AC-Unsafe**
+ */
+COLD_FUNCTION
+void
+raise_invalid_prival( int prival );
+
+/**
  * Raises an error indicating a journald operation failed.
  *
  * @param code Error code from the failing call.

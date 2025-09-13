@@ -120,12 +120,20 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"el prival inválido"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"los códigos prival deben ser definidos de acuerdo al RFC 5424:" \
+" valores entre 0 y 255 inclusive"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "la gravedad inválida"
 
 #  define L10N_INVALID_SEVERITY_ERROR_MESSAGE \
 "los códigos de gravedad deben ser definidos de acuerdo al RFC 5424:" \
 " valores entre 0 y 7 inclusive"
+
 
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
 "se alcanzó un estado inválido durante el análisis de la cadena UTF-8"

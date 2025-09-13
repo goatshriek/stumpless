@@ -118,6 +118,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string nie jest w formacie name=\"value\""
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"nieprawidłowa wartość prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"wartości prival muszą być zdefiniowane zgodnie z RFC 5424: wartości między 0" \
+" a 255 włącznie"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "nieprawidłowa usługa"
 

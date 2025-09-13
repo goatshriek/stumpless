@@ -124,6 +124,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"faragha batili"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"misimbo ya faragha lazima ifafanuliwe kwa mujibu wa RFC 5424:" \
+" maadili kati ya 0 na 255 pamoja"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "ukali batili"
 

@@ -124,6 +124,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string-u nuk është i formatit name=\"value\""
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"prival jo-valid"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"kodet prival duhet të definohen në përputhshmëri me RFC 5424:" \
+" vlerat në mes 0 dhe 255 (duke përfshirë)"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "rëndësia jo-valide"
 

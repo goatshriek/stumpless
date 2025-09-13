@@ -2576,6 +2576,33 @@ namespace {
     stumpless_free_all(  );
   }
 
+
+  TEST( SetPrivalTest, InvalidPrivalNegativeArgument ) {
+    // Test for negative argument (falls outside of a byte)
+    int prival = -1; 
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+    entry = create_empty_entry();
+    result = stumpless_set_entry_prival(entry, prival );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
+    EXPECT_NULL( result );
+    stumpless_destroy_entry_only( entry );
+    stumpless_free_all(  );
+  }
+
+  TEST( SetPrivalTest, InvalidPrivalGreaterThanRange ) {
+    // Test for argument greater than one byte
+    int prival = 0x100; 
+    struct stumpless_entry *entry;
+    const struct stumpless_entry *result;
+    entry = create_empty_entry();
+    result = stumpless_set_entry_prival( entry, prival );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INVALID_PRIVAL );
+    EXPECT_NULL( result );
+    stumpless_destroy_entry_only( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetSeverityTest, NullEntry ) {
     const struct stumpless_entry *result;
 

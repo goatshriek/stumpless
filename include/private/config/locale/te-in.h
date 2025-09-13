@@ -121,6 +121,12 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "స్ట్రింగ్ పేరు=\"విలువ\" ఆకృతికి సంబంధించినది కాదు"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"చెల్లని ప్రైవాల్"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"RFC 5424 ప్రకారం ప్రైవాల్ కోడ్లు నిర్వచించబడాలి: విలువలు 0 నుండి 255 వరకు"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "చెల్లని తీవ్రత"
 

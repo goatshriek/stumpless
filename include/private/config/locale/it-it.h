@@ -120,6 +120,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"prival non valido"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"i codici prival devono essere definiti in osservanza del RFC 5424: valori" \
+" tra 0 e 255 inclusi"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "gravità non valida"
 

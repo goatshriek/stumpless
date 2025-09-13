@@ -124,6 +124,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"neplatná prioritní hodnota"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"kód prival musí být definován v souladu s RFC 5424: hodnoty mezi 0" \
+" a 255 včetně"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "neplatná služba"
 
