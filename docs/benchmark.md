@@ -34,23 +34,36 @@ demonstrates all of these principles and how they are used to implement an
 actual improvement to the library. Let's analyze an improvement to the
 performance of `stumpless_copy_element` to do this.
 
-An early version of `stumpless_copy_element` iterated through all of the
-params in the element, adding them to the copy one by one. The code for this
-looked like this snippet, which has been abbreviated to focus on the performance
-of the code:
+Previously, `stumpless_copy_element` manually iterated through all parameters
+in an element, copying and adding them one by one. While this approach was 
+straightforward, it was inefficient due to repeated memory reallocations.
+
+The function has since been optimized to handle parameter copying internally. 
+The benchmark now reflects this cleaner implementation:
+
 
 ```c
-// first create a new element
-copy = stumpless_new_element( stumpless_get_element_name( element ) );
+static void CopyElement(benchmark::State& state){
+  struct stumpless_element *element;
+  const struct stumpless_element *result;
 
-// then handle all of the parameters
-for( i = 0; i < element->param_count; i++ ) {
-  // copy the parameter
-  param_copy = stumpless_copy_param( element->params[i] );
+  INIT_MEMORY_COUNTER( copy_element );
 
-  // and then add it
-  stumpless_add_param( copy, param_copy );
-}
+  element = stumpless_new_element( "copy-element-perf" );
+  stumpless_add_new_param( element, "param-1", "value-1" );
+  stumpless_add_new_param( element, "param-2", "value-2" );
+
+  for(auto _ : state){
+    result = stumpless_copy_element( element );
+    if( !result ) {
+      state.SkipWithError( "the element copy failed" );
+    } else {
+      stumpless_destroy_element_and_contents( result );
+    }
+  }
+
+  stumpless_destroy_element_and_contents( element );
+  stumpless_free_all(  );
 ```
 
 While it is logical and easy to follow, this method is inefficient because
