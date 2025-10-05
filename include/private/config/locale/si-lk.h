@@ -121,6 +121,12 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "තන්තුව name=\"අගය\" ආකෘතියෙන් නොවේ"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"වලංගු නොවන prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival කේත RFC 5424 අනුව නිර්වචනය කළ යුතුය: 0 සහ 255 ඇතුළත් අගයන්"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "වලංගු නොවන බරපතලකම"
 

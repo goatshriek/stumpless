@@ -119,6 +119,12 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "문자열이 이름=\"값\" 형식이 아닙니다"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"잘못된 prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival 코드는 RFC 5424에 따라 정의되어야 합니다: 0에서 255 사이의 값만 허용됩니다"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "잘못된 심각도"
 

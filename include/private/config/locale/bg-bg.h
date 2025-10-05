@@ -128,6 +128,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"невалидният привал"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"приватните кодове трябва да бъдат дефинирани в съответствие с RFC 5424:" \
+" стойности между 0 и 255 включително"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "невалидната тежест"
 

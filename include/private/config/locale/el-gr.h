@@ -126,6 +126,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"μη έγκυρο prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"οι κωδικοί prival πρέπει να ορίζονται σύμφωνα με το RFC 5424: τιμές μεταξύ 0" \
+" και 255 συμπεριλαμβανομένων"
+
 # define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "μη έγκυρη σοβαρότητα"
 

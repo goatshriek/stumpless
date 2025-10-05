@@ -121,6 +121,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"अमान्य prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival कोड को RFC 5424 के अनुसार परिभाषित किया जाना चाहिए: 0 और 255 के" \
+" बीच समावेशी मान"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "अमान्य गंभीरता"
 

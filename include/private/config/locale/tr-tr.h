@@ -123,6 +123,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "string name=\"value\" biçiminde değil"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"geçersiz özel"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"özel kodlar RFC 5424'e uygun olarak tanımlanmalıdır: " \
+"0 ile 255 arasındaki değerler (dahil)"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "geçersiz önem derecesi(severity)"
 

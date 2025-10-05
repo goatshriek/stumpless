@@ -120,6 +120,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"den ugyldige prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival koder skal være defineret i overensstemmelse med RFC 5424:" \
+" værdier mellem 0 og 255 inklusivt"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "den ugyldige alvorlighed"
 

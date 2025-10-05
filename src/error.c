@@ -264,6 +264,14 @@ raise_invalid_severity( int severity ) {
 }
 
 void
+raise_invalid_prival( int prival ) {
+  raise_error( STUMPLESS_INVALID_PRIVAL,
+               L10N_INVALID_PRIVAL_ERROR_MESSAGE,
+               prival,
+               L10N_INVALID_PRIVAL_ERROR_CODE_TYPE );
+}
+
+void
 raise_journald_failure( int code ) {
   raise_error( STUMPLESS_JOURNALD_FAILURE,
                L10N_JOURNALD_FAILURE_ERROR_MESSAGE,

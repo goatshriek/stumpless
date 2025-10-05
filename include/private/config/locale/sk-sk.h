@@ -134,6 +134,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "the string is not of the name=\"value\" format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"neplatné prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"kód prival musí byť definovaný v súlade s normou RFC 5424: hodnoty medzi" \
+" 0 a 255 vrátane"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "neplatná služba"
 

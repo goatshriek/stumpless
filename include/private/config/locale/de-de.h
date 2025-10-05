@@ -119,6 +119,13 @@
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
 "Der String entspricht nicht dem name=\"value\" Format"
 
+#  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
+"der ungültige prival"
+
+#  define L10N_INVALID_PRIVAL_ERROR_MESSAGE \
+"prival-Codes müssen gemäß RFC 5424 definiert werden: Werte zwischen 0" \
+" und einschließlich 255"
+
 #  define L10N_INVALID_SEVERITY_ERROR_CODE_TYPE \
 "Ungültiger Schweregrad"
 

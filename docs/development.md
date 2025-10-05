@@ -69,6 +69,8 @@ cmake --build . --target --parallel 4 function-test-target && ./function-test-ta
 
 If you use Visual Studio Code, see **[IDE Setup (VS Code)](./ide-setup.md)** for the minimal extension list and how to open the repo. This keeps IDE guidance lightweight and defers to official documentation.
 
+- **Windows (MSYS2/MinGW64)**: see [Getting Started on Windows](./windows-msys2-mingw64.md)
+
 
 More details about building the library are available in the
 [INSTALL.md](../INSTALL.md) file. However, if you plan to be developing
