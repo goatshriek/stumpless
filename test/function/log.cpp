@@ -151,6 +151,7 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( message ) );
   }
 
+  
   TEST_F( LogTest, StumpStr ) {
     const char *message = "stump str test message";
     int result;
@@ -161,6 +162,20 @@ namespace {
 
     TestRFC5424Compliance( buffer );
     EXPECT_THAT( buffer, HasSubstr( message ) );
+  }
+
+  TEST_F( LogTest, StumpStrNullTarget ) {
+    int result;
+
+    // Close the target to make current target NULL
+    // stumpless_close_buffer_target( target );
+    // target = nullptr;
+
+    result = stump_str( "test message" );
+    
+    // Should return -1 when target is NULL
+    EXPECT_EQ( result, -1 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_TARGET_INCOMPATIBLE );
   }
 
   TEST_F( LogTest, StumpTrace ) {

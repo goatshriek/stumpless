@@ -1,0 +1,21 @@
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@4.0.0
+
+jobs:
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Run tests and generate coverage
+          command: ./run-tests.sh  # Replace with your test command
+      - codecov/upload:
+          token: $CODECOV_TOKEN
+
+workflows:
+  test_workflow:
+    jobs:
+      - test
