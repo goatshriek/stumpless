@@ -22,18 +22,56 @@
 #  include <stddef.h>
 
 /**
- * Stringifies the first argument and adds a comma afterwards, and ignores the
- * second argument. Useful in FOREACH macros used to define enumerations,
- * particularly for conversion to string functionality.
+ * @brief Stringifies the first argument and appends a comma.
+ *
+ * This macro ignores the second argument. It is primarily used in
+ * FOREACH macros when defining enumerations, especially for
+ * converting enum values to strings.
+ *
+ * @param STRING The value to stringify.
+ * @param INDEX  Ignored parameter, typically used in FOREACH macros.
  */
 #  define GENERATE_STRING( STRING, INDEX ) #STRING,
 
+/**
+ * @brief Creates a copy of a null-terminated C string.
+ *
+ * Allocates memory for a new string and copies the contents of the
+ * provided string into it.
+ *
+ * @param str The original null-terminated string to copy.
+ * @return A pointer to the newly allocated copy of the string,
+ *         or NULL if memory allocation fails.
+ */
 char *
 copy_cstring( const char *str );
 
+/**
+ * @brief Creates a copy of a C string and optionally returns its length.
+ *
+ * Allocates memory for a new string, copies the contents of the
+ * provided string, and if the `length` pointer is provided, stores
+ * the length of the copied string.
+ *
+ * @param str    The original null-terminated string to copy.
+ * @param length Optional pointer to store the length of the copied string.
+ * @return A pointer to the newly allocated copy of the string,
+ *         or NULL if memory allocation fails.
+ */
 char *
 copy_cstring_with_length( const char *str, size_t *length );
 
+/**
+ * @brief Compares two strings ignoring case, up to a given number of characters.
+ *
+ * Works similarly to the standard `strncasecmp`, but is a custom implementation.
+ *
+ * @param s1 The first string to compare.
+ * @param s2 The second string to compare.
+ * @param n  Maximum number of characters to compare.
+ * @return An integer less than, equal to, or greater than zero if s1 is found,
+ *         respectively, to be less than, to match, or be greater than s2.
+ */
 int
 strncasecmp_custom( const char *s1, const char *s2, size_t n );
 
