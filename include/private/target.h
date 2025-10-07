@@ -17,7 +17,7 @@
  */
 
 /**
- * @file private_target.h
+ * @file
  * @brief Internal target management functions for the Stumpless logging library.
  *
  * This file defines private helper functions used for creating, locking,
@@ -35,7 +35,13 @@
 /**
  * @brief Destroys the specified target.
  *
- * Frees all internal resources associated with the target.
+ * Frees all internal resources associated with the target. This should only
+ * be called internally — use public APIs like `stumpless_close_target()` in
+ * user code.
+ *
+ * **Thread Safety:** MT-Unsafe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Unsafe
  *
  * @param target The target to destroy.
  */
@@ -45,7 +51,12 @@ destroy_target( const struct stumpless_target *target );
 /**
  * @brief Locks the specified target for thread-safe access.
  *
- * Prevents concurrent modifications by other threads.
+ * Prevents concurrent modifications by other threads. A matching call to
+ * `unlock_target()` must be made when access is complete.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Safe
  *
  * @param target The target to lock.
  */
@@ -55,7 +66,12 @@ lock_target( const struct stumpless_target *target );
 /**
  * @brief Creates a new target object of the specified type and name.
  *
- * Allocates and initializes a new target.
+ * Allocates and initializes a new target, preparing internal fields for use.
+ * This function may return `NULL` if memory allocation fails.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Unsafe
  *
  * @param type The type of target to create.
  * @param name The name of the target.
@@ -69,6 +85,11 @@ new_target( enum stumpless_target_type type, const char *name );
  * @brief Opens an unsupported target type.
  *
  * Used internally when a target type is not implemented on the platform.
+ * Simply returns the same pointer and sets an internal error.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Unsafe
  *
  * @param target The target to open.
  *
@@ -104,7 +125,11 @@ send_entry_and_msg_to_unsupported_target( const struct stumpless_target *target,
 /**
  * @brief Handles attempts to send an entry to an unsupported target.
  *
- * Always raises a "target unsupported" error.
+ * Always raises a "target unsupported" error and returns -1.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Unsafe
  *
  * @param target The target the entry was to be sent to.
  * @param entry The entry that was to be sent.
@@ -119,7 +144,11 @@ send_entry_to_unsupported_target( const struct stumpless_target *target,
 /**
  * @brief Handles attempts to send raw message data to an unsupported target.
  *
- * Always raises a "target unsupported" error.
+ * Always raises a "target unsupported" error and returns -1.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Unsafe
  *
  * @param target The target the message was to be sent to.
  * @param msg The message string.
@@ -138,6 +167,10 @@ sendto_unsupported_target( const struct stumpless_target *target,
  *
  * Should be called during library shutdown to release all target-related
  * global resources.
+ *
+ * **Thread Safety:** MT-Unsafe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Safe
  */
 void
 target_free_global( void );
@@ -146,6 +179,10 @@ target_free_global( void );
  * @brief Frees thread-local memory used by targets.
  *
  * Should be called when a thread that used target functions exits.
+ *
+ * **Thread Safety:** MT-Conditional (thread-specific)  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Safe
  */
 void
 target_free_thread( void );
@@ -154,6 +191,10 @@ target_free_thread( void );
  * @brief Gets the value of a target option without validation.
  *
  * Internal use only — assumes the target pointer is valid.
+ *
+ * **Thread Safety:** MT-Unsafe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Safe
  *
  * @param target The target to query.
  * @param option The option identifier.
@@ -166,7 +207,11 @@ unchecked_get_option( const struct stumpless_target *target, int option );
 /**
  * @brief Unlocks the specified target.
  *
- * Releases the lock previously acquired by @ref lock_target.
+ * Releases the lock previously acquired by `lock_target()`.
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Unsafe  
+ * **Async Cancel Safety:** AC-Safe
  *
  * @param target The target to unlock.
  */
@@ -177,6 +222,10 @@ unlock_target( const struct stumpless_target *target );
  * @brief Checks whether an unsupported target is open.
  *
  * Always returns 0 (false).
+ *
+ * **Thread Safety:** MT-Safe  
+ * **Async Signal Safety:** AS-Safe  
+ * **Async Cancel Safety:** AC-Safe
  *
  * @param target The target to check.
  *
