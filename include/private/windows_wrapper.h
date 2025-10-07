@@ -32,7 +32,7 @@
  * @note This header should **only be included by internal Stumpless files**
  * that need Windows APIs.
  *
- * @since Stumpless 2.0
+ * @since release v2.0.0
  */
 
 #ifndef __STUMPLESS_PRIVATE_WINDOWS_WRAPPER_H
