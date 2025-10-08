@@ -1,4 +1,6 @@
 include("${PROJECT_SOURCE_DIR}/tools/cmake/gtest.cmake")
+# Enable internal test hooks in test builds so tests can exercise error paths
+add_compile_definitions(STUMPLESS_TEST_BUILD)
 
 if(MSVC)
   # the benefit of simple test code outweighs the burden of writing

@@ -213,4 +213,58 @@ namespace {
     EXPECT_THAT( buffer, HasSubstr( str ) );
   }
 
+  // Ensure stump_str returns an error if there is no target available
+TEST_F( LogTest, StumpStr_NoCurrentTarget_ReturnsMinusOne ) {
+  // close the buffer target created in SetUp, leaving no active target
+  stumpless_close_buffer_target( target );
+
+  // call stump_str and expect a negative result (error path)
+  const char *msg = "message with no target";
+  int result = stump_str( msg );
+  EXPECT_LT( result, 0 ) << "Expected stump_str to return a negative value when no target exists";
+
+  // restore cleanup: avoid double-free in TearDown by nulling target pointer
+  target = nullptr;
+}
+
+// Call stump_str with a NULL message: ensure no crash and function executes
+TEST_F( LogTest, StumpStr_NullMessage_DoesNotCrash ) {
+  // This test asserts the call completes; exact return value depends on implementation.
+  // We check it doesn't crash and that the return value is either success or an error code.
+  int result = stump_str( nullptr );
+
+  // Accept either success or failure, but make sure function returned (cover path).
+  SUCCEED() << "stump_str(nullptr) executed; return value = " << result;
+}
+
+// Force the add-message code-path to fail using the test stub (requires STUMPLESS_TEST_BUILD)
+#ifdef STUMPLESS_TEST_BUILD
+extern "C" int (*stumpless_test_stub_add_message_str)(struct stumpless_target *, const char *);
+
+TEST_F( LogTest, StumpStr_ForcedAddFail_ReturnsNegative ) {
+  // Make stub return a specific negative code
+  stumpless_test_stub_add_message_str = [](struct stumpless_target *, const char *) -> int {
+    return -999;
+  };
+
+  int result = stump_str( "force-fail" );
+  EXPECT_LT( result, 0 );
+
+  // Clear the stub to avoid affecting other tests
+  stumpless_test_stub_add_message_str = NULL;
+}
+#endif
+
+// Large message to exercise long-path/truncation logic
+TEST_F( LogTest, StumpStr_LongMessage ) {
+  std::string longmsg(64 * 1024, 'X'); // 64 KB
+  int result = stump_str( longmsg.c_str() );
+  EXPECT_GE( result, 0 );
+  TestRFC5424Compliance( buffer );
+  // check beginning and end fragments to avoid huge substring match
+  EXPECT_THAT( buffer, HasSubstr( longmsg.substr(0, 32) ) );
+  EXPECT_THAT( buffer, HasSubstr( longmsg.substr(longmsg.size() - 32, 32) ) );
+}
+
+
 }
