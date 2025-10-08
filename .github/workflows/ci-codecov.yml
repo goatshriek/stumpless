@@ -1,0 +1,53 @@
+name: CI + Coverage → Codecov
+
+on:
+  push:
+    branches: [ "latest", codeCoverage/log.c" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write    # needed if you choose OIDC (optional)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install tools (build + lcov)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y build-essential cmake lcov
+
+      - name: Configure (enable coverage flags)
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="--coverage" -DCMAKE_CXX_FLAGS="--coverage"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure || true   # don't fail before we capture coverage
+
+      - name: Capture coverage with lcov
+        run: |
+          # capture coverage data
+          lcov --directory build --capture --output-file coverage.info
+          # remove system and test runner files (adjust patterns as needed)
+          lcov --remove coverage.info '/usr/*' '*/test/*' --output-file coverage.info
+          lcov --list coverage.info
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.info
+          fail_ci_if_error: true
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
