@@ -322,6 +322,7 @@ stumpless_add_log( struct stumpless_target *target,
                    int priority,
                    const char *message,
                    ... ) {
+
   int result;
   va_list subs;
 
