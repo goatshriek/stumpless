@@ -24,6 +24,7 @@
 #include "private/error.h"
 #include <stddef.h>
 #include <stumpless/error.h>
+#include "private/config/wrapper/strncasecmp.h"
 
 static char *facility_enum_to_string[] = {
   STUMPLESS_FOREACH_FACILITY( GENERATE_STRING )

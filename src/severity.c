@@ -22,6 +22,7 @@
 #include "private/error.h"
 #include "private/severity.h"
 #include "private/strhelper.h"
+#include "private/config/wrapper/strncasecmp.h"
 
 static char *severity_enum_to_string[] = {
   STUMPLESS_FOREACH_SEVERITY( GENERATE_STRING )
