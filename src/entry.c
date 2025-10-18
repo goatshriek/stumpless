@@ -1497,6 +1497,20 @@ unlock_entry( const struct stumpless_entry *entry ) {
  *  @param key,value it is formatted to key="value",
  *  @return updated offset
  */
+/**
+ * @brief Appends a key-value pair to a destination buffer.
+ *
+ * Used internally to construct formatted entry strings.
+ *
+ * @param[out] dest Destination buffer where data is appended.
+ * @param[in] offset Current offset within the buffer.
+ * @param[in] key Key string to append.
+ * @param[in] key_length Length of the key string.
+ * @param[in] value Value string to append.
+ * @param[in] value_length Length of the value string.
+ * @return size_t The updated offset after appending the pair.
+ */
+
 static size_t append_key_value_pair(char *dest, size_t offset, const char *key, size_t key_length, const char *value, size_t value_length) {
   // key="
   memcpy(dest + offset, key, key_length);

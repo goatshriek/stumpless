@@ -67,6 +67,14 @@
 #include "private/validate.h"
 
 /* global static variables */
+/**
+ * @brief Converts a target type enum value to its string representation.
+ *
+ * Used internally for debugging and configuration output.
+ *
+ * @return const char* The corresponding string name of the target type.
+ */
+
 static const char *target_type_enum_to_string[] = {
   STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
 };
@@ -1266,3 +1274,4 @@ unsupported_target_is_open( const struct stumpless_target *target ) {
   raise_target_unsupported( L10N_UNSUPPORTED_TARGET_IS_OPEN_ERROR_MESSAGE );
   return 0;
 }
+
