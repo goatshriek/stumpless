@@ -23,7 +23,7 @@
 #include "private/strhelper.h"
 
 char *
-copy_cstring( const char *str ) {
+
   char *new_string;
   size_t length;
 
@@ -36,11 +36,11 @@ copy_cstring( const char *str ) {
   memcpy( new_string, str, length );
   new_string[length] = '\0';
 
-  return new_string;
+  
 }
 
 char *
-copy_cstring_with_length( const char *str, size_t *length ) {
+
   char *new_string;
 
   *length = strlen( str );
@@ -53,7 +53,7 @@ copy_cstring_with_length( const char *str, size_t *length ) {
   memcpy( new_string, str, *length );
   new_string[*length] = '\0';
 
-  return new_string;
+  
 }
 
 int
