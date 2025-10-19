@@ -1510,6 +1510,25 @@ unlock_entry( const struct stumpless_entry *entry ) {
  * @param[in] value_length Length of the value string.
  * @return size_t The updated offset after appending the pair.
  */
+/**
+ * Appends a key-value pair to the given destination buffer.
+ *
+ * This function copies the provided key and value strings into the destination
+ * buffer starting from the specified offset. It ensures that the resulting
+ * buffer is properly formatted for log entry construction.
+ *
+ * @param dest The destination buffer to append the key-value pair to.
+ * @param offset The offset within the destination buffer to start writing.
+ * @param key The key string to append.
+ * @param key_length The length of the key string.
+ * @param value The value string to append.
+ * @param value_length The length of the value string.
+ *
+ * @return The total number of bytes written to the buffer after appending.
+ *
+ * @note POSIX safety: This function performs no system calls and uses only
+ *       memory-safe operations.
+ */
 
 static size_t append_key_value_pair(char *dest, size_t offset, const char *key, size_t key_length, const char *value, size_t value_length) {
   // key="
