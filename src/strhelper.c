@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// cleaned up unused functions
 
 #include <ctype.h>
 #include <stddef.h>
@@ -69,3 +70,5 @@ strncasecmp_custom( const char *s1, const char *s2, size_t n ) {
   }
   return 0;
 }
+Minor update for pull request test
+
