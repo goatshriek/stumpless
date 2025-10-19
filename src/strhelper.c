@@ -20,7 +20,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "private/memory.h"
-#include "private/strhelper.h"
+
 
 char *
 copy_cstring( const char *str ) {
