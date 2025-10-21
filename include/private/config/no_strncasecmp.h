@@ -26,18 +26,17 @@
 #include <stddef.h>
 
 /**
- * Implements the POSIX 1-2008 function to compare two strings ignoring case
+ * Implements the POSIX 1-2008 function to compare two strings ignoring case.
  *
- * FIXME: check these:
- * **Thread Safety: MT-Safe**
- * This function is thread safe.
+ * **Thread Safety: MT-Safe race:param **
+ * This function is thread safe, provided the parameters are not changed while it is running.
  *
- * **Async Signal Safety: AS-Safe**
- * This function is safe to call from signal handlers.
+ * **Async Signal Safety: AS-Unsafe race:param locale **
+ * This function is safe to call from signal handlers due to the use of tolower.
  *
- * **Async Cancel Safety: AC-Safe**
- * This function is safe to call from threads that may be asynchronously
- * cancelled.
+ * **Async Cancel Safety: AC-Unsafe race:param locale **
+ * This function is unsafe to call from threads that may be asynchronously
+ * cancelled due to the use of tolower.
  *
  * @since release v3.0.0
  *
