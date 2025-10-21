@@ -17,7 +17,7 @@
  */
 
 /** @file
- * A wrapper for getting a string with the current timestamp.
+ * A wrapper for comparing two strings ignoring case.
  */
 
 #ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_STRNCASECMP_H
@@ -25,12 +25,13 @@
 
 #include "private/config.h"
 
-/* definition of config_get_now */
+/* definition of config_strncasecmp*/
 #ifdef HAVE_STRNCASECMP
-#  include "private/config/have_strncasecmp.h"
-#  define strncasecmp_custom strncasecmp
+#  include <strings.h>
+#  define config_strncasecmp strncasecmp
 #else
 #  include "private/config/no_strncasecmp.h"
+#  define config_strncasecmp strncasecmp_custom
 #endif
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_STRNCASECMP_H */

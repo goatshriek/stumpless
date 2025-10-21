@@ -51,18 +51,18 @@ stumpless_get_facility_enum_from_buffer( const char *facility_buffer, size_t fac
                    sizeof( facility_enum_to_string[0] );
 
   for( i = 0; i < facility_bound; i++ ) {
-    if( strncasecmp_custom( facility_buffer, facility_enum_to_string[i] + str_offset, facility_buffer_length ) == 0 ) {
+    if( config_strncasecmp( facility_buffer, facility_enum_to_string[i] + str_offset, facility_buffer_length ) == 0 ) {
       clear_error();
       return i << 3;
     }
   }
 
-  if( strncasecmp_custom( facility_buffer, "SECURITY", facility_buffer_length ) == 0 ) {
+  if( config_strncasecmp( facility_buffer, "SECURITY", facility_buffer_length ) == 0 ) {
     clear_error();
     return STUMPLESS_FACILITY_AUTH_VALUE;
   }
 
-  if( strncasecmp_custom( facility_buffer, "AUTHPRIV", facility_buffer_length ) == 0 ) {
+  if( config_strncasecmp( facility_buffer, "AUTHPRIV", facility_buffer_length ) == 0 ) {
     clear_error();
     return STUMPLESS_FACILITY_AUTH2_VALUE;
   }

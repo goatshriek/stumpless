@@ -60,20 +60,20 @@ enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *seve
                      sizeof( severity_enum_to_string[0] );
 
   for( i = 0; i < severity_bound; i++ ) {
-    if( strncasecmp_custom( severity_buffer, severity_enum_to_string[i] + str_offset, severity_buffer_length ) == 0 ) {
+    if( config_strncasecmp( severity_buffer, severity_enum_to_string[i] + str_offset, severity_buffer_length ) == 0 ) {
       return i;
     }
   }
 
-  if( strncasecmp_custom( severity_buffer, "PANIC", severity_buffer_length ) == 0 ) {
+  if( config_strncasecmp( severity_buffer, "PANIC", severity_buffer_length ) == 0 ) {
     return STUMPLESS_SEVERITY_EMERG_VALUE;
   }
 
-  if( strncasecmp_custom( severity_buffer, "ERROR", severity_buffer_length ) == 0 ) {
+  if( config_strncasecmp( severity_buffer, "ERROR", severity_buffer_length ) == 0 ) {
     return STUMPLESS_SEVERITY_ERR_VALUE;
   }
 
-  if( strncasecmp_custom( severity_buffer, "WARN", severity_buffer_length ) == 0 ) {
+  if( config_strncasecmp( severity_buffer, "WARN", severity_buffer_length ) == 0 ) {
     return STUMPLESS_SEVERITY_WARNING_VALUE;
   }
 

@@ -49,6 +49,6 @@
  *              be less than, to match, or be greater than s2.
  */
 
-int custom_strncasecmp(const char *s1, const char *s2, size_t n);
+int strncasecmp_custom(const char *s1, const char *s2, size_t n);
 
 #endif /* __STUMPLESS_PRIVATE_CONFIG_NO_STRNCASECMP_H */
