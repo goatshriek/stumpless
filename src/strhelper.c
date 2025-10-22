@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <ctype.h>
 #include <stddef.h>
 #include <string.h>
 #include "private/memory.h"
