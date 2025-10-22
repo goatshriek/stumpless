@@ -90,6 +90,7 @@ check_symbol_exists(sysconf unistd.h HAVE_UNISTD_SYSCONF)
 check_symbol_exists(vsnprintf_s stdio.h HAVE_VSNPRINTF_S)
 check_symbol_exists(wcsrtombs_s wchar.h HAVE_WCSRTOMBS_S)
 check_symbol_exists(wcstombs_s windows.h HAVE_WCSTOMBS_S)
+check_symbol_exists(strncasecmp strings.h HAVE_STRNCASECMP)
 
 # while these checks aim to distinguish between windows sockets and others,
 # we don't directly check for win32, as on win32 socket operations are handled
@@ -326,6 +327,13 @@ endif()
 
 if(NEED_FALLBACK)
   list(APPEND STUMPLESS_SOURCES "${PROJECT_SOURCE_DIR}/src/config/fallback.c")
+endif()
+
+if(NOT HAVE_STRNCASECMP)
+  list(
+    APPEND STUMPLESS_SOURCES
+    "${PROJECT_SOURCE_DIR}/src/config/no_strncasecmp.c"
+  )
 endif()
 
 

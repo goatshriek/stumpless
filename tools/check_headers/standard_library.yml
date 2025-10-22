@@ -182,6 +182,7 @@
 "strlen":
   - "cstring"
   - "string.h"
+"strncasecmp": "strings.h"
 "strncpy": "string.h"
 "strncpy_s": "string.h"
 "strtol": "stdlib.h"

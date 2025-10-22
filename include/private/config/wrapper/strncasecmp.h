@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * Copyright 2018-2022 Joel E. Anderson
+ * Copyright 2025 Michael Hinz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
  * limitations under the License.
  */
 
-#ifndef __STUMPLESS_PRIVATE_STRHELPER_H
-#  define __STUMPLESS_PRIVATE_STRHELPER_H
-
-#  include <stddef.h>
-
-/**
- * Stringifies the first argument and adds a comma afterwards, and ignores the
- * second argument. Useful in FOREACH macros used to define enumerations,
- * particularly for conversion to string functionality.
+/** @file
+ * A wrapper for comparing two strings ignoring case.
  */
-#  define GENERATE_STRING( STRING, INDEX ) #STRING,
 
-char *
-copy_cstring( const char *str );
+#ifndef __STUMPLESS_PRIVATE_CONFIG_WRAPPER_STRNCASECMP_H
+#define __STUMPLESS_PRIVATE_CONFIG_WRAPPER_STRNCASECMP_H
 
-char *
-copy_cstring_with_length( const char *str, size_t *length );
+#include "private/config.h"
 
-#endif /* __STUMPLESS_PRIVATE_STRHELPER_H */
+/* definition of config_strncasecmp*/
+#ifdef HAVE_STRNCASECMP
+#  include <strings.h>
+#  define config_strncasecmp strncasecmp
+#else
+#  include "private/config/no_strncasecmp.h"
+#  define config_strncasecmp strncasecmp_custom
+#endif
+
+#endif /* __STUMPLESS_PRIVATE_CONFIG_WRAPPER_STRNCASECMP_H */
