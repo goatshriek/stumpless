@@ -81,6 +81,7 @@
 "HAVE_GMTIME": "private/config.h"
 "HAVE_PTHREAD_H": "private/config.h"
 "HAVE_STRNCPY_S": "private/config.h"
+"HAVE_STRNCASECMP": "private/config.h"
 "HAVE_VSNPRINTF_S": "private/config.h"
 "HAVE_WCSRTOMBS_S": "private/config.h"
 "init_fields": "private/target/journald.h"
