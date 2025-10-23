@@ -1,11 +1,11 @@
 # Portability in Stumpless
-Stumpless is built to be compact and efficient, making it an excellent option in
-embedded scenarios. This means that portability is a key factor of the design:
-in order to work in constrained environments it must be able to handle a variety
-of situations that don't arise in standard desktop or server environments.
+Stumpless is built to be compact and efficient, with embedded systems in mind.
+This means that portability is a key factor of the design: in order to work in
+constrained environments it must be able to handle a variety of situations
+that don't arise in desktop or server environments.
 
 Stumpless follows a few key design principles in order to be feature-rich and
-easy to maintain while remaining as portable as possible:
+easy to maintain while remaining portable:
  * **No `#ifdef` directives are allowed in source (`.c`) files.**
    Source code with preprocesor directives that add, alter, or remove
    functionality are easy to add, but scatter configuration-specific behavior
@@ -44,7 +44,7 @@ available in this build. A complete list of the symbols in this header can be
 found in the
 [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/).
 
-However, this header does not include information needed to make some internal
+However, this header does not include information used to make some internal
 code decisions. For example, the public header will not indicate whether a
 particular header was available during the system build. For this type of
 information there is a second configuration file, `private/config.h`, which
@@ -61,13 +61,14 @@ established convention for how to do this: the wrapper headers and `config`
 family of functions.
 
 
-## The Wrapper Header and `config` Functions
-One header in particular in the private include file list deserves special
-mention: `private/config/wrapper.h`. This file contains definitions of a number
-of functions and symbols all starting with `config_` that wrap configuration
-specific functionality. This header is then all that library code needs to
-include in order to use this functionality, without needing to check all
-possible configuration combinations.
+## The Wrapper Headers and `config` Functions
+One group of headers in particular in the private include files provides the
+portability to the rest of the library: those in `private/config/wrapper/`.
+These wrappers are named after the configuration item that they wrap, and each
+one contains definitions of functions and symbols all starting with `config_`
+that wrap configuration specific functionality. Library code that needs to use
+use the relevant functionality can just include the correct wrapper, without
+needing to handle all possible configuration combinations.
 
 This is easier to understand with an example. Let's look at the code used to
 determine whether Microsoft's "safe" version of the `fopen` library call should
