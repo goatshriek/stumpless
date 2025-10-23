@@ -26,16 +26,14 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "స్థానిక యునిక్స్ సాకెట్కు బంధించబడలేదు"
 
-// todo translate
 #  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
-"buffer used to store the message"
+"సందేశాన్ని నిల్వ చేయడానికి ఉపయోగించే బఫర్"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "ఇచ్చిన సందేశానికి బఫర్ చాలా చిన్నది"
 
-// todo translate
 #  define L10N_CHAIN_TARGETS_UNSUPPORTED \
-"chain targets are not supported by this build"
+"ఈ బిల్డ్ ద్వారా చైన్ లక్ష్యాలకు మద్దతు లేదు"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "మద్దతు లేని లక్ష్య రకాన్ని మూసివేయడానికి ప్రయత్నించారు"
@@ -217,9 +215,8 @@ ARG_NAME " శూన్యం"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "విన్సాక్2 సాకెట్తో పంపడం విఫలమైంది"
 
-// todo translate
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"తీవ్రత రంగులు స్ట్రీమ్ లక్ష్యాలకు మాత్రమే మద్దతు ఉన్నాయి"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "సాకెట్ తెరవడంలో విఫలమైంది"
