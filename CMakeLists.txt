@@ -620,6 +620,17 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 
+# small helper target for quick local checks
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/check_severity.c")
+  add_executable(check_severity "${PROJECT_SOURCE_DIR}/tools/check_severity.c")
+  target_link_libraries(check_severity PRIVATE stumpless)
+  target_include_directories(check_severity PRIVATE
+    "${PROJECT_SOURCE_DIR}/include"
+    "${PROJECT_BINARY_DIR}/include"
+  )
+endif()
+
+
 # installation of examples if enabled
 if(INSTALL_EXAMPLES)
   install(

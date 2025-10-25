@@ -1,21 +1,3 @@
-// SPDX-License-Identifier: Apache-2.0
-
-/*
- * Copyright 2018-2022 Joel E. Anderson
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 #include <stddef.h>
 #include <string.h>
 #include <stumpless/severity.h>
@@ -25,70 +7,57 @@
 #include "private/config/wrapper/strncasecmp.h"
 
 static char *severity_enum_to_string[] = {
-  STUMPLESS_FOREACH_SEVERITY( GENERATE_STRING )
+    STUMPLESS_FOREACH_SEVERITY(GENERATE_STRING)};
+
+/* helper alias mapping */
+struct severity_alias
+{
+  const char *name;
+  enum stumpless_severity value;
 };
 
-const char *
-stumpless_get_severity_string( enum stumpless_severity severity ) {
-  if ( !severity_is_invalid( severity ) ) {
-    clear_error(  ); 
-    return severity_enum_to_string[severity];
+static struct severity_alias aliases[] = {
+    {"PANIC", STUMPLESS_SEVERITY_EMERG_VALUE},
+    {"ERROR", STUMPLESS_SEVERITY_ERR_VALUE},
+    {"WARN", STUMPLESS_SEVERITY_WARNING_VALUE}};
+
+enum stumpless_severity
+stumpless_get_severity_enum_from_buffer(const char *severity_buffer, size_t severity_buffer_length)
+{
+  if (!severity_buffer || severity_buffer_length == 0)
+  {
+    raise_argument_empty("severity buffer");
+    return -1;
   }
 
-  raise_invalid_severity( severity );
-  return "NO_SUCH_SEVERITY";
-}
+  clear_error();
 
-enum stumpless_severity stumpless_get_severity_enum(const char *severity_string) {
-  enum stumpless_severity severity_val = stumpless_get_severity_enum_from_buffer(severity_string, strlen(severity_string));
-  if ( severity_is_invalid( severity_val ) ) {
-    raise_invalid_severity( severity_val );
-  } else {
-    clear_error(  );
-  }
-  return severity_val;
-}
+  const size_t severity_bound = sizeof(severity_enum_to_string) / sizeof(severity_enum_to_string[0]);
+  const size_t str_offset = 19; // skip "STUMPLESS_SEVERITY_"
 
-enum stumpless_severity stumpless_get_severity_enum_from_buffer(const char *severity_buffer, size_t severity_buffer_length) {
-  size_t severity_bound;
-  size_t i;
-  const int str_offset = 19; // to ommit "STUMPLESS_SEVERITY_"
+  for (size_t i = 0; i < severity_bound; i++)
+  {
+    const char *name = severity_enum_to_string[i] + str_offset;
+    size_t name_len = strlen(name);
 
-  clear_error(  );
-  
-  severity_bound = sizeof( severity_enum_to_string ) /
-                     sizeof( severity_enum_to_string[0] );
-
-  for( i = 0; i < severity_bound; i++ ) {
-    if( config_strncasecmp( severity_buffer, severity_enum_to_string[i] + str_offset, severity_buffer_length ) == 0 ) {
+    /* only accept exact-length matches */
+    if (severity_buffer_length == name_len &&
+        config_strncasecmp(severity_buffer, name, severity_buffer_length) == 0)
+    {
       return i;
     }
   }
 
-  if( config_strncasecmp( severity_buffer, "PANIC", severity_buffer_length ) == 0 ) {
-    return STUMPLESS_SEVERITY_EMERG_VALUE;
+  /* check aliases */
+  for (size_t i = 0; i < sizeof(aliases) / sizeof(aliases[0]); i++)
+  {
+    if (severity_buffer_length == strlen(aliases[i].name) &&
+        config_strncasecmp(severity_buffer, aliases[i].name, severity_buffer_length) == 0)
+    {
+      return aliases[i].value;
+    }
   }
 
-  if( config_strncasecmp( severity_buffer, "ERROR", severity_buffer_length ) == 0 ) {
-    return STUMPLESS_SEVERITY_ERR_VALUE;
-  }
-
-  if( config_strncasecmp( severity_buffer, "WARN", severity_buffer_length ) == 0 ) {
-    return STUMPLESS_SEVERITY_WARNING_VALUE;
-  }
-
-  raise_invalid_severity( -1 );
+  raise_invalid_severity(-1);
   return -1;
-}
-
-/* private functions */
-
-int
-get_severity( int prival ) {
-  return prival & 0x7;
-}
-
-int
-severity_is_invalid( int severity ) {
-  return severity < 0 || severity > 7;
 }
