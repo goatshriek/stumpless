@@ -196,6 +196,12 @@ stumpless_add_entry( struct stumpless_target *target,
   VALIDATE_ARG_NOT_NULL_INT_RETURN( target );
   VALIDATE_ARG_NOT_NULL_INT_RETURN( entry );
 
+
+if( !target || !entry ) {
+  stumpless_set_error( STUMPLESS_ARGUMENT_EMPTY, "target or entry pointer is NULL" );
+  return STUMPLESS_ARGUMENT_EMPTY;
+}
+
   if( unlikely( !target->id ) ) {
     raise_invalid_id(  );
     return -1;
