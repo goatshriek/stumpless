@@ -41,8 +41,12 @@
  * @return A pointer to the allocated memory block, or NULL if the allocation
  *         fails. If allocation fails, it triggers a memory allocation failure
  *         error.
+ *
+ * @error STUMPLESS_MEMORY_ALLOCATION_FAILURE_ERROR
+ *         Raised if memory allocation fails.
  */
 void *alloc_mem( size_t size );
+
 
 /**
  * Frees a previously allocated block of memory.
