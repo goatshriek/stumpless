@@ -22,6 +22,31 @@
 #  include <stddef.h>
 #  include <stumpless/param.h>
 
+
+/**
+ * Locks the internal mutex of the given parameter.
+ *
+ * Acquires exclusive access to the specified `stumpless_param` so that no
+ * other thread may read or modify it concurrently. This must be paired with
+ * a later call to `unlock_param()` by the same thread. The function does not
+ * perform NULL or ownership checks and should only be used on initialized
+ * parameters.
+ *
+ * **Thread Safety: MT-Safe**
+ * Coordinates concurrent access using the parameter's mutex; only one thread
+ * may hold the lock at a time.
+ *
+ * **Async Signal Safety: AS-Unsafe (lock)**
+ * Not safe to call from signal handlers due to the use of non-reentrant
+ * mutex operations.
+ *
+ * **Async Cancel Safety: AC-Unsafe (lock)**
+ * May block or leave the mutex locked if a thread is asynchronously
+ * cancelled while waiting for the lock.
+ *
+ * @param param The parameter whose internal lock to acquire. Must not be NULL
+ *              and must not already be locked by the same thread.
+ */
 void
 lock_param( const struct stumpless_param *param );
 
