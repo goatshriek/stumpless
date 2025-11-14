@@ -30,6 +30,26 @@
  */
 #  define MAX_INT_SIZE 50
 
+/**
+ * Converts a `size_t` value to an `int`, capping at `INT_MAX` if necessary.
+ *
+ * This helper prevents integer overflow when a `size_t` value must be used
+ * in an interface that accepts only signed integers. If `val` exceeds
+ * `INT_MAX`, the function returns `INT_MAX`; otherwise it returns `(int) val`.
+ *
+ * **Thread Safety: MT-Safe**
+ * Performs only arithmetic on the provided argument; uses no shared state.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * Contains only simple arithmetic and comparison; safe for use in signal
+ * handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * Contains no cancellation points.
+ *
+ * @param val The non-negative value to convert.
+ * @return `(int) val` when within range, or `INT_MAX` if capped.
+ */
 int
 cap_size_t_to_int( size_t val );
 
