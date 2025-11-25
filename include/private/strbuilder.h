@@ -27,10 +27,53 @@ struct strbuilder {
   char *buffer_end;
 };
 
+/**
+ * Appends a character buffer.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param buffer The character buffer to append to the string.
+ * @param size The number of bytes to copy from the character buffer.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
 strbuilder_append_buffer( struct strbuilder *builder,
                           const char *buffer, size_t size );
 
+/**
+ * Appends a char value.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param c The character to append to the string.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
 strbuilder_append_char( struct strbuilder *builder, char c );
 
@@ -39,7 +82,7 @@ strbuilder_append_char( struct strbuilder *builder, char c );
  * zero. If it is negative, a negative sign is NOT included in the sequence of
  * appended characters.
  *
- * **Thread Safety: MT-Safe**
+ * **Thread Safety: MT-Unsafe**
  * This function is not thread safe.
  *
  * **Async Signal Safety: AS-Unsafe heap**
@@ -60,19 +103,109 @@ strbuilder_append_char( struct strbuilder *builder, char c );
 struct strbuilder *
 strbuilder_append_positive_int( struct strbuilder *builder, int i );
 
+/**
+ * Appends a string.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ *
+ * @param builder The strbuilder to append the characters to.
+ *
+ * @param str The NULL terminated string to append to the buffer.
+ *
+ * @return The modified builder if no error is encountered. If an error is
+ * encountered, then NULL is returned and an error code is set appropriately.
+ */
 struct strbuilder *
 strbuilder_append_string( struct strbuilder *builder,
                           const char *str );
 
+/**
+ * Frees all memory associated with any string builders that have been created.
+ * Releases memory associated with the cache and also any buffers within each
+ * item in the cache (via the teardown function).
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ */
 void
 strbuilder_free_all( void );
 
+/**
+ * Gets the buffer output from the string builder, returning the length of the
+ * buffer in the supplied length parameter.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe**
+ * Mostly AS-Safe but there is an opportunity for tearing which could result
+ * in a nonsensical length.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ *
+ * @param builder The strbuilder to append the characters to.
+ * @param length A pointer to a variable that will be set to the length
+ * of the string. Must not be NULL.
+ *
+ * @return A pointer to the complete buffer.
+ */
 char *
 strbuilder_get_buffer( struct strbuilder *builder, size_t *length );
 
+/**
+ * Destroys a specific string builder but does not free the associated memory.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock and possibly memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked and the possible
+ * use of memory management functions.
+ *
+ * @param builder The strbuilder to destroy.
+ */
 void
 strbuilder_destroy( const struct strbuilder *builder );
 
+/**
+ * Creates a string builder.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+ * **Async Signal Safety: AS-Unsafe lock heap**
+ * This function is not safe to call from signal handlers due to the use of a
+ * non-reentrant lock and possibly memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe lock heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled due to the use of a lock that could be left locked and the possible
+ * use of memory management functions.
+ *
+ * @return The new string builder.
+ */
 struct strbuilder *
 strbuilder_new( void );
 
@@ -89,6 +222,22 @@ strbuilder_new( void );
 struct strbuilder *
 strbuilder_reset( struct strbuilder *builder );
 
+/**
+ * Converts a string builder to a NULL terminated string.
+ *
+ * **Thread Safety: MT-Unsafe**
+ * This function is not thread safe.
+ *
+* **Async Signal Safety: AS-Unsafe heap**
+ * This function is not safe to call from signal handlers due to the potential
+ * use of memory management functions.
+ *
+ * **Async Cancel Safety: AC-Unsafe heap**
+ * This function is not safe to call from threads that may be asynchronously
+ * cancelled, due to the potential use of memory management functions.
+ *
+ * @return The new string builder.
+ */
 char *
 strbuilder_to_string( const struct strbuilder *builder );
 
