@@ -1,1 +1,2 @@
 Hello this is my first github file. 
+Adding more content inside notes.txt 
