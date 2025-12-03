@@ -40,6 +40,25 @@
 int
 get_severity( int prival );
 
+/**
+ * Identifies whether the supplied severity is within the range of valid severities.
+ *
+ * A valid severity is any severity between 0 and 7 inclusive.
+ *
+ * **Thread Safety: MT-Safe**
+ * This function is thread safe.
+ *
+ * **Async Signal Safety: AS-Safe**
+ * This function is safe to call from signal handlers.
+ *
+ * **Async Cancel Safety: AC-Safe**
+ * This function is safe to call from threads that may be asynchronously
+ * cancelled.
+ *
+ * @param severity The severity to check the validity of.
+ *
+ * @return Non-zero if invalid; 0 if valid.
+ */
 int
 severity_is_invalid( int severity );
 
