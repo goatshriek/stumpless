@@ -70,7 +70,14 @@ struct fixed_fields {
 /* per-thread static variables */
 static CONFIG_THREAD_LOCAL_STORAGE struct iovec *fields = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t fields_length = 0;
-static CONFIG_THREAD_LOCAL_STORAGE struct fixed_fields *fixed_fields = NULL;
+static CONFIG_THREAD_LOCAL_STORAGE struct fixed_fields fixed_fields = {
+  .priority = "PRIORITY=",
+  .facility = "SYSLOG_FACILITY=",
+  .timestamp = "SYSLOG_TIMESTAMP=",
+  .identifier = "SYSLOG_IDENTIFIER=",
+  .pid = "SYSLOG_PID=",
+  .msgid = "SYSLOG_MSGID=",
+};
 static CONFIG_THREAD_LOCAL_STORAGE char *message_buffer = NULL;
 static CONFIG_THREAD_LOCAL_STORAGE size_t message_buffer_length = 0;
 static CONFIG_THREAD_LOCAL_STORAGE char *sd_buffer = NULL;
@@ -202,34 +209,10 @@ init_fields( size_t field_count ) {
 }
 
 void
-init_fixed_fields( void ){
-  fixed_fields = alloc_mem( sizeof( *fixed_fields ) );
-  if( !fixed_fields ) {
-    return;
-  }
-
-  memcpy( fixed_fields->priority, "PRIORITY=", PRIORITY_PREFIX_SIZE );
-  memcpy( fixed_fields->facility, "SYSLOG_FACILITY=", FACILITY_PREFIX_SIZE );
-  memcpy( fixed_fields->timestamp, "SYSLOG_TIMESTAMP=", TIMESTAMP_PREFIX_SIZE );
-  memcpy( fixed_fields->identifier, "SYSLOG_IDENTIFIER=",
-          IDENTIFIER_PREFIX_SIZE );
-  memcpy( fixed_fields->pid, "SYSLOG_PID=", PID_PREFIX_SIZE );
-  memcpy( fixed_fields->msgid, "SYSLOG_MSGID=", MSGID_PREFIX_SIZE );
-
-  if( fields ) {
-    set_field_bases(  );
-  }
-
-}
-
-void
 journald_free_thread( void ) {
   free_mem( fields );
   fields = NULL;
   fields_length = 0;
-
-  free_mem( fixed_fields );
-  fixed_fields = NULL;
 
   free_mem( message_buffer );
   message_buffer = NULL;
@@ -246,11 +229,11 @@ load_facility( const struct stumpless_entry *entry ) {
 
   facility_val = get_facility( entry->prival ) >> 3;
   if( facility_val <= 9 ) {
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = facility_val + 48;
+    fixed_fields.facility[FACILITY_PREFIX_SIZE] = facility_val + 48;
     fields[1].iov_len = 17;
   } else {
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val / 10 ) + 48;
-    fixed_fields->facility[FACILITY_PREFIX_SIZE] = ( facility_val % 10 ) + 48;
+    fixed_fields.facility[FACILITY_PREFIX_SIZE] = ( facility_val / 10 ) + 48;
+    fixed_fields.facility[FACILITY_PREFIX_SIZE] = ( facility_val % 10 ) + 48;
     fields[1].iov_len = 18;
   }
 
@@ -258,7 +241,7 @@ load_facility( const struct stumpless_entry *entry ) {
 
 void
 load_identifier( const struct stumpless_entry *entry ) {
-  memcpy( fixed_fields->identifier + IDENTIFIER_PREFIX_SIZE,
+  memcpy( fixed_fields.identifier + IDENTIFIER_PREFIX_SIZE,
           entry->app_name,
           entry->app_name_length );
   fields[3].iov_len = IDENTIFIER_PREFIX_SIZE + entry->app_name_length;
@@ -288,7 +271,7 @@ load_message( const struct stumpless_entry *entry ) {
 
 void
 load_msgid( const struct stumpless_entry *entry ) {
-  memcpy( fixed_fields->msgid + MSGID_PREFIX_SIZE,
+  memcpy( fixed_fields.msgid + MSGID_PREFIX_SIZE,
           entry->msgid,
           entry->msgid_length );
   fields[5].iov_len = MSGID_PREFIX_SIZE + entry->msgid_length;
@@ -303,7 +286,7 @@ load_pid( void ) {
 
   pid = config_getpid();
   if( pid == 0 ) {
-    fixed_fields->pid[PID_PREFIX_SIZE] = '0';
+    fixed_fields.pid[PID_PREFIX_SIZE] = '0';
     pid_size = 1;
   } else {
     pid_size = 0;
@@ -315,7 +298,7 @@ load_pid( void ) {
     }
 
     while( digit_count > 0 ) {
-      fixed_fields->pid[PID_PREFIX_SIZE + pid_size] = digits[--digit_count];
+      fixed_fields.pid[PID_PREFIX_SIZE + pid_size] = digits[--digit_count];
       pid_size++;
     }
   }
@@ -328,7 +311,7 @@ load_priority( const struct stumpless_entry *entry ) {
   char severity;
 
   severity = get_severity( entry->prival ) + 48;
-  fixed_fields->priority[PRIORITY_PREFIX_SIZE] = severity;
+  fixed_fields.priority[PRIORITY_PREFIX_SIZE] = severity;
 }
 
 size_t
@@ -419,7 +402,7 @@ size_t
 load_timestamp( void ) {
   char *timestamp;
 
-  timestamp = fixed_fields->timestamp + TIMESTAMP_PREFIX_SIZE;
+  timestamp = fixed_fields.timestamp + TIMESTAMP_PREFIX_SIZE;
   return TIMESTAMP_PREFIX_SIZE + config_get_now( timestamp );
 }
 
@@ -430,13 +413,6 @@ send_entry_to_journald_target( const struct stumpless_target *target,
   size_t pid_size;
   size_t field_count;
   int sendv_result;
-
-  if( !fixed_fields ) {
-    init_fixed_fields(  );
-    if( !fixed_fields ) {
-      goto fail;
-    }
-  }
 
   timestamp_size = load_timestamp(  );
   pid_size = load_pid(  );
@@ -471,17 +447,16 @@ send_entry_to_journald_target( const struct stumpless_target *target,
 
 fail_locked:
   unlock_entry( entry );
-fail:
   return -1;
 }
 
 void
 set_field_bases( void ) {
-  fields[0].iov_base = fixed_fields->priority;
+  fields[0].iov_base = fixed_fields.priority;
   fields[0].iov_len = 10;
-  fields[1].iov_base = fixed_fields->facility;
-  fields[2].iov_base = fixed_fields->timestamp;
-  fields[3].iov_base = fixed_fields->identifier;
-  fields[4].iov_base = fixed_fields->pid;
-  fields[5].iov_base = fixed_fields->msgid;
+  fields[1].iov_base = fixed_fields.facility;
+  fields[2].iov_base = fixed_fields.timestamp;
+  fields[3].iov_base = fixed_fields.identifier;
+  fields[4].iov_base = fixed_fields.pid;
+  fields[5].iov_base = fixed_fields.msgid;
 }
