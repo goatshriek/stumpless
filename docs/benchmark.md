@@ -68,9 +68,6 @@ static void CopyElement(benchmark::State& state){
   const struct stumpless_element *result;
 
   INIT_MEMORY_COUNTER( copy_element );
-  stumpless_set_malloc( copy_element_memory_counter_malloc );
-  stumpless_set_realloc( copy_element_memory_counter_realloc );
-  stumpless_set_free( copy_element_memory_counter_free );
 
   element = stumpless_new_element( "copy-element-perf" );
   stumpless_add_new_param( element, "param-1", "value-1" );
@@ -78,20 +75,17 @@ static void CopyElement(benchmark::State& state){
 
   for(auto _ : state){
     result = stumpless_copy_element( element );
-    if( result <= 0 ) {
-      state.SkipWithError( "could not send an entry to the target" );
+    if( !result ) {
+      state.SkipWithError( "the element copy failed" );
     } else {
       stumpless_destroy_element_and_contents( result );
     }
   }
 
   stumpless_destroy_element_and_contents( element );
+  stumpless_free_all(  );
 
-  state.counters["CallsToAlloc"] = ( double ) copy_element_memory_counter.malloc_count;
-  state.counters["MemoryAllocated"] = ( double ) copy_element_memory_counter.alloc_total;
-  state.counters["CallsToRealloc"] = ( double ) copy_element_memory_counter.realloc_count;
-  state.counters["CallsToFree"] = ( double ) copy_element_memory_counter.free_count;
-  state.counters["MemoryFreed"] = ( double ) copy_element_memory_counter.free_total;
+  SET_STATE_COUNTERS( state, copy_element );
 }
 ```
 
