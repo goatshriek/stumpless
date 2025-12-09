@@ -73,26 +73,6 @@ void
 init_fields( size_t field_count );
 
 /**
- * Allocates the memory for the buffer to hold the fixed fields.
- *
- * **Thread Safety: MT-Safe**
- * This function is thread safe as it operates only on the active thread's
- * resources.
- *
- * **Async Signal Safety: AS-Unsafe heap**
- * This function is not safe to call from signal handlers due to the use of
- * the memory allocation function to allocate memory.
- *
- * **Async Cancel Safety: AC-Unsafe heap**
- * This function is not safe to call from threads that may be asynchronously
- * cancelled, as the memory allocation function may not be AC-Safe itself.
- *
- * @since release v2.1.0
- */
-void
-init_fixed_fields( void );
-
-/**
  * Destroys all thread-specific resources created to support journald.
  *
  * **Thread Safety: MT-Safe**
