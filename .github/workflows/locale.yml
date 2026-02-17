@@ -39,6 +39,8 @@ jobs:
           - "te_IN.UTF-8"
           - "tr_TR.UTF-8"
           - "zh_CN.UTF-8"
+          - "ga_IE.UTF-8"
+
     env:
       LANG: ${{ matrix.lang }}
     steps:

@@ -69,6 +69,9 @@
 #  include "private/config/locale/ko-kr.h"
 #elif defined USE_LOCALE_AR_EG
 #  include "private/config/locale/ar-eg.h"
+#elif defined USE_LOCALE_GA_IE
+#  include "private/config/locale/ga-ie.h"
+
 #else
 #  include "private/config/locale/en-us.h"
 #endif
