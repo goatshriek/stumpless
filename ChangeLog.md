@@ -23,7 +23,8 @@ fixes, check out the
    thread safety tests (default is ON).
  - `BUILD_BENCHMARKING` CMake option controls the building of the performance
    tests (default is OFF).
-
+ - Function tests for `cap_size_t_to_int` and `size_t_to_int`.
+ 
 ### Changed
  - Refactor:
    * `stumpless_param_to_string`
