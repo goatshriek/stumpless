@@ -9,6 +9,11 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
+## [Unreleased]
+### Added
+ - Localization for Traditional Chinese (zh-Hant).
+
+
 ## [3.0.0] - 2024-11-28
 ### Added
  - Colorization of output in stream targets via ANSI color codes, along with
