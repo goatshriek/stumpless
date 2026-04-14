@@ -22,16 +22,14 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "bind con socket locale unix fallita"
 
-// todo translate
 #  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
-"buffer used to store the message"
+"buffer utilizzato per memorizzare il messaggio"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "il buffer è troppo piccolo per il messaggio"
 
-// todo translate
 #  define L10N_CHAIN_TARGETS_UNSUPPORTED \
-"chain targets are not supported by this build"
+"i target a catena non sono supportati in questa build"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "tentativo di chiusura di un target non supportato"
@@ -116,9 +114,8 @@
 "un valore MULTI_SZ nel registro non è nè vuoto nè terminato con due" \
 " caratteri nullo"
 
-// todo translate
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
-"the string is not of the name=\"value\" format"
+"la stringa non è nel formato nome=\"valore\""
 
 #  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
 "prival non valido"
@@ -134,9 +131,8 @@
 "i codici gravità devono essere definiti in osservanza del RFC 5424: tra 0" \
 " e 7, compreso"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"stato non valido raggiunto durante l'analisi della stringa UTF-8"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "il tipo di target è incompatibile con questa operazione"
@@ -172,9 +168,8 @@
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
 "gethostbyname[2] e inet_pton fallita realizzare il nome"
 
-// todo translate
 #  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
-"the network connection is closed"
+"la connessione di rete è chiusa"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "il protocollo di rete non è supportato"
@@ -221,9 +216,8 @@ ARG_NAME " era NULL"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "send fallita con un socket winsock2"
 
-// todo translate
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"i colori di gravità sono supportati solo per i target di tipo stream"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "fallita apertura di un socket"
@@ -231,45 +225,35 @@ ARG_NAME " era NULL"
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"la registrazione per Stumpless di Windows Event Log Source"
 
-// todo translate
 #  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
-"could not bind " PARAM " to the statement"
+"impossibile associare " PARAM " allo statement"
 
-// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
-"the database was busy and could not complete the transaction"
+"il database era occupato e non ha potuto completare la transazione"
 
-// todo translate
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
-"could not close the sqlite3 database"
+"impossibile chiudere il database sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"a custom callback for prepared statements failed"
+"una callback personalizzata per le istruzioni preparate è fallita"
 
-// todo translate
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
-"could not open the sqlite3 database"
+"impossibile aprire il database sqlite3"
 
-// todo translate
 #  define L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE \
-"sqlite3_prepare_v2 failed"
+"sqlite3_prepare_v2 fallito"
 
-// todo translate
 #  define L10N_SQLITE3_RESULT_CODE_TYPE \
-"the return code of the failed sqlite3 call"
+"il codice di errore della chiamata sqlite3 fallita"
 
-// todo translate
 #  define L10N_SQLITE3_RETRY_COUNT_CODE_TYPE \
-"the number of times the operation was retried"
+"il numero di volte che l'operazione è stata riprovata"
 
-// todo translate
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
-"sqlite3_step failed"
+"sqlite3_step fallito"
 
-// todo translate
 #  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
-"sqlite3 targets are not supported by this build"
+"i target sqlite3 non sono supportati in questa build"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "non è stato possibile scrivere al stream"
