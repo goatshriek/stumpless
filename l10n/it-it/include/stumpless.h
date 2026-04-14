@@ -258,7 +258,6 @@
 
 #ifdef STUMPLESS_WINDOWS_EVENT_LOG_TARGETS_SUPPORTED
 /** @example wel_example.c
- * Demonstrates how to work with a Windows Event Log target.
  * Dimostra come lavorare con il Windows Event Log come target.
  */
 
