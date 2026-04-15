@@ -2697,6 +2697,28 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetProcid, MallocFailureOnStrbuilder ) {
+    void * (*set_malloc_result)(size_t);
+    const char *procid;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    procid = stumpless_get_entry_procid( entry );
+    EXPECT_NULL( procid );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetProcid, SetValue ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
@@ -2869,6 +2891,28 @@ namespace {
     EXPECT_NULL( hostname );
   }
 
+  TEST( GetHostName, MallocFailureOnStrbuilder ) {
+    void * (*set_malloc_result)(size_t);
+    const char *hostname;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    hostname = stumpless_get_entry_hostname( entry );
+    EXPECT_NULL( hostname );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetHostName, SetValue ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
@@ -3022,7 +3066,7 @@ namespace {
     stumpless_destroy_entry_and_contents(large_entry);
   }
 
-TEST( EntryDestructTest, FreeUncachedEntry ) {
+  TEST( EntryDestructTest, FreeUncachedEntry ) {
 
   struct stumpless_entry *original = create_empty_entry();
   ASSERT_NE(original, nullptr);
@@ -3033,5 +3077,349 @@ TEST( EntryDestructTest, FreeUncachedEntry ) {
 
   stumpless_destroy_entry_only(&manual);
 }
+
+  TEST( EntryToBufferTest, AppendBufferWithElements ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_add_new_element( entry, "element-one" );
+    stumpless_add_new_param_to_entry( entry,
+                                      "element-one",
+                                      "param-name",
+                                      "param-value" );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( "test-app" ) );
+    EXPECT_THAT( buffer, testing::HasSubstr( "element-one" ) );
+    EXPECT_THAT( buffer, testing::HasSubstr( "param-name" ) );
+    EXPECT_THAT( buffer, testing::HasSubstr( "param-value" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, AppendEmptyMessage ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     NULL );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_entry_message( entry, NULL );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, AppendStructuredData ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_add_new_element( entry, "test-element" );
+    stumpless_add_new_param_to_entry( entry,
+                                      "test-element",
+                                      "test-param",
+                                      "test-value" );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( "[test-element test-param=\"test-value\"]" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, AppendStructuredDataEmpty ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( "- " ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, AppendStructuredDataMultipleElements ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_add_new_element( entry, "element-a" );
+    stumpless_add_new_param_to_entry( entry,
+                                      "element-a",
+                                      "param-a",
+                                      "value-a" );
+
+    stumpless_add_new_element( entry, "element-b" );
+    stumpless_add_new_param_to_entry( entry,
+                                      "element-b",
+                                      "param-b",
+                                      "value-b" );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( "[element-a param-a=\"value-a\"]" ) );
+    EXPECT_THAT( buffer, testing::HasSubstr( "[element-b param-b=\"value-b\"]" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, LongMessage ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    const char *long_message = "This is a very long message that should thoroughly test the "
+                                "buffer's ability to handle large entries. "
+                                "It contains multiple words and should trigger the internal "
+                                "buffer expansion logic.";
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     NULL );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_entry_message( entry, long_message );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( long_message ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, MultiByteCharacters ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    const char *message_with_multibyte = "Hello 你好 мир";
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     NULL );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_entry_message( entry, message_with_multibyte );
+    EXPECT_NO_ERROR;
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, PrivalFormatting ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( buffer, testing::HasSubstr( "<14>" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, Rfc5424Format ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    char read_buffer[2048];
+    size_t read_result;
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_entry_hostname( entry, "test-host" );
+    stumpless_set_entry_procid( entry, "1234" );
+    stumpless_add_new_element( entry, "sd-element" );
+    stumpless_add_new_param_to_entry( entry,
+                                      "sd-element",
+                                      "key",
+                                      "value" );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+    EXPECT_NO_ERROR;
+
+    read_result = stumpless_read_buffer( target, read_buffer, sizeof( read_buffer ) );
+    EXPECT_GT( read_result, 0 );
+
+    EXPECT_THAT( read_buffer, testing::HasSubstr( "<14>1 " ) );
+    EXPECT_THAT( read_buffer, testing::HasSubstr( "test-host " ) );
+    EXPECT_THAT( read_buffer, testing::HasSubstr( "test-app " ) );
+    EXPECT_THAT( read_buffer, testing::HasSubstr( "test-msgid " ) );
+    EXPECT_THAT( read_buffer, testing::HasSubstr( "[sd-element key=\"value\"]" ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
+
+  TEST( EntryToBufferTest, ZeroLengthElements ) {
+    struct stumpless_entry *entry;
+    struct stumpless_target *target;
+    char buffer[8096];
+    int result;
+
+    entry = stumpless_new_entry_str( STUMPLESS_FACILITY_USER,
+                                     STUMPLESS_SEVERITY_INFO,
+                                     "test-app",
+                                     "test-msgid",
+                                     "test message" );
+    ASSERT_NOT_NULL( entry );
+
+    target = stumpless_open_buffer_target( "test-buffer-target",
+                                           buffer,
+                                           sizeof( buffer ) );
+    ASSERT_NOT_NULL( target );
+
+    stumpless_set_entry_message_str( entry, "" );
+
+    result = stumpless_add_entry( target, entry );
+    EXPECT_GE( result, 0 );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_close_buffer_target( target );
+    stumpless_free_all(  );
+  }
 
 }

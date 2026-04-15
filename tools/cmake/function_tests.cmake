@@ -282,13 +282,6 @@ add_function_test(stream
   LIBRARIES GTest::gmock
 )
 
-add_function_test(strbuilder
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/function/strbuilder.cpp"
-    $<TARGET_OBJECTS:test_helper_fixture>
-  LIBRARIES GTest::gmock
-)
-
 add_function_test(target
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/function/target.cpp"
