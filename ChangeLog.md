@@ -10,8 +10,6 @@ fixes, check out the
 
 
 ## [Unreleased]
-### Added
- - Localization for Traditional Chinese (zh-Hant).
 
 
 ## [3.0.0] - 2024-11-28
@@ -28,6 +26,8 @@ fixes, check out the
    thread safety tests (default is ON).
  - `BUILD_BENCHMARKING` CMake option controls the building of the performance
    tests (default is OFF).
+ - Localizations for:
+    * Traditional Chinese (zh-Hant)
 
 ### Changed
  - Refactor:

@@ -49,7 +49,7 @@ jobs:
           cmake .
       - name: Check Language
         run: |
-          EXPECTED_LANG=$( echo $LANG | sed 's/\(..\)_\(..\).UTF-8/\1-\2/g' )
+          EXPECTED_LANG=$( echo $LANG | sed 's/\(..\)_\(.*\).UTF-8/\1-\2/g' )
           grep -q "STUMPLESS_LANGUAGE \"$EXPECTED_LANG\"" include/stumpless/config.h
       - name: Build
         run: |
