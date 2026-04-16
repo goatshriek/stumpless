@@ -379,10 +379,6 @@ stumpless_get_entry_hostname( const struct stumpless_entry *entry ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   hostname_builder = strbuilder_new();
-  if( !hostname_builder ) {
-    raise_memory_allocation_failure(  );
-    return NULL;
-  }
 
   lock_entry( entry );
   if( entry->hostname_length > 0 ) {
@@ -544,10 +540,6 @@ stumpless_get_entry_procid( const struct stumpless_entry *entry ) {
   VALIDATE_ARG_NOT_NULL( entry );
 
   procid_builder = strbuilder_new(  );
-  if( !procid_builder ) {
-    raise_memory_allocation_failure(  );
-    return NULL;
-  }
 
   lock_entry( entry );
   if( entry->procid_length > 0 ) {
