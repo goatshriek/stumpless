@@ -20,6 +20,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <climits>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stumpless.h>
@@ -496,6 +497,21 @@ namespace {
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( stumpless_get_error()->code, 534 );
     EXPECT_NULL( result );
+  }
+
+  TEST_F( EntryTest, GetElementByIndexOutOfBoundsHugeIndex ) {
+
+    const struct stumpless_element *result;
+    size_t huge_index = ( ( size_t ) INT_MAX ) + 1U;
+  
+    result = stumpless_get_element_by_index( basic_entry, huge_index );
+  
+    EXPECT_NULL( result );
+  
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+  
+    EXPECT_EQ( stumpless_get_error()->code, -1 );
+  
   }
 
   TEST_F( EntryTest, GetElementByName ) {

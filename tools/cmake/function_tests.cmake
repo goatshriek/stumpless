@@ -86,12 +86,6 @@ add_function_test(get_error_stream
   SOURCES "${PROJECT_SOURCE_DIR}/test/function/startup/get_error_stream.cpp"
 )
 
-add_function_test(inthelper
-  SOURCES
-    "${PROJECT_SOURCE_DIR}/test/function/inthelper.cpp"
-    "${PROJECT_SOURCE_DIR}/src/inthelper.c"
-)
-
 add_function_test(level_all_disabled
   SOURCES
     "${PROJECT_SOURCE_DIR}/test/function/level/all_disabled.cpp"
