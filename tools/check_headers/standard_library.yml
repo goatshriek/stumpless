@@ -94,7 +94,9 @@
 "inet_pton":
   - "arpa/inet.h"
   - "private/windows_wrapper.h"
-"INT_MAX": "limits.h"
+"INT_MAX": 
+  - "limits.h"
+  - "climits"
 "LPCSTR":
   - "windows.h"
   - "private/windows_wrapper.h"
