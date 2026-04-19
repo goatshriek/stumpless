@@ -152,6 +152,37 @@ namespace {
     TestRFC5424Compliance( read_buffer );
     EXPECT_NE( read_buffer[read_result-1], ' ' );
 
+    EXPECT_THAT( read_buffer, HasSubstr( "- " ) );
+
+    stumpless_destroy_entry_and_contents( entry );
+  }
+
+  TEST_F( BufferTargetTest, MultiByteCharacters ) {
+    struct stumpless_entry *entry;
+    const char *message_with_multibyte = "Hello 你好 мир";
+    int write_result;
+    size_t read_result;
+
+    entry = stumpless_new_entry( STUMPLESS_FACILITY_USER,
+                                 STUMPLESS_SEVERITY_INFO,
+                                 "test-app",
+                                 "test-msgid",
+                                 message_with_multibyte );
+    ASSERT_TRUE( entry != NULL );
+
+    write_result = stumpless_add_entry( target, entry );
+    EXPECT_GE( write_result, 0 );
+    EXPECT_NO_ERROR;
+
+    read_result = stumpless_read_buffer( target,
+                                         read_buffer,
+                                         READ_BUFFER_LENGTH );
+    EXPECT_EQ( read_result, write_result );
+    EXPECT_NO_ERROR;
+
+    EXPECT_THAT( read_buffer, HasSubstr( "你好" ) );
+    EXPECT_THAT( read_buffer, HasSubstr( "мир" ) );
+
     stumpless_destroy_entry_and_contents( entry );
   }
 
