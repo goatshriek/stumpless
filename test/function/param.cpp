@@ -230,6 +230,68 @@ namespace {
     free( buffer );
   }
 
+  TEST_F( ParamTest, ParamIntoStringBufferSizeZero ) {
+    size_t result;
+
+    result = stumpless_param_into_string( &basic_param, NULL, 0 );
+    EXPECT_EQ( result, 0 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_EMPTY );
+  }
+
+  TEST_F( ParamTest, ParamIntoStringBufferSizeOne ) {
+    const size_t max_size = 1;
+    size_t result;
+    char *buffer = (char*)malloc( max_size );
+
+    result = stumpless_param_into_string( &basic_param, buffer, max_size );
+    EXPECT_EQ( result, (&basic_param)->name_length + (&basic_param)->value_length + 4 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_SMALL );
+
+    free( buffer );
+  }
+
+  TEST_F( ParamTest, ParamIntoStringBufferSize24 ) {
+    const size_t max_size = 24;
+    size_t result;
+    char *buffer = (char*)malloc( max_size );
+
+    result = stumpless_param_into_string( &basic_param, buffer, max_size );
+    EXPECT_EQ( result, (&basic_param)->name_length + (&basic_param)->value_length + 4 );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_ARGUMENT_TOO_SMALL );
+
+    free( buffer );
+  }
+
+  TEST_F( ParamTest, CopyMallocFailure ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_param *result;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_copy_param( &basic_param );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
+  TEST_F( ParamTest, CopyMallocFailureOnValue ) {
+    void * (*set_malloc_result)(size_t);
+    const struct stumpless_param *result;
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL_ON_SIZE( 12 ) );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    result = stumpless_copy_param( &basic_param );
+    EXPECT_NULL( result );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+  }
+
   /* non-fixture tests */
 
   TEST( CopyParamTest, NullParam ) {
