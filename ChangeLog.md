@@ -9,6 +9,9 @@ fixes, check out the
 [roadmap](https://github.com/goatshriek/stumpless/blob/master/docs/roadmap.md).
 
 
+## [Unreleased]
+
+
 ## [3.0.0] - 2024-11-28
 ### Added
  - Colorization of output in stream targets via ANSI color codes, along with
@@ -23,6 +26,8 @@ fixes, check out the
    thread safety tests (default is ON).
  - `BUILD_BENCHMARKING` CMake option controls the building of the performance
    tests (default is OFF).
+ - Localizations for:
+    * Traditional Chinese (zh-Hant)
 
 ### Changed
  - Refactor:
