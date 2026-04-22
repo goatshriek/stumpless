@@ -76,6 +76,7 @@
 #cmakedefine USE_LOCALE_JA_JP 1
 #cmakedefine USE_LOCALE_ZH_CN 1
 #cmakedefine USE_LOCALE_ZH_HANT 1
+#cmakedefine USE_LOCALE_VI_VN 1
 
 /* optimizations */
 #define unlikely( EXPRESSION )  @UNLIKELY_FUNCTION@
