@@ -47,6 +47,8 @@
 #  include "private/config/locale/zh-cn.h"
 #elif defined USE_LOCALE_ZH_HANT
 #  include "private/config/locale/zh-hant.h"
+#elif defined USE_LOCALE_VI_VN
+#  include "private/config/locale/vi-vn.h"
 #elif defined USE_LOCALE_HI_IN
 #  include "private/config/locale/hi-in.h"
 #elif defined USE_LOCALE_BN_IN

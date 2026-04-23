@@ -11,7 +11,6 @@ fixes, check out the
 
 ## [Unreleased]
 
-
 ## [3.0.0] - 2024-11-28
 ### Added
  - Colorization of output in stream targets via ANSI color codes, along with
@@ -28,6 +27,7 @@ fixes, check out the
    tests (default is OFF).
  - Localizations for:
     * Traditional Chinese (zh-Hant)
+    * Vietnamese (vi-VN)
 
 ### Changed
  - Refactor:

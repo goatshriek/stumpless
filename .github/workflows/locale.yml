@@ -38,6 +38,7 @@ jobs:
           - "sw_KE.UTF-8"
           - "te_IN.UTF-8"
           - "tr_TR.UTF-8"
+          - "vi_VN.UTF-8"
           - "zh_CN.UTF-8"
           - "zh_HANT.UTF-8"
     env:
