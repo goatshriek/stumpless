@@ -2713,6 +2713,28 @@ namespace {
     stumpless_free_all(  );
   }
 
+  TEST( GetProcid, MallocFailureOnStrbuilder ) {
+    void * (*set_malloc_result)(size_t);
+    const char *procid;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    procid = stumpless_get_entry_procid( entry );
+    EXPECT_NULL( procid );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
+  }
+
   TEST( SetProcid, SetValue ) {
     struct stumpless_entry *entry;
     struct stumpless_entry *result;
@@ -2883,6 +2905,28 @@ namespace {
     hostname = stumpless_get_entry_hostname( NULL );
 
     EXPECT_NULL( hostname );
+  }
+
+  TEST( GetHostName, MallocFailureOnStrbuilder ) {
+    void * (*set_malloc_result)(size_t);
+    const char *hostname;
+    struct stumpless_entry *entry;
+
+    entry = create_entry(  );
+    ASSERT_NOT_NULL( entry );
+
+    set_malloc_result = stumpless_set_malloc( MALLOC_FAIL );
+    ASSERT_NOT_NULL( set_malloc_result );
+
+    hostname = stumpless_get_entry_hostname( entry );
+    EXPECT_NULL( hostname );
+    EXPECT_ERROR_ID_EQ( STUMPLESS_MEMORY_ALLOCATION_FAILURE );
+
+    set_malloc_result = stumpless_set_malloc( malloc );
+    EXPECT_TRUE( set_malloc_result == malloc );
+
+    stumpless_destroy_entry_and_contents( entry );
+    stumpless_free_all(  );
   }
 
   TEST( SetHostName, SetValue ) {

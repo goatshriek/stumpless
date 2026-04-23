@@ -174,6 +174,10 @@ strbuilder_get_buffer( struct strbuilder *builder, size_t * length ) {
 
 void
 strbuilder_destroy( const struct strbuilder *builder ) {
+  if( !builder ) {
+    return;
+  }
+
   cache_free( strbuilder_cache, builder );
 }
 
