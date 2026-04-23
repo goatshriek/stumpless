@@ -18,6 +18,8 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstring>
+#include <climits>
 #include <string>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -378,6 +380,21 @@ namespace {
 
     EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
     EXPECT_EQ( stumpless_get_error()->code, 455 );
+  }
+  
+  TEST_F( ElementTest, GetParamByIndexOutOfBoundsHugeIndex ) {
+
+    const struct stumpless_param *result;
+    size_t huge_index = ( ( size_t ) INT_MAX ) + 1U;
+  
+    result = stumpless_get_param_by_index( element_with_params, huge_index );
+  
+    EXPECT_NULL( result );
+  
+    EXPECT_ERROR_ID_EQ( STUMPLESS_INDEX_OUT_OF_BOUNDS );
+  
+    EXPECT_EQ( stumpless_get_error()->code, -1 );
+  
   }
 
   TEST_F( ElementTest, GetParamIndex ) {
