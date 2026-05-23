@@ -10,6 +10,8 @@ fixes, check out the
 
 
 ## [Unreleased]
+### Added
+ - Simplified Chinese translation of the contributing guide.
 
 ## [3.0.0] - 2024-11-28
 ### Added
