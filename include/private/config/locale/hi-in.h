@@ -22,16 +22,14 @@
 #  define L10N_BIND_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
 "स्थानीय यूनिक्स सॉकेट से नहीं जुड़ सका"
 
-// todo translate
 #  define L10N_BUFFER_SIZE_ERROR_CODE_TYPE \
-"buffer used to store the message"
+"मैसेज को संग्रहीत करने के लिए उपयोग किया जाने वाला बफर"
 
 #  define L10N_BUFFER_TOO_SMALL_ERROR_MESSAGE \
 "दिए गए संदेश के लिए बफ़र बहुत छोटा है"
 
-// todo translate
 #  define L10N_CHAIN_TARGETS_UNSUPPORTED \
-"chain targets are not supported by this build"
+"चेन टार्गेट्स इस बिल्ड द्वारा सपोर्ट नहीं किए जाते हैं"
 
 #  define L10N_CLOSE_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "एक असमर्थित लक्ष्य प्रकार को बंद करने का प्रयास किया गया"
@@ -117,9 +115,8 @@
 "एक MULTI_SZ रजिस्ट्री मान न तो खाली था और न ही दो NULL" \
 " अक्षर "
 
-// todo translate
 #  define L10N_INVALID_PARAM_ERROR_MESSAGE \
-"the string is not of the name=\"value\" format"
+"स्ट्रिंग का फ़ॉर्मेट " "name=\"value\"" " नहीं है"
 
 #  define L10N_INVALID_PRIVAL_ERROR_CODE_TYPE \
 "अमान्य prival"
@@ -135,9 +132,8 @@
 "गंभीरता कोड को RFC 5424 के अनुसार परिभाषित किया जाना चाहिए: 0 . " \
 "के बीच के मान और 7 समावेशी"
 
-// todo translate
 #  define L10N_INVALID_STATE_DURING_UTF8_PARSING \
-"invalid state reached during UTF-8 string parsing"
+"UTF-8 स्ट्रिंग parsing के दौरान अमान्य स्थिति प्राप्त हुई"
 
 #  define L10N_INVALID_TARGET_TYPE_ERROR_MESSAGE \
 "लक्ष्य प्रकार इस ऑपरेशन के साथ असंगत है"
@@ -170,13 +166,11 @@
 #  define L10N_MESSAGE_TOO_BIG_FOR_DATAGRAM_ERROR_MESSAGE \
 "संदेश एक डेटाग्राम में भेजने के लिए बहुत बड़ा है"
 
-// todo translate
 #  define L10N_NAME_RESOLUTION_FAILED_ERROR_MESSAGE \
-"gethostbyname[2] and inet_pton failed to resolve the name"
+"gethostbyname[2] और inet_pton नाम का समाधान करने में असफल रहे"
 
-// todo translate
 #  define L10N_NETWORK_CLOSED_ERROR_MESSAGE \
-"the network connection is closed"
+"नेटवर्क कनेक्शन बंद है"
 
 #  define L10N_NETWORK_PROTOCOL_UNSUPPORTED_ERROR_MESSAGE \
 "चुना गया नेटवर्क प्रोटोकॉल असमर्थित है"
@@ -223,9 +217,8 @@ ARG_NAME " NULL था"
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
 "winsock2 सॉकेट के साथ भेजना विफल रहा"
 
-// todo translate
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
-"severity colors are only supported for stream targets"
+"severity colors केवल stream targets के लिए समर्थित हैं"
 
 #  define L10N_SOCKET_FAILED_ERROR_MESSAGE \
 "सॉकेट खोलने में विफल"
@@ -233,45 +226,35 @@ ARG_NAME " NULL था"
 #  define L10N_SOURCE_REGISTRATION_TRANSACTION_DESCRIPTION_W \
 L"विंडोज इवेंट लॉग सोर्स का स्टंपलेस पंजीकरण"
 
-// todo translate
 #  define L10N_SQLITE3_BIND_FAILED_ERROR_MESSAGE( PARAM )  \
-"could not bind " PARAM " to the statement"
+PARAM " को स्टेटमेंट से जोड़ा नहीं किया जा सका"
 
-// todo translate
 #  define L10N_SQLITE3_BUSY_ERROR_MESSAGE \
-"the database was busy and could not complete the transaction"
+"डेटाबेस के व्यस्त होने के कारण ट्रांज़ैक्शन पूरा नहीं कर पाए"
 
-// todo translate
 #  define L10N_SQLITE3_CLOSE_FAILED_ERROR_MESSAGE \
-"could not close the sqlite3 database"
+"sqlite3 डेटाबेस को बंद नहीं किया जा सका"
 
-// todo translate
 #  define L10N_SQLITE3_CUSTOM_PREPARE_FAILED_ERROR_MESSAGE \
-"a custom callback for prepared statements failed"
+"बनाए गए statements के लिए custom callback असफल रहा"
 
-// todo translate
 #  define L10N_SQLITE3_OPEN_FAILED_ERROR_MESSAGE \
-"could not open the sqlite3 database"
+"sqlite3 डेटाबेस को खोला नहीं जा सका"
 
-// todo translate
 #  define L10N_SQLITE3_PREPARE_FAILED_ERROR_MESSAGE \
-"sqlite3_prepare_v2 failed"
+    "sqlite3_prepare_v2 असफल रहा"
 
-// todo translate
 #  define L10N_SQLITE3_RESULT_CODE_TYPE \
-"the return code of the failed sqlite3 call"
+    "असफल sqlite3 call का return code"
 
-// todo translate
 #  define L10N_SQLITE3_RETRY_COUNT_CODE_TYPE \
-"the number of times the operation was retried"
+    "operation को दोबारा करने की संख्या"
 
-// todo translate
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
-"sqlite3_step failed"
+"sqlite3_step असफल रहा"
 
-// todo translate
 #  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
-"sqlite3 targets are not supported by this build"
+"sqlite3 targets इस build द्वारा समर्थित नहीं हैं"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
 "धारा को नहीं लिख सका"
