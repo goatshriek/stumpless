@@ -65,6 +65,8 @@
 #  include "private/config/locale/tr-tr.h"
 #elif defined USE_LOCALE_HU_HU
 #  include "private/config/locale/hu-hu.h"
+#elif defined USE_LOCALE_NB_NO
+#  include "private/config/locale/nb-no.h"
 #elif defined USE_LOCALE_SI_LK
 #  include "private/config/locale/si-lk.h"
 #elif defined USE_LOCALE_JA_JP
