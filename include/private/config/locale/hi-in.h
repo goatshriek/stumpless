@@ -38,10 +38,10 @@
 "CommitTransaction असफल"
 
 #  define L10N_CONNECT_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"कनेक्ट एक sys/socket.h सॉकेट के साथ विफल रहा"
+"sys/socket.h सॉकेट से कनेक्ट करने में विफल"
 
 #  define L10N_CONNECT_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"winsock2 सॉकेट के साथ कनेक्ट विफल रहा"
+"winsock2 सॉकेट से कनेक्ट करने में विफल"
 
 #  define L10N_CREATE_TRANSACTION_FAILED_ERROR_MESSAGE \
 "CreateTransaction असफल"
@@ -158,7 +158,7 @@
 " परिवर्तित नहीं कर सका"
 
 #  define L10N_MEMORY_ALLOCATION_FAILURE_ERROR_MESSAGE \
-"एक स्मृति आवंटन कॉल विफल"
+"मेमोरी आवंटन में विफल"
 
 #  define L10N_MESSAGE_SIZE_ERROR_CODE_TYPE \
 "संदेश का आकार जिसे भेजने का प्रयास किया गया थाt"
@@ -203,7 +203,7 @@ ARG_NAME " NULL था"
 "रजिस्ट्री मान सेट नहीं किया जा सका"
 
 #  define L10N_SENDTO_UNIX_SOCKET_FAILED_ERROR_MESSAGE \
-"sendto क यूनिक्स सॉकेट के साथ विफल रहा"
+"sendto यूनिक्स सॉकेट पर विफल रहा"
 
 #  define L10N_SEND_ENTRY_TO_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "एक असमर्थित लक्ष्य प्रकार में प्रविष्टि भेजने का प्रयास किया गया"
@@ -212,10 +212,10 @@ ARG_NAME " NULL था"
 "एक असमर्थित लक्ष्य प्रकार को संदेश भेजने का प्रयास किया गया"
 
 #  define L10N_SEND_SYS_SOCKET_FAILED_ERROR_MESSAGE \
-"एक sys/socket.h सॉकेट के साथ भेजना विफल रहा"
+"sys/socket.h सॉकेट पर संदेश भेजने में विफल"
 
 #  define L10N_SEND_WIN_SOCKET_FAILED_ERROR_MESSAGE \
-"winsock2 सॉकेट के साथ भेजना विफल रहा"
+"winsock2 सॉकेट पर संदेश भेजने में विफल"
 
 #  define L10N_SEVERITY_COLORS_UNSUPPORTED_TARGET_ERROR_MESSAGE \
 "severity colors केवल stream targets के लिए समर्थित हैं"
@@ -248,16 +248,16 @@ PARAM " को स्टेटमेंट से जोड़ा नहीं �
     "असफल sqlite3 call का return code"
 
 #  define L10N_SQLITE3_RETRY_COUNT_CODE_TYPE \
-    "operation को दोबारा करने की संख्या"
+    "operation को दोबारा प्रयास करने की संख्या"
 
 #  define L10N_SQLITE3_STEP_FAILED_ERROR_MESSAGE \
 "sqlite3_step असफल रहा"
 
 #  define L10N_SQLITE3_TARGETS_UNSUPPORTED \
-"sqlite3 targets इस build द्वारा समर्थित नहीं हैं"
+"sqlite3 targets इस build में समर्थित नहीं हैं"
 
 #  define L10N_STREAM_WRITE_FAILURE_ERROR_MESSAGE \
-"धारा को नहीं लिख सका"
+"स्ट्रीम में नहीं लिख सका"
 
 #  define L10N_STRING_LENGTH_ERROR_CODE_TYPE \
 "आपत्तिजनक स्ट्रिंग की लंबाई"
@@ -300,7 +300,7 @@ PARAM " को स्टेटमेंट से जोड़ा नहीं �
 "असफल कॉल के बाद GetLastError का परिणाम"
 
 #  define L10N_WINSOCK2_SOCKET_FAILED_ERROR_MESSAGE \
-"एक winsock2 सॉकेट खोलने में विफल"
+"winsock2 सॉकेट खोलने में विफल"
 
 #  define L10N_WSAGETLASTERROR_ERROR_CODE_TYPE \
 "विफल कॉल के बाद WSAGetLastError का परिणाम"
