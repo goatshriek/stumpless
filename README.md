@@ -30,7 +30,7 @@ Stumpless has lots of features that make logging in C fast and easy:
  * thread safe
  * can be adjusted or removed during compilation for zero runtime cost
  * localized for multiple languages 🇦🇱 🇧🇷 🇧🇬 🇨🇳 🇨🇿 🇩🇪 🇩🇰 🇪🇸 🇫🇷 🇬🇷 🇭🇺 🇮🇳 🇮🇱 🇮🇹
-  🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸 🇻🇳 🇪🇬🇷🇴 🇧🇩
+  🇯🇵 🇰🇪 🇰🇷 🇵🇱 🇸🇰 🇱🇰 🇸🇪 🇹🇷 🇺🇸 🇻🇳 🇪🇬🇷🇴 
    ([add yours!](https://github.com/goatshriek/stumpless/blob/latest/docs/localization.md))
  * easy-access
    [documentation](https://goatshriek.github.io/stumpless/docs/c/latest/),
