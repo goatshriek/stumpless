@@ -12,6 +12,7 @@ fixes, check out the
 ## [Unreleased]
 ### Added
  - Simplified Chinese translation of the contributing guide.
+ - Simplified Chinese translation of the basic usage guide.
 
 ## [3.0.0] - 2024-11-28
 ### Added
