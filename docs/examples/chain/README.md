@@ -4,7 +4,7 @@ are all carefully confined to a single endpoint though - you can't easily create
 a target that will send log messages to multiple places. For example a file
 target that logs to two files isn't possible.
 
-Instead of manually sending messages to each desired target, you can instead use
+Instead of manually sending messages to each desired target, you can use
 a chain to compose several different targets together. Log entries sent to the
 chain will be sent to each of the targets within, allowing for a sequence of
 targets that can simplify the logging calls in your own application.
@@ -50,7 +50,7 @@ stumpless_add_target_to_chain( simple_chain, file_target );
 ```
 
 Sending messages to this chain is also simple: we just treat it the same as any
-other target! This will create an entry in the file, as well print an entry to
+other target! This will create an entry in the file, as well as print an entry to
 stdout.
 
 ```c
@@ -88,7 +88,7 @@ stumpless_add_target_to_chain( main_chain, error_chain );
 stumpless_add_target_to_chain( main_chain, simple_chain );
 ```
 
-Now lets send some messages through the chain.
+Now let's send some messages through the chain.
 
 ```c
 stump_em( "emergency!" );
@@ -161,7 +161,7 @@ errors logged in memory:
 
 Finally, we need to clean up. Chains make this pretty easy, providing a
 destructor to close all targets within them as well (including other chains).
-If you'd rather only close the chain, use `stumpless_close_chain_only` instead.
+If you'd rather close only the chain, use `stumpless_close_chain_only` instead.
 
 ```c
 stumpless_close_chain_and_contents( main_chain );
