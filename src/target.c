@@ -70,7 +70,7 @@
 static const char *target_type_enum_to_string[] = {
   STUMPLESS_FOREACH_TARGET_TYPE( GENERATE_STRING )
 };
-static config_atomic_int_t default_option = STUMPLESS_OPTION_NDELAY;
+static config_atomic_int_t default_option = STUMPLESS_OPTION_NDELAY | STUMPLESS_OPTION_PID;
 static config_atomic_ptr_t current_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t default_target = config_atomic_ptr_initializer;
 static config_atomic_ptr_t cons_stream = config_atomic_ptr_initializer;

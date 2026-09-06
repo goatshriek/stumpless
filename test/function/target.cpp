@@ -1399,7 +1399,7 @@ namespace {
     if( !std::regex_match( message_buffer, matches, pid_regex ) ) {
       FAIL(  ) << "produced invalid procid";
     } else {
-      EXPECT_EQ( matches[RFC_5424_PROCID_MATCH_INDEX], '-' );
+      EXPECT_NE(matches[RFC_5424_PROCID_MATCH_INDEX], '-');
     }
 
     target_result = stumpless_set_option( target, STUMPLESS_OPTION_PID );
